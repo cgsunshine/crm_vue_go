@@ -350,6 +350,7 @@ func (autoCodeService *AutoCodeService) CreateTemp(autoCode system.AutoCodeStruc
 		// 判断目标文件是否都可以移动
 		for _, value := range dataList {
 			if utils.FileExist(value.autoMoveFilePath) {
+				fmt.Println(fmt.Sprintf("目标文件已存在:%s\n", value.autoMoveFilePath))
 				return errors.New(fmt.Sprintf("目标文件已存在:%s\n", value.autoMoveFilePath))
 			}
 		}
