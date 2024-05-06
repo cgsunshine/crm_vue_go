@@ -55,6 +55,18 @@
           min-width="180"
           prop="email"
         />
+
+        <!-- <el-table-column
+          align="left"
+          label="最后一次登录时间"
+          min-width="180"
+          prop="lastLogin"
+        /> -->
+
+        <el-table-column align="left" label="最后一次登录时间" width="180">
+            <template #default="scope">{{ formatDate(scope.row.lastLogin) }}</template>
+        </el-table-column>
+
         <el-table-column
           align="left"
           label="用户角色"
@@ -252,6 +264,7 @@ import {
 } from '@/api/user'
 
 import { getAuthorityList } from '@/api/authority'
+import {  formatDate } from '@/utils/format'
 import CustomPic from '@/components/customPic/index.vue'
 import ChooseImg from '@/components/chooseImg/index.vue'
 import WarningBar from '@/components/warningBar/warningBar.vue'

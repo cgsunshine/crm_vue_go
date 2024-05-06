@@ -53,6 +53,7 @@ func (userService *UserService) Login(u *system.SysUser) (userInter *system.SysU
 		}
 		MenuServiceApp.UserAuthorityDefaultRouter(&user)
 	}
+	//插入用户最后一次登录时间
 	return &user, err
 }
 
@@ -249,5 +250,16 @@ func (userService *UserService) FindUserByUuid(uuid string) (user *system.SysUse
 
 func (userService *UserService) ResetPassword(ID uint) (err error) {
 	err = global.GVA_DB.Model(&system.SysUser{}).Where("id = ?", ID).Update("password", utils.BcryptHash("123456")).Error
+	return err
+}
+
+//@author: [piexlmax](https://github.com/piexlmax)
+//@function: recordLastLogin
+//@description: 记录最后一次登录时间
+//@param: ID uint
+//@return: err error
+
+func (userService *UserService) RecordLastLogin(ID uint) (err error) {
+	err = global.GVA_DB.Model(&system.SysUser{}).Where("id = ?", ID).Update("last_login", time.Now()).Error
 	return err
 }

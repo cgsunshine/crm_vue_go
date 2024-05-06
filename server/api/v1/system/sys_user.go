@@ -66,6 +66,13 @@ func (b *BaseApi) Login(c *gin.Context) {
 			response.FailWithMessage("用户被禁止登录", c)
 			return
 		}
+		err = userService.RecordLastLogin(user.ID)
+		if err != nil {
+			response.FailWithMessage("记录登录时间失败", c)
+			return
+		}
+		//登录通过
+
 		b.TokenNext(c, *user)
 		return
 	}
