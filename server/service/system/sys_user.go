@@ -263,3 +263,25 @@ func (userService *UserService) RecordLastLogin(ID uint) (err error) {
 	err = global.GVA_DB.Model(&system.SysUser{}).Where("id = ?", ID).Update("last_login", time.Now()).Error
 	return err
 }
+
+//@author: [piexlmax](https://github.com/piexlmax)
+//@function: changeUserStatus
+//@description: 改变用户状态
+//@param: ID uint,status string
+//@return: err error
+
+func (userService *UserService) ChangeUserStatus(ID uint, status string) (err error) {
+	err = global.GVA_DB.Model(&system.SysUser{}).Where("id = ?", ID).Update("user_status", status).Error
+	return err
+}
+
+//@author: [piexlmax](https://github.com/piexlmax)
+//@function: changePositionStatus
+//@description: 改变职位状态
+//@param: ID uint,status string
+//@return: err error
+
+func (userService *UserService) ChangePositionStatus(ID uint, status string) (err error) {
+	err = global.GVA_DB.Model(&system.SysUser{}).Where("id = ?", ID).Update("position_status", status).Error
+	return err
+}

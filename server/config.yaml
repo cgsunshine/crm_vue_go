@@ -124,9 +124,9 @@ mysql:
     port: "3306"
     config: charset=utf8mb4&parseTime=True&loc=Local
     db-name: gva
-    username: root
-    password: root888
-    path: 192.168.2.102
+    username: gva
+    password: Ez5fRjyPy8DNhFkb
+    path: 110.41.190.242
     engine: ""
     log-mode: error
     max-idle-conns: 10

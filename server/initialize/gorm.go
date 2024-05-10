@@ -53,7 +53,7 @@ func RegisterTables() {
 		example.ExaFile{},
 		example.ExaCustomer{},
 		example.ExaFileChunk{},
-		example.ExaFileUploadAndDownload{}, crm.CrmTest{},
+		example.ExaFileUploadAndDownload{}, crm.CrmTest{}, crm.CrmBill{}, crm.CrmBusinessOpportunity{}, crm.CrmCommissionRebate{}, crm.CrmContract{}, crm.CrmContractType{}, crm.CrmCustomers{}, crm.CrmLoginLog{}, crm.CrmOperationRecords{}, crm.CrmOrder{}, crm.CrmPayment{}, crm.CrmPaymentCollention{}, crm.CrmProcurementContract{}, crm.CrmProduct{}, crm.CrmProductGroup{}, crm.CrmProductType{}, crm.CrmPurchaseOrder{}, crm.CrmStatementAccount{}, crm.CrmSupplier{},
 	)
 	if err != nil {
 		global.GVA_LOG.Error("register table failed", zap.Error(err))
