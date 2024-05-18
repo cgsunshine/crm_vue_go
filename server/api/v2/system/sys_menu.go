@@ -30,10 +30,52 @@ func (a *AuthorityMenuApi) GetMenu(c *gin.Context) {
 		response.FailWithMessage("获取失败", c)
 		return
 	}
+
+	resMenus := &[]*MeunCrm{}
 	if menus == nil {
 		menus = []system.SysMenu{}
+	} else {
+		MenuTree(menus, resMenus)
 	}
-	response.OkWithDetailed(systemRes.SysMenusResponse{Menus: menus}, "获取成功", c)
+	response.OkWithDetailed(resMenus, "获取成功", c)
+	//var resMenus = &[]*MeunCrm{
+	//	{
+	//		Path: "/superAdmin",
+	//		Name: "superAdmin",
+	//		Meta: MetaCrm{
+	//			Title: "超级管理员",
+	//		},
+	//		Children: &[]*MeunCrm{
+	//			{
+	//				Path:     "/superAdmin/",
+	//				Name:     "",
+	//				Meta:     MetaCrm{},
+	//				Children: nil,
+	//			},
+	//		},
+	//	},
+	//}
+	//response.OkWithDetailed(SysCrmMenusResponse{Menus: resMenus}, "获取成功", c)
+}
+
+func MenuTree(menuTree []system.SysMenu, resMenus *[]*MeunCrm) {
+	for _, menu := range menuTree {
+		me := &MeunCrm{
+			Path: menu.Component,
+			Name: menu.Name,
+			Meta: MetaCrm{
+				Title: menu.Title,
+				Icon:  menu.Icon,
+				Rank:  int64(menu.Sort),
+			},
+			//Children: &[]*MeunCrm{}, //需要递归处理
+		}
+		if menu.Children != nil {
+			me.Children = &[]*MeunCrm{}
+			MenuTree(menu.Children, me.Children)
+		}
+		*resMenus = append(*resMenus, me)
+	}
 }
 
 // GetBaseMenuTree

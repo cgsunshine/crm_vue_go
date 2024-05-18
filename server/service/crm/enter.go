@@ -20,4 +20,12 @@ type ServiceGroup struct {
 	CrmPurchaseOrderService
 	CrmStatementAccountService
 	CrmSupplierService
+	CrmUserService
+	CrmApprovalNodeService
+	CrmApprovalProcessService
+	CrmApprovalRecordService
+	CrmApprovalTasksService
+	CrmTicketCommentsService
+	CrmTicketResponseTemplatesService
+	CrmTicketsService
 }

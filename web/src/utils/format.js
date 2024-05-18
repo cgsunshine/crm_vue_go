@@ -8,6 +8,7 @@ export const formatBoolean = (bool) => {
     return ''
   }
 }
+
 export const formatDate = (time) => {
   if (time !== null && time !== '') {
     var date = new Date(time)

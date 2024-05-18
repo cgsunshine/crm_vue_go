@@ -259,8 +259,8 @@ func (userService *UserService) ResetPassword(ID uint) (err error) {
 //@param: ID uint
 //@return: err error
 
-func (userService *UserService) RecordLastLogin(ID uint) (err error) {
-	err = global.GVA_DB.Model(&system.SysUser{}).Where("id = ?", ID).Update("last_login", time.Now()).Error
+func (userService *UserService) RecordLastLogin(ID uint, ip string) (err error) {
+	err = global.GVA_DB.Model(&system.SysUser{}).Where("id = ?", ID).Update("last_login", time.Now()).Update("ip_address", ip).Error
 	return err
 }
 

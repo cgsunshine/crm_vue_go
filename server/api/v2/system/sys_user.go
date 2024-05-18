@@ -66,7 +66,7 @@ func (b *BaseApi) Login(c *gin.Context) {
 			response.FailWithMessage("用户被禁止登录", c)
 			return
 		}
-		err = userService.RecordLastLogin(user.ID)
+		err = userService.RecordLastLogin(user.ID, c.ClientIP())
 		if err != nil {
 			response.FailWithMessage("记录登录时间失败", c)
 			return
@@ -91,18 +91,27 @@ func (b *BaseApi) TokenNext(c *gin.Context, user system.SysUser) {
 		Username:    user.Username,
 		AuthorityId: user.AuthorityId,
 	})
+
 	token, err := j.CreateToken(claims)
 	if err != nil {
 		global.GVA_LOG.Error("获取token失败!", zap.Error(err))
 		response.FailWithMessage("获取token失败", c)
 		return
 	}
+
 	if !global.GVA_CONFIG.System.UseMultipoint {
 		utils.SetToken(c, token, int(claims.RegisteredClaims.ExpiresAt.Unix()-time.Now().Unix()))
-		response.OkWithDetailed(systemRes.LoginResponse{
-			User:      user,
-			Token:     token,
-			ExpiresAt: claims.RegisteredClaims.ExpiresAt.Unix() * 1000,
+		response.OkWithDetailed(systemRes.CrmLoginResponse{
+			Success: true,
+			Data: systemRes.CrmLSysUserResponse{
+				AccessToken:  token,
+				Avatar:       user.HeaderImg,
+				Expires:      "2030/10/30 00:00:00",
+				Nickname:     user.NickName,
+				RefreshToken: "eyJhbGciOiJIUzUxMiJ9.adminRefresh",
+				Roles:        []string{"admin"},
+				Username:     user.Username,
+			},
 		}, "登录成功", c)
 		return
 	}
@@ -114,10 +123,22 @@ func (b *BaseApi) TokenNext(c *gin.Context, user system.SysUser) {
 			return
 		}
 		utils.SetToken(c, token, int(claims.RegisteredClaims.ExpiresAt.Unix()-time.Now().Unix()))
-		response.OkWithDetailed(systemRes.LoginResponse{
-			User:      user,
-			Token:     token,
-			ExpiresAt: claims.RegisteredClaims.ExpiresAt.Unix() * 1000,
+		//response.OkWithDetailed(systemRes.LoginResponse{
+		//	User:      user,
+		//	Token:     token,
+		//	ExpiresAt: claims.RegisteredClaims.ExpiresAt.Unix() * 1000,
+		//}, "登录成功", c)
+		response.OkWithDetailed(systemRes.CrmLoginResponse{
+			Success: true,
+			Data: systemRes.CrmLSysUserResponse{
+				AccessToken:  token,
+				Avatar:       user.HeaderImg,
+				Expires:      "2030/10/30 00:00:00",
+				Nickname:     user.NickName,
+				RefreshToken: "eyJhbGciOiJIUzUxMiJ9.adminRefresh",
+				Roles:        []string{"admin"},
+				Username:     user.Username,
+			},
 		}, "登录成功", c)
 	} else if err != nil {
 		global.GVA_LOG.Error("设置登录状态失败!", zap.Error(err))
@@ -134,10 +155,22 @@ func (b *BaseApi) TokenNext(c *gin.Context, user system.SysUser) {
 			return
 		}
 		utils.SetToken(c, token, int(claims.RegisteredClaims.ExpiresAt.Unix()-time.Now().Unix()))
-		response.OkWithDetailed(systemRes.LoginResponse{
-			User:      user,
-			Token:     token,
-			ExpiresAt: claims.RegisteredClaims.ExpiresAt.Unix() * 1000,
+		//response.OkWithDetailed(systemRes.LoginResponse{
+		//	User:      user,
+		//	Token:     token,
+		//	ExpiresAt: claims.RegisteredClaims.ExpiresAt.Unix() * 1000,
+		//}, "登录成功", c)
+		response.OkWithDetailed(systemRes.CrmLoginResponse{
+			Success: true,
+			Data: systemRes.CrmLSysUserResponse{
+				AccessToken:  token,
+				Avatar:       user.HeaderImg,
+				Expires:      "2030/10/30 00:00:00",
+				Nickname:     user.NickName,
+				RefreshToken: "eyJhbGciOiJIUzUxMiJ9.adminRefresh",
+				Roles:        []string{"admin"},
+				Username:     user.Username,
+			},
 		}, "登录成功", c)
 	}
 }

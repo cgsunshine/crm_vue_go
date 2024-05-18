@@ -20,4 +20,12 @@ type RouterGroup struct {
 	CrmPurchaseOrderRouter
 	CrmStatementAccountRouter
 	CrmSupplierRouter
+	CrmUserRouter
+	CrmApprovalNodeRouter
+	CrmApprovalProcessRouter
+	CrmApprovalRecordRouter
+	CrmApprovalTasksRouter
+	CrmTicketCommentsRouter
+	CrmTicketResponseTemplatesRouter
+	CrmTicketsRouter
 }

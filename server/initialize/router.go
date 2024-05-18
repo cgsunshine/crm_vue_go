@@ -5,6 +5,7 @@ import (
 	"github.com/flipped-aurora/gin-vue-admin/server/global"
 	"github.com/flipped-aurora/gin-vue-admin/server/middleware"
 	"github.com/flipped-aurora/gin-vue-admin/server/router"
+	"github.com/flipped-aurora/gin-vue-admin/server/routerv2"
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
@@ -77,8 +78,8 @@ func Routers() *gin.Engine {
 		systemRouter.InitSysExportTemplateRouter(PrivateGroup)
 		exampleRouter.InitCustomerRouter(PrivateGroup)
 		exampleRouter.InitFileUploadAndDownloadRouter(PrivateGroup)
-
 	}
+
 	{
 		crmRouter := router.RouterGroupApp.Crm
 		crmRouter.InitCrmTestRouter(PrivateGroup, PublicGroup)
@@ -100,7 +101,24 @@ func Routers() *gin.Engine {
 		crmRouter.InitCrmPurchaseOrderRouter(PrivateGroup, PublicGroup)
 		crmRouter.InitCrmStatementAccountRouter(PrivateGroup, PublicGroup)
 		crmRouter.InitCrmSupplierRouter(PrivateGroup, PublicGroup)
+		crmRouter.InitCrmUserRouter(PrivateGroup, PublicGroup)
+		crmRouter.InitCrmApprovalNodeRouter(PrivateGroup, PublicGroup)
+		crmRouter.InitCrmApprovalProcessRouter(PrivateGroup, PublicGroup)
+		crmRouter.InitCrmApprovalRecordRouter(PrivateGroup, PublicGroup)
+		crmRouter.InitCrmApprovalTasksRouter(PrivateGroup, PublicGroup)
+		crmRouter.InitCrmTicketCommentsRouter(PrivateGroup, PublicGroup)
+		crmRouter.InitCrmTicketResponseTemplatesRouter(PrivateGroup, PublicGroup)
+		crmRouter.InitCrmTicketsRouter(PrivateGroup, PublicGroup)
 
+	}
+
+	{
+		systemRouterV2 := routerv2.RouterGroupApp.System
+		PrivateGroupV2 := Router.Group("v2")
+		systemRouterV2.InitBaseRouter(PrivateGroupV2)
+
+		PrivateGroupV2.Use(middleware.JWTAuth())
+		systemRouterV2.InitMenuRouter(PrivateGroupV2)
 	}
 
 	global.GVA_LOG.Info("router register success")

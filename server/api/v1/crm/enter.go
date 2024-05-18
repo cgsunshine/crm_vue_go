@@ -20,4 +20,12 @@ type ApiGroup struct {
 	CrmPurchaseOrderApi
 	CrmStatementAccountApi
 	CrmSupplierApi
+	CrmUserApi
+	CrmApprovalNodeApi
+	CrmApprovalProcessApi
+	CrmApprovalRecordApi
+	CrmApprovalTasksApi
+	CrmTicketCommentsApi
+	CrmTicketResponseTemplatesApi
+	CrmTicketsApi
 }

@@ -330,6 +330,7 @@ watch(() => tableData.value, () => {
   setAuthorityIds()
 })
 
+
 const initPage = async() => {
   getTableData()
   const res = await getAuthorityList({ page: 1, pageSize: 999 })

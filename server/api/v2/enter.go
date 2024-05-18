@@ -1,15 +1,11 @@
 package v2
 
 import (
-	"github.com/flipped-aurora/gin-vue-admin/server/api/v1/crm"
-	"github.com/flipped-aurora/gin-vue-admin/server/api/v1/example"
-	"github.com/flipped-aurora/gin-vue-admin/server/api/v1/system"
+	"github.com/flipped-aurora/gin-vue-admin/server/api/v2/system"
 )
 
 type ApiGroup struct {
-	SystemApiGroup  system.ApiGroup
-	ExampleApiGroup example.ApiGroup
-	CrmApiGroup     crm.ApiGroup
+	SystemApiGroup system.ApiGroup
 }
 
-var ApiGroupApp = new(ApiGroup)
+var ApiGroupAppv2 = new(ApiGroup)
