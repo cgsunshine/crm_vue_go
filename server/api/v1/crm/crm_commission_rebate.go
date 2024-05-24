@@ -16,13 +16,13 @@ type CrmCommissionRebateApi struct {
 var crmCommissionRebateService = service.ServiceGroupApp.CrmServiceGroup.CrmCommissionRebateService
 
 
-// CreateCrmCommissionRebate 创建返佣管理
+// CreateCrmCommissionRebate 创建crmCommissionRebate表
 // @Tags CrmCommissionRebate
-// @Summary 创建返佣管理
+// @Summary 创建crmCommissionRebate表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body crm.CrmCommissionRebate true "创建返佣管理"
+// @Param data body crm.CrmCommissionRebate true "创建crmCommissionRebate表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"创建成功"}"
 // @Router /crmCommissionRebate/createCrmCommissionRebate [post]
 func (crmCommissionRebateApi *CrmCommissionRebateApi) CreateCrmCommissionRebate(c *gin.Context) {
@@ -41,13 +41,13 @@ func (crmCommissionRebateApi *CrmCommissionRebateApi) CreateCrmCommissionRebate(
 	}
 }
 
-// DeleteCrmCommissionRebate 删除返佣管理
+// DeleteCrmCommissionRebate 删除crmCommissionRebate表
 // @Tags CrmCommissionRebate
-// @Summary 删除返佣管理
+// @Summary 删除crmCommissionRebate表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body crm.CrmCommissionRebate true "删除返佣管理"
+// @Param data body crm.CrmCommissionRebate true "删除crmCommissionRebate表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"删除成功"}"
 // @Router /crmCommissionRebate/deleteCrmCommissionRebate [delete]
 func (crmCommissionRebateApi *CrmCommissionRebateApi) DeleteCrmCommissionRebate(c *gin.Context) {
@@ -60,9 +60,9 @@ func (crmCommissionRebateApi *CrmCommissionRebateApi) DeleteCrmCommissionRebate(
 	}
 }
 
-// DeleteCrmCommissionRebateByIds 批量删除返佣管理
+// DeleteCrmCommissionRebateByIds 批量删除crmCommissionRebate表
 // @Tags CrmCommissionRebate
-// @Summary 批量删除返佣管理
+// @Summary 批量删除crmCommissionRebate表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
@@ -78,13 +78,13 @@ func (crmCommissionRebateApi *CrmCommissionRebateApi) DeleteCrmCommissionRebateB
 	}
 }
 
-// UpdateCrmCommissionRebate 更新返佣管理
+// UpdateCrmCommissionRebate 更新crmCommissionRebate表
 // @Tags CrmCommissionRebate
-// @Summary 更新返佣管理
+// @Summary 更新crmCommissionRebate表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body crm.CrmCommissionRebate true "更新返佣管理"
+// @Param data body crm.CrmCommissionRebate true "更新crmCommissionRebate表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"更新成功"}"
 // @Router /crmCommissionRebate/updateCrmCommissionRebate [put]
 func (crmCommissionRebateApi *CrmCommissionRebateApi) UpdateCrmCommissionRebate(c *gin.Context) {
@@ -103,13 +103,13 @@ func (crmCommissionRebateApi *CrmCommissionRebateApi) UpdateCrmCommissionRebate(
 	}
 }
 
-// FindCrmCommissionRebate 用id查询返佣管理
+// FindCrmCommissionRebate 用id查询crmCommissionRebate表
 // @Tags CrmCommissionRebate
-// @Summary 用id查询返佣管理
+// @Summary 用id查询crmCommissionRebate表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data query crm.CrmCommissionRebate true "用id查询返佣管理"
+// @Param data query crm.CrmCommissionRebate true "用id查询crmCommissionRebate表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"查询成功"}"
 // @Router /crmCommissionRebate/findCrmCommissionRebate [get]
 func (crmCommissionRebateApi *CrmCommissionRebateApi) FindCrmCommissionRebate(c *gin.Context) {
@@ -122,13 +122,13 @@ func (crmCommissionRebateApi *CrmCommissionRebateApi) FindCrmCommissionRebate(c 
 	}
 }
 
-// GetCrmCommissionRebateList 分页获取返佣管理列表
+// GetCrmCommissionRebateList 分页获取crmCommissionRebate表列表
 // @Tags CrmCommissionRebate
-// @Summary 分页获取返佣管理列表
+// @Summary 分页获取crmCommissionRebate表列表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data query crmReq.CrmCommissionRebateSearch true "分页获取返佣管理列表"
+// @Param data query crmReq.CrmCommissionRebateSearch true "分页获取crmCommissionRebate表列表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"获取成功"}"
 // @Router /crmCommissionRebate/getCrmCommissionRebateList [get]
 func (crmCommissionRebateApi *CrmCommissionRebateApi) GetCrmCommissionRebateList(c *gin.Context) {
@@ -151,18 +151,18 @@ func (crmCommissionRebateApi *CrmCommissionRebateApi) GetCrmCommissionRebateList
     }
 }
 
-// GetCrmCommissionRebatePublic 不需要鉴权的返佣管理接口
+// GetCrmCommissionRebatePublic 不需要鉴权的crmCommissionRebate表接口
 // @Tags CrmCommissionRebate
-// @Summary 不需要鉴权的返佣管理接口
+// @Summary 不需要鉴权的crmCommissionRebate表接口
 // @accept application/json
 // @Produce application/json
-// @Param data query crmReq.CrmCommissionRebateSearch true "分页获取返佣管理列表"
+// @Param data query crmReq.CrmCommissionRebateSearch true "分页获取crmCommissionRebate表列表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"获取成功"}"
 // @Router /crmCommissionRebate/getCrmCommissionRebateList [get]
 func (crmCommissionRebateApi *CrmCommissionRebateApi) GetCrmCommissionRebatePublic(c *gin.Context) {
     // 此接口不需要鉴权
     // 示例为返回了一个固定的消息接口，一般本接口用于C端服务，需要自己实现业务逻辑
     response.OkWithDetailed(gin.H{
-       "info": "不需要鉴权的返佣管理接口信息",
+       "info": "不需要鉴权的crmCommissionRebate表接口信息",
     }, "获取成功", c)
 }

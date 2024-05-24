@@ -2,17 +2,12 @@ package crm
 
 type RouterGroup struct {
 	CrmTestRouter
-	CrmCommissionRebateRouter
 	CrmContractTypeRouter
 	CrmLoginLogRouter
 	CrmOperationRecordsRouter
-	CrmPaymentRouter
 	CrmProcurementContractRouter
 	CrmProductGroupRouter
 	CrmProductTypeRouter
-	CrmPurchaseOrderRouter
-	CrmStatementAccountRouter
-	CrmSupplierRouter
 	CrmUserRouter
 	CrmApprovalNodeRouter
 	CrmApprovalProcessRouter
@@ -31,4 +26,9 @@ type RouterGroup struct {
 	CrmOrderRouter
 	CrmPaymentCollentionRouter
 	CrmPageCustomersRouter
+	CrmPaymentRouter
+	CrmPurchaseOrderRouter
+	CrmStatementAccountRouter
+	CrmSupplierRouter
+	CrmCommissionRebateRouter
 }

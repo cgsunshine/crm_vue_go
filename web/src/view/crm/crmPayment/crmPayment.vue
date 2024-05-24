@@ -16,6 +16,40 @@
       <el-date-picker v-model="searchInfo.endCreatedAt" type="datetime" placeholder="结束日期" :disabled-date="time=> searchInfo.startCreatedAt ? time.getTime() < searchInfo.startCreatedAt.getTime() : false"></el-date-picker>
       </el-form-item>
       
+        <el-form-item label="账单ID" prop="orderId">
+            
+             <el-input v-model.number="searchInfo.orderId" placeholder="搜索条件" />
+
+        </el-form-item>
+        <el-form-item label="付款金额" prop="paymentAmount">
+            
+             <el-input v-model.number="searchInfo.paymentAmount" placeholder="搜索条件" />
+
+        </el-form-item>
+        <el-form-item label="付款时间" prop="paymentTime">
+            
+            <template #label>
+            <span>
+              付款时间
+              <el-tooltip content="搜索范围是开始日期（包含）至结束日期（不包含）">
+                <el-icon><QuestionFilled /></el-icon>
+              </el-tooltip>
+            </span>
+          </template>
+            <el-date-picker v-model="searchInfo.startPaymentTime" type="datetime" placeholder="开始日期" :disabled-date="time=> searchInfo.endPaymentTime ? time.getTime() > searchInfo.endPaymentTime.getTime() : false"></el-date-picker>
+            —
+            <el-date-picker v-model="searchInfo.endPaymentTime" type="datetime" placeholder="结束日期" :disabled-date="time=> searchInfo.startPaymentTime ? time.getTime() < searchInfo.startPaymentTime.getTime() : false"></el-date-picker>
+
+        </el-form-item>
+        <el-form-item label="付款凭证" prop="paymentVoucher">
+         <el-input v-model="searchInfo.paymentVoucher" placeholder="搜索条件" />
+
+        </el-form-item>
+        <el-form-item label="销售ID" prop="userId">
+            
+             <el-input v-model.number="searchInfo.userId" placeholder="搜索条件" />
+
+        </el-form-item>
         <el-form-item>
           <el-button type="primary" icon="search" @click="onSubmit">查询</el-button>
           <el-button icon="refresh" @click="onReset">重置</el-button>
@@ -42,12 +76,12 @@
         </el-table-column>
         
         <el-table-column align="left" label="账单ID" prop="orderId" width="120" />
-        <el-table-column align="left" label="用户ID" prop="userId" width="120" />
         <el-table-column align="left" label="付款金额" prop="paymentAmount" width="120" />
          <el-table-column align="left" label="付款时间" width="180">
             <template #default="scope">{{ formatDate(scope.row.paymentTime) }}</template>
          </el-table-column>
         <el-table-column align="left" label="付款凭证" prop="paymentVoucher" width="120" />
+        <el-table-column align="left" label="销售ID" prop="userId" width="120" />
         <el-table-column align="left" label="操作" fixed="right" min-width="240">
             <template #default="scope">
             <el-button type="primary" link class="table-button" @click="getDetails(scope.row)">
@@ -86,9 +120,6 @@
             <el-form-item label="账单ID:"  prop="orderId" >
               <el-input v-model.number="formData.orderId" :clearable="true" placeholder="请输入账单ID" />
             </el-form-item>
-            <el-form-item label="用户ID:"  prop="userId" >
-              <el-input v-model.number="formData.userId" :clearable="true" placeholder="请输入用户ID" />
-            </el-form-item>
             <el-form-item label="付款金额:"  prop="paymentAmount" >
               <el-input-number v-model="formData.paymentAmount"  style="width:100%" :precision="2" :clearable="true"  />
             </el-form-item>
@@ -97,6 +128,9 @@
             </el-form-item>
             <el-form-item label="付款凭证:"  prop="paymentVoucher" >
               <el-input v-model="formData.paymentVoucher" :clearable="true"  placeholder="请输入付款凭证" />
+            </el-form-item>
+            <el-form-item label="销售ID:"  prop="userId" >
+              <el-input v-model.number="formData.userId" :clearable="true" placeholder="请输入销售ID" />
             </el-form-item>
           </el-form>
     </el-drawer>
@@ -111,9 +145,6 @@
                 <el-descriptions-item label="账单ID">
                         {{ formData.orderId }}
                 </el-descriptions-item>
-                <el-descriptions-item label="用户ID">
-                        {{ formData.userId }}
-                </el-descriptions-item>
                 <el-descriptions-item label="付款金额">
                         {{ formData.paymentAmount }}
                 </el-descriptions-item>
@@ -122,6 +153,9 @@
                 </el-descriptions-item>
                 <el-descriptions-item label="付款凭证">
                         {{ formData.paymentVoucher }}
+                </el-descriptions-item>
+                <el-descriptions-item label="销售ID">
+                        {{ formData.userId }}
                 </el-descriptions-item>
         </el-descriptions>
     </el-drawer>
@@ -150,10 +184,10 @@ defineOptions({
 // 自动化生成的字典（可能为空）以及字段
 const formData = ref({
         orderId: 0,
-        userId: 0,
         paymentAmount: 0,
         paymentTime: new Date(),
         paymentVoucher: '',
+        userId: 0,
         })
 
 
@@ -175,6 +209,17 @@ const searchRule = reactive({
       }
     }, trigger: 'change' }
   ],
+        paymentTime : [{ validator: (rule, value, callback) => {
+        if (searchInfo.value.startPaymentTime && !searchInfo.value.endPaymentTime) {
+          callback(new Error('请填写结束日期'))
+        } else if (!searchInfo.value.startPaymentTime && searchInfo.value.endPaymentTime) {
+          callback(new Error('请填写开始日期'))
+        } else if (searchInfo.value.startPaymentTime && searchInfo.value.endPaymentTime && (searchInfo.value.startPaymentTime.getTime() === searchInfo.value.endPaymentTime.getTime() || searchInfo.value.startPaymentTime.getTime() > searchInfo.value.endPaymentTime.getTime())) {
+          callback(new Error('开始日期应当早于结束日期'))
+        } else {
+          callback()
+        }
+      }, trigger: 'change' }],
 })
 
 const elFormRef = ref()
@@ -348,10 +393,10 @@ const closeDetailShow = () => {
   detailShow.value = false
   formData.value = {
           orderId: 0,
-          userId: 0,
           paymentAmount: 0,
           paymentTime: new Date(),
           paymentVoucher: '',
+          userId: 0,
           }
 }
 
@@ -367,10 +412,10 @@ const closeDialog = () => {
     dialogFormVisible.value = false
     formData.value = {
         orderId: 0,
-        userId: 0,
         paymentAmount: 0,
         paymentTime: new Date(),
         paymentVoucher: '',
+        userId: 0,
         }
 }
 // 弹窗确定

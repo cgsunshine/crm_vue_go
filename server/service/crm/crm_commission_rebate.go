@@ -9,42 +9,42 @@ import (
 type CrmCommissionRebateService struct {
 }
 
-// CreateCrmCommissionRebate 创建返佣管理记录
+// CreateCrmCommissionRebate 创建crmCommissionRebate表记录
 // Author [piexlmax](https://github.com/piexlmax)
 func (crmCommissionRebateService *CrmCommissionRebateService) CreateCrmCommissionRebate(crmCommissionRebate *crm.CrmCommissionRebate) (err error) {
 	err = global.GVA_DB.Create(crmCommissionRebate).Error
 	return err
 }
 
-// DeleteCrmCommissionRebate 删除返佣管理记录
+// DeleteCrmCommissionRebate 删除crmCommissionRebate表记录
 // Author [piexlmax](https://github.com/piexlmax)
 func (crmCommissionRebateService *CrmCommissionRebateService)DeleteCrmCommissionRebate(ID string) (err error) {
 	err = global.GVA_DB.Delete(&crm.CrmCommissionRebate{},"id = ?",ID).Error
 	return err
 }
 
-// DeleteCrmCommissionRebateByIds 批量删除返佣管理记录
+// DeleteCrmCommissionRebateByIds 批量删除crmCommissionRebate表记录
 // Author [piexlmax](https://github.com/piexlmax)
 func (crmCommissionRebateService *CrmCommissionRebateService)DeleteCrmCommissionRebateByIds(IDs []string) (err error) {
 	err = global.GVA_DB.Delete(&[]crm.CrmCommissionRebate{},"id in ?",IDs).Error
 	return err
 }
 
-// UpdateCrmCommissionRebate 更新返佣管理记录
+// UpdateCrmCommissionRebate 更新crmCommissionRebate表记录
 // Author [piexlmax](https://github.com/piexlmax)
 func (crmCommissionRebateService *CrmCommissionRebateService)UpdateCrmCommissionRebate(crmCommissionRebate crm.CrmCommissionRebate) (err error) {
 	err = global.GVA_DB.Save(&crmCommissionRebate).Error
 	return err
 }
 
-// GetCrmCommissionRebate 根据ID获取返佣管理记录
+// GetCrmCommissionRebate 根据ID获取crmCommissionRebate表记录
 // Author [piexlmax](https://github.com/piexlmax)
 func (crmCommissionRebateService *CrmCommissionRebateService)GetCrmCommissionRebate(ID string) (crmCommissionRebate crm.CrmCommissionRebate, err error) {
 	err = global.GVA_DB.Where("id = ?", ID).First(&crmCommissionRebate).Error
 	return
 }
 
-// GetCrmCommissionRebateInfoList 分页获取返佣管理记录
+// GetCrmCommissionRebateInfoList 分页获取crmCommissionRebate表记录
 // Author [piexlmax](https://github.com/piexlmax)
 func (crmCommissionRebateService *CrmCommissionRebateService)GetCrmCommissionRebateInfoList(info crmReq.CrmCommissionRebateSearch) (list []crm.CrmCommissionRebate, total int64, err error) {
 	limit := info.PageSize
@@ -55,6 +55,24 @@ func (crmCommissionRebateService *CrmCommissionRebateService)GetCrmCommissionReb
     // 如果有条件搜索 下方会自动创建搜索语句
     if info.StartCreatedAt !=nil && info.EndCreatedAt !=nil {
      db = db.Where("created_at BETWEEN ? AND ?", info.StartCreatedAt, info.EndCreatedAt)
+    }
+    if info.OrderId != nil {
+        db = db.Where("order_id = ?",info.OrderId)
+    }
+    if info.UserId != nil {
+        db = db.Where("user_id = ?",info.UserId)
+    }
+    if info.Payee != "" {
+        db = db.Where("payee LIKE ?","%"+ info.Payee+"%")
+    }
+    if info.PaymentMethod != "" {
+        db = db.Where("payment_method = ?",info.PaymentMethod)
+    }
+    if info.Account != "" {
+        db = db.Where("account = ?",info.Account)
+    }
+    if info.Amount != nil {
+        db = db.Where("amount = ?",info.Amount)
     }
 	err = db.Count(&total).Error
 	if err!=nil {

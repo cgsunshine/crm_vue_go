@@ -16,13 +16,13 @@ type CrmSupplierApi struct {
 var crmSupplierService = service.ServiceGroupApp.CrmServiceGroup.CrmSupplierService
 
 
-// CreateCrmSupplier 创建供应商管理
+// CreateCrmSupplier 创建crmSupplier表
 // @Tags CrmSupplier
-// @Summary 创建供应商管理
+// @Summary 创建crmSupplier表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body crm.CrmSupplier true "创建供应商管理"
+// @Param data body crm.CrmSupplier true "创建crmSupplier表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"创建成功"}"
 // @Router /crmSupplier/createCrmSupplier [post]
 func (crmSupplierApi *CrmSupplierApi) CreateCrmSupplier(c *gin.Context) {
@@ -41,13 +41,13 @@ func (crmSupplierApi *CrmSupplierApi) CreateCrmSupplier(c *gin.Context) {
 	}
 }
 
-// DeleteCrmSupplier 删除供应商管理
+// DeleteCrmSupplier 删除crmSupplier表
 // @Tags CrmSupplier
-// @Summary 删除供应商管理
+// @Summary 删除crmSupplier表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body crm.CrmSupplier true "删除供应商管理"
+// @Param data body crm.CrmSupplier true "删除crmSupplier表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"删除成功"}"
 // @Router /crmSupplier/deleteCrmSupplier [delete]
 func (crmSupplierApi *CrmSupplierApi) DeleteCrmSupplier(c *gin.Context) {
@@ -60,9 +60,9 @@ func (crmSupplierApi *CrmSupplierApi) DeleteCrmSupplier(c *gin.Context) {
 	}
 }
 
-// DeleteCrmSupplierByIds 批量删除供应商管理
+// DeleteCrmSupplierByIds 批量删除crmSupplier表
 // @Tags CrmSupplier
-// @Summary 批量删除供应商管理
+// @Summary 批量删除crmSupplier表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
@@ -78,13 +78,13 @@ func (crmSupplierApi *CrmSupplierApi) DeleteCrmSupplierByIds(c *gin.Context) {
 	}
 }
 
-// UpdateCrmSupplier 更新供应商管理
+// UpdateCrmSupplier 更新crmSupplier表
 // @Tags CrmSupplier
-// @Summary 更新供应商管理
+// @Summary 更新crmSupplier表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body crm.CrmSupplier true "更新供应商管理"
+// @Param data body crm.CrmSupplier true "更新crmSupplier表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"更新成功"}"
 // @Router /crmSupplier/updateCrmSupplier [put]
 func (crmSupplierApi *CrmSupplierApi) UpdateCrmSupplier(c *gin.Context) {
@@ -103,13 +103,13 @@ func (crmSupplierApi *CrmSupplierApi) UpdateCrmSupplier(c *gin.Context) {
 	}
 }
 
-// FindCrmSupplier 用id查询供应商管理
+// FindCrmSupplier 用id查询crmSupplier表
 // @Tags CrmSupplier
-// @Summary 用id查询供应商管理
+// @Summary 用id查询crmSupplier表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data query crm.CrmSupplier true "用id查询供应商管理"
+// @Param data query crm.CrmSupplier true "用id查询crmSupplier表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"查询成功"}"
 // @Router /crmSupplier/findCrmSupplier [get]
 func (crmSupplierApi *CrmSupplierApi) FindCrmSupplier(c *gin.Context) {
@@ -122,13 +122,13 @@ func (crmSupplierApi *CrmSupplierApi) FindCrmSupplier(c *gin.Context) {
 	}
 }
 
-// GetCrmSupplierList 分页获取供应商管理列表
+// GetCrmSupplierList 分页获取crmSupplier表列表
 // @Tags CrmSupplier
-// @Summary 分页获取供应商管理列表
+// @Summary 分页获取crmSupplier表列表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data query crmReq.CrmSupplierSearch true "分页获取供应商管理列表"
+// @Param data query crmReq.CrmSupplierSearch true "分页获取crmSupplier表列表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"获取成功"}"
 // @Router /crmSupplier/getCrmSupplierList [get]
 func (crmSupplierApi *CrmSupplierApi) GetCrmSupplierList(c *gin.Context) {
@@ -151,18 +151,18 @@ func (crmSupplierApi *CrmSupplierApi) GetCrmSupplierList(c *gin.Context) {
     }
 }
 
-// GetCrmSupplierPublic 不需要鉴权的供应商管理接口
+// GetCrmSupplierPublic 不需要鉴权的crmSupplier表接口
 // @Tags CrmSupplier
-// @Summary 不需要鉴权的供应商管理接口
+// @Summary 不需要鉴权的crmSupplier表接口
 // @accept application/json
 // @Produce application/json
-// @Param data query crmReq.CrmSupplierSearch true "分页获取供应商管理列表"
+// @Param data query crmReq.CrmSupplierSearch true "分页获取crmSupplier表列表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"获取成功"}"
 // @Router /crmSupplier/getCrmSupplierList [get]
 func (crmSupplierApi *CrmSupplierApi) GetCrmSupplierPublic(c *gin.Context) {
     // 此接口不需要鉴权
     // 示例为返回了一个固定的消息接口，一般本接口用于C端服务，需要自己实现业务逻辑
     response.OkWithDetailed(gin.H{
-       "info": "不需要鉴权的供应商管理接口信息",
+       "info": "不需要鉴权的crmSupplier表接口信息",
     }, "获取成功", c)
 }

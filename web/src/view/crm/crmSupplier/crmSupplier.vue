@@ -16,6 +16,42 @@
       <el-date-picker v-model="searchInfo.endCreatedAt" type="datetime" placeholder="结束日期" :disabled-date="time=> searchInfo.startCreatedAt ? time.getTime() < searchInfo.startCreatedAt.getTime() : false"></el-date-picker>
       </el-form-item>
       
+        <el-form-item label="公司名称" prop="commpanyName">
+         <el-input v-model="searchInfo.commpanyName" placeholder="搜索条件" />
+
+        </el-form-item>
+        <el-form-item label="联系人" prop="contactPerson">
+         <el-input v-model="searchInfo.contactPerson" placeholder="搜索条件" />
+
+        </el-form-item>
+        <el-form-item label="邮箱" prop="email">
+         <el-input v-model="searchInfo.email" placeholder="搜索条件" />
+
+        </el-form-item>
+        <el-form-item label="电话" prop="telephone">
+         <el-input v-model="searchInfo.telephone" placeholder="搜索条件" />
+
+        </el-form-item>
+        <el-form-item label="备注添加时间" prop="noteAddTime">
+            
+            <template #label>
+            <span>
+              备注添加时间
+              <el-tooltip content="搜索范围是开始日期（包含）至结束日期（不包含）">
+                <el-icon><QuestionFilled /></el-icon>
+              </el-tooltip>
+            </span>
+          </template>
+            <el-date-picker v-model="searchInfo.startNoteAddTime" type="datetime" placeholder="开始日期" :disabled-date="time=> searchInfo.endNoteAddTime ? time.getTime() > searchInfo.endNoteAddTime.getTime() : false"></el-date-picker>
+            —
+            <el-date-picker v-model="searchInfo.endNoteAddTime" type="datetime" placeholder="结束日期" :disabled-date="time=> searchInfo.startNoteAddTime ? time.getTime() < searchInfo.startNoteAddTime.getTime() : false"></el-date-picker>
+
+        </el-form-item>
+        <el-form-item label="负责人id" prop="userId">
+            
+             <el-input v-model.number="searchInfo.userId" placeholder="搜索条件" />
+
+        </el-form-item>
         <el-form-item>
           <el-button type="primary" icon="search" @click="onSubmit">查询</el-button>
           <el-button icon="refresh" @click="onReset">重置</el-button>
@@ -48,7 +84,7 @@
          <el-table-column align="left" label="备注添加时间" width="180">
             <template #default="scope">{{ formatDate(scope.row.noteAddTime) }}</template>
          </el-table-column>
-        <el-table-column align="left" label="负责人" prop="userId" width="120" />
+        <el-table-column align="left" label="负责人id" prop="userId" width="120" />
         <el-table-column align="left" label="操作" fixed="right" min-width="240">
             <template #default="scope">
             <el-button type="primary" link class="table-button" @click="getDetails(scope.row)">
@@ -99,8 +135,8 @@
             <el-form-item label="备注添加时间:"  prop="noteAddTime" >
               <el-date-picker v-model="formData.noteAddTime" type="date" style="width:100%" placeholder="选择日期" :clearable="true"  />
             </el-form-item>
-            <el-form-item label="负责人:"  prop="userId" >
-              <el-input v-model.number="formData.userId" :clearable="true" placeholder="请输入负责人" />
+            <el-form-item label="负责人id:"  prop="userId" >
+              <el-input v-model.number="formData.userId" :clearable="true" placeholder="请输入负责人id" />
             </el-form-item>
           </el-form>
     </el-drawer>
@@ -127,7 +163,7 @@
                 <el-descriptions-item label="备注添加时间">
                       {{ formatDate(formData.noteAddTime) }}
                 </el-descriptions-item>
-                <el-descriptions-item label="负责人">
+                <el-descriptions-item label="负责人id">
                         {{ formData.userId }}
                 </el-descriptions-item>
         </el-descriptions>
@@ -183,6 +219,17 @@ const searchRule = reactive({
       }
     }, trigger: 'change' }
   ],
+        noteAddTime : [{ validator: (rule, value, callback) => {
+        if (searchInfo.value.startNoteAddTime && !searchInfo.value.endNoteAddTime) {
+          callback(new Error('请填写结束日期'))
+        } else if (!searchInfo.value.startNoteAddTime && searchInfo.value.endNoteAddTime) {
+          callback(new Error('请填写开始日期'))
+        } else if (searchInfo.value.startNoteAddTime && searchInfo.value.endNoteAddTime && (searchInfo.value.startNoteAddTime.getTime() === searchInfo.value.endNoteAddTime.getTime() || searchInfo.value.startNoteAddTime.getTime() > searchInfo.value.endNoteAddTime.getTime())) {
+          callback(new Error('开始日期应当早于结束日期'))
+        } else {
+          callback()
+        }
+      }, trigger: 'change' }],
 })
 
 const elFormRef = ref()

@@ -1,11 +1,11 @@
 import service from '@/utils/request'
 
 // @Tags CrmStatementAccount
-// @Summary 创建对账单
+// @Summary 创建crmStatementAccount表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body model.CrmStatementAccount true "创建对账单"
+// @Param data body model.CrmStatementAccount true "创建crmStatementAccount表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"创建成功"}"
 // @Router /crmStatementAccount/createCrmStatementAccount [post]
 export const createCrmStatementAccount = (data) => {
@@ -17,11 +17,11 @@ export const createCrmStatementAccount = (data) => {
 }
 
 // @Tags CrmStatementAccount
-// @Summary 删除对账单
+// @Summary 删除crmStatementAccount表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body model.CrmStatementAccount true "删除对账单"
+// @Param data body model.CrmStatementAccount true "删除crmStatementAccount表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"删除成功"}"
 // @Router /crmStatementAccount/deleteCrmStatementAccount [delete]
 export const deleteCrmStatementAccount = (params) => {
@@ -33,11 +33,11 @@ export const deleteCrmStatementAccount = (params) => {
 }
 
 // @Tags CrmStatementAccount
-// @Summary 批量删除对账单
+// @Summary 批量删除crmStatementAccount表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body request.IdsReq true "批量删除对账单"
+// @Param data body request.IdsReq true "批量删除crmStatementAccount表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"删除成功"}"
 // @Router /crmStatementAccount/deleteCrmStatementAccount [delete]
 export const deleteCrmStatementAccountByIds = (params) => {
@@ -49,11 +49,11 @@ export const deleteCrmStatementAccountByIds = (params) => {
 }
 
 // @Tags CrmStatementAccount
-// @Summary 更新对账单
+// @Summary 更新crmStatementAccount表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body model.CrmStatementAccount true "更新对账单"
+// @Param data body model.CrmStatementAccount true "更新crmStatementAccount表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"更新成功"}"
 // @Router /crmStatementAccount/updateCrmStatementAccount [put]
 export const updateCrmStatementAccount = (data) => {
@@ -65,11 +65,11 @@ export const updateCrmStatementAccount = (data) => {
 }
 
 // @Tags CrmStatementAccount
-// @Summary 用id查询对账单
+// @Summary 用id查询crmStatementAccount表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data query model.CrmStatementAccount true "用id查询对账单"
+// @Param data query model.CrmStatementAccount true "用id查询crmStatementAccount表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"查询成功"}"
 // @Router /crmStatementAccount/findCrmStatementAccount [get]
 export const findCrmStatementAccount = (params) => {
@@ -81,11 +81,11 @@ export const findCrmStatementAccount = (params) => {
 }
 
 // @Tags CrmStatementAccount
-// @Summary 分页获取对账单列表
+// @Summary 分页获取crmStatementAccount表列表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data query request.PageInfo true "分页获取对账单列表"
+// @Param data query request.PageInfo true "分页获取crmStatementAccount表列表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"获取成功"}"
 // @Router /crmStatementAccount/getCrmStatementAccountList [get]
 export const getCrmStatementAccountList = (params) => {

@@ -9,7 +9,7 @@ import (
 type CrmPurchaseOrderRouter struct {
 }
 
-// InitCrmPurchaseOrderRouter 初始化 订购单 路由信息
+// InitCrmPurchaseOrderRouter 初始化 crmPurchaseOrder表 路由信息
 func (s *CrmPurchaseOrderRouter) InitCrmPurchaseOrderRouter(Router *gin.RouterGroup,PublicRouter *gin.RouterGroup) {
 	crmPurchaseOrderRouter := Router.Group("crmPurchaseOrder").Use(middleware.OperationRecord())
 	crmPurchaseOrderRouterWithoutRecord := Router.Group("crmPurchaseOrder")
@@ -17,16 +17,16 @@ func (s *CrmPurchaseOrderRouter) InitCrmPurchaseOrderRouter(Router *gin.RouterGr
 
 	var crmPurchaseOrderApi = v1.ApiGroupApp.CrmApiGroup.CrmPurchaseOrderApi
 	{
-		crmPurchaseOrderRouter.POST("createCrmPurchaseOrder", crmPurchaseOrderApi.CreateCrmPurchaseOrder)   // 新建订购单
-		crmPurchaseOrderRouter.DELETE("deleteCrmPurchaseOrder", crmPurchaseOrderApi.DeleteCrmPurchaseOrder) // 删除订购单
-		crmPurchaseOrderRouter.DELETE("deleteCrmPurchaseOrderByIds", crmPurchaseOrderApi.DeleteCrmPurchaseOrderByIds) // 批量删除订购单
-		crmPurchaseOrderRouter.PUT("updateCrmPurchaseOrder", crmPurchaseOrderApi.UpdateCrmPurchaseOrder)    // 更新订购单
+		crmPurchaseOrderRouter.POST("createCrmPurchaseOrder", crmPurchaseOrderApi.CreateCrmPurchaseOrder)   // 新建crmPurchaseOrder表
+		crmPurchaseOrderRouter.DELETE("deleteCrmPurchaseOrder", crmPurchaseOrderApi.DeleteCrmPurchaseOrder) // 删除crmPurchaseOrder表
+		crmPurchaseOrderRouter.DELETE("deleteCrmPurchaseOrderByIds", crmPurchaseOrderApi.DeleteCrmPurchaseOrderByIds) // 批量删除crmPurchaseOrder表
+		crmPurchaseOrderRouter.PUT("updateCrmPurchaseOrder", crmPurchaseOrderApi.UpdateCrmPurchaseOrder)    // 更新crmPurchaseOrder表
 	}
 	{
-		crmPurchaseOrderRouterWithoutRecord.GET("findCrmPurchaseOrder", crmPurchaseOrderApi.FindCrmPurchaseOrder)        // 根据ID获取订购单
-		crmPurchaseOrderRouterWithoutRecord.GET("getCrmPurchaseOrderList", crmPurchaseOrderApi.GetCrmPurchaseOrderList)  // 获取订购单列表
+		crmPurchaseOrderRouterWithoutRecord.GET("findCrmPurchaseOrder", crmPurchaseOrderApi.FindCrmPurchaseOrder)        // 根据ID获取crmPurchaseOrder表
+		crmPurchaseOrderRouterWithoutRecord.GET("getCrmPurchaseOrderList", crmPurchaseOrderApi.GetCrmPurchaseOrderList)  // 获取crmPurchaseOrder表列表
 	}
 	{
-	    crmPurchaseOrderRouterWithoutAuth.GET("getCrmPurchaseOrderPublic", crmPurchaseOrderApi.GetCrmPurchaseOrderPublic)  // 获取订购单列表
+	    crmPurchaseOrderRouterWithoutAuth.GET("getCrmPurchaseOrderPublic", crmPurchaseOrderApi.GetCrmPurchaseOrderPublic)  // 获取crmPurchaseOrder表列表
 	}
 }

@@ -16,6 +16,33 @@
       <el-date-picker v-model="searchInfo.endCreatedAt" type="datetime" placeholder="结束日期" :disabled-date="time=> searchInfo.startCreatedAt ? time.getTime() < searchInfo.startCreatedAt.getTime() : false"></el-date-picker>
       </el-form-item>
       
+        <el-form-item label="账单ID" prop="orderId">
+            
+             <el-input v-model.number="searchInfo.orderId" placeholder="搜索条件" />
+
+        </el-form-item>
+        <el-form-item label="销售ID 负责人" prop="userId">
+            
+             <el-input v-model.number="searchInfo.userId" placeholder="搜索条件" />
+
+        </el-form-item>
+        <el-form-item label="收款人" prop="payee">
+         <el-input v-model="searchInfo.payee" placeholder="搜索条件" />
+
+        </el-form-item>
+        <el-form-item label="收款方式" prop="paymentMethod">
+         <el-input v-model="searchInfo.paymentMethod" placeholder="搜索条件" />
+
+        </el-form-item>
+        <el-form-item label="账户" prop="account">
+         <el-input v-model="searchInfo.account" placeholder="搜索条件" />
+
+        </el-form-item>
+        <el-form-item label="金额" prop="amount">
+            
+             <el-input v-model.number="searchInfo.amount" placeholder="搜索条件" />
+
+        </el-form-item>
         <el-form-item>
           <el-button type="primary" icon="search" @click="onSubmit">查询</el-button>
           <el-button icon="refresh" @click="onReset">重置</el-button>
@@ -41,9 +68,8 @@
             <template #default="scope">{{ formatDate(scope.row.CreatedAt) }}</template>
         </el-table-column>
         
-        <el-table-column align="left" label="age字段" prop="age" width="120" />
         <el-table-column align="left" label="账单ID" prop="orderId" width="120" />
-        <el-table-column align="left" label="员工ID 负责人" prop="userId" width="120" />
+        <el-table-column align="left" label="销售ID 负责人" prop="userId" width="120" />
         <el-table-column align="left" label="收款人" prop="payee" width="120" />
         <el-table-column align="left" label="收款方式" prop="paymentMethod" width="120" />
         <el-table-column align="left" label="账户" prop="account" width="120" />
@@ -84,14 +110,11 @@
             </template>
 
           <el-form :model="formData" label-position="top" ref="elFormRef" :rules="rule" label-width="80px">
-            <el-form-item label="age字段:"  prop="age" >
-              <el-input v-model.number="formData.age" :clearable="true" placeholder="请输入age字段" />
-            </el-form-item>
             <el-form-item label="账单ID:"  prop="orderId" >
               <el-input v-model.number="formData.orderId" :clearable="true" placeholder="请输入账单ID" />
             </el-form-item>
-            <el-form-item label="员工ID 负责人:"  prop="userId" >
-              <el-input v-model.number="formData.userId" :clearable="true" placeholder="请输入员工ID 负责人" />
+            <el-form-item label="销售ID 负责人:"  prop="userId" >
+              <el-input v-model.number="formData.userId" :clearable="true" placeholder="请输入销售ID 负责人" />
             </el-form-item>
             <el-form-item label="收款人:"  prop="payee" >
               <el-input v-model="formData.payee" :clearable="true"  placeholder="请输入收款人" />
@@ -118,13 +141,10 @@
              </div>
          </template>
         <el-descriptions :column="1" border>
-                <el-descriptions-item label="age字段">
-                        {{ formData.age }}
-                </el-descriptions-item>
                 <el-descriptions-item label="账单ID">
                         {{ formData.orderId }}
                 </el-descriptions-item>
-                <el-descriptions-item label="员工ID 负责人">
+                <el-descriptions-item label="销售ID 负责人">
                         {{ formData.userId }}
                 </el-descriptions-item>
                 <el-descriptions-item label="收款人">
@@ -168,7 +188,6 @@ defineOptions({
 
 // 自动化生成的字典（可能为空）以及字段
 const formData = ref({
-        age: 0,
         orderId: 0,
         userId: 0,
         payee: '',
@@ -369,7 +388,6 @@ const getDetails = async (row) => {
 const closeDetailShow = () => {
   detailShow.value = false
   formData.value = {
-          age: 0,
           orderId: 0,
           userId: 0,
           payee: '',
@@ -391,7 +409,6 @@ const openDialog = () => {
 const closeDialog = () => {
     dialogFormVisible.value = false
     formData.value = {
-        age: 0,
         orderId: 0,
         userId: 0,
         payee: '',

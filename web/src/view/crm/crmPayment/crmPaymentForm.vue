@@ -5,9 +5,6 @@
         <el-form-item label="账单ID:" prop="orderId">
           <el-input v-model.number="formData.orderId" :clearable="true" placeholder="请输入" />
        </el-form-item>
-        <el-form-item label="用户ID:" prop="userId">
-          <el-input v-model.number="formData.userId" :clearable="true" placeholder="请输入" />
-       </el-form-item>
         <el-form-item label="付款金额:" prop="paymentAmount">
           <el-input-number v-model="formData.paymentAmount" :precision="2" :clearable="true"></el-input-number>
        </el-form-item>
@@ -16,6 +13,9 @@
        </el-form-item>
         <el-form-item label="付款凭证:" prop="paymentVoucher">
           <el-input v-model="formData.paymentVoucher" :clearable="true"  placeholder="请输入付款凭证" />
+       </el-form-item>
+        <el-form-item label="销售ID:" prop="userId">
+          <el-input v-model.number="formData.userId" :clearable="true" placeholder="请输入" />
        </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="save">保存</el-button>
@@ -49,10 +49,10 @@ const router = useRouter()
 const type = ref('')
 const formData = ref({
             orderId: 0,
-            userId: 0,
             paymentAmount: 0,
             paymentTime: new Date(),
             paymentVoucher: '',
+            userId: 0,
         })
 // 验证规则
 const rule = reactive({

@@ -9,7 +9,7 @@ import (
 type CrmStatementAccountRouter struct {
 }
 
-// InitCrmStatementAccountRouter 初始化 对账单 路由信息
+// InitCrmStatementAccountRouter 初始化 crmStatementAccount表 路由信息
 func (s *CrmStatementAccountRouter) InitCrmStatementAccountRouter(Router *gin.RouterGroup,PublicRouter *gin.RouterGroup) {
 	crmStatementAccountRouter := Router.Group("crmStatementAccount").Use(middleware.OperationRecord())
 	crmStatementAccountRouterWithoutRecord := Router.Group("crmStatementAccount")
@@ -17,16 +17,16 @@ func (s *CrmStatementAccountRouter) InitCrmStatementAccountRouter(Router *gin.Ro
 
 	var crmStatementAccountApi = v1.ApiGroupApp.CrmApiGroup.CrmStatementAccountApi
 	{
-		crmStatementAccountRouter.POST("createCrmStatementAccount", crmStatementAccountApi.CreateCrmStatementAccount)   // 新建对账单
-		crmStatementAccountRouter.DELETE("deleteCrmStatementAccount", crmStatementAccountApi.DeleteCrmStatementAccount) // 删除对账单
-		crmStatementAccountRouter.DELETE("deleteCrmStatementAccountByIds", crmStatementAccountApi.DeleteCrmStatementAccountByIds) // 批量删除对账单
-		crmStatementAccountRouter.PUT("updateCrmStatementAccount", crmStatementAccountApi.UpdateCrmStatementAccount)    // 更新对账单
+		crmStatementAccountRouter.POST("createCrmStatementAccount", crmStatementAccountApi.CreateCrmStatementAccount)   // 新建crmStatementAccount表
+		crmStatementAccountRouter.DELETE("deleteCrmStatementAccount", crmStatementAccountApi.DeleteCrmStatementAccount) // 删除crmStatementAccount表
+		crmStatementAccountRouter.DELETE("deleteCrmStatementAccountByIds", crmStatementAccountApi.DeleteCrmStatementAccountByIds) // 批量删除crmStatementAccount表
+		crmStatementAccountRouter.PUT("updateCrmStatementAccount", crmStatementAccountApi.UpdateCrmStatementAccount)    // 更新crmStatementAccount表
 	}
 	{
-		crmStatementAccountRouterWithoutRecord.GET("findCrmStatementAccount", crmStatementAccountApi.FindCrmStatementAccount)        // 根据ID获取对账单
-		crmStatementAccountRouterWithoutRecord.GET("getCrmStatementAccountList", crmStatementAccountApi.GetCrmStatementAccountList)  // 获取对账单列表
+		crmStatementAccountRouterWithoutRecord.GET("findCrmStatementAccount", crmStatementAccountApi.FindCrmStatementAccount)        // 根据ID获取crmStatementAccount表
+		crmStatementAccountRouterWithoutRecord.GET("getCrmStatementAccountList", crmStatementAccountApi.GetCrmStatementAccountList)  // 获取crmStatementAccount表列表
 	}
 	{
-	    crmStatementAccountRouterWithoutAuth.GET("getCrmStatementAccountPublic", crmStatementAccountApi.GetCrmStatementAccountPublic)  // 获取对账单列表
+	    crmStatementAccountRouterWithoutAuth.GET("getCrmStatementAccountPublic", crmStatementAccountApi.GetCrmStatementAccountPublic)  // 获取crmStatementAccount表列表
 	}
 }

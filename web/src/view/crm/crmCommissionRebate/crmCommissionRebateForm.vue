@@ -2,13 +2,10 @@
   <div>
     <div class="gva-form-box">
       <el-form :model="formData" ref="elFormRef" label-position="right" :rules="rule" label-width="80px">
-        <el-form-item label="age字段:" prop="age">
-          <el-input v-model.number="formData.age" :clearable="true" placeholder="请输入" />
-       </el-form-item>
         <el-form-item label="账单ID:" prop="orderId">
           <el-input v-model.number="formData.orderId" :clearable="true" placeholder="请输入" />
        </el-form-item>
-        <el-form-item label="员工ID 负责人:" prop="userId">
+        <el-form-item label="销售ID 负责人:" prop="userId">
           <el-input v-model.number="formData.userId" :clearable="true" placeholder="请输入" />
        </el-form-item>
         <el-form-item label="收款人:" prop="payee">
@@ -57,7 +54,6 @@ const router = useRouter()
 
 const type = ref('')
 const formData = ref({
-            age: 0,
             orderId: 0,
             userId: 0,
             payee: '',

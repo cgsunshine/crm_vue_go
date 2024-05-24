@@ -2,17 +2,12 @@ package crm
 
 type ApiGroup struct {
 	CrmTestApi
-	CrmCommissionRebateApi
 	CrmContractTypeApi
 	CrmLoginLogApi
 	CrmOperationRecordsApi
-	CrmPaymentApi
 	CrmProcurementContractApi
 	CrmProductGroupApi
 	CrmProductTypeApi
-	CrmPurchaseOrderApi
-	CrmStatementAccountApi
-	CrmSupplierApi
 	CrmUserApi
 	CrmApprovalNodeApi
 	CrmApprovalProcessApi
@@ -30,4 +25,9 @@ type ApiGroup struct {
 	CrmContractApi
 	CrmOrderApi
 	CrmPaymentCollentionApi
+	CrmPaymentApi
+	CrmPurchaseOrderApi
+	CrmStatementAccountApi
+	CrmSupplierApi
+	CrmCommissionRebateApi
 }

@@ -16,13 +16,13 @@ type CrmPaymentApi struct {
 var crmPaymentService = service.ServiceGroupApp.CrmServiceGroup.CrmPaymentService
 
 
-// CreateCrmPayment 创建付款管理
+// CreateCrmPayment 创建crmPayment表
 // @Tags CrmPayment
-// @Summary 创建付款管理
+// @Summary 创建crmPayment表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body crm.CrmPayment true "创建付款管理"
+// @Param data body crm.CrmPayment true "创建crmPayment表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"创建成功"}"
 // @Router /crmPayment/createCrmPayment [post]
 func (crmPaymentApi *CrmPaymentApi) CreateCrmPayment(c *gin.Context) {
@@ -41,13 +41,13 @@ func (crmPaymentApi *CrmPaymentApi) CreateCrmPayment(c *gin.Context) {
 	}
 }
 
-// DeleteCrmPayment 删除付款管理
+// DeleteCrmPayment 删除crmPayment表
 // @Tags CrmPayment
-// @Summary 删除付款管理
+// @Summary 删除crmPayment表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body crm.CrmPayment true "删除付款管理"
+// @Param data body crm.CrmPayment true "删除crmPayment表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"删除成功"}"
 // @Router /crmPayment/deleteCrmPayment [delete]
 func (crmPaymentApi *CrmPaymentApi) DeleteCrmPayment(c *gin.Context) {
@@ -60,9 +60,9 @@ func (crmPaymentApi *CrmPaymentApi) DeleteCrmPayment(c *gin.Context) {
 	}
 }
 
-// DeleteCrmPaymentByIds 批量删除付款管理
+// DeleteCrmPaymentByIds 批量删除crmPayment表
 // @Tags CrmPayment
-// @Summary 批量删除付款管理
+// @Summary 批量删除crmPayment表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
@@ -78,13 +78,13 @@ func (crmPaymentApi *CrmPaymentApi) DeleteCrmPaymentByIds(c *gin.Context) {
 	}
 }
 
-// UpdateCrmPayment 更新付款管理
+// UpdateCrmPayment 更新crmPayment表
 // @Tags CrmPayment
-// @Summary 更新付款管理
+// @Summary 更新crmPayment表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body crm.CrmPayment true "更新付款管理"
+// @Param data body crm.CrmPayment true "更新crmPayment表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"更新成功"}"
 // @Router /crmPayment/updateCrmPayment [put]
 func (crmPaymentApi *CrmPaymentApi) UpdateCrmPayment(c *gin.Context) {
@@ -103,13 +103,13 @@ func (crmPaymentApi *CrmPaymentApi) UpdateCrmPayment(c *gin.Context) {
 	}
 }
 
-// FindCrmPayment 用id查询付款管理
+// FindCrmPayment 用id查询crmPayment表
 // @Tags CrmPayment
-// @Summary 用id查询付款管理
+// @Summary 用id查询crmPayment表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data query crm.CrmPayment true "用id查询付款管理"
+// @Param data query crm.CrmPayment true "用id查询crmPayment表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"查询成功"}"
 // @Router /crmPayment/findCrmPayment [get]
 func (crmPaymentApi *CrmPaymentApi) FindCrmPayment(c *gin.Context) {
@@ -122,13 +122,13 @@ func (crmPaymentApi *CrmPaymentApi) FindCrmPayment(c *gin.Context) {
 	}
 }
 
-// GetCrmPaymentList 分页获取付款管理列表
+// GetCrmPaymentList 分页获取crmPayment表列表
 // @Tags CrmPayment
-// @Summary 分页获取付款管理列表
+// @Summary 分页获取crmPayment表列表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data query crmReq.CrmPaymentSearch true "分页获取付款管理列表"
+// @Param data query crmReq.CrmPaymentSearch true "分页获取crmPayment表列表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"获取成功"}"
 // @Router /crmPayment/getCrmPaymentList [get]
 func (crmPaymentApi *CrmPaymentApi) GetCrmPaymentList(c *gin.Context) {
@@ -151,18 +151,18 @@ func (crmPaymentApi *CrmPaymentApi) GetCrmPaymentList(c *gin.Context) {
     }
 }
 
-// GetCrmPaymentPublic 不需要鉴权的付款管理接口
+// GetCrmPaymentPublic 不需要鉴权的crmPayment表接口
 // @Tags CrmPayment
-// @Summary 不需要鉴权的付款管理接口
+// @Summary 不需要鉴权的crmPayment表接口
 // @accept application/json
 // @Produce application/json
-// @Param data query crmReq.CrmPaymentSearch true "分页获取付款管理列表"
+// @Param data query crmReq.CrmPaymentSearch true "分页获取crmPayment表列表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"获取成功"}"
 // @Router /crmPayment/getCrmPaymentList [get]
 func (crmPaymentApi *CrmPaymentApi) GetCrmPaymentPublic(c *gin.Context) {
     // 此接口不需要鉴权
     // 示例为返回了一个固定的消息接口，一般本接口用于C端服务，需要自己实现业务逻辑
     response.OkWithDetailed(gin.H{
-       "info": "不需要鉴权的付款管理接口信息",
+       "info": "不需要鉴权的crmPayment表接口信息",
     }, "获取成功", c)
 }

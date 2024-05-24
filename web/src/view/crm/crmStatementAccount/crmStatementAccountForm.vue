@@ -18,7 +18,9 @@
           <el-date-picker v-model="formData.payableTime" type="date" placeholder="选择日期" :clearable="true"></el-date-picker>
        </el-form-item>
         <el-form-item label="付款状态:" prop="paymentStatus">
-          <el-input v-model="formData.paymentStatus" :clearable="true"  placeholder="请输入付款状态" />
+           <el-select v-model="formData.paymentStatus" placeholder="请选择付款状态" style="width:100%" :clearable="true" >
+              <el-option v-for="(item,key) in payment_statusOptions" :key="key" :label="item.label" :value="item.value" />
+           </el-select>
        </el-form-item>
         <el-form-item label="负责人:" prop="userId">
           <el-input v-model.number="formData.userId" :clearable="true" placeholder="请输入" />
@@ -53,6 +55,7 @@ const route = useRoute()
 const router = useRouter()
 
 const type = ref('')
+const payment_statusOptions = ref([])
 const formData = ref({
             purchaseOrderId: 0,
             amount: 0,
@@ -80,6 +83,7 @@ const init = async () => {
     } else {
       type.value = 'create'
     }
+    payment_statusOptions.value = await getDictFunc('payment_status')
 }
 
 init()

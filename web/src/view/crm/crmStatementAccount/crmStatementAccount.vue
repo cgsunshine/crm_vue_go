@@ -16,6 +16,56 @@
       <el-date-picker v-model="searchInfo.endCreatedAt" type="datetime" placeholder="结束日期" :disabled-date="time=> searchInfo.startCreatedAt ? time.getTime() < searchInfo.startCreatedAt.getTime() : false"></el-date-picker>
       </el-form-item>
       
+        <el-form-item label="订购单ID" prop="purchaseOrderId">
+            
+             <el-input v-model.number="searchInfo.purchaseOrderId" placeholder="搜索条件" />
+
+        </el-form-item>
+        <el-form-item label="金额" prop="amount">
+            
+             <el-input v-model.number="searchInfo.amount" placeholder="搜索条件" />
+
+        </el-form-item>
+        <el-form-item label="创建时间" prop="creationTime">
+            
+            <template #label>
+            <span>
+              创建时间
+              <el-tooltip content="搜索范围是开始日期（包含）至结束日期（不包含）">
+                <el-icon><QuestionFilled /></el-icon>
+              </el-tooltip>
+            </span>
+          </template>
+            <el-date-picker v-model="searchInfo.startCreationTime" type="datetime" placeholder="开始日期" :disabled-date="time=> searchInfo.endCreationTime ? time.getTime() > searchInfo.endCreationTime.getTime() : false"></el-date-picker>
+            —
+            <el-date-picker v-model="searchInfo.endCreationTime" type="datetime" placeholder="结束日期" :disabled-date="time=> searchInfo.startCreationTime ? time.getTime() < searchInfo.startCreationTime.getTime() : false"></el-date-picker>
+
+        </el-form-item>
+        <el-form-item label="应付时间" prop="payableTime">
+            
+            <template #label>
+            <span>
+              应付时间
+              <el-tooltip content="搜索范围是开始日期（包含）至结束日期（不包含）">
+                <el-icon><QuestionFilled /></el-icon>
+              </el-tooltip>
+            </span>
+          </template>
+            <el-date-picker v-model="searchInfo.startPayableTime" type="datetime" placeholder="开始日期" :disabled-date="time=> searchInfo.endPayableTime ? time.getTime() > searchInfo.endPayableTime.getTime() : false"></el-date-picker>
+            —
+            <el-date-picker v-model="searchInfo.endPayableTime" type="datetime" placeholder="结束日期" :disabled-date="time=> searchInfo.startPayableTime ? time.getTime() < searchInfo.startPayableTime.getTime() : false"></el-date-picker>
+
+        </el-form-item>
+           <el-form-item label="付款状态" prop="paymentStatus">
+            <el-select v-model="searchInfo.paymentStatus" clearable placeholder="请选择" @clear="()=>{searchInfo.paymentStatus=undefined}">
+              <el-option v-for="(item,key) in payment_statusOptions" :key="key" :label="item.label" :value="item.value" />
+            </el-select>
+            </el-form-item>
+        <el-form-item label="负责人" prop="userId">
+            
+             <el-input v-model.number="searchInfo.userId" placeholder="搜索条件" />
+
+        </el-form-item>
         <el-form-item>
           <el-button type="primary" icon="search" @click="onSubmit">查询</el-button>
           <el-button icon="refresh" @click="onReset">重置</el-button>
@@ -50,7 +100,11 @@
          <el-table-column align="left" label="应付时间" width="180">
             <template #default="scope">{{ formatDate(scope.row.payableTime) }}</template>
          </el-table-column>
-        <el-table-column align="left" label="付款状态" prop="paymentStatus" width="120" />
+        <el-table-column align="left" label="付款状态" prop="paymentStatus" width="120">
+            <template #default="scope">
+            {{ filterDict(scope.row.paymentStatus,payment_statusOptions) }}
+            </template>
+        </el-table-column>
         <el-table-column align="left" label="负责人" prop="userId" width="120" />
         <el-table-column align="left" label="操作" fixed="right" min-width="240">
             <template #default="scope">
@@ -103,7 +157,9 @@
               <el-date-picker v-model="formData.payableTime" type="date" style="width:100%" placeholder="选择日期" :clearable="true"  />
             </el-form-item>
             <el-form-item label="付款状态:"  prop="paymentStatus" >
-              <el-input v-model="formData.paymentStatus" :clearable="true"  placeholder="请输入付款状态" />
+              <el-select v-model="formData.paymentStatus" placeholder="请选择付款状态" style="width:100%" :clearable="true" >
+                <el-option v-for="(item,key) in payment_statusOptions" :key="key" :label="item.label" :value="item.value" />
+              </el-select>
             </el-form-item>
             <el-form-item label="负责人:"  prop="userId" >
               <el-input v-model.number="formData.userId" :clearable="true" placeholder="请输入负责人" />
@@ -134,7 +190,7 @@
                       {{ formatDate(formData.payableTime) }}
                 </el-descriptions-item>
                 <el-descriptions-item label="付款状态">
-                        {{ formData.paymentStatus }}
+                        {{ filterDict(formData.paymentStatus,payment_statusOptions) }}
                 </el-descriptions-item>
                 <el-descriptions-item label="负责人">
                         {{ formData.userId }}
@@ -164,6 +220,7 @@ defineOptions({
 })
 
 // 自动化生成的字典（可能为空）以及字段
+const payment_statusOptions = ref([])
 const formData = ref({
         purchaseOrderId: 0,
         amount: 0,
@@ -193,6 +250,28 @@ const searchRule = reactive({
       }
     }, trigger: 'change' }
   ],
+        creationTime : [{ validator: (rule, value, callback) => {
+        if (searchInfo.value.startCreationTime && !searchInfo.value.endCreationTime) {
+          callback(new Error('请填写结束日期'))
+        } else if (!searchInfo.value.startCreationTime && searchInfo.value.endCreationTime) {
+          callback(new Error('请填写开始日期'))
+        } else if (searchInfo.value.startCreationTime && searchInfo.value.endCreationTime && (searchInfo.value.startCreationTime.getTime() === searchInfo.value.endCreationTime.getTime() || searchInfo.value.startCreationTime.getTime() > searchInfo.value.endCreationTime.getTime())) {
+          callback(new Error('开始日期应当早于结束日期'))
+        } else {
+          callback()
+        }
+      }, trigger: 'change' }],
+        payableTime : [{ validator: (rule, value, callback) => {
+        if (searchInfo.value.startPayableTime && !searchInfo.value.endPayableTime) {
+          callback(new Error('请填写结束日期'))
+        } else if (!searchInfo.value.startPayableTime && searchInfo.value.endPayableTime) {
+          callback(new Error('请填写开始日期'))
+        } else if (searchInfo.value.startPayableTime && searchInfo.value.endPayableTime && (searchInfo.value.startPayableTime.getTime() === searchInfo.value.endPayableTime.getTime() || searchInfo.value.startPayableTime.getTime() > searchInfo.value.endPayableTime.getTime())) {
+          callback(new Error('开始日期应当早于结束日期'))
+        } else {
+          callback()
+        }
+      }, trigger: 'change' }],
 })
 
 const elFormRef = ref()
@@ -250,6 +329,7 @@ getTableData()
 
 // 获取需要的字典 可能为空 按需保留
 const setOptions = async () =>{
+    payment_statusOptions.value = await getDictFunc('payment_status')
 }
 
 // 获取需要的字典 可能为空 按需保留

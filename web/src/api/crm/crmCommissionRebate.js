@@ -1,11 +1,11 @@
 import service from '@/utils/request'
 
 // @Tags CrmCommissionRebate
-// @Summary 创建返佣管理
+// @Summary 创建crmCommissionRebate表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body model.CrmCommissionRebate true "创建返佣管理"
+// @Param data body model.CrmCommissionRebate true "创建crmCommissionRebate表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"创建成功"}"
 // @Router /crmCommissionRebate/createCrmCommissionRebate [post]
 export const createCrmCommissionRebate = (data) => {
@@ -17,11 +17,11 @@ export const createCrmCommissionRebate = (data) => {
 }
 
 // @Tags CrmCommissionRebate
-// @Summary 删除返佣管理
+// @Summary 删除crmCommissionRebate表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body model.CrmCommissionRebate true "删除返佣管理"
+// @Param data body model.CrmCommissionRebate true "删除crmCommissionRebate表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"删除成功"}"
 // @Router /crmCommissionRebate/deleteCrmCommissionRebate [delete]
 export const deleteCrmCommissionRebate = (params) => {
@@ -33,11 +33,11 @@ export const deleteCrmCommissionRebate = (params) => {
 }
 
 // @Tags CrmCommissionRebate
-// @Summary 批量删除返佣管理
+// @Summary 批量删除crmCommissionRebate表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body request.IdsReq true "批量删除返佣管理"
+// @Param data body request.IdsReq true "批量删除crmCommissionRebate表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"删除成功"}"
 // @Router /crmCommissionRebate/deleteCrmCommissionRebate [delete]
 export const deleteCrmCommissionRebateByIds = (params) => {
@@ -49,11 +49,11 @@ export const deleteCrmCommissionRebateByIds = (params) => {
 }
 
 // @Tags CrmCommissionRebate
-// @Summary 更新返佣管理
+// @Summary 更新crmCommissionRebate表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body model.CrmCommissionRebate true "更新返佣管理"
+// @Param data body model.CrmCommissionRebate true "更新crmCommissionRebate表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"更新成功"}"
 // @Router /crmCommissionRebate/updateCrmCommissionRebate [put]
 export const updateCrmCommissionRebate = (data) => {
@@ -65,11 +65,11 @@ export const updateCrmCommissionRebate = (data) => {
 }
 
 // @Tags CrmCommissionRebate
-// @Summary 用id查询返佣管理
+// @Summary 用id查询crmCommissionRebate表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data query model.CrmCommissionRebate true "用id查询返佣管理"
+// @Param data query model.CrmCommissionRebate true "用id查询crmCommissionRebate表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"查询成功"}"
 // @Router /crmCommissionRebate/findCrmCommissionRebate [get]
 export const findCrmCommissionRebate = (params) => {
@@ -81,11 +81,11 @@ export const findCrmCommissionRebate = (params) => {
 }
 
 // @Tags CrmCommissionRebate
-// @Summary 分页获取返佣管理列表
+// @Summary 分页获取crmCommissionRebate表列表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data query request.PageInfo true "分页获取返佣管理列表"
+// @Param data query request.PageInfo true "分页获取crmCommissionRebate表列表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"获取成功"}"
 // @Router /crmCommissionRebate/getCrmCommissionRebateList [get]
 export const getCrmCommissionRebateList = (params) => {

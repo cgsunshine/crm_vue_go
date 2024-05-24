@@ -16,13 +16,13 @@ type CrmStatementAccountApi struct {
 var crmStatementAccountService = service.ServiceGroupApp.CrmServiceGroup.CrmStatementAccountService
 
 
-// CreateCrmStatementAccount 创建对账单
+// CreateCrmStatementAccount 创建crmStatementAccount表
 // @Tags CrmStatementAccount
-// @Summary 创建对账单
+// @Summary 创建crmStatementAccount表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body crm.CrmStatementAccount true "创建对账单"
+// @Param data body crm.CrmStatementAccount true "创建crmStatementAccount表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"创建成功"}"
 // @Router /crmStatementAccount/createCrmStatementAccount [post]
 func (crmStatementAccountApi *CrmStatementAccountApi) CreateCrmStatementAccount(c *gin.Context) {
@@ -41,13 +41,13 @@ func (crmStatementAccountApi *CrmStatementAccountApi) CreateCrmStatementAccount(
 	}
 }
 
-// DeleteCrmStatementAccount 删除对账单
+// DeleteCrmStatementAccount 删除crmStatementAccount表
 // @Tags CrmStatementAccount
-// @Summary 删除对账单
+// @Summary 删除crmStatementAccount表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body crm.CrmStatementAccount true "删除对账单"
+// @Param data body crm.CrmStatementAccount true "删除crmStatementAccount表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"删除成功"}"
 // @Router /crmStatementAccount/deleteCrmStatementAccount [delete]
 func (crmStatementAccountApi *CrmStatementAccountApi) DeleteCrmStatementAccount(c *gin.Context) {
@@ -60,9 +60,9 @@ func (crmStatementAccountApi *CrmStatementAccountApi) DeleteCrmStatementAccount(
 	}
 }
 
-// DeleteCrmStatementAccountByIds 批量删除对账单
+// DeleteCrmStatementAccountByIds 批量删除crmStatementAccount表
 // @Tags CrmStatementAccount
-// @Summary 批量删除对账单
+// @Summary 批量删除crmStatementAccount表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
@@ -78,13 +78,13 @@ func (crmStatementAccountApi *CrmStatementAccountApi) DeleteCrmStatementAccountB
 	}
 }
 
-// UpdateCrmStatementAccount 更新对账单
+// UpdateCrmStatementAccount 更新crmStatementAccount表
 // @Tags CrmStatementAccount
-// @Summary 更新对账单
+// @Summary 更新crmStatementAccount表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body crm.CrmStatementAccount true "更新对账单"
+// @Param data body crm.CrmStatementAccount true "更新crmStatementAccount表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"更新成功"}"
 // @Router /crmStatementAccount/updateCrmStatementAccount [put]
 func (crmStatementAccountApi *CrmStatementAccountApi) UpdateCrmStatementAccount(c *gin.Context) {
@@ -103,13 +103,13 @@ func (crmStatementAccountApi *CrmStatementAccountApi) UpdateCrmStatementAccount(
 	}
 }
 
-// FindCrmStatementAccount 用id查询对账单
+// FindCrmStatementAccount 用id查询crmStatementAccount表
 // @Tags CrmStatementAccount
-// @Summary 用id查询对账单
+// @Summary 用id查询crmStatementAccount表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data query crm.CrmStatementAccount true "用id查询对账单"
+// @Param data query crm.CrmStatementAccount true "用id查询crmStatementAccount表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"查询成功"}"
 // @Router /crmStatementAccount/findCrmStatementAccount [get]
 func (crmStatementAccountApi *CrmStatementAccountApi) FindCrmStatementAccount(c *gin.Context) {
@@ -122,13 +122,13 @@ func (crmStatementAccountApi *CrmStatementAccountApi) FindCrmStatementAccount(c 
 	}
 }
 
-// GetCrmStatementAccountList 分页获取对账单列表
+// GetCrmStatementAccountList 分页获取crmStatementAccount表列表
 // @Tags CrmStatementAccount
-// @Summary 分页获取对账单列表
+// @Summary 分页获取crmStatementAccount表列表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data query crmReq.CrmStatementAccountSearch true "分页获取对账单列表"
+// @Param data query crmReq.CrmStatementAccountSearch true "分页获取crmStatementAccount表列表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"获取成功"}"
 // @Router /crmStatementAccount/getCrmStatementAccountList [get]
 func (crmStatementAccountApi *CrmStatementAccountApi) GetCrmStatementAccountList(c *gin.Context) {
@@ -151,18 +151,18 @@ func (crmStatementAccountApi *CrmStatementAccountApi) GetCrmStatementAccountList
     }
 }
 
-// GetCrmStatementAccountPublic 不需要鉴权的对账单接口
+// GetCrmStatementAccountPublic 不需要鉴权的crmStatementAccount表接口
 // @Tags CrmStatementAccount
-// @Summary 不需要鉴权的对账单接口
+// @Summary 不需要鉴权的crmStatementAccount表接口
 // @accept application/json
 // @Produce application/json
-// @Param data query crmReq.CrmStatementAccountSearch true "分页获取对账单列表"
+// @Param data query crmReq.CrmStatementAccountSearch true "分页获取crmStatementAccount表列表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"获取成功"}"
 // @Router /crmStatementAccount/getCrmStatementAccountList [get]
 func (crmStatementAccountApi *CrmStatementAccountApi) GetCrmStatementAccountPublic(c *gin.Context) {
     // 此接口不需要鉴权
     // 示例为返回了一个固定的消息接口，一般本接口用于C端服务，需要自己实现业务逻辑
     response.OkWithDetailed(gin.H{
-       "info": "不需要鉴权的对账单接口信息",
+       "info": "不需要鉴权的crmStatementAccount表接口信息",
     }, "获取成功", c)
 }

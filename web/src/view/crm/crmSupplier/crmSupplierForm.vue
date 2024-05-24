@@ -17,7 +17,7 @@
         <el-form-item label="备注添加时间:" prop="noteAddTime">
           <el-date-picker v-model="formData.noteAddTime" type="date" placeholder="选择日期" :clearable="true"></el-date-picker>
        </el-form-item>
-        <el-form-item label="负责人:" prop="userId">
+        <el-form-item label="负责人id:" prop="userId">
           <el-input v-model.number="formData.userId" :clearable="true" placeholder="请输入" />
        </el-form-item>
         <el-form-item>

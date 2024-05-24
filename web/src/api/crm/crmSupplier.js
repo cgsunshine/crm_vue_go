@@ -1,11 +1,11 @@
 import service from '@/utils/request'
 
 // @Tags CrmSupplier
-// @Summary 创建供应商管理
+// @Summary 创建crmSupplier表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body model.CrmSupplier true "创建供应商管理"
+// @Param data body model.CrmSupplier true "创建crmSupplier表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"创建成功"}"
 // @Router /crmSupplier/createCrmSupplier [post]
 export const createCrmSupplier = (data) => {
@@ -17,11 +17,11 @@ export const createCrmSupplier = (data) => {
 }
 
 // @Tags CrmSupplier
-// @Summary 删除供应商管理
+// @Summary 删除crmSupplier表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body model.CrmSupplier true "删除供应商管理"
+// @Param data body model.CrmSupplier true "删除crmSupplier表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"删除成功"}"
 // @Router /crmSupplier/deleteCrmSupplier [delete]
 export const deleteCrmSupplier = (params) => {
@@ -33,11 +33,11 @@ export const deleteCrmSupplier = (params) => {
 }
 
 // @Tags CrmSupplier
-// @Summary 批量删除供应商管理
+// @Summary 批量删除crmSupplier表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body request.IdsReq true "批量删除供应商管理"
+// @Param data body request.IdsReq true "批量删除crmSupplier表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"删除成功"}"
 // @Router /crmSupplier/deleteCrmSupplier [delete]
 export const deleteCrmSupplierByIds = (params) => {
@@ -49,11 +49,11 @@ export const deleteCrmSupplierByIds = (params) => {
 }
 
 // @Tags CrmSupplier
-// @Summary 更新供应商管理
+// @Summary 更新crmSupplier表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body model.CrmSupplier true "更新供应商管理"
+// @Param data body model.CrmSupplier true "更新crmSupplier表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"更新成功"}"
 // @Router /crmSupplier/updateCrmSupplier [put]
 export const updateCrmSupplier = (data) => {
@@ -65,11 +65,11 @@ export const updateCrmSupplier = (data) => {
 }
 
 // @Tags CrmSupplier
-// @Summary 用id查询供应商管理
+// @Summary 用id查询crmSupplier表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data query model.CrmSupplier true "用id查询供应商管理"
+// @Param data query model.CrmSupplier true "用id查询crmSupplier表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"查询成功"}"
 // @Router /crmSupplier/findCrmSupplier [get]
 export const findCrmSupplier = (params) => {
@@ -81,11 +81,11 @@ export const findCrmSupplier = (params) => {
 }
 
 // @Tags CrmSupplier
-// @Summary 分页获取供应商管理列表
+// @Summary 分页获取crmSupplier表列表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data query request.PageInfo true "分页获取供应商管理列表"
+// @Param data query request.PageInfo true "分页获取crmSupplier表列表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"获取成功"}"
 // @Router /crmSupplier/getCrmSupplierList [get]
 export const getCrmSupplierList = (params) => {
