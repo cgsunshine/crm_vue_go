@@ -9,42 +9,42 @@ import (
 type CrmPaymentCollentionService struct {
 }
 
-// CreateCrmPaymentCollention 创建回款管理记录
+// CreateCrmPaymentCollention 创建crmPaymentCollention表记录
 // Author [piexlmax](https://github.com/piexlmax)
 func (crmPaymentCollentionService *CrmPaymentCollentionService) CreateCrmPaymentCollention(crmPaymentCollention *crm.CrmPaymentCollention) (err error) {
 	err = global.GVA_DB.Create(crmPaymentCollention).Error
 	return err
 }
 
-// DeleteCrmPaymentCollention 删除回款管理记录
+// DeleteCrmPaymentCollention 删除crmPaymentCollention表记录
 // Author [piexlmax](https://github.com/piexlmax)
 func (crmPaymentCollentionService *CrmPaymentCollentionService)DeleteCrmPaymentCollention(ID string) (err error) {
 	err = global.GVA_DB.Delete(&crm.CrmPaymentCollention{},"id = ?",ID).Error
 	return err
 }
 
-// DeleteCrmPaymentCollentionByIds 批量删除回款管理记录
+// DeleteCrmPaymentCollentionByIds 批量删除crmPaymentCollention表记录
 // Author [piexlmax](https://github.com/piexlmax)
 func (crmPaymentCollentionService *CrmPaymentCollentionService)DeleteCrmPaymentCollentionByIds(IDs []string) (err error) {
 	err = global.GVA_DB.Delete(&[]crm.CrmPaymentCollention{},"id in ?",IDs).Error
 	return err
 }
 
-// UpdateCrmPaymentCollention 更新回款管理记录
+// UpdateCrmPaymentCollention 更新crmPaymentCollention表记录
 // Author [piexlmax](https://github.com/piexlmax)
 func (crmPaymentCollentionService *CrmPaymentCollentionService)UpdateCrmPaymentCollention(crmPaymentCollention crm.CrmPaymentCollention) (err error) {
 	err = global.GVA_DB.Save(&crmPaymentCollention).Error
 	return err
 }
 
-// GetCrmPaymentCollention 根据ID获取回款管理记录
+// GetCrmPaymentCollention 根据ID获取crmPaymentCollention表记录
 // Author [piexlmax](https://github.com/piexlmax)
 func (crmPaymentCollentionService *CrmPaymentCollentionService)GetCrmPaymentCollention(ID string) (crmPaymentCollention crm.CrmPaymentCollention, err error) {
 	err = global.GVA_DB.Where("id = ?", ID).First(&crmPaymentCollention).Error
 	return
 }
 
-// GetCrmPaymentCollentionInfoList 分页获取回款管理记录
+// GetCrmPaymentCollentionInfoList 分页获取crmPaymentCollention表记录
 // Author [piexlmax](https://github.com/piexlmax)
 func (crmPaymentCollentionService *CrmPaymentCollentionService)GetCrmPaymentCollentionInfoList(info crmReq.CrmPaymentCollentionSearch) (list []crm.CrmPaymentCollention, total int64, err error) {
 	limit := info.PageSize
@@ -55,6 +55,27 @@ func (crmPaymentCollentionService *CrmPaymentCollentionService)GetCrmPaymentColl
     // 如果有条件搜索 下方会自动创建搜索语句
     if info.StartCreatedAt !=nil && info.EndCreatedAt !=nil {
      db = db.Where("created_at BETWEEN ? AND ?", info.StartCreatedAt, info.EndCreatedAt)
+    }
+    if info.Amount != nil {
+        db = db.Where("amount = ?",info.Amount)
+    }
+    if info.ApprovedById != "" {
+        db = db.Where("approved_by_id = ?",info.ApprovedById)
+    }
+    if info.Currency != "" {
+        db = db.Where("currency = ?",info.Currency)
+    }
+    if info.CustomerId != nil {
+        db = db.Where("customer_id = ?",info.CustomerId)
+    }
+        if info.StartPaymentTime != nil && info.EndPaymentTime != nil {
+            db = db.Where("payment_time BETWEEN ? AND ? ",info.StartPaymentTime,info.EndPaymentTime)
+        }
+    if info.ReviewStatus != "" {
+        db = db.Where("review_status = ?",info.ReviewStatus)
+    }
+    if info.UserId != nil {
+        db = db.Where("user_id = ?",info.UserId)
     }
 	err = db.Count(&total).Error
 	if err!=nil {

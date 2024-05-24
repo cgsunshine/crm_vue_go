@@ -16,6 +16,45 @@
       <el-date-picker v-model="searchInfo.endCreatedAt" type="datetime" placeholder="结束日期" :disabled-date="time=> searchInfo.startCreatedAt ? time.getTime() < searchInfo.startCreatedAt.getTime() : false"></el-date-picker>
       </el-form-item>
       
+        <el-form-item label="产品名称" prop="productName">
+         <el-input v-model="searchInfo.productName" placeholder="搜索条件" />
+
+        </el-form-item>
+        <el-form-item label="产品分组id" prop="productGroupId">
+            
+             <el-input v-model.number="searchInfo.productGroupId" placeholder="搜索条件" />
+
+        </el-form-item>
+        <el-form-item label="产品类型id" prop="productTypeId">
+            
+             <el-input v-model.number="searchInfo.productTypeId" placeholder="搜索条件" />
+
+        </el-form-item>
+        <el-form-item label="库存" prop="inventory">
+            
+             <el-input v-model.number="searchInfo.inventory" placeholder="搜索条件" />
+
+        </el-form-item>
+        <el-form-item label="产品原价" prop="price">
+            
+             <el-input v-model.number="searchInfo.price" placeholder="搜索条件" />
+
+        </el-form-item>
+        <el-form-item label="产品折扣价" prop="discountPrice">
+            
+             <el-input v-model.number="searchInfo.discountPrice" placeholder="搜索条件" />
+
+        </el-form-item>
+        <el-form-item label="产品销售价格" prop="salesPrice">
+            
+             <el-input v-model.number="searchInfo.salesPrice" placeholder="搜索条件" />
+
+        </el-form-item>
+        <el-form-item label="资源id" prop="resourceId">
+            
+             <el-input v-model.number="searchInfo.resourceId" placeholder="搜索条件" />
+
+        </el-form-item>
         <el-form-item>
           <el-button type="primary" icon="search" @click="onSubmit">查询</el-button>
           <el-button icon="refresh" @click="onReset">重置</el-button>
@@ -42,21 +81,15 @@
         </el-table-column>
         
         <el-table-column align="left" label="产品名称" prop="productName" width="120" />
-        <el-table-column align="left" label="客户手机号" prop="customerPhoneData" width="120" />
-        <el-table-column align="left" label="管理ID 销售代表" prop="sysUserId" width="120" />
-        <el-table-column align="left" label="管理角色ID" prop="sysUserAuthorityId" width="120" />
-        <el-table-column align="left" label="客户公司" prop="customerCompany" width="120" />
-        <el-table-column align="left" label="客户地址" prop="customerAddress" width="120" />
+        <el-table-column align="left" label="管理ID 销售代表" prop="userId" width="120" />
         <el-table-column align="left" label="备注" prop="description" width="120" />
-        <el-table-column align="left" label="用户状态" prop="customerStatus" width="120" />
-        <el-table-column align="left" label="产品分组名称" prop="productGroup" width="120" />
         <el-table-column align="left" label="产品分组id" prop="productGroupId" width="120" />
-        <el-table-column align="left" label="产品类型" prop="productType" width="120" />
         <el-table-column align="left" label="产品类型id" prop="productTypeId" width="120" />
         <el-table-column align="left" label="库存" prop="inventory" width="120" />
         <el-table-column align="left" label="产品原价" prop="price" width="120" />
         <el-table-column align="left" label="产品折扣价" prop="discountPrice" width="120" />
         <el-table-column align="left" label="产品销售价格" prop="salesPrice" width="120" />
+        <el-table-column align="left" label="资源id" prop="resourceId" width="120" />
         <el-table-column align="left" label="操作" fixed="right" min-width="240">
             <template #default="scope">
             <el-button type="primary" link class="table-button" @click="getDetails(scope.row)">
@@ -95,35 +128,14 @@
             <el-form-item label="产品名称:"  prop="productName" >
               <el-input v-model="formData.productName" :clearable="true"  placeholder="请输入产品名称" />
             </el-form-item>
-            <el-form-item label="客户手机号:"  prop="customerPhoneData" >
-              <el-input v-model="formData.customerPhoneData" :clearable="true"  placeholder="请输入客户手机号" />
-            </el-form-item>
-            <el-form-item label="管理ID 销售代表:"  prop="sysUserId" >
-              <el-input v-model.number="formData.sysUserId" :clearable="true" placeholder="请输入管理ID 销售代表" />
-            </el-form-item>
-            <el-form-item label="管理角色ID:"  prop="sysUserAuthorityId" >
-              <el-input v-model.number="formData.sysUserAuthorityId" :clearable="true" placeholder="请输入管理角色ID" />
-            </el-form-item>
-            <el-form-item label="客户公司:"  prop="customerCompany" >
-              <el-input v-model="formData.customerCompany" :clearable="true"  placeholder="请输入客户公司" />
-            </el-form-item>
-            <el-form-item label="客户地址:"  prop="customerAddress" >
-              <el-input v-model="formData.customerAddress" :clearable="true"  placeholder="请输入客户地址" />
+            <el-form-item label="管理ID 销售代表:"  prop="userId" >
+              <el-input v-model.number="formData.userId" :clearable="true" placeholder="请输入管理ID 销售代表" />
             </el-form-item>
             <el-form-item label="备注:"  prop="description" >
               <el-input v-model="formData.description" :clearable="true"  placeholder="请输入备注" />
             </el-form-item>
-            <el-form-item label="用户状态:"  prop="customerStatus" >
-              <el-input v-model="formData.customerStatus" :clearable="true"  placeholder="请输入用户状态" />
-            </el-form-item>
-            <el-form-item label="产品分组名称:"  prop="productGroup" >
-              <el-input v-model="formData.productGroup" :clearable="true"  placeholder="请输入产品分组名称" />
-            </el-form-item>
             <el-form-item label="产品分组id:"  prop="productGroupId" >
               <el-input v-model.number="formData.productGroupId" :clearable="true" placeholder="请输入产品分组id" />
-            </el-form-item>
-            <el-form-item label="产品类型:"  prop="productType" >
-              <el-input v-model="formData.productType" :clearable="true"  placeholder="请输入产品类型" />
             </el-form-item>
             <el-form-item label="产品类型id:"  prop="productTypeId" >
               <el-input v-model.number="formData.productTypeId" :clearable="true" placeholder="请输入产品类型id" />
@@ -140,6 +152,9 @@
             <el-form-item label="产品销售价格:"  prop="salesPrice" >
               <el-input-number v-model="formData.salesPrice"  style="width:100%" :precision="2" :clearable="true"  />
             </el-form-item>
+            <el-form-item label="资源id:"  prop="resourceId" >
+              <el-input v-model.number="formData.resourceId" :clearable="true" placeholder="请输入资源id" />
+            </el-form-item>
           </el-form>
     </el-drawer>
 
@@ -153,35 +168,14 @@
                 <el-descriptions-item label="产品名称">
                         {{ formData.productName }}
                 </el-descriptions-item>
-                <el-descriptions-item label="客户手机号">
-                        {{ formData.customerPhoneData }}
-                </el-descriptions-item>
                 <el-descriptions-item label="管理ID 销售代表">
-                        {{ formData.sysUserId }}
-                </el-descriptions-item>
-                <el-descriptions-item label="管理角色ID">
-                        {{ formData.sysUserAuthorityId }}
-                </el-descriptions-item>
-                <el-descriptions-item label="客户公司">
-                        {{ formData.customerCompany }}
-                </el-descriptions-item>
-                <el-descriptions-item label="客户地址">
-                        {{ formData.customerAddress }}
+                        {{ formData.userId }}
                 </el-descriptions-item>
                 <el-descriptions-item label="备注">
                         {{ formData.description }}
                 </el-descriptions-item>
-                <el-descriptions-item label="用户状态">
-                        {{ formData.customerStatus }}
-                </el-descriptions-item>
-                <el-descriptions-item label="产品分组名称">
-                        {{ formData.productGroup }}
-                </el-descriptions-item>
                 <el-descriptions-item label="产品分组id">
                         {{ formData.productGroupId }}
-                </el-descriptions-item>
-                <el-descriptions-item label="产品类型">
-                        {{ formData.productType }}
                 </el-descriptions-item>
                 <el-descriptions-item label="产品类型id">
                         {{ formData.productTypeId }}
@@ -197,6 +191,9 @@
                 </el-descriptions-item>
                 <el-descriptions-item label="产品销售价格">
                         {{ formData.salesPrice }}
+                </el-descriptions-item>
+                <el-descriptions-item label="资源id">
+                        {{ formData.resourceId }}
                 </el-descriptions-item>
         </el-descriptions>
     </el-drawer>
@@ -225,21 +222,15 @@ defineOptions({
 // 自动化生成的字典（可能为空）以及字段
 const formData = ref({
         productName: '',
-        customerPhoneData: '',
-        sysUserId: 0,
-        sysUserAuthorityId: 0,
-        customerCompany: '',
-        customerAddress: '',
+        userId: 0,
         description: '',
-        customerStatus: '',
-        productGroup: '',
         productGroupId: 0,
-        productType: '',
         productTypeId: 0,
         inventory: 0,
         price: 0,
         discountPrice: 0,
         salesPrice: 0,
+        resourceId: 0,
         })
 
 
@@ -434,21 +425,15 @@ const closeDetailShow = () => {
   detailShow.value = false
   formData.value = {
           productName: '',
-          customerPhoneData: '',
-          sysUserId: 0,
-          sysUserAuthorityId: 0,
-          customerCompany: '',
-          customerAddress: '',
+          userId: 0,
           description: '',
-          customerStatus: '',
-          productGroup: '',
           productGroupId: 0,
-          productType: '',
           productTypeId: 0,
           inventory: 0,
           price: 0,
           discountPrice: 0,
           salesPrice: 0,
+          resourceId: 0,
           }
 }
 
@@ -464,21 +449,15 @@ const closeDialog = () => {
     dialogFormVisible.value = false
     formData.value = {
         productName: '',
-        customerPhoneData: '',
-        sysUserId: 0,
-        sysUserAuthorityId: 0,
-        customerCompany: '',
-        customerAddress: '',
+        userId: 0,
         description: '',
-        customerStatus: '',
-        productGroup: '',
         productGroupId: 0,
-        productType: '',
         productTypeId: 0,
         inventory: 0,
         price: 0,
         discountPrice: 0,
         salesPrice: 0,
+        resourceId: 0,
         }
 }
 // 弹窗确定

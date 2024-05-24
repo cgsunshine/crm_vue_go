@@ -16,13 +16,13 @@ type CrmContractApi struct {
 var crmContractService = service.ServiceGroupApp.CrmServiceGroup.CrmContractService
 
 
-// CreateCrmContract 创建合同管理
+// CreateCrmContract 创建crmContract表
 // @Tags CrmContract
-// @Summary 创建合同管理
+// @Summary 创建crmContract表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body crm.CrmContract true "创建合同管理"
+// @Param data body crm.CrmContract true "创建crmContract表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"创建成功"}"
 // @Router /crmContract/createCrmContract [post]
 func (crmContractApi *CrmContractApi) CreateCrmContract(c *gin.Context) {
@@ -41,13 +41,13 @@ func (crmContractApi *CrmContractApi) CreateCrmContract(c *gin.Context) {
 	}
 }
 
-// DeleteCrmContract 删除合同管理
+// DeleteCrmContract 删除crmContract表
 // @Tags CrmContract
-// @Summary 删除合同管理
+// @Summary 删除crmContract表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body crm.CrmContract true "删除合同管理"
+// @Param data body crm.CrmContract true "删除crmContract表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"删除成功"}"
 // @Router /crmContract/deleteCrmContract [delete]
 func (crmContractApi *CrmContractApi) DeleteCrmContract(c *gin.Context) {
@@ -60,9 +60,9 @@ func (crmContractApi *CrmContractApi) DeleteCrmContract(c *gin.Context) {
 	}
 }
 
-// DeleteCrmContractByIds 批量删除合同管理
+// DeleteCrmContractByIds 批量删除crmContract表
 // @Tags CrmContract
-// @Summary 批量删除合同管理
+// @Summary 批量删除crmContract表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
@@ -78,13 +78,13 @@ func (crmContractApi *CrmContractApi) DeleteCrmContractByIds(c *gin.Context) {
 	}
 }
 
-// UpdateCrmContract 更新合同管理
+// UpdateCrmContract 更新crmContract表
 // @Tags CrmContract
-// @Summary 更新合同管理
+// @Summary 更新crmContract表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body crm.CrmContract true "更新合同管理"
+// @Param data body crm.CrmContract true "更新crmContract表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"更新成功"}"
 // @Router /crmContract/updateCrmContract [put]
 func (crmContractApi *CrmContractApi) UpdateCrmContract(c *gin.Context) {
@@ -103,13 +103,13 @@ func (crmContractApi *CrmContractApi) UpdateCrmContract(c *gin.Context) {
 	}
 }
 
-// FindCrmContract 用id查询合同管理
+// FindCrmContract 用id查询crmContract表
 // @Tags CrmContract
-// @Summary 用id查询合同管理
+// @Summary 用id查询crmContract表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data query crm.CrmContract true "用id查询合同管理"
+// @Param data query crm.CrmContract true "用id查询crmContract表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"查询成功"}"
 // @Router /crmContract/findCrmContract [get]
 func (crmContractApi *CrmContractApi) FindCrmContract(c *gin.Context) {
@@ -122,13 +122,13 @@ func (crmContractApi *CrmContractApi) FindCrmContract(c *gin.Context) {
 	}
 }
 
-// GetCrmContractList 分页获取合同管理列表
+// GetCrmContractList 分页获取crmContract表列表
 // @Tags CrmContract
-// @Summary 分页获取合同管理列表
+// @Summary 分页获取crmContract表列表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data query crmReq.CrmContractSearch true "分页获取合同管理列表"
+// @Param data query crmReq.CrmContractSearch true "分页获取crmContract表列表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"获取成功"}"
 // @Router /crmContract/getCrmContractList [get]
 func (crmContractApi *CrmContractApi) GetCrmContractList(c *gin.Context) {
@@ -151,18 +151,18 @@ func (crmContractApi *CrmContractApi) GetCrmContractList(c *gin.Context) {
     }
 }
 
-// GetCrmContractPublic 不需要鉴权的合同管理接口
+// GetCrmContractPublic 不需要鉴权的crmContract表接口
 // @Tags CrmContract
-// @Summary 不需要鉴权的合同管理接口
+// @Summary 不需要鉴权的crmContract表接口
 // @accept application/json
 // @Produce application/json
-// @Param data query crmReq.CrmContractSearch true "分页获取合同管理列表"
+// @Param data query crmReq.CrmContractSearch true "分页获取crmContract表列表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"获取成功"}"
 // @Router /crmContract/getCrmContractList [get]
 func (crmContractApi *CrmContractApi) GetCrmContractPublic(c *gin.Context) {
     // 此接口不需要鉴权
     // 示例为返回了一个固定的消息接口，一般本接口用于C端服务，需要自己实现业务逻辑
     response.OkWithDetailed(gin.H{
-       "info": "不需要鉴权的合同管理接口信息",
+       "info": "不需要鉴权的crmContract表接口信息",
     }, "获取成功", c)
 }

@@ -16,6 +16,39 @@
       <el-date-picker v-model="searchInfo.endCreatedAt" type="datetime" placeholder="结束日期" :disabled-date="time=> searchInfo.startCreatedAt ? time.getTime() < searchInfo.startCreatedAt.getTime() : false"></el-date-picker>
       </el-form-item>
       
+        <el-form-item label="币种" prop="currency">
+         <el-input v-model="searchInfo.currency" placeholder="搜索条件" />
+
+        </el-form-item>
+        <el-form-item label="客户ID" prop="customerId">
+            
+             <el-input v-model.number="searchInfo.customerId" placeholder="搜索条件" />
+
+        </el-form-item>
+        <el-form-item label="折扣率" prop="discountRate">
+            
+             <el-input v-model.number="searchInfo.discountRate" placeholder="搜索条件" />
+
+        </el-form-item>
+        <el-form-item label="产品原价" prop="price">
+            
+             <el-input v-model.number="searchInfo.price" placeholder="搜索条件" />
+
+        </el-form-item>
+        <el-form-item label="产品id" prop="productId">
+         <el-input v-model="searchInfo.productId" placeholder="搜索条件" />
+
+        </el-form-item>
+        <el-form-item label="产品销售价格" prop="salesPrice">
+            
+             <el-input v-model.number="searchInfo.salesPrice" placeholder="搜索条件" />
+
+        </el-form-item>
+        <el-form-item label="管理ID 销售代表" prop="userId">
+            
+             <el-input v-model.number="searchInfo.userId" placeholder="搜索条件" />
+
+        </el-form-item>
         <el-form-item>
           <el-button type="primary" icon="search" @click="onSubmit">查询</el-button>
           <el-button icon="refresh" @click="onReset">重置</el-button>
@@ -41,17 +74,14 @@
             <template #default="scope">{{ formatDate(scope.row.CreatedAt) }}</template>
         </el-table-column>
         
-        <el-table-column align="left" label="产品名称" prop="productId" width="120" />
-        <el-table-column align="left" label="产品ID" prop="customerId" width="120" />
-        <el-table-column align="left" label="管理ID 销售代表" prop="userId" width="120" />
-        <el-table-column align="left" label="备注" prop="description" width="120" />
-        <el-table-column align="left" label="产品原价" prop="price" width="120" />
-        <el-table-column align="left" label="产品折扣价" prop="salesPrice" width="120" />
         <el-table-column align="left" label="币种" prop="currency" width="120" />
+        <el-table-column align="left" label="客户ID" prop="customerId" width="120" />
+        <el-table-column align="left" label="备注" prop="description" width="120" />
         <el-table-column align="left" label="折扣率" prop="discountRate" width="120" />
-         <el-table-column align="left" label="创建时间" width="180">
-            <template #default="scope">{{ formatDate(scope.row.createdTime) }}</template>
-         </el-table-column>
+        <el-table-column align="left" label="产品原价" prop="price" width="120" />
+        <el-table-column align="left" label="产品id" prop="productId" width="120" />
+        <el-table-column align="left" label="产品销售价格" prop="salesPrice" width="120" />
+        <el-table-column align="left" label="管理ID 销售代表" prop="userId" width="120" />
         <el-table-column align="left" label="操作" fixed="right" min-width="240">
             <template #default="scope">
             <el-button type="primary" link class="table-button" @click="getDetails(scope.row)">
@@ -87,32 +117,29 @@
             </template>
 
           <el-form :model="formData" label-position="top" ref="elFormRef" :rules="rule" label-width="80px">
-            <el-form-item label="产品名称:"  prop="productId" >
-              <el-input v-model="formData.productId" :clearable="true"  placeholder="请输入产品名称" />
+            <el-form-item label="币种:"  prop="currency" >
+              <el-input v-model="formData.currency" :clearable="true"  placeholder="请输入币种" />
             </el-form-item>
-            <el-form-item label="产品ID:"  prop="customerId" >
-              <el-input v-model.number="formData.customerId" :clearable="true" placeholder="请输入产品ID" />
-            </el-form-item>
-            <el-form-item label="管理ID 销售代表:"  prop="userId" >
-              <el-input v-model.number="formData.userId" :clearable="true" placeholder="请输入管理ID 销售代表" />
+            <el-form-item label="客户ID:"  prop="customerId" >
+              <el-input v-model.number="formData.customerId" :clearable="true" placeholder="请输入客户ID" />
             </el-form-item>
             <el-form-item label="备注:"  prop="description" >
               <el-input v-model="formData.description" :clearable="true"  placeholder="请输入备注" />
             </el-form-item>
-            <el-form-item label="产品原价:"  prop="price" >
-              <el-input-number v-model="formData.price"  style="width:100%" :precision="2" :clearable="true"  />
-            </el-form-item>
-            <el-form-item label="产品折扣价:"  prop="salesPrice" >
-              <el-input-number v-model="formData.salesPrice"  style="width:100%" :precision="2" :clearable="true"  />
-            </el-form-item>
-            <el-form-item label="币种:"  prop="currency" >
-              <el-input v-model="formData.currency" :clearable="true"  placeholder="请输入币种" />
-            </el-form-item>
             <el-form-item label="折扣率:"  prop="discountRate" >
               <el-input v-model.number="formData.discountRate" :clearable="true" placeholder="请输入折扣率" />
             </el-form-item>
-            <el-form-item label="创建时间:"  prop="createdTime" >
-              <el-date-picker v-model="formData.createdTime" type="date" style="width:100%" placeholder="选择日期" :clearable="true"  />
+            <el-form-item label="产品原价:"  prop="price" >
+              <el-input-number v-model="formData.price"  style="width:100%" :precision="2" :clearable="true"  />
+            </el-form-item>
+            <el-form-item label="产品id:"  prop="productId" >
+              <el-input v-model="formData.productId" :clearable="true"  placeholder="请输入产品id" />
+            </el-form-item>
+            <el-form-item label="产品销售价格:"  prop="salesPrice" >
+              <el-input-number v-model="formData.salesPrice"  style="width:100%" :precision="2" :clearable="true"  />
+            </el-form-item>
+            <el-form-item label="管理ID 销售代表:"  prop="userId" >
+              <el-input v-model.number="formData.userId" :clearable="true" placeholder="请输入管理ID 销售代表" />
             </el-form-item>
           </el-form>
     </el-drawer>
@@ -124,32 +151,29 @@
              </div>
          </template>
         <el-descriptions :column="1" border>
-                <el-descriptions-item label="产品名称">
-                        {{ formData.productId }}
+                <el-descriptions-item label="币种">
+                        {{ formData.currency }}
                 </el-descriptions-item>
-                <el-descriptions-item label="产品ID">
+                <el-descriptions-item label="客户ID">
                         {{ formData.customerId }}
-                </el-descriptions-item>
-                <el-descriptions-item label="管理ID 销售代表">
-                        {{ formData.userId }}
                 </el-descriptions-item>
                 <el-descriptions-item label="备注">
                         {{ formData.description }}
                 </el-descriptions-item>
-                <el-descriptions-item label="产品原价">
-                        {{ formData.price }}
-                </el-descriptions-item>
-                <el-descriptions-item label="产品折扣价">
-                        {{ formData.salesPrice }}
-                </el-descriptions-item>
-                <el-descriptions-item label="币种">
-                        {{ formData.currency }}
-                </el-descriptions-item>
                 <el-descriptions-item label="折扣率">
                         {{ formData.discountRate }}
                 </el-descriptions-item>
-                <el-descriptions-item label="创建时间">
-                      {{ formatDate(formData.createdTime) }}
+                <el-descriptions-item label="产品原价">
+                        {{ formData.price }}
+                </el-descriptions-item>
+                <el-descriptions-item label="产品id">
+                        {{ formData.productId }}
+                </el-descriptions-item>
+                <el-descriptions-item label="产品销售价格">
+                        {{ formData.salesPrice }}
+                </el-descriptions-item>
+                <el-descriptions-item label="管理ID 销售代表">
+                        {{ formData.userId }}
                 </el-descriptions-item>
         </el-descriptions>
     </el-drawer>
@@ -177,15 +201,14 @@ defineOptions({
 
 // 自动化生成的字典（可能为空）以及字段
 const formData = ref({
-        productId: '',
-        customerId: 0,
-        userId: 0,
-        description: '',
-        price: 0,
-        salesPrice: 0,
         currency: '',
+        customerId: 0,
+        description: '',
         discountRate: 0,
-        createdTime: new Date(),
+        price: 0,
+        productId: '',
+        salesPrice: 0,
+        userId: 0,
         })
 
 
@@ -379,15 +402,14 @@ const getDetails = async (row) => {
 const closeDetailShow = () => {
   detailShow.value = false
   formData.value = {
-          productId: '',
-          customerId: 0,
-          userId: 0,
-          description: '',
-          price: 0,
-          salesPrice: 0,
           currency: '',
+          customerId: 0,
+          description: '',
           discountRate: 0,
-          createdTime: new Date(),
+          price: 0,
+          productId: '',
+          salesPrice: 0,
+          userId: 0,
           }
 }
 
@@ -402,15 +424,14 @@ const openDialog = () => {
 const closeDialog = () => {
     dialogFormVisible.value = false
     formData.value = {
-        productId: '',
-        customerId: 0,
-        userId: 0,
-        description: '',
-        price: 0,
-        salesPrice: 0,
         currency: '',
+        customerId: 0,
+        description: '',
         discountRate: 0,
-        createdTime: new Date(),
+        price: 0,
+        productId: '',
+        salesPrice: 0,
+        userId: 0,
         }
 }
 // 弹窗确定

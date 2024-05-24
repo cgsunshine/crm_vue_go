@@ -2,35 +2,32 @@
   <div>
     <div class="gva-form-box">
       <el-form :model="formData" ref="elFormRef" label-position="right" :rules="rule" label-width="80px">
-        <el-form-item label="商机名称:" prop="name">
-          <el-input v-model="formData.name" :clearable="true"  placeholder="请输入商机名称" />
-       </el-form-item>
-        <el-form-item label="备注:" prop="description">
-          <el-input v-model="formData.description" :clearable="true"  placeholder="请输入备注" />
-       </el-form-item>
-        <el-form-item label="单位:" prop="unit">
-          <el-input v-model="formData.unit" :clearable="true"  placeholder="请输入单位" />
+        <el-form-item label="商机名称:" prop="businessOpportunityName">
+          <el-input v-model="formData.businessOpportunityName" :clearable="true"  placeholder="请输入商机名称" />
        </el-form-item>
         <el-form-item label="客户ID:" prop="customerId">
           <el-input v-model.number="formData.customerId" :clearable="true" placeholder="请输入" />
        </el-form-item>
-        <el-form-item label="员工id:" prop="userId">
-          <el-input v-model.number="formData.userId" :clearable="true" placeholder="请输入" />
-       </el-form-item>
-        <el-form-item label="产品id:" prop="productId">
-          <el-input v-model.number="formData.productId" :clearable="true" placeholder="请输入" />
-       </el-form-item>
-        <el-form-item label="商机金额:" prop="price">
-          <el-input-number v-model="formData.price" :precision="2" :clearable="true"></el-input-number>
-       </el-form-item>
-        <el-form-item label="商机状态:" prop="status">
-          <el-input v-model="formData.status" :clearable="true"  placeholder="请输入商机状态" />
+        <el-form-item label="备注:" prop="description">
+          <el-input v-model="formData.description" :clearable="true"  placeholder="请输入备注" />
        </el-form-item>
         <el-form-item label="商机录入时间:" prop="inputTime">
           <el-date-picker v-model="formData.inputTime" type="date" placeholder="选择日期" :clearable="true"></el-date-picker>
        </el-form-item>
         <el-form-item label="报价有效期:" prop="offerValidityPeriod">
           <el-date-picker v-model="formData.offerValidityPeriod" type="date" placeholder="选择日期" :clearable="true"></el-date-picker>
+       </el-form-item>
+        <el-form-item label="商机金额:" prop="price">
+          <el-input-number v-model="formData.price" :precision="2" :clearable="true"></el-input-number>
+       </el-form-item>
+        <el-form-item label="产品id:" prop="productId">
+          <el-input v-model.number="formData.productId" :clearable="true" placeholder="请输入" />
+       </el-form-item>
+        <el-form-item label="商机状态:" prop="status">
+          <el-input v-model="formData.status" :clearable="true"  placeholder="请输入商机状态" />
+       </el-form-item>
+        <el-form-item label="员工id:" prop="userId">
+          <el-input v-model.number="formData.userId" :clearable="true" placeholder="请输入" />
        </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="save">保存</el-button>
@@ -63,16 +60,15 @@ const router = useRouter()
 
 const type = ref('')
 const formData = ref({
-            name: '',
-            description: '',
-            unit: '',
+            businessOpportunityName: '',
             customerId: 0,
-            userId: 0,
-            productId: 0,
-            price: 0,
-            status: '',
+            description: '',
             inputTime: new Date(),
             offerValidityPeriod: new Date(),
+            price: 0,
+            productId: 0,
+            status: '',
+            userId: 0,
         })
 // 验证规则
 const rule = reactive({

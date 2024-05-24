@@ -1,11 +1,11 @@
 import service from '@/utils/request'
 
 // @Tags CrmContract
-// @Summary 创建合同管理
+// @Summary 创建crmContract表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body model.CrmContract true "创建合同管理"
+// @Param data body model.CrmContract true "创建crmContract表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"创建成功"}"
 // @Router /crmContract/createCrmContract [post]
 export const createCrmContract = (data) => {
@@ -17,11 +17,11 @@ export const createCrmContract = (data) => {
 }
 
 // @Tags CrmContract
-// @Summary 删除合同管理
+// @Summary 删除crmContract表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body model.CrmContract true "删除合同管理"
+// @Param data body model.CrmContract true "删除crmContract表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"删除成功"}"
 // @Router /crmContract/deleteCrmContract [delete]
 export const deleteCrmContract = (params) => {
@@ -33,11 +33,11 @@ export const deleteCrmContract = (params) => {
 }
 
 // @Tags CrmContract
-// @Summary 批量删除合同管理
+// @Summary 批量删除crmContract表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body request.IdsReq true "批量删除合同管理"
+// @Param data body request.IdsReq true "批量删除crmContract表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"删除成功"}"
 // @Router /crmContract/deleteCrmContract [delete]
 export const deleteCrmContractByIds = (params) => {
@@ -49,11 +49,11 @@ export const deleteCrmContractByIds = (params) => {
 }
 
 // @Tags CrmContract
-// @Summary 更新合同管理
+// @Summary 更新crmContract表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body model.CrmContract true "更新合同管理"
+// @Param data body model.CrmContract true "更新crmContract表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"更新成功"}"
 // @Router /crmContract/updateCrmContract [put]
 export const updateCrmContract = (data) => {
@@ -65,11 +65,11 @@ export const updateCrmContract = (data) => {
 }
 
 // @Tags CrmContract
-// @Summary 用id查询合同管理
+// @Summary 用id查询crmContract表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data query model.CrmContract true "用id查询合同管理"
+// @Param data query model.CrmContract true "用id查询crmContract表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"查询成功"}"
 // @Router /crmContract/findCrmContract [get]
 export const findCrmContract = (params) => {
@@ -81,11 +81,11 @@ export const findCrmContract = (params) => {
 }
 
 // @Tags CrmContract
-// @Summary 分页获取合同管理列表
+// @Summary 分页获取crmContract表列表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data query request.PageInfo true "分页获取合同管理列表"
+// @Param data query request.PageInfo true "分页获取crmContract表列表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"获取成功"}"
 // @Router /crmContract/getCrmContractList [get]
 export const getCrmContractList = (params) => {

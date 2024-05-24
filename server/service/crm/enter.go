@@ -2,19 +2,12 @@ package crm
 
 type ServiceGroup struct {
 	CrmTestService
-	CrmBillService
-	CrmBusinessOpportunityService
 	CrmCommissionRebateService
-	CrmContractService
 	CrmContractTypeService
-	CrmCustomersService
 	CrmLoginLogService
 	CrmOperationRecordsService
-	CrmOrderService
 	CrmPaymentService
-	CrmPaymentCollentionService
 	CrmProcurementContractService
-	CrmProductService
 	CrmProductGroupService
 	CrmProductTypeService
 	CrmPurchaseOrderService
@@ -28,4 +21,13 @@ type ServiceGroup struct {
 	CrmTicketCommentsService
 	CrmTicketResponseTemplatesService
 	CrmTicketsService
+	CrmContactFileUploadAndDownloadsService
+	CrmCustomerGroupService
+	CrmCustomersService
+	CrmProductService
+	CrmBusinessOpportunityService
+	CrmBillService
+	CrmContractService
+	CrmOrderService
+	CrmPaymentCollentionService
 }

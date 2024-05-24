@@ -9,24 +9,25 @@ import (
 type CrmOrderRouter struct {
 }
 
-// InitCrmOrderRouter 初始化 订单管理 路由信息
-func (s *CrmOrderRouter) InitCrmOrderRouter(Router *gin.RouterGroup,PublicRouter *gin.RouterGroup) {
+// InitCrmOrderRouter 初始化 crmOrder表 路由信息
+func (s *CrmOrderRouter) InitCrmOrderRouter(Router *gin.RouterGroup, PublicRouter *gin.RouterGroup) {
 	crmOrderRouter := Router.Group("crmOrder").Use(middleware.OperationRecord())
 	crmOrderRouterWithoutRecord := Router.Group("crmOrder")
 	crmOrderRouterWithoutAuth := PublicRouter.Group("crmOrder")
 
 	var crmOrderApi = v1.ApiGroupApp.CrmApiGroup.CrmOrderApi
 	{
-		crmOrderRouter.POST("createCrmOrder", crmOrderApi.CreateCrmOrder)   // 新建订单管理
-		crmOrderRouter.DELETE("deleteCrmOrder", crmOrderApi.DeleteCrmOrder) // 删除订单管理
-		crmOrderRouter.DELETE("deleteCrmOrderByIds", crmOrderApi.DeleteCrmOrderByIds) // 批量删除订单管理
-		crmOrderRouter.PUT("updateCrmOrder", crmOrderApi.UpdateCrmOrder)    // 更新订单管理
+		crmOrderRouter.POST("createCrmOrder", crmOrderApi.CreateCrmOrder)             // 新建crmOrder表
+		crmOrderRouter.DELETE("deleteCrmOrder", crmOrderApi.DeleteCrmOrder)           // 删除crmOrder表
+		crmOrderRouter.DELETE("deleteCrmOrderByIds", crmOrderApi.DeleteCrmOrderByIds) // 批量删除crmOrder表
+		crmOrderRouter.PUT("updateCrmOrder", crmOrderApi.UpdateCrmOrder)              // 更新crmOrder表
 	}
 	{
-		crmOrderRouterWithoutRecord.GET("findCrmOrder", crmOrderApi.FindCrmOrder)        // 根据ID获取订单管理
-		crmOrderRouterWithoutRecord.GET("getCrmOrderList", crmOrderApi.GetCrmOrderList)  // 获取订单管理列表
+		crmOrderRouterWithoutRecord.GET("findCrmOrder", crmOrderApi.FindCrmOrder)       // 根据ID获取crmOrder表
+		crmOrderRouterWithoutRecord.GET("getCrmOrderList", crmOrderApi.GetCrmOrderList) // 获取crmOrder表列表
+		//crmOrderRouterWithoutRecord.GET("getPageCrmOrderList", crmOrderApi.GetPageCrmOrderList) // 获取crmOrder表列表
 	}
 	{
-	    crmOrderRouterWithoutAuth.GET("getCrmOrderPublic", crmOrderApi.GetCrmOrderPublic)  // 获取订单管理列表
+		crmOrderRouterWithoutAuth.GET("getCrmOrderPublic", crmOrderApi.GetCrmOrderPublic) // 获取crmOrder表列表
 	}
 }

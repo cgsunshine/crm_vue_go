@@ -16,13 +16,13 @@ type CrmPaymentCollentionApi struct {
 var crmPaymentCollentionService = service.ServiceGroupApp.CrmServiceGroup.CrmPaymentCollentionService
 
 
-// CreateCrmPaymentCollention 创建回款管理
+// CreateCrmPaymentCollention 创建crmPaymentCollention表
 // @Tags CrmPaymentCollention
-// @Summary 创建回款管理
+// @Summary 创建crmPaymentCollention表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body crm.CrmPaymentCollention true "创建回款管理"
+// @Param data body crm.CrmPaymentCollention true "创建crmPaymentCollention表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"创建成功"}"
 // @Router /crmPaymentCollention/createCrmPaymentCollention [post]
 func (crmPaymentCollentionApi *CrmPaymentCollentionApi) CreateCrmPaymentCollention(c *gin.Context) {
@@ -41,13 +41,13 @@ func (crmPaymentCollentionApi *CrmPaymentCollentionApi) CreateCrmPaymentCollenti
 	}
 }
 
-// DeleteCrmPaymentCollention 删除回款管理
+// DeleteCrmPaymentCollention 删除crmPaymentCollention表
 // @Tags CrmPaymentCollention
-// @Summary 删除回款管理
+// @Summary 删除crmPaymentCollention表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body crm.CrmPaymentCollention true "删除回款管理"
+// @Param data body crm.CrmPaymentCollention true "删除crmPaymentCollention表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"删除成功"}"
 // @Router /crmPaymentCollention/deleteCrmPaymentCollention [delete]
 func (crmPaymentCollentionApi *CrmPaymentCollentionApi) DeleteCrmPaymentCollention(c *gin.Context) {
@@ -60,9 +60,9 @@ func (crmPaymentCollentionApi *CrmPaymentCollentionApi) DeleteCrmPaymentCollenti
 	}
 }
 
-// DeleteCrmPaymentCollentionByIds 批量删除回款管理
+// DeleteCrmPaymentCollentionByIds 批量删除crmPaymentCollention表
 // @Tags CrmPaymentCollention
-// @Summary 批量删除回款管理
+// @Summary 批量删除crmPaymentCollention表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
@@ -78,13 +78,13 @@ func (crmPaymentCollentionApi *CrmPaymentCollentionApi) DeleteCrmPaymentCollenti
 	}
 }
 
-// UpdateCrmPaymentCollention 更新回款管理
+// UpdateCrmPaymentCollention 更新crmPaymentCollention表
 // @Tags CrmPaymentCollention
-// @Summary 更新回款管理
+// @Summary 更新crmPaymentCollention表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body crm.CrmPaymentCollention true "更新回款管理"
+// @Param data body crm.CrmPaymentCollention true "更新crmPaymentCollention表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"更新成功"}"
 // @Router /crmPaymentCollention/updateCrmPaymentCollention [put]
 func (crmPaymentCollentionApi *CrmPaymentCollentionApi) UpdateCrmPaymentCollention(c *gin.Context) {
@@ -103,13 +103,13 @@ func (crmPaymentCollentionApi *CrmPaymentCollentionApi) UpdateCrmPaymentCollenti
 	}
 }
 
-// FindCrmPaymentCollention 用id查询回款管理
+// FindCrmPaymentCollention 用id查询crmPaymentCollention表
 // @Tags CrmPaymentCollention
-// @Summary 用id查询回款管理
+// @Summary 用id查询crmPaymentCollention表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data query crm.CrmPaymentCollention true "用id查询回款管理"
+// @Param data query crm.CrmPaymentCollention true "用id查询crmPaymentCollention表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"查询成功"}"
 // @Router /crmPaymentCollention/findCrmPaymentCollention [get]
 func (crmPaymentCollentionApi *CrmPaymentCollentionApi) FindCrmPaymentCollention(c *gin.Context) {
@@ -122,13 +122,13 @@ func (crmPaymentCollentionApi *CrmPaymentCollentionApi) FindCrmPaymentCollention
 	}
 }
 
-// GetCrmPaymentCollentionList 分页获取回款管理列表
+// GetCrmPaymentCollentionList 分页获取crmPaymentCollention表列表
 // @Tags CrmPaymentCollention
-// @Summary 分页获取回款管理列表
+// @Summary 分页获取crmPaymentCollention表列表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data query crmReq.CrmPaymentCollentionSearch true "分页获取回款管理列表"
+// @Param data query crmReq.CrmPaymentCollentionSearch true "分页获取crmPaymentCollention表列表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"获取成功"}"
 // @Router /crmPaymentCollention/getCrmPaymentCollentionList [get]
 func (crmPaymentCollentionApi *CrmPaymentCollentionApi) GetCrmPaymentCollentionList(c *gin.Context) {
@@ -151,18 +151,18 @@ func (crmPaymentCollentionApi *CrmPaymentCollentionApi) GetCrmPaymentCollentionL
     }
 }
 
-// GetCrmPaymentCollentionPublic 不需要鉴权的回款管理接口
+// GetCrmPaymentCollentionPublic 不需要鉴权的crmPaymentCollention表接口
 // @Tags CrmPaymentCollention
-// @Summary 不需要鉴权的回款管理接口
+// @Summary 不需要鉴权的crmPaymentCollention表接口
 // @accept application/json
 // @Produce application/json
-// @Param data query crmReq.CrmPaymentCollentionSearch true "分页获取回款管理列表"
+// @Param data query crmReq.CrmPaymentCollentionSearch true "分页获取crmPaymentCollention表列表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"获取成功"}"
 // @Router /crmPaymentCollention/getCrmPaymentCollentionList [get]
 func (crmPaymentCollentionApi *CrmPaymentCollentionApi) GetCrmPaymentCollentionPublic(c *gin.Context) {
     // 此接口不需要鉴权
     // 示例为返回了一个固定的消息接口，一般本接口用于C端服务，需要自己实现业务逻辑
     response.OkWithDetailed(gin.H{
-       "info": "不需要鉴权的回款管理接口信息",
+       "info": "不需要鉴权的crmPaymentCollention表接口信息",
     }, "获取成功", c)
 }

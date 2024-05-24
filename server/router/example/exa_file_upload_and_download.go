@@ -12,6 +12,8 @@ func (e *FileUploadAndDownloadRouter) InitFileUploadAndDownloadRouter(Router *gi
 	exaFileUploadAndDownloadApi := v1.ApiGroupApp.ExampleApiGroup.FileUploadAndDownloadApi
 	{
 		fileUploadAndDownloadRouter.POST("upload", exaFileUploadAndDownloadApi.UploadFile)                                 // 上传文件
+		fileUploadAndDownloadRouter.POST("uploadMultipartFile", exaFileUploadAndDownloadApi.UploadMultipartFile)           // 多文件上传
+		fileUploadAndDownloadRouter.POST("uploadContactFile", exaFileUploadAndDownloadApi.UploadContactFile)               // 单文件上传
 		fileUploadAndDownloadRouter.POST("getFileList", exaFileUploadAndDownloadApi.GetFileList)                           // 获取上传文件列表
 		fileUploadAndDownloadRouter.POST("deleteFile", exaFileUploadAndDownloadApi.DeleteFile)                             // 删除指定文件
 		fileUploadAndDownloadRouter.POST("editFileName", exaFileUploadAndDownloadApi.EditFileName)                         // 编辑文件名或者备注

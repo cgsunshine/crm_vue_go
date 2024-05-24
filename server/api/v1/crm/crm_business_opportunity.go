@@ -16,13 +16,13 @@ type CrmBusinessOpportunityApi struct {
 var crmBusinessOpportunityService = service.ServiceGroupApp.CrmServiceGroup.CrmBusinessOpportunityService
 
 
-// CreateCrmBusinessOpportunity 创建商机管理
+// CreateCrmBusinessOpportunity 创建crmBusinessOpportunity表
 // @Tags CrmBusinessOpportunity
-// @Summary 创建商机管理
+// @Summary 创建crmBusinessOpportunity表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body crm.CrmBusinessOpportunity true "创建商机管理"
+// @Param data body crm.CrmBusinessOpportunity true "创建crmBusinessOpportunity表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"创建成功"}"
 // @Router /crmBusinessOpportunity/createCrmBusinessOpportunity [post]
 func (crmBusinessOpportunityApi *CrmBusinessOpportunityApi) CreateCrmBusinessOpportunity(c *gin.Context) {
@@ -41,13 +41,13 @@ func (crmBusinessOpportunityApi *CrmBusinessOpportunityApi) CreateCrmBusinessOpp
 	}
 }
 
-// DeleteCrmBusinessOpportunity 删除商机管理
+// DeleteCrmBusinessOpportunity 删除crmBusinessOpportunity表
 // @Tags CrmBusinessOpportunity
-// @Summary 删除商机管理
+// @Summary 删除crmBusinessOpportunity表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body crm.CrmBusinessOpportunity true "删除商机管理"
+// @Param data body crm.CrmBusinessOpportunity true "删除crmBusinessOpportunity表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"删除成功"}"
 // @Router /crmBusinessOpportunity/deleteCrmBusinessOpportunity [delete]
 func (crmBusinessOpportunityApi *CrmBusinessOpportunityApi) DeleteCrmBusinessOpportunity(c *gin.Context) {
@@ -60,9 +60,9 @@ func (crmBusinessOpportunityApi *CrmBusinessOpportunityApi) DeleteCrmBusinessOpp
 	}
 }
 
-// DeleteCrmBusinessOpportunityByIds 批量删除商机管理
+// DeleteCrmBusinessOpportunityByIds 批量删除crmBusinessOpportunity表
 // @Tags CrmBusinessOpportunity
-// @Summary 批量删除商机管理
+// @Summary 批量删除crmBusinessOpportunity表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
@@ -78,13 +78,13 @@ func (crmBusinessOpportunityApi *CrmBusinessOpportunityApi) DeleteCrmBusinessOpp
 	}
 }
 
-// UpdateCrmBusinessOpportunity 更新商机管理
+// UpdateCrmBusinessOpportunity 更新crmBusinessOpportunity表
 // @Tags CrmBusinessOpportunity
-// @Summary 更新商机管理
+// @Summary 更新crmBusinessOpportunity表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body crm.CrmBusinessOpportunity true "更新商机管理"
+// @Param data body crm.CrmBusinessOpportunity true "更新crmBusinessOpportunity表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"更新成功"}"
 // @Router /crmBusinessOpportunity/updateCrmBusinessOpportunity [put]
 func (crmBusinessOpportunityApi *CrmBusinessOpportunityApi) UpdateCrmBusinessOpportunity(c *gin.Context) {
@@ -103,13 +103,13 @@ func (crmBusinessOpportunityApi *CrmBusinessOpportunityApi) UpdateCrmBusinessOpp
 	}
 }
 
-// FindCrmBusinessOpportunity 用id查询商机管理
+// FindCrmBusinessOpportunity 用id查询crmBusinessOpportunity表
 // @Tags CrmBusinessOpportunity
-// @Summary 用id查询商机管理
+// @Summary 用id查询crmBusinessOpportunity表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data query crm.CrmBusinessOpportunity true "用id查询商机管理"
+// @Param data query crm.CrmBusinessOpportunity true "用id查询crmBusinessOpportunity表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"查询成功"}"
 // @Router /crmBusinessOpportunity/findCrmBusinessOpportunity [get]
 func (crmBusinessOpportunityApi *CrmBusinessOpportunityApi) FindCrmBusinessOpportunity(c *gin.Context) {
@@ -122,13 +122,13 @@ func (crmBusinessOpportunityApi *CrmBusinessOpportunityApi) FindCrmBusinessOppor
 	}
 }
 
-// GetCrmBusinessOpportunityList 分页获取商机管理列表
+// GetCrmBusinessOpportunityList 分页获取crmBusinessOpportunity表列表
 // @Tags CrmBusinessOpportunity
-// @Summary 分页获取商机管理列表
+// @Summary 分页获取crmBusinessOpportunity表列表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data query crmReq.CrmBusinessOpportunitySearch true "分页获取商机管理列表"
+// @Param data query crmReq.CrmBusinessOpportunitySearch true "分页获取crmBusinessOpportunity表列表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"获取成功"}"
 // @Router /crmBusinessOpportunity/getCrmBusinessOpportunityList [get]
 func (crmBusinessOpportunityApi *CrmBusinessOpportunityApi) GetCrmBusinessOpportunityList(c *gin.Context) {
@@ -151,18 +151,18 @@ func (crmBusinessOpportunityApi *CrmBusinessOpportunityApi) GetCrmBusinessOpport
     }
 }
 
-// GetCrmBusinessOpportunityPublic 不需要鉴权的商机管理接口
+// GetCrmBusinessOpportunityPublic 不需要鉴权的crmBusinessOpportunity表接口
 // @Tags CrmBusinessOpportunity
-// @Summary 不需要鉴权的商机管理接口
+// @Summary 不需要鉴权的crmBusinessOpportunity表接口
 // @accept application/json
 // @Produce application/json
-// @Param data query crmReq.CrmBusinessOpportunitySearch true "分页获取商机管理列表"
+// @Param data query crmReq.CrmBusinessOpportunitySearch true "分页获取crmBusinessOpportunity表列表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"获取成功"}"
 // @Router /crmBusinessOpportunity/getCrmBusinessOpportunityList [get]
 func (crmBusinessOpportunityApi *CrmBusinessOpportunityApi) GetCrmBusinessOpportunityPublic(c *gin.Context) {
     // 此接口不需要鉴权
     // 示例为返回了一个固定的消息接口，一般本接口用于C端服务，需要自己实现业务逻辑
     response.OkWithDetailed(gin.H{
-       "info": "不需要鉴权的商机管理接口信息",
+       "info": "不需要鉴权的crmBusinessOpportunity表接口信息",
     }, "获取成功", c)
 }

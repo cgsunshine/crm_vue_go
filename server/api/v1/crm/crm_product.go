@@ -16,13 +16,13 @@ type CrmProductApi struct {
 var crmProductService = service.ServiceGroupApp.CrmServiceGroup.CrmProductService
 
 
-// CreateCrmProduct 创建产品管理
+// CreateCrmProduct 创建crmProduct表
 // @Tags CrmProduct
-// @Summary 创建产品管理
+// @Summary 创建crmProduct表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body crm.CrmProduct true "创建产品管理"
+// @Param data body crm.CrmProduct true "创建crmProduct表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"创建成功"}"
 // @Router /crmProduct/createCrmProduct [post]
 func (crmProductApi *CrmProductApi) CreateCrmProduct(c *gin.Context) {
@@ -41,13 +41,13 @@ func (crmProductApi *CrmProductApi) CreateCrmProduct(c *gin.Context) {
 	}
 }
 
-// DeleteCrmProduct 删除产品管理
+// DeleteCrmProduct 删除crmProduct表
 // @Tags CrmProduct
-// @Summary 删除产品管理
+// @Summary 删除crmProduct表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body crm.CrmProduct true "删除产品管理"
+// @Param data body crm.CrmProduct true "删除crmProduct表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"删除成功"}"
 // @Router /crmProduct/deleteCrmProduct [delete]
 func (crmProductApi *CrmProductApi) DeleteCrmProduct(c *gin.Context) {
@@ -60,9 +60,9 @@ func (crmProductApi *CrmProductApi) DeleteCrmProduct(c *gin.Context) {
 	}
 }
 
-// DeleteCrmProductByIds 批量删除产品管理
+// DeleteCrmProductByIds 批量删除crmProduct表
 // @Tags CrmProduct
-// @Summary 批量删除产品管理
+// @Summary 批量删除crmProduct表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
@@ -78,13 +78,13 @@ func (crmProductApi *CrmProductApi) DeleteCrmProductByIds(c *gin.Context) {
 	}
 }
 
-// UpdateCrmProduct 更新产品管理
+// UpdateCrmProduct 更新crmProduct表
 // @Tags CrmProduct
-// @Summary 更新产品管理
+// @Summary 更新crmProduct表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body crm.CrmProduct true "更新产品管理"
+// @Param data body crm.CrmProduct true "更新crmProduct表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"更新成功"}"
 // @Router /crmProduct/updateCrmProduct [put]
 func (crmProductApi *CrmProductApi) UpdateCrmProduct(c *gin.Context) {
@@ -103,13 +103,13 @@ func (crmProductApi *CrmProductApi) UpdateCrmProduct(c *gin.Context) {
 	}
 }
 
-// FindCrmProduct 用id查询产品管理
+// FindCrmProduct 用id查询crmProduct表
 // @Tags CrmProduct
-// @Summary 用id查询产品管理
+// @Summary 用id查询crmProduct表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data query crm.CrmProduct true "用id查询产品管理"
+// @Param data query crm.CrmProduct true "用id查询crmProduct表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"查询成功"}"
 // @Router /crmProduct/findCrmProduct [get]
 func (crmProductApi *CrmProductApi) FindCrmProduct(c *gin.Context) {
@@ -122,13 +122,13 @@ func (crmProductApi *CrmProductApi) FindCrmProduct(c *gin.Context) {
 	}
 }
 
-// GetCrmProductList 分页获取产品管理列表
+// GetCrmProductList 分页获取crmProduct表列表
 // @Tags CrmProduct
-// @Summary 分页获取产品管理列表
+// @Summary 分页获取crmProduct表列表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data query crmReq.CrmProductSearch true "分页获取产品管理列表"
+// @Param data query crmReq.CrmProductSearch true "分页获取crmProduct表列表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"获取成功"}"
 // @Router /crmProduct/getCrmProductList [get]
 func (crmProductApi *CrmProductApi) GetCrmProductList(c *gin.Context) {
@@ -151,18 +151,18 @@ func (crmProductApi *CrmProductApi) GetCrmProductList(c *gin.Context) {
     }
 }
 
-// GetCrmProductPublic 不需要鉴权的产品管理接口
+// GetCrmProductPublic 不需要鉴权的crmProduct表接口
 // @Tags CrmProduct
-// @Summary 不需要鉴权的产品管理接口
+// @Summary 不需要鉴权的crmProduct表接口
 // @accept application/json
 // @Produce application/json
-// @Param data query crmReq.CrmProductSearch true "分页获取产品管理列表"
+// @Param data query crmReq.CrmProductSearch true "分页获取crmProduct表列表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"获取成功"}"
 // @Router /crmProduct/getCrmProductList [get]
 func (crmProductApi *CrmProductApi) GetCrmProductPublic(c *gin.Context) {
     // 此接口不需要鉴权
     // 示例为返回了一个固定的消息接口，一般本接口用于C端服务，需要自己实现业务逻辑
     response.OkWithDetailed(gin.H{
-       "info": "不需要鉴权的产品管理接口信息",
+       "info": "不需要鉴权的crmProduct表接口信息",
     }, "获取成功", c)
 }

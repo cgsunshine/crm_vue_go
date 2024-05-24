@@ -16,13 +16,13 @@ type CrmOrderApi struct {
 var crmOrderService = service.ServiceGroupApp.CrmServiceGroup.CrmOrderService
 
 
-// CreateCrmOrder 创建订单管理
+// CreateCrmOrder 创建crmOrder表
 // @Tags CrmOrder
-// @Summary 创建订单管理
+// @Summary 创建crmOrder表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body crm.CrmOrder true "创建订单管理"
+// @Param data body crm.CrmOrder true "创建crmOrder表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"创建成功"}"
 // @Router /crmOrder/createCrmOrder [post]
 func (crmOrderApi *CrmOrderApi) CreateCrmOrder(c *gin.Context) {
@@ -41,13 +41,13 @@ func (crmOrderApi *CrmOrderApi) CreateCrmOrder(c *gin.Context) {
 	}
 }
 
-// DeleteCrmOrder 删除订单管理
+// DeleteCrmOrder 删除crmOrder表
 // @Tags CrmOrder
-// @Summary 删除订单管理
+// @Summary 删除crmOrder表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body crm.CrmOrder true "删除订单管理"
+// @Param data body crm.CrmOrder true "删除crmOrder表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"删除成功"}"
 // @Router /crmOrder/deleteCrmOrder [delete]
 func (crmOrderApi *CrmOrderApi) DeleteCrmOrder(c *gin.Context) {
@@ -60,9 +60,9 @@ func (crmOrderApi *CrmOrderApi) DeleteCrmOrder(c *gin.Context) {
 	}
 }
 
-// DeleteCrmOrderByIds 批量删除订单管理
+// DeleteCrmOrderByIds 批量删除crmOrder表
 // @Tags CrmOrder
-// @Summary 批量删除订单管理
+// @Summary 批量删除crmOrder表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
@@ -78,13 +78,13 @@ func (crmOrderApi *CrmOrderApi) DeleteCrmOrderByIds(c *gin.Context) {
 	}
 }
 
-// UpdateCrmOrder 更新订单管理
+// UpdateCrmOrder 更新crmOrder表
 // @Tags CrmOrder
-// @Summary 更新订单管理
+// @Summary 更新crmOrder表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body crm.CrmOrder true "更新订单管理"
+// @Param data body crm.CrmOrder true "更新crmOrder表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"更新成功"}"
 // @Router /crmOrder/updateCrmOrder [put]
 func (crmOrderApi *CrmOrderApi) UpdateCrmOrder(c *gin.Context) {
@@ -103,13 +103,13 @@ func (crmOrderApi *CrmOrderApi) UpdateCrmOrder(c *gin.Context) {
 	}
 }
 
-// FindCrmOrder 用id查询订单管理
+// FindCrmOrder 用id查询crmOrder表
 // @Tags CrmOrder
-// @Summary 用id查询订单管理
+// @Summary 用id查询crmOrder表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data query crm.CrmOrder true "用id查询订单管理"
+// @Param data query crm.CrmOrder true "用id查询crmOrder表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"查询成功"}"
 // @Router /crmOrder/findCrmOrder [get]
 func (crmOrderApi *CrmOrderApi) FindCrmOrder(c *gin.Context) {
@@ -122,13 +122,13 @@ func (crmOrderApi *CrmOrderApi) FindCrmOrder(c *gin.Context) {
 	}
 }
 
-// GetCrmOrderList 分页获取订单管理列表
+// GetCrmOrderList 分页获取crmOrder表列表
 // @Tags CrmOrder
-// @Summary 分页获取订单管理列表
+// @Summary 分页获取crmOrder表列表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data query crmReq.CrmOrderSearch true "分页获取订单管理列表"
+// @Param data query crmReq.CrmOrderSearch true "分页获取crmOrder表列表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"获取成功"}"
 // @Router /crmOrder/getCrmOrderList [get]
 func (crmOrderApi *CrmOrderApi) GetCrmOrderList(c *gin.Context) {
@@ -151,18 +151,18 @@ func (crmOrderApi *CrmOrderApi) GetCrmOrderList(c *gin.Context) {
     }
 }
 
-// GetCrmOrderPublic 不需要鉴权的订单管理接口
+// GetCrmOrderPublic 不需要鉴权的crmOrder表接口
 // @Tags CrmOrder
-// @Summary 不需要鉴权的订单管理接口
+// @Summary 不需要鉴权的crmOrder表接口
 // @accept application/json
 // @Produce application/json
-// @Param data query crmReq.CrmOrderSearch true "分页获取订单管理列表"
+// @Param data query crmReq.CrmOrderSearch true "分页获取crmOrder表列表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"获取成功"}"
 // @Router /crmOrder/getCrmOrderList [get]
 func (crmOrderApi *CrmOrderApi) GetCrmOrderPublic(c *gin.Context) {
     // 此接口不需要鉴权
     // 示例为返回了一个固定的消息接口，一般本接口用于C端服务，需要自己实现业务逻辑
     response.OkWithDetailed(gin.H{
-       "info": "不需要鉴权的订单管理接口信息",
+       "info": "不需要鉴权的crmOrder表接口信息",
     }, "获取成功", c)
 }

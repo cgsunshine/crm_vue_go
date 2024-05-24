@@ -9,7 +9,7 @@ import (
 type CrmContractRouter struct {
 }
 
-// InitCrmContractRouter 初始化 合同管理 路由信息
+// InitCrmContractRouter 初始化 crmContract表 路由信息
 func (s *CrmContractRouter) InitCrmContractRouter(Router *gin.RouterGroup,PublicRouter *gin.RouterGroup) {
 	crmContractRouter := Router.Group("crmContract").Use(middleware.OperationRecord())
 	crmContractRouterWithoutRecord := Router.Group("crmContract")
@@ -17,16 +17,16 @@ func (s *CrmContractRouter) InitCrmContractRouter(Router *gin.RouterGroup,Public
 
 	var crmContractApi = v1.ApiGroupApp.CrmApiGroup.CrmContractApi
 	{
-		crmContractRouter.POST("createCrmContract", crmContractApi.CreateCrmContract)   // 新建合同管理
-		crmContractRouter.DELETE("deleteCrmContract", crmContractApi.DeleteCrmContract) // 删除合同管理
-		crmContractRouter.DELETE("deleteCrmContractByIds", crmContractApi.DeleteCrmContractByIds) // 批量删除合同管理
-		crmContractRouter.PUT("updateCrmContract", crmContractApi.UpdateCrmContract)    // 更新合同管理
+		crmContractRouter.POST("createCrmContract", crmContractApi.CreateCrmContract)   // 新建crmContract表
+		crmContractRouter.DELETE("deleteCrmContract", crmContractApi.DeleteCrmContract) // 删除crmContract表
+		crmContractRouter.DELETE("deleteCrmContractByIds", crmContractApi.DeleteCrmContractByIds) // 批量删除crmContract表
+		crmContractRouter.PUT("updateCrmContract", crmContractApi.UpdateCrmContract)    // 更新crmContract表
 	}
 	{
-		crmContractRouterWithoutRecord.GET("findCrmContract", crmContractApi.FindCrmContract)        // 根据ID获取合同管理
-		crmContractRouterWithoutRecord.GET("getCrmContractList", crmContractApi.GetCrmContractList)  // 获取合同管理列表
+		crmContractRouterWithoutRecord.GET("findCrmContract", crmContractApi.FindCrmContract)        // 根据ID获取crmContract表
+		crmContractRouterWithoutRecord.GET("getCrmContractList", crmContractApi.GetCrmContractList)  // 获取crmContract表列表
 	}
 	{
-	    crmContractRouterWithoutAuth.GET("getCrmContractPublic", crmContractApi.GetCrmContractPublic)  // 获取合同管理列表
+	    crmContractRouterWithoutAuth.GET("getCrmContractPublic", crmContractApi.GetCrmContractPublic)  // 获取crmContract表列表
 	}
 }

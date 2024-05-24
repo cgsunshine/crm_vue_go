@@ -16,6 +16,36 @@
       <el-date-picker v-model="searchInfo.endCreatedAt" type="datetime" placeholder="结束日期" :disabled-date="time=> searchInfo.startCreatedAt ? time.getTime() < searchInfo.startCreatedAt.getTime() : false"></el-date-picker>
       </el-form-item>
       
+        <el-form-item label="客户名" prop="customerName">
+         <el-input v-model="searchInfo.customerName" placeholder="搜索条件" />
+
+        </el-form-item>
+        <el-form-item label="客户手机号" prop="customerPhoneData">
+         <el-input v-model="searchInfo.customerPhoneData" placeholder="搜索条件" />
+
+        </el-form-item>
+        <el-form-item label="管理ID 销售代表" prop="userId">
+            
+             <el-input v-model.number="searchInfo.userId" placeholder="搜索条件" />
+
+        </el-form-item>
+        <el-form-item label="客户公司" prop="customerCompany">
+         <el-input v-model="searchInfo.customerCompany" placeholder="搜索条件" />
+
+        </el-form-item>
+        <el-form-item label="客户地址" prop="customerAddress">
+         <el-input v-model="searchInfo.customerAddress" placeholder="搜索条件" />
+
+        </el-form-item>
+           <el-form-item label="用户状态" prop="customerStatus">
+            <el-select v-model="searchInfo.customerStatus" clearable placeholder="请选择" @clear="()=>{searchInfo.customerStatus=undefined}">
+              <el-option v-for="(item,key) in customer_statusOptions" :key="key" :label="item.label" :value="item.value" />
+            </el-select>
+            </el-form-item>
+        <el-form-item label="客户分组" prop="customerGroup">
+         <el-input v-model="searchInfo.customerGroup" placeholder="搜索条件" />
+
+        </el-form-item>
         <el-form-item>
           <el-button type="primary" icon="search" @click="onSubmit">查询</el-button>
           <el-button icon="refresh" @click="onReset">重置</el-button>
@@ -43,12 +73,17 @@
         
         <el-table-column align="left" label="客户名" prop="customerName" width="120" />
         <el-table-column align="left" label="客户手机号" prop="customerPhoneData" width="120" />
-        <el-table-column align="left" label="管理ID 销售代表" prop="sysUserId" width="120" />
-        <el-table-column align="left" label="管理角色ID" prop="sysUserAuthorityId" width="120" />
+        <el-table-column align="left" label="管理ID 销售代表" prop="userId" width="120" />
+        <el-table-column align="left" label="管理角色ID" prop="userAuthorityId" width="120" />
         <el-table-column align="left" label="客户公司" prop="customerCompany" width="120" />
         <el-table-column align="left" label="客户地址" prop="customerAddress" width="120" />
         <el-table-column align="left" label="描述" prop="description" width="120" />
-        <el-table-column align="left" label="用户状态" prop="customerStatus" width="120" />
+        <el-table-column align="left" label="用户状态" prop="customerStatus" width="120">
+            <template #default="scope">
+            {{ filterDict(scope.row.customerStatus,customer_statusOptions) }}
+            </template>
+        </el-table-column>
+        <el-table-column align="left" label="客户分组id" prop="customerGroupId" width="120" />
         <el-table-column align="left" label="客户分组" prop="customerGroup" width="120" />
         <el-table-column align="left" label="操作" fixed="right" min-width="240">
             <template #default="scope">
@@ -91,11 +126,11 @@
             <el-form-item label="客户手机号:"  prop="customerPhoneData" >
               <el-input v-model="formData.customerPhoneData" :clearable="true"  placeholder="请输入客户手机号" />
             </el-form-item>
-            <el-form-item label="管理ID 销售代表:"  prop="sysUserId" >
-              <el-input v-model.number="formData.sysUserId" :clearable="true" placeholder="请输入管理ID 销售代表" />
+            <el-form-item label="管理ID 销售代表:"  prop="userId" >
+              <el-input v-model.number="formData.userId" :clearable="true" placeholder="请输入管理ID 销售代表" />
             </el-form-item>
-            <el-form-item label="管理角色ID:"  prop="sysUserAuthorityId" >
-              <el-input v-model.number="formData.sysUserAuthorityId" :clearable="true" placeholder="请输入管理角色ID" />
+            <el-form-item label="管理角色ID:"  prop="userAuthorityId" >
+              <el-input v-model.number="formData.userAuthorityId" :clearable="true" placeholder="请输入管理角色ID" />
             </el-form-item>
             <el-form-item label="客户公司:"  prop="customerCompany" >
               <el-input v-model="formData.customerCompany" :clearable="true"  placeholder="请输入客户公司" />
@@ -107,7 +142,12 @@
               <el-input v-model="formData.description" :clearable="true"  placeholder="请输入描述" />
             </el-form-item>
             <el-form-item label="用户状态:"  prop="customerStatus" >
-              <el-input v-model="formData.customerStatus" :clearable="true"  placeholder="请输入用户状态" />
+              <el-select v-model="formData.customerStatus" placeholder="请选择用户状态" style="width:100%" :clearable="true" >
+                <el-option v-for="(item,key) in customer_statusOptions" :key="key" :label="item.label" :value="item.value" />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="客户分组id:"  prop="customerGroupId" >
+              <el-input v-model.number="formData.customerGroupId" :clearable="true" placeholder="请输入客户分组id" />
             </el-form-item>
             <el-form-item label="客户分组:"  prop="customerGroup" >
               <el-input v-model="formData.customerGroup" :clearable="true"  placeholder="请输入客户分组" />
@@ -129,10 +169,10 @@
                         {{ formData.customerPhoneData }}
                 </el-descriptions-item>
                 <el-descriptions-item label="管理ID 销售代表">
-                        {{ formData.sysUserId }}
+                        {{ formData.userId }}
                 </el-descriptions-item>
                 <el-descriptions-item label="管理角色ID">
-                        {{ formData.sysUserAuthorityId }}
+                        {{ formData.userAuthorityId }}
                 </el-descriptions-item>
                 <el-descriptions-item label="客户公司">
                         {{ formData.customerCompany }}
@@ -144,7 +184,10 @@
                         {{ formData.description }}
                 </el-descriptions-item>
                 <el-descriptions-item label="用户状态">
-                        {{ formData.customerStatus }}
+                        {{ filterDict(formData.customerStatus,customer_statusOptions) }}
+                </el-descriptions-item>
+                <el-descriptions-item label="客户分组id">
+                        {{ formData.customerGroupId }}
                 </el-descriptions-item>
                 <el-descriptions-item label="客户分组">
                         {{ formData.customerGroup }}
@@ -174,15 +217,17 @@ defineOptions({
 })
 
 // 自动化生成的字典（可能为空）以及字段
+const customer_statusOptions = ref([])
 const formData = ref({
         customerName: '',
         customerPhoneData: '',
-        sysUserId: 0,
-        sysUserAuthorityId: 0,
+        userId: 0,
+        userAuthorityId: 0,
         customerCompany: '',
         customerAddress: '',
         description: '',
         customerStatus: '',
+        customerGroupId: 0,
         customerGroup: '',
         })
 
@@ -262,6 +307,7 @@ getTableData()
 
 // 获取需要的字典 可能为空 按需保留
 const setOptions = async () =>{
+    customer_statusOptions.value = await getDictFunc('customer_status')
 }
 
 // 获取需要的字典 可能为空 按需保留
@@ -379,12 +425,13 @@ const closeDetailShow = () => {
   formData.value = {
           customerName: '',
           customerPhoneData: '',
-          sysUserId: 0,
-          sysUserAuthorityId: 0,
+          userId: 0,
+          userAuthorityId: 0,
           customerCompany: '',
           customerAddress: '',
           description: '',
           customerStatus: '',
+          customerGroupId: 0,
           customerGroup: '',
           }
 }
@@ -402,12 +449,13 @@ const closeDialog = () => {
     formData.value = {
         customerName: '',
         customerPhoneData: '',
-        sysUserId: 0,
-        sysUserAuthorityId: 0,
+        userId: 0,
+        userAuthorityId: 0,
         customerCompany: '',
         customerAddress: '',
         description: '',
         customerStatus: '',
+        customerGroupId: 0,
         customerGroup: '',
         }
 }

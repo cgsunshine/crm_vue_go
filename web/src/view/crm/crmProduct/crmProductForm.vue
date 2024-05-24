@@ -5,35 +5,14 @@
         <el-form-item label="产品名称:" prop="productName">
           <el-input v-model="formData.productName" :clearable="true"  placeholder="请输入产品名称" />
        </el-form-item>
-        <el-form-item label="客户手机号:" prop="customerPhoneData">
-          <el-input v-model="formData.customerPhoneData" :clearable="true"  placeholder="请输入客户手机号" />
-       </el-form-item>
-        <el-form-item label="管理ID 销售代表:" prop="sysUserId">
-          <el-input v-model.number="formData.sysUserId" :clearable="true" placeholder="请输入" />
-       </el-form-item>
-        <el-form-item label="管理角色ID:" prop="sysUserAuthorityId">
-          <el-input v-model.number="formData.sysUserAuthorityId" :clearable="true" placeholder="请输入" />
-       </el-form-item>
-        <el-form-item label="客户公司:" prop="customerCompany">
-          <el-input v-model="formData.customerCompany" :clearable="true"  placeholder="请输入客户公司" />
-       </el-form-item>
-        <el-form-item label="客户地址:" prop="customerAddress">
-          <el-input v-model="formData.customerAddress" :clearable="true"  placeholder="请输入客户地址" />
+        <el-form-item label="管理ID 销售代表:" prop="userId">
+          <el-input v-model.number="formData.userId" :clearable="true" placeholder="请输入" />
        </el-form-item>
         <el-form-item label="备注:" prop="description">
           <el-input v-model="formData.description" :clearable="true"  placeholder="请输入备注" />
        </el-form-item>
-        <el-form-item label="用户状态:" prop="customerStatus">
-          <el-input v-model="formData.customerStatus" :clearable="true"  placeholder="请输入用户状态" />
-       </el-form-item>
-        <el-form-item label="产品分组名称:" prop="productGroup">
-          <el-input v-model="formData.productGroup" :clearable="true"  placeholder="请输入产品分组名称" />
-       </el-form-item>
         <el-form-item label="产品分组id:" prop="productGroupId">
           <el-input v-model.number="formData.productGroupId" :clearable="true" placeholder="请输入" />
-       </el-form-item>
-        <el-form-item label="产品类型:" prop="productType">
-          <el-input v-model="formData.productType" :clearable="true"  placeholder="请输入产品类型" />
        </el-form-item>
         <el-form-item label="产品类型id:" prop="productTypeId">
           <el-input v-model.number="formData.productTypeId" :clearable="true" placeholder="请输入" />
@@ -49,6 +28,9 @@
        </el-form-item>
         <el-form-item label="产品销售价格:" prop="salesPrice">
           <el-input-number v-model="formData.salesPrice" :precision="2" :clearable="true"></el-input-number>
+       </el-form-item>
+        <el-form-item label="资源id:" prop="resourceId">
+          <el-input v-model.number="formData.resourceId" :clearable="true" placeholder="请输入" />
        </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="save">保存</el-button>
@@ -82,21 +64,15 @@ const router = useRouter()
 const type = ref('')
 const formData = ref({
             productName: '',
-            customerPhoneData: '',
-            sysUserId: 0,
-            sysUserAuthorityId: 0,
-            customerCompany: '',
-            customerAddress: '',
+            userId: 0,
             description: '',
-            customerStatus: '',
-            productGroup: '',
             productGroupId: 0,
-            productType: '',
             productTypeId: 0,
             inventory: 0,
             price: 0,
             discountPrice: 0,
             salesPrice: 0,
+            resourceId: 0,
         })
 // 验证规则
 const rule = reactive({

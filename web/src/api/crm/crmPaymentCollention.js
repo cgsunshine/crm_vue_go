@@ -1,11 +1,11 @@
 import service from '@/utils/request'
 
 // @Tags CrmPaymentCollention
-// @Summary 创建回款管理
+// @Summary 创建crmPaymentCollention表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body model.CrmPaymentCollention true "创建回款管理"
+// @Param data body model.CrmPaymentCollention true "创建crmPaymentCollention表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"创建成功"}"
 // @Router /crmPaymentCollention/createCrmPaymentCollention [post]
 export const createCrmPaymentCollention = (data) => {
@@ -17,11 +17,11 @@ export const createCrmPaymentCollention = (data) => {
 }
 
 // @Tags CrmPaymentCollention
-// @Summary 删除回款管理
+// @Summary 删除crmPaymentCollention表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body model.CrmPaymentCollention true "删除回款管理"
+// @Param data body model.CrmPaymentCollention true "删除crmPaymentCollention表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"删除成功"}"
 // @Router /crmPaymentCollention/deleteCrmPaymentCollention [delete]
 export const deleteCrmPaymentCollention = (params) => {
@@ -33,11 +33,11 @@ export const deleteCrmPaymentCollention = (params) => {
 }
 
 // @Tags CrmPaymentCollention
-// @Summary 批量删除回款管理
+// @Summary 批量删除crmPaymentCollention表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body request.IdsReq true "批量删除回款管理"
+// @Param data body request.IdsReq true "批量删除crmPaymentCollention表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"删除成功"}"
 // @Router /crmPaymentCollention/deleteCrmPaymentCollention [delete]
 export const deleteCrmPaymentCollentionByIds = (params) => {
@@ -49,11 +49,11 @@ export const deleteCrmPaymentCollentionByIds = (params) => {
 }
 
 // @Tags CrmPaymentCollention
-// @Summary 更新回款管理
+// @Summary 更新crmPaymentCollention表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body model.CrmPaymentCollention true "更新回款管理"
+// @Param data body model.CrmPaymentCollention true "更新crmPaymentCollention表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"更新成功"}"
 // @Router /crmPaymentCollention/updateCrmPaymentCollention [put]
 export const updateCrmPaymentCollention = (data) => {
@@ -65,11 +65,11 @@ export const updateCrmPaymentCollention = (data) => {
 }
 
 // @Tags CrmPaymentCollention
-// @Summary 用id查询回款管理
+// @Summary 用id查询crmPaymentCollention表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data query model.CrmPaymentCollention true "用id查询回款管理"
+// @Param data query model.CrmPaymentCollention true "用id查询crmPaymentCollention表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"查询成功"}"
 // @Router /crmPaymentCollention/findCrmPaymentCollention [get]
 export const findCrmPaymentCollention = (params) => {
@@ -81,11 +81,11 @@ export const findCrmPaymentCollention = (params) => {
 }
 
 // @Tags CrmPaymentCollention
-// @Summary 分页获取回款管理列表
+// @Summary 分页获取crmPaymentCollention表列表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data query request.PageInfo true "分页获取回款管理列表"
+// @Param data query request.PageInfo true "分页获取crmPaymentCollention表列表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"获取成功"}"
 // @Router /crmPaymentCollention/getCrmPaymentCollentionList [get]
 export const getCrmPaymentCollentionList = (params) => {

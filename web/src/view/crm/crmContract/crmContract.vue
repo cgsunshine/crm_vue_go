@@ -16,6 +16,65 @@
       <el-date-picker v-model="searchInfo.endCreatedAt" type="datetime" placeholder="结束日期" :disabled-date="time=> searchInfo.startCreatedAt ? time.getTime() < searchInfo.startCreatedAt.getTime() : false"></el-date-picker>
       </el-form-item>
       
+        <el-form-item label="申请时间" prop="applicationTime">
+            
+            <template #label>
+            <span>
+              申请时间
+              <el-tooltip content="搜索范围是开始日期（包含）至结束日期（不包含）">
+                <el-icon><QuestionFilled /></el-icon>
+              </el-tooltip>
+            </span>
+          </template>
+            <el-date-picker v-model="searchInfo.startApplicationTime" type="datetime" placeholder="开始日期" :disabled-date="time=> searchInfo.endApplicationTime ? time.getTime() > searchInfo.endApplicationTime.getTime() : false"></el-date-picker>
+            —
+            <el-date-picker v-model="searchInfo.endApplicationTime" type="datetime" placeholder="结束日期" :disabled-date="time=> searchInfo.startApplicationTime ? time.getTime() < searchInfo.startApplicationTime.getTime() : false"></el-date-picker>
+
+        </el-form-item>
+        <el-form-item label="合同名称" prop="contractName">
+         <el-input v-model="searchInfo.contractName" placeholder="搜索条件" />
+
+        </el-form-item>
+           <el-form-item label="合同状态" prop="contractStatus">
+            <el-select v-model="searchInfo.contractStatus" clearable placeholder="请选择" @clear="()=>{searchInfo.contractStatus=undefined}">
+              <el-option v-for="(item,key) in contract_statusOptions" :key="key" :label="item.label" :value="item.value" />
+            </el-select>
+            </el-form-item>
+        <el-form-item label="客户ID" prop="customerId">
+            
+             <el-input v-model.number="searchInfo.customerId" placeholder="搜索条件" />
+
+        </el-form-item>
+        <el-form-item label="到期时间" prop="expirationTime">
+            
+            <template #label>
+            <span>
+              到期时间
+              <el-tooltip content="搜索范围是开始日期（包含）至结束日期（不包含）">
+                <el-icon><QuestionFilled /></el-icon>
+              </el-tooltip>
+            </span>
+          </template>
+            <el-date-picker v-model="searchInfo.startExpirationTime" type="datetime" placeholder="开始日期" :disabled-date="time=> searchInfo.endExpirationTime ? time.getTime() > searchInfo.endExpirationTime.getTime() : false"></el-date-picker>
+            —
+            <el-date-picker v-model="searchInfo.endExpirationTime" type="datetime" placeholder="结束日期" :disabled-date="time=> searchInfo.startExpirationTime ? time.getTime() < searchInfo.startExpirationTime.getTime() : false"></el-date-picker>
+
+        </el-form-item>
+        <el-form-item label="订单ID" prop="orderId">
+            
+             <el-input v-model.number="searchInfo.orderId" placeholder="搜索条件" />
+
+        </el-form-item>
+           <el-form-item label="审核结果" prop="reviewResult">
+            <el-select v-model="searchInfo.reviewResult" clearable placeholder="请选择" @clear="()=>{searchInfo.reviewResult=undefined}">
+              <el-option v-for="(item,key) in review_resultOptions" :key="key" :label="item.label" :value="item.value" />
+            </el-select>
+            </el-form-item>
+           <el-form-item label="审核状态" prop="reviewStatus">
+            <el-select v-model="searchInfo.reviewStatus" clearable placeholder="请选择" @clear="()=>{searchInfo.reviewStatus=undefined}">
+              <el-option v-for="(item,key) in review_statusOptions" :key="key" :label="item.label" :value="item.value" />
+            </el-select>
+            </el-form-item>
         <el-form-item>
           <el-button type="primary" icon="search" @click="onSubmit">查询</el-button>
           <el-button icon="refresh" @click="onReset">重置</el-button>
@@ -41,25 +100,34 @@
             <template #default="scope">{{ formatDate(scope.row.CreatedAt) }}</template>
         </el-table-column>
         
-        <el-table-column align="left" label="产品名称" prop="orderId" width="120" />
-        <el-table-column align="left" label="产品ID" prop="customerId" width="120" />
-        <el-table-column align="left" label="管理ID 销售代表" prop="userId" width="120" />
-        <el-table-column align="left" label="备注" prop="description" width="120" />
-        <el-table-column align="left" label="产品原价" prop="price" width="120" />
-        <el-table-column align="left" label="产品折扣价" prop="salesPrice" width="120" />
-        <el-table-column align="left" label="币种" prop="currency" width="120" />
-        <el-table-column align="left" label="折扣率" prop="discountRate" width="120" />
-        <el-table-column align="left" label="合同类型" prop="contractTypeId" width="120" />
          <el-table-column align="left" label="申请时间" width="180">
             <template #default="scope">{{ formatDate(scope.row.applicationTime) }}</template>
          </el-table-column>
+        <el-table-column align="left" label="合同文件路径" prop="contractFile" width="120" />
+        <el-table-column align="left" label="合同名称" prop="contractName" width="120" />
+        <el-table-column align="left" label="合同状态" prop="contractStatus" width="120">
+            <template #default="scope">
+            {{ filterDict(scope.row.contractStatus,contract_statusOptions) }}
+            </template>
+        </el-table-column>
+        <el-table-column align="left" label="合同类型" prop="contractTypeId" width="120" />
+        <el-table-column align="left" label="客户ID" prop="customerId" width="120" />
+        <el-table-column align="left" label="备注" prop="description" width="120" />
          <el-table-column align="left" label="到期时间" width="180">
             <template #default="scope">{{ formatDate(scope.row.expirationTime) }}</template>
          </el-table-column>
-        <el-table-column align="left" label="合同状态" prop="contractStatus" width="120" />
-        <el-table-column align="left" label="审核状态" prop="reviewStatus" width="120" />
-        <el-table-column align="left" label="审核结果" prop="reviewResult" width="120" />
-        <el-table-column align="left" label="合同文件" prop="contractDocument" width="120" />
+        <el-table-column align="left" label="订单ID" prop="orderId" width="120" />
+        <el-table-column align="left" label="审核结果" prop="reviewResult" width="120">
+            <template #default="scope">
+            {{ filterDict(scope.row.reviewResult,review_resultOptions) }}
+            </template>
+        </el-table-column>
+        <el-table-column align="left" label="审核状态" prop="reviewStatus" width="120">
+            <template #default="scope">
+            {{ filterDict(scope.row.reviewStatus,review_statusOptions) }}
+            </template>
+        </el-table-column>
+        <el-table-column align="left" label="管理ID 销售代表" prop="userId" width="120" />
         <el-table-column align="left" label="操作" fixed="right" min-width="240">
             <template #default="scope">
             <el-button type="primary" link class="table-button" @click="getDetails(scope.row)">
@@ -95,50 +163,47 @@
             </template>
 
           <el-form :model="formData" label-position="top" ref="elFormRef" :rules="rule" label-width="80px">
-            <el-form-item label="产品名称:"  prop="orderId" >
-              <el-input v-model.number="formData.orderId" :clearable="true" placeholder="请输入产品名称" />
+            <el-form-item label="申请时间:"  prop="applicationTime" >
+              <el-date-picker v-model="formData.applicationTime" type="date" style="width:100%" placeholder="选择日期" :clearable="true"  />
             </el-form-item>
-            <el-form-item label="产品ID:"  prop="customerId" >
-              <el-input v-model.number="formData.customerId" :clearable="true" placeholder="请输入产品ID" />
+            <el-form-item label="合同文件路径:"  prop="contractFile" >
+              <el-input v-model="formData.contractFile" :clearable="true"  placeholder="请输入合同文件路径" />
             </el-form-item>
-            <el-form-item label="管理ID 销售代表:"  prop="userId" >
-              <el-input v-model.number="formData.userId" :clearable="true" placeholder="请输入管理ID 销售代表" />
+            <el-form-item label="合同名称:"  prop="contractName" >
+              <el-input v-model="formData.contractName" :clearable="true"  placeholder="请输入合同名称" />
             </el-form-item>
-            <el-form-item label="备注:"  prop="description" >
-              <el-input v-model="formData.description" :clearable="true"  placeholder="请输入备注" />
-            </el-form-item>
-            <el-form-item label="产品原价:"  prop="price" >
-              <el-input-number v-model="formData.price"  style="width:100%" :precision="2" :clearable="true"  />
-            </el-form-item>
-            <el-form-item label="产品折扣价:"  prop="salesPrice" >
-              <el-input-number v-model="formData.salesPrice"  style="width:100%" :precision="2" :clearable="true"  />
-            </el-form-item>
-            <el-form-item label="币种:"  prop="currency" >
-              <el-input v-model="formData.currency" :clearable="true"  placeholder="请输入币种" />
-            </el-form-item>
-            <el-form-item label="折扣率:"  prop="discountRate" >
-              <el-input v-model.number="formData.discountRate" :clearable="true" placeholder="请输入折扣率" />
+            <el-form-item label="合同状态:"  prop="contractStatus" >
+              <el-select v-model="formData.contractStatus" placeholder="请选择合同状态" style="width:100%" :clearable="true" >
+                <el-option v-for="(item,key) in contract_statusOptions" :key="key" :label="item.label" :value="item.value" />
+              </el-select>
             </el-form-item>
             <el-form-item label="合同类型:"  prop="contractTypeId" >
               <el-input v-model.number="formData.contractTypeId" :clearable="true" placeholder="请输入合同类型" />
             </el-form-item>
-            <el-form-item label="申请时间:"  prop="applicationTime" >
-              <el-date-picker v-model="formData.applicationTime" type="date" style="width:100%" placeholder="选择日期" :clearable="true"  />
+            <el-form-item label="客户ID:"  prop="customerId" >
+              <el-input v-model.number="formData.customerId" :clearable="true" placeholder="请输入客户ID" />
+            </el-form-item>
+            <el-form-item label="备注:"  prop="description" >
+              <el-input v-model="formData.description" :clearable="true"  placeholder="请输入备注" />
             </el-form-item>
             <el-form-item label="到期时间:"  prop="expirationTime" >
               <el-date-picker v-model="formData.expirationTime" type="date" style="width:100%" placeholder="选择日期" :clearable="true"  />
             </el-form-item>
-            <el-form-item label="合同状态:"  prop="contractStatus" >
-              <el-input v-model="formData.contractStatus" :clearable="true"  placeholder="请输入合同状态" />
-            </el-form-item>
-            <el-form-item label="审核状态:"  prop="reviewStatus" >
-              <el-input v-model="formData.reviewStatus" :clearable="true"  placeholder="请输入审核状态" />
+            <el-form-item label="订单ID:"  prop="orderId" >
+              <el-input v-model.number="formData.orderId" :clearable="true" placeholder="请输入订单ID" />
             </el-form-item>
             <el-form-item label="审核结果:"  prop="reviewResult" >
-              <el-input v-model="formData.reviewResult" :clearable="true"  placeholder="请输入审核结果" />
+              <el-select v-model="formData.reviewResult" placeholder="请选择审核结果" style="width:100%" :clearable="true" >
+                <el-option v-for="(item,key) in review_resultOptions" :key="key" :label="item.label" :value="item.value" />
+              </el-select>
             </el-form-item>
-            <el-form-item label="合同文件:"  prop="contractDocument" >
-              <el-input v-model="formData.contractDocument" :clearable="true"  placeholder="请输入合同文件" />
+            <el-form-item label="审核状态:"  prop="reviewStatus" >
+              <el-select v-model="formData.reviewStatus" placeholder="请选择审核状态" style="width:100%" :clearable="true" >
+                <el-option v-for="(item,key) in review_statusOptions" :key="key" :label="item.label" :value="item.value" />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="管理ID 销售代表:"  prop="userId" >
+              <el-input v-model.number="formData.userId" :clearable="true" placeholder="请输入管理ID 销售代表" />
             </el-form-item>
           </el-form>
     </el-drawer>
@@ -150,50 +215,41 @@
              </div>
          </template>
         <el-descriptions :column="1" border>
-                <el-descriptions-item label="产品名称">
-                        {{ formData.orderId }}
+                <el-descriptions-item label="申请时间">
+                      {{ formatDate(formData.applicationTime) }}
                 </el-descriptions-item>
-                <el-descriptions-item label="产品ID">
-                        {{ formData.customerId }}
+                <el-descriptions-item label="合同文件路径">
+                        {{ formData.contractFile }}
                 </el-descriptions-item>
-                <el-descriptions-item label="管理ID 销售代表">
-                        {{ formData.userId }}
+                <el-descriptions-item label="合同名称">
+                        {{ formData.contractName }}
                 </el-descriptions-item>
-                <el-descriptions-item label="备注">
-                        {{ formData.description }}
-                </el-descriptions-item>
-                <el-descriptions-item label="产品原价">
-                        {{ formData.price }}
-                </el-descriptions-item>
-                <el-descriptions-item label="产品折扣价">
-                        {{ formData.salesPrice }}
-                </el-descriptions-item>
-                <el-descriptions-item label="币种">
-                        {{ formData.currency }}
-                </el-descriptions-item>
-                <el-descriptions-item label="折扣率">
-                        {{ formData.discountRate }}
+                <el-descriptions-item label="合同状态">
+                        {{ filterDict(formData.contractStatus,contract_statusOptions) }}
                 </el-descriptions-item>
                 <el-descriptions-item label="合同类型">
                         {{ formData.contractTypeId }}
                 </el-descriptions-item>
-                <el-descriptions-item label="申请时间">
-                      {{ formatDate(formData.applicationTime) }}
+                <el-descriptions-item label="客户ID">
+                        {{ formData.customerId }}
+                </el-descriptions-item>
+                <el-descriptions-item label="备注">
+                        {{ formData.description }}
                 </el-descriptions-item>
                 <el-descriptions-item label="到期时间">
                       {{ formatDate(formData.expirationTime) }}
                 </el-descriptions-item>
-                <el-descriptions-item label="合同状态">
-                        {{ formData.contractStatus }}
-                </el-descriptions-item>
-                <el-descriptions-item label="审核状态">
-                        {{ formData.reviewStatus }}
+                <el-descriptions-item label="订单ID">
+                        {{ formData.orderId }}
                 </el-descriptions-item>
                 <el-descriptions-item label="审核结果">
-                        {{ formData.reviewResult }}
+                        {{ filterDict(formData.reviewResult,review_resultOptions) }}
                 </el-descriptions-item>
-                <el-descriptions-item label="合同文件">
-                        {{ formData.contractDocument }}
+                <el-descriptions-item label="审核状态">
+                        {{ filterDict(formData.reviewStatus,review_statusOptions) }}
+                </el-descriptions-item>
+                <el-descriptions-item label="管理ID 销售代表">
+                        {{ formData.userId }}
                 </el-descriptions-item>
         </el-descriptions>
     </el-drawer>
@@ -220,22 +276,22 @@ defineOptions({
 })
 
 // 自动化生成的字典（可能为空）以及字段
+const contract_statusOptions = ref([])
+const review_resultOptions = ref([])
+const review_statusOptions = ref([])
 const formData = ref({
-        orderId: 0,
-        customerId: 0,
-        userId: 0,
-        description: '',
-        price: 0,
-        salesPrice: 0,
-        currency: '',
-        discountRate: 0,
-        contractTypeId: 0,
         applicationTime: new Date(),
-        expirationTime: new Date(),
+        contractFile: '',
+        contractName: '',
         contractStatus: '',
-        reviewStatus: '',
+        contractTypeId: 0,
+        customerId: 0,
+        description: '',
+        expirationTime: new Date(),
+        orderId: 0,
         reviewResult: '',
-        contractDocument: '',
+        reviewStatus: '',
+        userId: 0,
         })
 
 
@@ -257,6 +313,28 @@ const searchRule = reactive({
       }
     }, trigger: 'change' }
   ],
+        applicationTime : [{ validator: (rule, value, callback) => {
+        if (searchInfo.value.startApplicationTime && !searchInfo.value.endApplicationTime) {
+          callback(new Error('请填写结束日期'))
+        } else if (!searchInfo.value.startApplicationTime && searchInfo.value.endApplicationTime) {
+          callback(new Error('请填写开始日期'))
+        } else if (searchInfo.value.startApplicationTime && searchInfo.value.endApplicationTime && (searchInfo.value.startApplicationTime.getTime() === searchInfo.value.endApplicationTime.getTime() || searchInfo.value.startApplicationTime.getTime() > searchInfo.value.endApplicationTime.getTime())) {
+          callback(new Error('开始日期应当早于结束日期'))
+        } else {
+          callback()
+        }
+      }, trigger: 'change' }],
+        expirationTime : [{ validator: (rule, value, callback) => {
+        if (searchInfo.value.startExpirationTime && !searchInfo.value.endExpirationTime) {
+          callback(new Error('请填写结束日期'))
+        } else if (!searchInfo.value.startExpirationTime && searchInfo.value.endExpirationTime) {
+          callback(new Error('请填写开始日期'))
+        } else if (searchInfo.value.startExpirationTime && searchInfo.value.endExpirationTime && (searchInfo.value.startExpirationTime.getTime() === searchInfo.value.endExpirationTime.getTime() || searchInfo.value.startExpirationTime.getTime() > searchInfo.value.endExpirationTime.getTime())) {
+          callback(new Error('开始日期应当早于结束日期'))
+        } else {
+          callback()
+        }
+      }, trigger: 'change' }],
 })
 
 const elFormRef = ref()
@@ -314,6 +392,9 @@ getTableData()
 
 // 获取需要的字典 可能为空 按需保留
 const setOptions = async () =>{
+    contract_statusOptions.value = await getDictFunc('contract_status')
+    review_resultOptions.value = await getDictFunc('review_result')
+    review_statusOptions.value = await getDictFunc('review_status')
 }
 
 // 获取需要的字典 可能为空 按需保留
@@ -429,21 +510,18 @@ const getDetails = async (row) => {
 const closeDetailShow = () => {
   detailShow.value = false
   formData.value = {
-          orderId: 0,
-          customerId: 0,
-          userId: 0,
-          description: '',
-          price: 0,
-          salesPrice: 0,
-          currency: '',
-          discountRate: 0,
-          contractTypeId: 0,
           applicationTime: new Date(),
-          expirationTime: new Date(),
+          contractFile: '',
+          contractName: '',
           contractStatus: '',
-          reviewStatus: '',
+          contractTypeId: 0,
+          customerId: 0,
+          description: '',
+          expirationTime: new Date(),
+          orderId: 0,
           reviewResult: '',
-          contractDocument: '',
+          reviewStatus: '',
+          userId: 0,
           }
 }
 
@@ -458,21 +536,18 @@ const openDialog = () => {
 const closeDialog = () => {
     dialogFormVisible.value = false
     formData.value = {
-        orderId: 0,
-        customerId: 0,
-        userId: 0,
-        description: '',
-        price: 0,
-        salesPrice: 0,
-        currency: '',
-        discountRate: 0,
-        contractTypeId: 0,
         applicationTime: new Date(),
-        expirationTime: new Date(),
+        contractFile: '',
+        contractName: '',
         contractStatus: '',
-        reviewStatus: '',
+        contractTypeId: 0,
+        customerId: 0,
+        description: '',
+        expirationTime: new Date(),
+        orderId: 0,
         reviewResult: '',
-        contractDocument: '',
+        reviewStatus: '',
+        userId: 0,
         }
 }
 // 弹窗确定

@@ -1,0 +1,32 @@
+package crm
+
+import (
+	"github.com/flipped-aurora/gin-vue-admin/server/api/v1"
+	"github.com/flipped-aurora/gin-vue-admin/server/middleware"
+	"github.com/gin-gonic/gin"
+)
+
+type CrmCustomersRouter struct {
+}
+
+// InitCrmCustomersRouter 初始化 crmCustomers表 路由信息
+func (s *CrmCustomersRouter) InitCrmCustomersRouter(Router *gin.RouterGroup,PublicRouter *gin.RouterGroup) {
+	crmCustomersRouter := Router.Group("crmCustomers").Use(middleware.OperationRecord())
+	crmCustomersRouterWithoutRecord := Router.Group("crmCustomers")
+	crmCustomersRouterWithoutAuth := PublicRouter.Group("crmCustomers")
+
+	var crmCustomersApi = v1.ApiGroupApp.CrmApiGroup.CrmCustomersApi
+	{
+		crmCustomersRouter.POST("createCrmCustomers", crmCustomersApi.CreateCrmCustomers)   // 新建crmCustomers表
+		crmCustomersRouter.DELETE("deleteCrmCustomers", crmCustomersApi.DeleteCrmCustomers) // 删除crmCustomers表
+		crmCustomersRouter.DELETE("deleteCrmCustomersByIds", crmCustomersApi.DeleteCrmCustomersByIds) // 批量删除crmCustomers表
+		crmCustomersRouter.PUT("updateCrmCustomers", crmCustomersApi.UpdateCrmCustomers)    // 更新crmCustomers表
+	}
+	{
+		crmCustomersRouterWithoutRecord.GET("findCrmCustomers", crmCustomersApi.FindCrmCustomers)        // 根据ID获取crmCustomers表
+		crmCustomersRouterWithoutRecord.GET("getCrmCustomersList", crmCustomersApi.GetCrmCustomersList)  // 获取crmCustomers表列表
+	}
+	{
+	    crmCustomersRouterWithoutAuth.GET("getCrmCustomersPublic", crmCustomersApi.GetCrmCustomersPublic)  // 获取crmCustomers表列表
+	}
+}

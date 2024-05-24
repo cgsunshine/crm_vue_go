@@ -83,19 +83,18 @@ func Routers() *gin.Engine {
 	{
 		crmRouter := router.RouterGroupApp.Crm
 		crmRouter.InitCrmTestRouter(PrivateGroup, PublicGroup)
-		crmRouter.InitCrmBillRouter(PrivateGroup, PublicGroup)
-		crmRouter.InitCrmBusinessOpportunityRouter(PrivateGroup, PublicGroup)
+
 		crmRouter.InitCrmCommissionRebateRouter(PrivateGroup, PublicGroup)
-		crmRouter.InitCrmContractRouter(PrivateGroup, PublicGroup)
+
 		crmRouter.InitCrmContractTypeRouter(PrivateGroup, PublicGroup)
-		crmRouter.InitCrmCustomersRouter(PrivateGroup, PublicGroup)
+
 		crmRouter.InitCrmLoginLogRouter(PrivateGroup, PublicGroup)
 		crmRouter.InitCrmOperationRecordsRouter(PrivateGroup, PublicGroup)
-		crmRouter.InitCrmOrderRouter(PrivateGroup, PublicGroup)
+
 		crmRouter.InitCrmPaymentRouter(PrivateGroup, PublicGroup)
-		crmRouter.InitCrmPaymentCollentionRouter(PrivateGroup, PublicGroup)
+
 		crmRouter.InitCrmProcurementContractRouter(PrivateGroup, PublicGroup)
-		crmRouter.InitCrmProductRouter(PrivateGroup, PublicGroup)
+
 		crmRouter.InitCrmProductGroupRouter(PrivateGroup, PublicGroup)
 		crmRouter.InitCrmProductTypeRouter(PrivateGroup, PublicGroup)
 		crmRouter.InitCrmPurchaseOrderRouter(PrivateGroup, PublicGroup)
@@ -109,6 +108,17 @@ func Routers() *gin.Engine {
 		crmRouter.InitCrmTicketCommentsRouter(PrivateGroup, PublicGroup)
 		crmRouter.InitCrmTicketResponseTemplatesRouter(PrivateGroup, PublicGroup)
 		crmRouter.InitCrmTicketsRouter(PrivateGroup, PublicGroup)
+		crmRouter.InitCrmContactFileUploadAndDownloadsRouter(PrivateGroup, PublicGroup)
+		crmRouter.InitCrmCustomerGroupRouter(PrivateGroup, PublicGroup)
+		crmRouter.InitCrmCustomersRouter(PrivateGroup, PublicGroup)
+		crmRouter.InitCrmProductRouter(PrivateGroup, PublicGroup)
+		crmRouter.InitCrmBusinessOpportunityRouter(PrivateGroup, PublicGroup)
+		crmRouter.InitCrmBillRouter(PrivateGroup, PublicGroup)
+		crmRouter.InitCrmContractRouter(PrivateGroup, PublicGroup)
+		crmRouter.InitCrmOrderRouter(PrivateGroup, PublicGroup)
+		crmRouter.InitCrmPaymentCollentionRouter(PrivateGroup, PublicGroup)
+
+		crmRouter.InitCrmPageCustomersRouter(PrivateGroup, PublicGroup)
 
 	}
 
