@@ -110,15 +110,27 @@ func Routers() *gin.Engine {
 		crmRouter.InitCrmBillRouter(PrivateGroup, PublicGroup)
 		crmRouter.InitCrmContractRouter(PrivateGroup, PublicGroup)
 		crmRouter.InitCrmOrderRouter(PrivateGroup, PublicGroup)
-		crmRouter.InitCrmPaymentCollentionRouter(PrivateGroup, PublicGroup)
 
 		crmRouter.InitCrmPageCustomersRouter(PrivateGroup, PublicGroup)
+		crmRouter.InitCrmPageProductRouter(PrivateGroup, PublicGroup)
+		crmRouter.InitCrmPageBusinessOpportunityRouter(PrivateGroup, PublicGroup)
 		crmRouter.InitCrmPaymentRouter(PrivateGroup, PublicGroup)
 		crmRouter.InitCrmPurchaseOrderRouter(PrivateGroup, PublicGroup)
 		crmRouter.InitCrmStatementAccountRouter(PrivateGroup, PublicGroup)
 		crmRouter.InitCrmSupplierRouter(PrivateGroup, PublicGroup)
 		crmRouter.InitCrmCommissionRebateRouter(PrivateGroup, PublicGroup)
 
+		crmRouter.InitCrmPageCommissionRebateRouter(PrivateGroup, PublicGroup)
+		crmRouter.InitCrmPagePaymentRouter(PrivateGroup, PublicGroup)
+		crmRouter.InitCrmPagePurchaseOrderRouter(PrivateGroup, PublicGroup)
+		crmRouter.InitCrmPageStatementAccountRouter(PrivateGroup, PublicGroup)
+		crmRouter.InitCrmPageSupplierRouter(PrivateGroup, PublicGroup)
+		crmRouter.InitCrmPageBillRouter(PrivateGroup, PublicGroup)
+		crmRouter.InitCrmPageContractRouter(PrivateGroup, PublicGroup)
+		crmRouter.InitCrmPagOrderRouter(PrivateGroup, PublicGroup)
+
+		crmRouter.InitCrmPagePaymentCollentionRouter(PrivateGroup, PublicGroup)
+		crmRouter.InitCrmPaymentCollentionRouter(PrivateGroup, PublicGroup)
 	}
 
 	{

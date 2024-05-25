@@ -8,23 +8,23 @@ import (
 	"go.uber.org/zap"
 )
 
-// GetPageCrmCustomersList 分页获取客户管理列表
-// @Tags CrmCustomers
-// @Summary 分页获取客户管理列表
+// GetCrmCommissionRebateList 分页获取crmCommissionRebate表列表
+// @Tags CrmCommissionRebate
+// @Summary 分页获取crmCommissionRebate表列表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data query crmReq.CrmCustomersSearch true "分页获取客户管理列表完整数据"
+// @Param data query crmReq.CrmCommissionRebateSearch true "分页获取crmCommissionRebate表列表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"获取成功"}"
-// @Router /crmCustomers/getPageCrmCustomersList [get]
-func (crmCustomersApi *CrmCustomersApi) GetCrmPageCustomersList(c *gin.Context) {
-	var pageInfo crmReq.CrmCustomersSearch
+// @Router /crmCommissionRebate/getCrmCommissionRebateList [get]
+func (crmCommissionRebateApi *CrmCommissionRebateApi) GetCrmPageCommissionRebateList(c *gin.Context) {
+	var pageInfo crmReq.CrmCommissionRebateSearch
 	err := c.ShouldBindQuery(&pageInfo)
 	if err != nil {
 		response.FailWithMessage(err.Error(), c)
 		return
 	}
-	if list, total, err := crmCustomersService.GetPageCrmCustomersInfoList(pageInfo); err != nil {
+	if list, total, err := crmCommissionRebateService.GetCrmPageCommissionRebateInfoList(pageInfo); err != nil {
 		global.GVA_LOG.Error("获取失败!", zap.Error(err))
 		response.FailWithMessage("获取失败", c)
 	} else {

@@ -11,13 +11,14 @@ type CrmPaymentCollentionSearch struct{
         StartCreatedAt *time.Time `json:"startCreatedAt" form:"startCreatedAt"`
         EndCreatedAt   *time.Time `json:"endCreatedAt" form:"endCreatedAt"`
     
-                      Amount  *float64 `json:"amount" form:"amount" `
-                      ApprovedById  string `json:"approvedById" form:"approvedById" `
-                      Currency  string `json:"currency" form:"currency" `
+                      BillId  *int `json:"billId" form:"billId" `
                       CustomerId  *int `json:"customerId" form:"customerId" `
-                StartPaymentTime  *time.Time  `json:"startPaymentTime" form:"startPaymentTime"`
-                EndPaymentTime  *time.Time  `json:"endPaymentTime" form:"endPaymentTime"`
-                      ReviewStatus  string `json:"reviewStatus" form:"reviewStatus" `
                       UserId  *int `json:"userId" form:"userId" `
+                      Currency  string `json:"currency" form:"currency" `
+                      Proof  string `json:"proof" form:"proof" `
+                      AuditingStatus  string `json:"auditingStatus" form:"auditingStatus" `
+                      ApprovedById  string `json:"approvedById" form:"approvedById" `
+                StartAuditingTime  *time.Time  `json:"startAuditingTime" form:"startAuditingTime"`
+                EndAuditingTime  *time.Time  `json:"endAuditingTime" form:"endAuditingTime"`
     request.PageInfo
 }

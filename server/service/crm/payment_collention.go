@@ -18,26 +18,29 @@ func (crmPaymentCollentionService *CrmPaymentCollentionService) GetCrmPagePaymen
 	if info.StartCreatedAt != nil && info.EndCreatedAt != nil {
 		db = db.Where("created_at BETWEEN ? AND ?", info.StartCreatedAt, info.EndCreatedAt)
 	}
-	if info.Amount != nil {
-		db = db.Where("amount = ?", info.Amount)
-	}
-	if info.ApprovedById != "" {
-		db = db.Where("approved_by_id = ?", info.ApprovedById)
-	}
-	if info.Currency != "" {
-		db = db.Where("currency = ?", info.Currency)
+	if info.BillId != nil {
+		db = db.Where("bill_id = ?", info.BillId)
 	}
 	if info.CustomerId != nil {
 		db = db.Where("customer_id = ?", info.CustomerId)
 	}
-	if info.StartPaymentTime != nil && info.EndPaymentTime != nil {
-		db = db.Where("payment_time BETWEEN ? AND ? ", info.StartPaymentTime, info.EndPaymentTime)
-	}
-	if info.ReviewStatus != "" {
-		db = db.Where("review_status = ?", info.ReviewStatus)
-	}
 	if info.UserId != nil {
 		db = db.Where("user_id = ?", info.UserId)
+	}
+	if info.Currency != "" {
+		db = db.Where("currency = ?", info.Currency)
+	}
+	if info.Proof != "" {
+		db = db.Where("proof = ?", info.Proof)
+	}
+	if info.AuditingStatus != "" {
+		db = db.Where("auditing_status = ?", info.AuditingStatus)
+	}
+	if info.ApprovedById != "" {
+		db = db.Where("approved_by_id = ?", info.ApprovedById)
+	}
+	if info.StartAuditingTime != nil && info.EndAuditingTime != nil {
+		db = db.Where("auditing_time BETWEEN ? AND ? ", info.StartAuditingTime, info.EndAuditingTime)
 	}
 	err = db.Count(&total).Error
 	if err != nil {
@@ -48,10 +51,10 @@ func (crmPaymentCollentionService *CrmPaymentCollentionService) GetCrmPagePaymen
 		db = db.Limit(limit).Offset(offset)
 	}
 
-	err = db.Select("crm_payment_collention.*,crm_customers.customer_name,sys_users.username").
+	err = db.Select("crm_payment_collention.*,crm_customers.customer_name,sys_users.username,crm_bill.amount").
 		Joins("LEFT JOIN sys_users ON sys_users.id = crm_payment_collention.user_id").
 		Joins("LEFT JOIN crm_customers ON crm_customers.id = crm_payment_collention.customer_id").
-		//Joins("LEFT JOIN crm_bill ON crm_bill.id = crm_payment_collention.bill_id").
+		Joins("LEFT JOIN crm_bill ON crm_bill.id = crm_payment_collention.bill_id").
 		Find(&crmPaymentCollentions).Error
 	return crmPaymentCollentions, total, err
 }

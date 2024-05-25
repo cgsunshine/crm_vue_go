@@ -23,4 +23,6 @@ type CrmPageProduct struct {
 	TypeName string `json:"typeName" form:"typeName" gorm:"column:type_name;comment:分组名称;size:191;"` //分组名称
 	//crm_product_group 表
 	GroupName string `json:"groupName" form:"groupName" gorm:"column:group_name;comment:分组名称;size:191;"` //分组名称
+	//sys_user 表
+	Username string `json:"userName" gorm:"index;comment:用户登录名"` // 用户登录名
 }

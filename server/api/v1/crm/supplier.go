@@ -8,23 +8,23 @@ import (
 	"go.uber.org/zap"
 )
 
-// GetPageCrmCustomersList 分页获取客户管理列表
-// @Tags CrmCustomers
-// @Summary 分页获取客户管理列表
+// GetCrmSupplierList 分页获取crmSupplier表列表
+// @Tags CrmSupplier
+// @Summary 分页获取crmSupplier表列表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data query crmReq.CrmCustomersSearch true "分页获取客户管理列表完整数据"
+// @Param data query crmReq.CrmSupplierSearch true "分页获取crmSupplier表列表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"获取成功"}"
-// @Router /crmCustomers/getPageCrmCustomersList [get]
-func (crmCustomersApi *CrmCustomersApi) GetCrmPageCustomersList(c *gin.Context) {
-	var pageInfo crmReq.CrmCustomersSearch
+// @Router /crmSupplier/getCrmSupplierList [get]
+func (crmSupplierApi *CrmSupplierApi) GetCrmPageSupplierList(c *gin.Context) {
+	var pageInfo crmReq.CrmSupplierSearch
 	err := c.ShouldBindQuery(&pageInfo)
 	if err != nil {
 		response.FailWithMessage(err.Error(), c)
 		return
 	}
-	if list, total, err := crmCustomersService.GetPageCrmCustomersInfoList(pageInfo); err != nil {
+	if list, total, err := crmSupplierService.GetCrmPageSupplierInfoList(pageInfo); err != nil {
 		global.GVA_LOG.Error("获取失败!", zap.Error(err))
 		response.FailWithMessage("获取失败", c)
 	} else {

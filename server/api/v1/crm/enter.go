@@ -24,10 +24,10 @@ type ApiGroup struct {
 	CrmBillApi
 	CrmContractApi
 	CrmOrderApi
-	CrmPaymentCollentionApi
 	CrmPaymentApi
 	CrmPurchaseOrderApi
 	CrmStatementAccountApi
 	CrmSupplierApi
 	CrmCommissionRebateApi
+	CrmPaymentCollentionApi
 }

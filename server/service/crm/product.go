@@ -27,7 +27,7 @@ func (crmProductService *CrmProductService) GetCrmPageProductInfoList(info crmRe
 		db = db.Limit(limit).Offset(offset)
 	}
 
-	err = db.Select("crm_product.*,crm_product_group.group_name,crm_product_type.type_name").
+	err = db.Select("crm_product.*,crm_product_group.group_name,crm_product_type.type_name,sys_users.username").
 		Joins("LEFT JOIN sys_users ON crm_product.user_id = sys_users.id").
 		Joins("LEFT JOIN crm_product_group ON crm_product.product_group_id = crm_product_group.id").
 		Joins("LEFT JOIN crm_product_type ON crm_product.product_type_id = crm_product_type.id").

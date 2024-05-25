@@ -15,6 +15,6 @@ func (s *CrmPageCustomersRouter) InitCrmPageCustomersRouter(Router *gin.RouterGr
 	var crmCustomersApi = v1.ApiGroupApp.CrmApiGroup.CrmCustomersApi
 
 	{
-		crmCustomersRouterWithoutRecord.GET("getPageCrmCustomersList", crmCustomersApi.GetPageCrmCustomersList) // 获取crmCustomers表列表
+		crmCustomersRouterWithoutRecord.GET("getCrmPageCustomersList", crmCustomersApi.GetCrmPageCustomersList) // 获取crmCustomers表列表
 	}
 }

@@ -24,11 +24,23 @@ type RouterGroup struct {
 	CrmBillRouter
 	CrmContractRouter
 	CrmOrderRouter
-	CrmPaymentCollentionRouter
 	CrmPageCustomersRouter
 	CrmPaymentRouter
 	CrmPurchaseOrderRouter
 	CrmStatementAccountRouter
 	CrmSupplierRouter
 	CrmCommissionRebateRouter
+	CrmPageCommissionRebateRouter
+	CrmPagePaymentRouter
+	CrmPagePurchaseOrderRouter
+	CrmPageStatementAccountRouter
+	CrmPageSupplierRouter
+	CrmPageProductRouter
+	CrmPageBusinessOpportunityRouter
+	CrmPageBillRouter
+	CrmPageContractRouter
+	CrmPageOrderRouter
+
+	CrmPagePaymentCollentionRouter
+	CrmPaymentCollentionRouter
 }

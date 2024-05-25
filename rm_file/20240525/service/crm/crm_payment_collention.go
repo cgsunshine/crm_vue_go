@@ -56,30 +56,27 @@ func (crmPaymentCollentionService *CrmPaymentCollentionService)GetCrmPaymentColl
     if info.StartCreatedAt !=nil && info.EndCreatedAt !=nil {
      db = db.Where("created_at BETWEEN ? AND ?", info.StartCreatedAt, info.EndCreatedAt)
     }
-    if info.BillId != nil {
-        db = db.Where("bill_id = ?",info.BillId)
-    }
-    if info.CustomerId != nil {
-        db = db.Where("customer_id = ?",info.CustomerId)
-    }
-    if info.UserId != nil {
-        db = db.Where("user_id = ?",info.UserId)
-    }
-    if info.Currency != "" {
-        db = db.Where("currency = ?",info.Currency)
-    }
-    if info.Proof != "" {
-        db = db.Where("proof = ?",info.Proof)
-    }
-    if info.AuditingStatus != "" {
-        db = db.Where("auditing_status = ?",info.AuditingStatus)
+    if info.Amount != nil {
+        db = db.Where("amount = ?",info.Amount)
     }
     if info.ApprovedById != "" {
         db = db.Where("approved_by_id = ?",info.ApprovedById)
     }
-        if info.StartAuditingTime != nil && info.EndAuditingTime != nil {
-            db = db.Where("auditing_time BETWEEN ? AND ? ",info.StartAuditingTime,info.EndAuditingTime)
+    if info.Currency != "" {
+        db = db.Where("currency = ?",info.Currency)
+    }
+    if info.CustomerId != nil {
+        db = db.Where("customer_id = ?",info.CustomerId)
+    }
+        if info.StartPaymentTime != nil && info.EndPaymentTime != nil {
+            db = db.Where("payment_time BETWEEN ? AND ? ",info.StartPaymentTime,info.EndPaymentTime)
         }
+    if info.ReviewStatus != "" {
+        db = db.Where("review_status = ?",info.ReviewStatus)
+    }
+    if info.UserId != nil {
+        db = db.Where("user_id = ?",info.UserId)
+    }
 	err = db.Count(&total).Error
 	if err!=nil {
     	return

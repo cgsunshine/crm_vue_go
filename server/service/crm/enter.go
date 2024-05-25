@@ -24,10 +24,10 @@ type ServiceGroup struct {
 	CrmBillService
 	CrmContractService
 	CrmOrderService
-	CrmPaymentCollentionService
 	CrmPaymentService
 	CrmPurchaseOrderService
 	CrmStatementAccountService
 	CrmSupplierService
 	CrmCommissionRebateService
+	CrmPaymentCollentionService
 }
