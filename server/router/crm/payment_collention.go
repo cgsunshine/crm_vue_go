@@ -11,11 +11,16 @@ type CrmPagePaymentCollentionRouter struct {
 // InitCrmPaymentCollentionRouter 初始化 crmPaymentCollention表 路由信息
 func (s *CrmPagePaymentCollentionRouter) InitCrmPagePaymentCollentionRouter(Router *gin.RouterGroup, PublicRouter *gin.RouterGroup) {
 	crmPaymentCollentionRouterWithoutRecord := Router.Group("crmPaymentCollention")
+	crmPaymentCollentionRouterWithoutAuth := PublicRouter.Group("crmPaymentCollention")
 
 	var crmPaymentCollentionApi = v1.ApiGroupApp.CrmApiGroup.CrmPaymentCollentionApi
 
 	{
-		crmPaymentCollentionRouterWithoutRecord.GET("getCrmPagePaymentCollentionInfoList", crmPaymentCollentionApi.GetCrmPagePaymentCollentionInfoList) // 获取crmPaymentCollention表列表
+		crmPaymentCollentionRouterWithoutRecord.GET("findCrmPagePaymentCollention", crmPaymentCollentionApi.FindCrmPagePaymentCollention) // 根据ID获取crmPaymentCollention表
+	}
+
+	{
+		crmPaymentCollentionRouterWithoutAuth.GET("getCrmPagePaymentCollentionInfoList", crmPaymentCollentionApi.GetCrmPagePaymentCollentionInfoList) // 获取crmPaymentCollention表列表
 	}
 
 }

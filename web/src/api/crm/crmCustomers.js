@@ -89,6 +89,8 @@ export const findCrmCustomers = (params) => {
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"获取成功"}"
 // @Router /crmCustomers/getCrmCustomersList [get]
 export const getCrmCustomersList = (params) => {
+  console.log(params,"passsss");
+  console.log(new Date(),"pass");
   return service({
     url: '/crmCustomers/getCrmCustomersList',
     method: 'get',

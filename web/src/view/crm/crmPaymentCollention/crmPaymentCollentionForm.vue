@@ -2,34 +2,34 @@
   <div>
     <div class="gva-form-box">
       <el-form :model="formData" ref="elFormRef" label-position="right" :rules="rule" label-width="80px">
-        <el-form-item label="账单ID:" prop="billId">
-          <el-input v-model.number="formData.billId" :clearable="true" placeholder="请输入" />
-       </el-form-item>
-        <el-form-item label="客户ID:" prop="customerId">
-          <el-input v-model.number="formData.customerId" :clearable="true" placeholder="请输入" />
-       </el-form-item>
-        <el-form-item label="管理ID 销售代表:" prop="userId">
-          <el-input v-model.number="formData.userId" :clearable="true" placeholder="请输入" />
-       </el-form-item>
-        <el-form-item label="备注:" prop="description">
-          <el-input v-model="formData.description" :clearable="true"  placeholder="请输入备注" />
-       </el-form-item>
-        <el-form-item label="币种:" prop="currency">
-          <el-input v-model="formData.currency" :clearable="true"  placeholder="请输入币种" />
-       </el-form-item>
-        <el-form-item label="凭证:" prop="proof">
-          <el-input v-model="formData.proof" :clearable="true"  placeholder="请输入凭证" />
+        <el-form-item label="审批人:" prop="approvedById">
+          <el-input v-model="formData.approvedById" :clearable="true"  placeholder="请输入审批人" />
        </el-form-item>
         <el-form-item label="审核状态:" prop="auditingStatus">
            <el-select v-model="formData.auditingStatus" placeholder="请选择审核状态" style="width:100%" :clearable="true" >
               <el-option v-for="(item,key) in review_statusOptions" :key="key" :label="item.label" :value="item.value" />
            </el-select>
        </el-form-item>
-        <el-form-item label="审批人:" prop="approvedById">
-          <el-input v-model="formData.approvedById" :clearable="true"  placeholder="请输入审批人" />
-       </el-form-item>
         <el-form-item label="审核时间:" prop="auditingTime">
           <el-date-picker v-model="formData.auditingTime" type="date" placeholder="选择日期" :clearable="true"></el-date-picker>
+       </el-form-item>
+        <el-form-item label="账单ID:" prop="billId">
+          <el-input v-model.number="formData.billId" :clearable="true" placeholder="请输入" />
+       </el-form-item>
+        <el-form-item label="币种:" prop="currency">
+          <el-input v-model="formData.currency" :clearable="true"  placeholder="请输入币种" />
+       </el-form-item>
+        <el-form-item label="客户ID:" prop="customerId">
+          <el-input v-model.number="formData.customerId" :clearable="true" placeholder="请输入" />
+       </el-form-item>
+        <el-form-item label="备注:" prop="description">
+          <el-input v-model="formData.description" :clearable="true"  placeholder="请输入备注" />
+       </el-form-item>
+        <el-form-item label="凭证:" prop="proof">
+          <el-input v-model="formData.proof" :clearable="true"  placeholder="请输入凭证" />
+       </el-form-item>
+        <el-form-item label="管理ID 销售代表:" prop="userId">
+          <el-input v-model.number="formData.userId" :clearable="true" placeholder="请输入" />
        </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="save">保存</el-button>
@@ -63,15 +63,15 @@ const router = useRouter()
 const type = ref('')
 const review_statusOptions = ref([])
 const formData = ref({
-            billId: 0,
-            customerId: 0,
-            userId: 0,
-            description: '',
-            currency: '',
-            proof: '',
-            auditingStatus: '',
             approvedById: '',
+            auditingStatus: '',
             auditingTime: new Date(),
+            billId: 0,
+            currency: '',
+            customerId: 0,
+            description: '',
+            proof: '',
+            userId: 0,
         })
 // 验证规则
 const rule = reactive({

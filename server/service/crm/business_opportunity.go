@@ -15,32 +15,33 @@ func (crmBusinessOpportunityService *CrmBusinessOpportunityService) GetPageCrmBu
 	db := global.GVA_DB.Model(&crm.CrmBusinessOpportunity{})
 	var crmBusinessOpportunitys []crm.CrmPageBusinessOpportunity
 	// 如果有条件搜索 下方会自动创建搜索语句
+	// 如果有条件搜索 下方会自动创建搜索语句
 	if info.StartCreatedAt != nil && info.EndCreatedAt != nil {
-		db = db.Where("created_at BETWEEN ? AND ?", info.StartCreatedAt, info.EndCreatedAt)
+		db = db.Where(crmBusinessOpportunityService.SplicingQueryConditions("created_at BETWEEN ? AND ?"), info.StartCreatedAt, info.EndCreatedAt)
+	}
+	if info.Amount != nil {
+		db = db.Where(crmBusinessOpportunityService.SplicingQueryConditions("amount = ?"), info.Amount)
 	}
 	if info.BusinessOpportunityName != "" {
-		db = db.Where("business_opportunity_name LIKE ?", "%"+info.BusinessOpportunityName+"%")
+		db = db.Where(crmBusinessOpportunityService.SplicingQueryConditions("business_opportunity_name LIKE ?"), "%"+info.BusinessOpportunityName+"%")
 	}
 	if info.CustomerId != nil {
-		db = db.Where("customer_id = ?", info.CustomerId)
+		db = db.Where(crmBusinessOpportunityService.SplicingQueryConditions("customer_id = ?"), info.CustomerId)
 	}
 	if info.StartInputTime != nil && info.EndInputTime != nil {
-		db = db.Where("input_time BETWEEN ? AND ? ", info.StartInputTime, info.EndInputTime)
+		db = db.Where(crmBusinessOpportunityService.SplicingQueryConditions("input_time BETWEEN ? AND ? "), info.StartInputTime, info.EndInputTime)
 	}
-	if info.StartOfferValidityPeriod != nil && info.EndOfferValidityPeriod != nil {
-		db = db.Where("offer_validity_period BETWEEN ? AND ? ", info.StartOfferValidityPeriod, info.EndOfferValidityPeriod)
-	}
-	if info.Price != nil {
-		db = db.Where("price <> ?", info.Price)
-	}
+	//if info.OfferValidityPeriod != nil {
+	//	db = db.Where("offer_validity_period = ?", info.OfferValidityPeriod)
+	//}
 	if info.ProductId != nil {
-		db = db.Where("product_id = ?", info.ProductId)
+		db = db.Where(crmBusinessOpportunityService.SplicingQueryConditions("product_id = ?"), info.ProductId)
 	}
 	if info.Status != "" {
-		db = db.Where("status = ?", info.Status)
+		db = db.Where(crmBusinessOpportunityService.SplicingQueryConditions("status = ?"), info.Status)
 	}
 	if info.UserId != nil {
-		db = db.Where("user_id = ?", info.UserId)
+		db = db.Where(crmBusinessOpportunityService.SplicingQueryConditions("user_id = ?"), info.UserId)
 	}
 	err = db.Count(&total).Error
 	if err != nil {
@@ -56,4 +57,21 @@ func (crmBusinessOpportunityService *CrmBusinessOpportunityService) GetPageCrmBu
 		Joins("LEFT JOIN sys_users ON crm_customers.user_id = sys_users.id").
 		Joins("LEFT JOIN crm_product ON crm_business_opportunity.product_id = crm_product.id").Find(&crmBusinessOpportunitys).Error
 	return crmBusinessOpportunitys, total, err
+}
+
+// GetCrmBusinessOpportunity 根据ID获取商机管理记录
+// Author [piexlmax](https://github.com/piexlmax)
+func (crmBusinessOpportunityService *CrmBusinessOpportunityService) GetCrmPageBusinessOpportunity(ID string) (crmBusinessOpportunity crm.CrmPageBusinessOpportunity, err error) {
+	err = global.GVA_DB.Model(&crm.CrmBusinessOpportunity{}).Where("crm_business_opportunity.id = ?", ID).
+		Select("crm_business_opportunity.*,sys_users.username,crm_product.product_name,crm_customers.customer_name").
+		Joins("LEFT JOIN crm_customers ON crm_business_opportunity.customer_id = crm_customers.id").
+		Joins("LEFT JOIN sys_users ON crm_customers.user_id = sys_users.id").
+		Joins("LEFT JOIN crm_product ON crm_business_opportunity.product_id = crm_product.id").
+		First(&crmBusinessOpportunity).Error
+	return
+}
+
+// SplicingQueryConditions 拼接条件
+func (crmBusinessOpportunityService *CrmBusinessOpportunityService) SplicingQueryConditions(condition string) string {
+	return "crm_business_opportunity." + condition
 }

@@ -12,36 +12,41 @@ func (crmContractService *CrmContractService) GetCrmPageContractInfoList(info cr
 	limit := info.PageSize
 	offset := info.PageSize * (info.Page - 1)
 	// 创建db
+	//db := global.GVA_DB.Model(&crm.CrmContract{})
 	db := global.GVA_DB.Model(&crm.CrmContract{})
 	var crmContracts []crm.CrmPageContract
 	// 如果有条件搜索 下方会自动创建搜索语句
 	if info.StartCreatedAt != nil && info.EndCreatedAt != nil {
-		db = db.Where("created_at BETWEEN ? AND ?", info.StartCreatedAt, info.EndCreatedAt)
+		db = db.Where(crmContractService.SplicingQueryConditions("created_at BETWEEN ? AND ?"), info.StartCreatedAt, info.EndCreatedAt)
 	}
 	if info.StartApplicationTime != nil && info.EndApplicationTime != nil {
-		db = db.Where("application_time BETWEEN ? AND ? ", info.StartApplicationTime, info.EndApplicationTime)
+		db = db.Where(crmContractService.SplicingQueryConditions("application_time BETWEEN ? AND ? "), info.StartApplicationTime, info.EndApplicationTime)
 	}
 	if info.ContractName != "" {
-		db = db.Where("contract_name LIKE ?", "%"+info.ContractName+"%")
+		db = db.Where(crmContractService.SplicingQueryConditions("contract_name LIKE ?"), "%"+info.ContractName+"%")
 	}
 	if info.ContractStatus != "" {
-		db = db.Where("contract_status = ?", info.ContractStatus)
+		db = db.Where(crmContractService.SplicingQueryConditions("contract_status = ?"), info.ContractStatus)
 	}
 	if info.CustomerId != nil {
-		db = db.Where("customer_id = ?", info.CustomerId)
+		db = db.Where(crmContractService.SplicingQueryConditions("customer_id = ?"), info.CustomerId)
 	}
 	if info.StartExpirationTime != nil && info.EndExpirationTime != nil {
-		db = db.Where("expiration_time BETWEEN ? AND ? ", info.StartExpirationTime, info.EndExpirationTime)
+		db = db.Where(crmContractService.SplicingQueryConditions("expiration_time BETWEEN ? AND ? "), info.StartExpirationTime, info.EndExpirationTime)
 	}
 	if info.OrderId != nil {
-		db = db.Where("order_id = ?", info.OrderId)
+		db = db.Where(crmContractService.SplicingQueryConditions("order_id = ?"), info.OrderId)
 	}
 	if info.ReviewResult != "" {
-		db = db.Where("review_result = ?", info.ReviewResult)
+		db = db.Where(crmContractService.SplicingQueryConditions("review_result = ?"), info.ReviewResult)
 	}
 	if info.ReviewStatus != "" {
-		db = db.Where("review_status = ?", info.ReviewStatus)
+		db = db.Where(crmContractService.SplicingQueryConditions("review_status = ?"), info.ReviewStatus)
 	}
+	if info.UserId != nil {
+		db = db.Where(crmContractService.SplicingQueryConditions("user_id = ?"), info.UserId)
+	}
+
 	err = db.Count(&total).Error
 	if err != nil {
 		return
@@ -56,4 +61,29 @@ func (crmContractService *CrmContractService) GetCrmPageContractInfoList(info cr
 		Joins("LEFT JOIN crm_customers ON crm_customers.id = crm_contract.customer_id").
 		Find(&crmContracts).Error
 	return crmContracts, total, err
+}
+
+// UpdApprovalStatus 修改审批状态
+// Author [piexlmax](https://github.com/piexlmax)
+func (crmContractService *CrmContractService) UpdApprovalStatus(ID *int, data map[string]interface{}) (err error) {
+	db := global.GVA_DB.Model(&crm.CrmContract{})
+	err = db.Where("id = ?", ID).Updates(data).Error
+	return
+}
+
+// GetCrmPageContract 根据ID获取crmContract表记录
+// Author [piexlmax](https://github.com/piexlmax)
+func (crmContractService *CrmContractService) GetCrmPageContract(ID string) (crmContract crm.CrmPageContract, err error) {
+	err = global.GVA_DB.Model(&crm.CrmContract{}).
+		Select("crm_contract.*,crm_customers.customer_name,sys_users.username").
+		Where("crm_contract.id = ?", ID).
+		Joins("LEFT JOIN sys_users ON sys_users.id = crm_contract.user_id").
+		Joins("LEFT JOIN crm_customers ON crm_customers.id = crm_contract.customer_id").
+		First(&crmContract).Error
+	return
+}
+
+// SplicingQueryConditions 拼接条件
+func (crmContractService *CrmContractService) SplicingQueryConditions(condition string) string {
+	return "crm_contract." + condition
 }

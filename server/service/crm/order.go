@@ -16,28 +16,28 @@ func (crmOrderService *CrmOrderService) GetCrmPageOrderInfoList(info crmReq.CrmO
 	var crmOrders []crm.CrmPageOrder
 	// 如果有条件搜索 下方会自动创建搜索语句
 	if info.StartCreatedAt != nil && info.EndCreatedAt != nil {
-		db = db.Where("created_at BETWEEN ? AND ?", info.StartCreatedAt, info.EndCreatedAt)
+		db = db.Where(crmOrderService.SplicingQueryConditions("created_at BETWEEN ? AND ?"), info.StartCreatedAt, info.EndCreatedAt)
 	}
 	if info.Currency != "" {
-		db = db.Where("currency = ?", info.Currency)
+		db = db.Where(crmOrderService.SplicingQueryConditions("currency = ?"), info.Currency)
 	}
 	if info.CustomerId != nil {
-		db = db.Where("customer_id = ?", info.CustomerId)
+		db = db.Where(crmOrderService.SplicingQueryConditions("customer_id = ?"), info.CustomerId)
 	}
 	if info.DiscountRate != nil {
-		db = db.Where("discount_rate = ?", info.DiscountRate)
+		db = db.Where(crmOrderService.SplicingQueryConditions("discount_rate = ?"), info.DiscountRate)
 	}
 	if info.Price != nil {
-		db = db.Where("price = ?", info.Price)
+		db = db.Where(crmOrderService.SplicingQueryConditions("price = ?"), info.Price)
 	}
 	if info.ProductId != "" {
-		db = db.Where("product_id = ?", info.ProductId)
+		db = db.Where(crmOrderService.SplicingQueryConditions("product_id = ?"), info.ProductId)
 	}
 	if info.SalesPrice != nil {
-		db = db.Where("sales_price = ?", info.SalesPrice)
+		db = db.Where(crmOrderService.SplicingQueryConditions("sales_price = ?"), info.SalesPrice)
 	}
 	if info.UserId != nil {
-		db = db.Where("user_id = ?", info.UserId)
+		db = db.Where(crmOrderService.SplicingQueryConditions("user_id = ?"), info.UserId)
 	}
 	err = db.Count(&total).Error
 	if err != nil {
@@ -54,4 +54,21 @@ func (crmOrderService *CrmOrderService) GetCrmPageOrderInfoList(info crmReq.CrmO
 		Joins("LEFT JOIN crm_product ON crm_product.id = crm_order.product_id").
 		Find(&crmOrders).Error
 	return crmOrders, total, err
+}
+
+// GetCrmOrder 根据ID获取crmOrder表记录
+// Author [piexlmax](https://github.com/piexlmax)
+func (crmOrderService *CrmOrderService) GetCrmPageOrder(ID string) (crmOrder crm.CrmPageOrder, err error) {
+	err = global.GVA_DB.Model(&crm.CrmOrder{}).Where("crm_order.id = ?", ID).
+		Select("crm_order.*,crm_product.product_name,crm_customers.customer_name,sys_users.username").
+		Joins("LEFT JOIN sys_users ON sys_users.id = crm_order.user_id").
+		Joins("LEFT JOIN crm_customers ON crm_customers.id = crm_order.customer_id").
+		Joins("LEFT JOIN crm_product ON crm_product.id = crm_order.product_id").
+		First(&crmOrder).Error
+	return
+}
+
+// SplicingQueryConditions 拼接条件
+func (crmOrderService *CrmOrderService) SplicingQueryConditions(condition string) string {
+	return "crm_order." + condition
 }

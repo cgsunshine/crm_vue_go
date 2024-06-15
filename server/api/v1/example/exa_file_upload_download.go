@@ -4,14 +4,10 @@ import (
 	"github.com/flipped-aurora/gin-vue-admin/server/global"
 	"github.com/flipped-aurora/gin-vue-admin/server/model/common/request"
 	"github.com/flipped-aurora/gin-vue-admin/server/model/common/response"
-	"github.com/flipped-aurora/gin-vue-admin/server/model/crm"
-	crmRes "github.com/flipped-aurora/gin-vue-admin/server/model/crm/response"
 	"github.com/flipped-aurora/gin-vue-admin/server/model/example"
 	exampleRes "github.com/flipped-aurora/gin-vue-admin/server/model/example/response"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
-	"net/http"
-	"strconv"
 )
 
 type FileUploadAndDownloadApi struct{}
@@ -43,86 +39,87 @@ func (b *FileUploadAndDownloadApi) UploadFile(c *gin.Context) {
 	response.OkWithDetailed(exampleRes.ExaFileResponse{File: file}, "上传成功", c)
 }
 
-// UploadFile
-// @Tags      ExaFileUploadAndDownload
-// @Summary   合同文件上传
-// @Security  ApiKeyAuth
-// @accept    multipart/form-data
-// @Produce   application/json
-// @Param     file  formData  file                                                           true  "上传文件示例"
-// @Success   200   {object}  response.Response{data=exampleRes.ExaFileResponse,msg=string}  "上传文件示例,返回包括文件详情"
-// @Router    /fileUploadAndDownload/upload [post]
-func (b *FileUploadAndDownloadApi) UploadContactFile(c *gin.Context) {
-	var file crm.CrmContactFileUploadAndDownloads
-	noSave := c.DefaultQuery("noSave", "0")
-	_, header, err := c.Request.FormFile("file")
-	if err != nil {
-		global.GVA_LOG.Error("接收文件失败!", zap.Error(err))
-		response.FailWithMessage("接收文件失败", c)
-		return
-	}
-	contact_id_str := c.PostForm("contact_id")
-	contact_id, _ := strconv.Atoi(contact_id_str)
+//// UploadFile
+//// @Tags      ExaFileUploadAndDownload
+//// @Summary   合同文件上传
+//// @Security  ApiKeyAuth
+//// @accept    multipart/form-data
+//// @Produce   application/json
+//// @Param     file  formData  file                                                           true  "上传文件示例"
+//// @Success   200   {object}  response.Response{data=exampleRes.ExaFileResponse,msg=string}  "上传文件示例,返回包括文件详情"
+//// @Router    /fileUploadAndDownload/upload [post]
+//func (b *FileUploadAndDownloadApi) UploadContactFile(c *gin.Context) {
+//	//var file crm.CrmContactFile
+//	//noSave := c.DefaultQuery("noSave", "0")
+//	//_, header, err := c.Request.FormFile("file")
+//	//if err != nil {
+//	//	global.GVA_LOG.Error("接收文件失败!", zap.Error(err))
+//	//	response.FailWithMessage("接收文件失败", c)
+//	//	return
+//	//}
+//	//contact_id_str := c.PostForm("contact_id")
+//	//contact_id, _ := strconv.Atoi(contact_id_str)
+//	//
+//	//sort_str := c.PostForm("sort")
+//	//sort, _ := strconv.Atoi(sort_str)
+//	//
+//	////file, err = crmContactFileUploadAndDownloadsService.UploadFile(header, noSave, &contact_id, &sort) // 文件上传后拿到文件路径
+//	////if err != nil {
+//	////	global.GVA_LOG.Error("修改数据库链接失败!", zap.Error(err))
+//	////	response.FailWithMessage("修改数据库链接失败", c)
+//	////	return
+//	////}
+//	//response.OkWithDetailed(crmRes.CrmContactFileResponse{File: file}, "上传成功", c)
+//}
 
-	sort_str := c.PostForm("sort")
-	sort, _ := strconv.Atoi(sort_str)
-
-	file, err = crmContactFileUploadAndDownloadsService.UploadFile(header, noSave, &contact_id, &sort) // 文件上传后拿到文件路径
-	if err != nil {
-		global.GVA_LOG.Error("修改数据库链接失败!", zap.Error(err))
-		response.FailWithMessage("修改数据库链接失败", c)
-		return
-	}
-	response.OkWithDetailed(crmRes.CrmContactFileResponse{File: file}, "上传成功", c)
-}
-
-// UploadMultipartFile
-// @Tags      ExaFileUploadAndDownload
-// @Summary   上传多文件示例
-// @Security  ApiKeyAuth
-// @accept    multipart/form-data
-// @Produce   application/json
-// @Param     file  formData  file                                                           true  "上传文件示例"
-// @Success   200   {object}  response.Response{data=exampleRes.ExaFileResponse,msg=string}  "上传文件示例,返回包括文件详情"
-// @Router    /fileUploadAndDownload/uploadMultipartFile [post]
-func (b *FileUploadAndDownloadApi) UploadMultipartFile(c *gin.Context) {
-	//var file example.ExaFileUploadAndDownload
-	noSave := c.DefaultQuery("noSave", "0")
-	//_, header, err := c.Request.FormFile("file")
-	//if err != nil {
-	//	global.GVA_LOG.Error("接收文件失败!", zap.Error(err))
-	//	response.FailWithMessage("接收文件失败", c)
-	//	return
-	//}
-	//file, err = fileUploadAndDownloadService.UploadFile(header, noSave) // 文件上传后拿到文件路径
-	//if err != nil {
-	//	global.GVA_LOG.Error("修改数据库链接失败!", zap.Error(err))
-	//	response.FailWithMessage("修改数据库链接失败", c)
-	//	return
-	//}
-
-	// 获取上传的文件
-	formFiles := c.Request.MultipartForm.File["file"]
-	if formFiles == nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "没有上传文件"})
-		return
-	}
-
-	contact_id_str := c.PostForm("contact_id")
-	contact_id, _ := strconv.Atoi(contact_id_str)
-	result := make([]crm.CrmContactFileUploadAndDownloads, 0)
-	for k, fileHeader := range formFiles {
-		// 生成保存的文件名，这里使用时间戳加原始文件名组合
-		file, err := crmContactFileUploadAndDownloadsService.UploadFile(fileHeader, noSave, &contact_id, &k) // 文件上传后拿到文件路径
-		if err != nil {
-			global.GVA_LOG.Error("修改数据库链接失败!", zap.Error(err))
-			response.FailWithMessage("修改数据库链接失败", c)
-			return
-		}
-		result = append(result, file)
-	}
-	response.OkWithDetailed(crmRes.CrmFileResponse{result}, "上传成功", c)
-}
+//
+//// UploadMultipartFile
+//// @Tags      ExaFileUploadAndDownload
+//// @Summary   上传多文件示例
+//// @Security  ApiKeyAuth
+//// @accept    multipart/form-data
+//// @Produce   application/json
+//// @Param     file  formData  file                                                           true  "上传文件示例"
+//// @Success   200   {object}  response.Response{data=exampleRes.ExaFileResponse,msg=string}  "上传文件示例,返回包括文件详情"
+//// @Router    /fileUploadAndDownload/uploadMultipartFile [post]
+//func (b *FileUploadAndDownloadApi) UploadMultipartFile(c *gin.Context) {
+//	//var file example.ExaFileUploadAndDownload
+//	noSave := c.DefaultQuery("noSave", "0")
+//	//_, header, err := c.Request.FormFile("file")
+//	//if err != nil {
+//	//	global.GVA_LOG.Error("接收文件失败!", zap.Error(err))
+//	//	response.FailWithMessage("接收文件失败", c)
+//	//	return
+//	//}
+//	//file, err = fileUploadAndDownloadService.UploadFile(header, noSave) // 文件上传后拿到文件路径
+//	//if err != nil {
+//	//	global.GVA_LOG.Error("修改数据库链接失败!", zap.Error(err))
+//	//	response.FailWithMessage("修改数据库链接失败", c)
+//	//	return
+//	//}
+//
+//	// 获取上传的文件
+//	formFiles := c.Request.MultipartForm.File["file"]
+//	if formFiles == nil {
+//		c.JSON(http.StatusBadRequest, gin.H{"error": "没有上传文件"})
+//		return
+//	}
+//
+//	contact_id_str := c.PostForm("contact_id")
+//	contact_id, _ := strconv.Atoi(contact_id_str)
+//	result := make([]crm.CrmContactFileUploadAndDownloads, 0)
+//	for k, fileHeader := range formFiles {
+//		// 生成保存的文件名，这里使用时间戳加原始文件名组合
+//		file, err := crmContactFileUploadAndDownloadsService.UploadFile(fileHeader, noSave, &contact_id, &k) // 文件上传后拿到文件路径
+//		if err != nil {
+//			global.GVA_LOG.Error("修改数据库链接失败!", zap.Error(err))
+//			response.FailWithMessage("修改数据库链接失败", c)
+//			return
+//		}
+//		result = append(result, file)
+//	}
+//	response.OkWithDetailed(crmRes.CrmFileResponse{result}, "上传成功", c)
+//}
 
 // EditFileName 编辑文件名或者备注
 func (b *FileUploadAndDownloadApi) EditFileName(c *gin.Context) {

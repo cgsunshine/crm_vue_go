@@ -3,7 +3,7 @@ package crm
 import (
 	"github.com/flipped-aurora/gin-vue-admin/server/global"
 	"github.com/flipped-aurora/gin-vue-admin/server/model/crm"
-    crmReq "github.com/flipped-aurora/gin-vue-admin/server/model/crm/request"
+	crmReq "github.com/flipped-aurora/gin-vue-admin/server/model/crm/request"
 )
 
 type CrmBillService struct {
@@ -18,83 +18,83 @@ func (crmBillService *CrmBillService) CreateCrmBill(crmBill *crm.CrmBill) (err e
 
 // DeleteCrmBill 删除crmBill表记录
 // Author [piexlmax](https://github.com/piexlmax)
-func (crmBillService *CrmBillService)DeleteCrmBill(ID string) (err error) {
-	err = global.GVA_DB.Delete(&crm.CrmBill{},"id = ?",ID).Error
+func (crmBillService *CrmBillService) DeleteCrmBill(ID string) (err error) {
+	err = global.GVA_DB.Delete(&crm.CrmBill{}, "id = ?", ID).Error
 	return err
 }
 
 // DeleteCrmBillByIds 批量删除crmBill表记录
 // Author [piexlmax](https://github.com/piexlmax)
-func (crmBillService *CrmBillService)DeleteCrmBillByIds(IDs []string) (err error) {
-	err = global.GVA_DB.Delete(&[]crm.CrmBill{},"id in ?",IDs).Error
+func (crmBillService *CrmBillService) DeleteCrmBillByIds(IDs []string) (err error) {
+	err = global.GVA_DB.Delete(&[]crm.CrmBill{}, "id in ?", IDs).Error
 	return err
 }
 
 // UpdateCrmBill 更新crmBill表记录
 // Author [piexlmax](https://github.com/piexlmax)
-func (crmBillService *CrmBillService)UpdateCrmBill(crmBill crm.CrmBill) (err error) {
+func (crmBillService *CrmBillService) UpdateCrmBill(crmBill crm.CrmBill) (err error) {
 	err = global.GVA_DB.Save(&crmBill).Error
 	return err
 }
 
 // GetCrmBill 根据ID获取crmBill表记录
 // Author [piexlmax](https://github.com/piexlmax)
-func (crmBillService *CrmBillService)GetCrmBill(ID string) (crmBill crm.CrmBill, err error) {
+func (crmBillService *CrmBillService) GetCrmBill(ID string) (crmBill crm.CrmBill, err error) {
 	err = global.GVA_DB.Where("id = ?", ID).First(&crmBill).Error
 	return
 }
 
 // GetCrmBillInfoList 分页获取crmBill表记录
 // Author [piexlmax](https://github.com/piexlmax)
-func (crmBillService *CrmBillService)GetCrmBillInfoList(info crmReq.CrmBillSearch) (list []crm.CrmBill, total int64, err error) {
+func (crmBillService *CrmBillService) GetCrmBillInfoList(info crmReq.CrmBillSearch) (list []crm.CrmBill, total int64, err error) {
 	limit := info.PageSize
 	offset := info.PageSize * (info.Page - 1)
-    // 创建db
+	// 创建db
 	db := global.GVA_DB.Model(&crm.CrmBill{})
-    var crmBills []crm.CrmBill
-    // 如果有条件搜索 下方会自动创建搜索语句
-    if info.StartCreatedAt !=nil && info.EndCreatedAt !=nil {
-     db = db.Where("created_at BETWEEN ? AND ?", info.StartCreatedAt, info.EndCreatedAt)
-    }
-    if info.Amount != nil {
-        db = db.Where("amount = ?",info.Amount)
-    }
-    if info.Currency != "" {
-        db = db.Where("currency = ?",info.Currency)
-    }
-    if info.CustomerId != nil {
-        db = db.Where("customer_id = ?",info.CustomerId)
-    }
-        if info.StartExpirationTime != nil && info.EndExpirationTime != nil {
-            db = db.Where("expiration_time BETWEEN ? AND ? ",info.StartExpirationTime,info.EndExpirationTime)
-        }
-    if info.OrderId != nil {
-        db = db.Where("order_id = ?",info.OrderId)
-    }
-    if info.PaymentCollention != nil {
-        db = db.Where("payment_collention = ?",info.PaymentCollention)
-    }
-    if info.PaymentStatus != "" {
-        db = db.Where("payment_status = ?",info.PaymentStatus)
-    }
-        if info.StartPaymentTime != nil && info.EndPaymentTime != nil {
-            db = db.Where("payment_time BETWEEN ? AND ? ",info.StartPaymentTime,info.EndPaymentTime)
-        }
-    if info.PaymentType != "" {
-        db = db.Where("payment_type = ?",info.PaymentType)
-    }
-    if info.UserId != nil {
-        db = db.Where("user_id = ?",info.UserId)
-    }
+	var crmBills []crm.CrmBill
+	// 如果有条件搜索 下方会自动创建搜索语句
+	if info.StartCreatedAt != nil && info.EndCreatedAt != nil {
+		db = db.Where("created_at BETWEEN ? AND ?", info.StartCreatedAt, info.EndCreatedAt)
+	}
+	if info.Amount != nil {
+		db = db.Where("amount = ?", info.Amount)
+	}
+	if info.Currency != "" {
+		db = db.Where("currency = ?", info.Currency)
+	}
+	if info.CustomerId != nil {
+		db = db.Where("customer_id = ?", info.CustomerId)
+	}
+	if info.StartExpirationTime != nil && info.EndExpirationTime != nil {
+		db = db.Where("expiration_time BETWEEN ? AND ? ", info.StartExpirationTime, info.EndExpirationTime)
+	}
+	if info.OrderId != nil {
+		db = db.Where("order_id = ?", info.OrderId)
+	}
+	if info.PaymentCollention != nil {
+		db = db.Where("payment_collention = ?", info.PaymentCollention)
+	}
+	if info.PaymentStatus != "" {
+		db = db.Where("payment_status = ?", info.PaymentStatus)
+	}
+	if info.StartPaymentTime != nil && info.EndPaymentTime != nil {
+		db = db.Where("payment_time BETWEEN ? AND ? ", info.StartPaymentTime, info.EndPaymentTime)
+	}
+	if info.PaymentType != "" {
+		db = db.Where("payment_type = ?", info.PaymentType)
+	}
+	if info.UserId != nil {
+		db = db.Where("user_id = ?", info.UserId)
+	}
 	err = db.Count(&total).Error
-	if err!=nil {
-    	return
-    }
+	if err != nil {
+		return
+	}
 
 	if limit != 0 {
-       db = db.Limit(limit).Offset(offset)
-    }
-	
+		db = db.Limit(limit).Offset(offset)
+	}
+
 	err = db.Find(&crmBills).Error
-	return  crmBills, total, err
+	return crmBills, total, err
 }

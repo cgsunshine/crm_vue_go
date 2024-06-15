@@ -16,38 +16,6 @@
       <el-date-picker v-model="searchInfo.endCreatedAt" type="datetime" placeholder="结束日期" :disabled-date="time=> searchInfo.startCreatedAt ? time.getTime() < searchInfo.startCreatedAt.getTime() : false"></el-date-picker>
       </el-form-item>
       
-        <el-form-item label="账单ID" prop="billId">
-            
-             <el-input v-model.number="searchInfo.billId" placeholder="搜索条件" />
-
-        </el-form-item>
-        <el-form-item label="客户ID" prop="customerId">
-            
-             <el-input v-model.number="searchInfo.customerId" placeholder="搜索条件" />
-
-        </el-form-item>
-        <el-form-item label="管理ID 销售代表" prop="userId">
-            
-             <el-input v-model.number="searchInfo.userId" placeholder="搜索条件" />
-
-        </el-form-item>
-        <el-form-item label="币种" prop="currency">
-         <el-input v-model="searchInfo.currency" placeholder="搜索条件" />
-
-        </el-form-item>
-        <el-form-item label="凭证" prop="proof">
-         <el-input v-model="searchInfo.proof" placeholder="搜索条件" />
-
-        </el-form-item>
-           <el-form-item label="审核状态" prop="auditingStatus">
-            <el-select v-model="searchInfo.auditingStatus" clearable placeholder="请选择" @clear="()=>{searchInfo.auditingStatus=undefined}">
-              <el-option v-for="(item,key) in review_statusOptions" :key="key" :label="item.label" :value="item.value" />
-            </el-select>
-            </el-form-item>
-        <el-form-item label="审批人" prop="approvedById">
-         <el-input v-model="searchInfo.approvedById" placeholder="搜索条件" />
-
-        </el-form-item>
         <el-form-item label="审核时间" prop="auditingTime">
             
             <template #label>
@@ -61,6 +29,25 @@
             <el-date-picker v-model="searchInfo.startAuditingTime" type="datetime" placeholder="开始日期" :disabled-date="time=> searchInfo.endAuditingTime ? time.getTime() > searchInfo.endAuditingTime.getTime() : false"></el-date-picker>
             —
             <el-date-picker v-model="searchInfo.endAuditingTime" type="datetime" placeholder="结束日期" :disabled-date="time=> searchInfo.startAuditingTime ? time.getTime() < searchInfo.startAuditingTime.getTime() : false"></el-date-picker>
+
+        </el-form-item>
+        <el-form-item label="账单ID" prop="billId">
+            
+             <el-input v-model.number="searchInfo.billId" placeholder="搜索条件" />
+
+        </el-form-item>
+        <el-form-item label="币种" prop="currency">
+         <el-input v-model="searchInfo.currency" placeholder="搜索条件" />
+
+        </el-form-item>
+        <el-form-item label="客户ID" prop="customerId">
+            
+             <el-input v-model.number="searchInfo.customerId" placeholder="搜索条件" />
+
+        </el-form-item>
+        <el-form-item label="管理ID 销售代表" prop="userId">
+            
+             <el-input v-model.number="searchInfo.userId" placeholder="搜索条件" />
 
         </el-form-item>
         <el-form-item>
@@ -88,21 +75,21 @@
             <template #default="scope">{{ formatDate(scope.row.CreatedAt) }}</template>
         </el-table-column>
         
-        <el-table-column align="left" label="账单ID" prop="billId" width="120" />
-        <el-table-column align="left" label="客户ID" prop="customerId" width="120" />
-        <el-table-column align="left" label="管理ID 销售代表" prop="userId" width="120" />
-        <el-table-column align="left" label="备注" prop="description" width="120" />
-        <el-table-column align="left" label="币种" prop="currency" width="120" />
-        <el-table-column align="left" label="凭证" prop="proof" width="120" />
+        <el-table-column align="left" label="审批人" prop="approvedById" width="120" />
         <el-table-column align="left" label="审核状态" prop="auditingStatus" width="120">
             <template #default="scope">
             {{ filterDict(scope.row.auditingStatus,review_statusOptions) }}
             </template>
         </el-table-column>
-        <el-table-column align="left" label="审批人" prop="approvedById" width="120" />
          <el-table-column align="left" label="审核时间" width="180">
             <template #default="scope">{{ formatDate(scope.row.auditingTime) }}</template>
          </el-table-column>
+        <el-table-column align="left" label="账单ID" prop="billId" width="120" />
+        <el-table-column align="left" label="币种" prop="currency" width="120" />
+        <el-table-column align="left" label="客户ID" prop="customerId" width="120" />
+        <el-table-column align="left" label="备注" prop="description" width="120" />
+        <el-table-column align="left" label="凭证" prop="proof" width="120" />
+        <el-table-column align="left" label="管理ID 销售代表" prop="userId" width="120" />
         <el-table-column align="left" label="操作" fixed="right" min-width="240">
             <template #default="scope">
             <el-button type="primary" link class="table-button" @click="getDetails(scope.row)">
@@ -138,34 +125,34 @@
             </template>
 
           <el-form :model="formData" label-position="top" ref="elFormRef" :rules="rule" label-width="80px">
-            <el-form-item label="账单ID:"  prop="billId" >
-              <el-input v-model.number="formData.billId" :clearable="true" placeholder="请输入账单ID" />
-            </el-form-item>
-            <el-form-item label="客户ID:"  prop="customerId" >
-              <el-input v-model.number="formData.customerId" :clearable="true" placeholder="请输入客户ID" />
-            </el-form-item>
-            <el-form-item label="管理ID 销售代表:"  prop="userId" >
-              <el-input v-model.number="formData.userId" :clearable="true" placeholder="请输入管理ID 销售代表" />
-            </el-form-item>
-            <el-form-item label="备注:"  prop="description" >
-              <el-input v-model="formData.description" :clearable="true"  placeholder="请输入备注" />
-            </el-form-item>
-            <el-form-item label="币种:"  prop="currency" >
-              <el-input v-model="formData.currency" :clearable="true"  placeholder="请输入币种" />
-            </el-form-item>
-            <el-form-item label="凭证:"  prop="proof" >
-              <el-input v-model="formData.proof" :clearable="true"  placeholder="请输入凭证" />
+            <el-form-item label="审批人:"  prop="approvedById" >
+              <el-input v-model="formData.approvedById" :clearable="true"  placeholder="请输入审批人" />
             </el-form-item>
             <el-form-item label="审核状态:"  prop="auditingStatus" >
               <el-select v-model="formData.auditingStatus" placeholder="请选择审核状态" style="width:100%" :clearable="true" >
                 <el-option v-for="(item,key) in review_statusOptions" :key="key" :label="item.label" :value="item.value" />
               </el-select>
             </el-form-item>
-            <el-form-item label="审批人:"  prop="approvedById" >
-              <el-input v-model="formData.approvedById" :clearable="true"  placeholder="请输入审批人" />
-            </el-form-item>
             <el-form-item label="审核时间:"  prop="auditingTime" >
               <el-date-picker v-model="formData.auditingTime" type="date" style="width:100%" placeholder="选择日期" :clearable="true"  />
+            </el-form-item>
+            <el-form-item label="账单ID:"  prop="billId" >
+              <el-input v-model.number="formData.billId" :clearable="true" placeholder="请输入账单ID" />
+            </el-form-item>
+            <el-form-item label="币种:"  prop="currency" >
+              <el-input v-model="formData.currency" :clearable="true"  placeholder="请输入币种" />
+            </el-form-item>
+            <el-form-item label="客户ID:"  prop="customerId" >
+              <el-input v-model.number="formData.customerId" :clearable="true" placeholder="请输入客户ID" />
+            </el-form-item>
+            <el-form-item label="备注:"  prop="description" >
+              <el-input v-model="formData.description" :clearable="true"  placeholder="请输入备注" />
+            </el-form-item>
+            <el-form-item label="凭证:"  prop="proof" >
+              <el-input v-model="formData.proof" :clearable="true"  placeholder="请输入凭证" />
+            </el-form-item>
+            <el-form-item label="管理ID 销售代表:"  prop="userId" >
+              <el-input v-model.number="formData.userId" :clearable="true" placeholder="请输入管理ID 销售代表" />
             </el-form-item>
           </el-form>
     </el-drawer>
@@ -177,32 +164,32 @@
              </div>
          </template>
         <el-descriptions :column="1" border>
-                <el-descriptions-item label="账单ID">
-                        {{ formData.billId }}
-                </el-descriptions-item>
-                <el-descriptions-item label="客户ID">
-                        {{ formData.customerId }}
-                </el-descriptions-item>
-                <el-descriptions-item label="管理ID 销售代表">
-                        {{ formData.userId }}
-                </el-descriptions-item>
-                <el-descriptions-item label="备注">
-                        {{ formData.description }}
-                </el-descriptions-item>
-                <el-descriptions-item label="币种">
-                        {{ formData.currency }}
-                </el-descriptions-item>
-                <el-descriptions-item label="凭证">
-                        {{ formData.proof }}
+                <el-descriptions-item label="审批人">
+                        {{ formData.approvedById }}
                 </el-descriptions-item>
                 <el-descriptions-item label="审核状态">
                         {{ filterDict(formData.auditingStatus,review_statusOptions) }}
                 </el-descriptions-item>
-                <el-descriptions-item label="审批人">
-                        {{ formData.approvedById }}
-                </el-descriptions-item>
                 <el-descriptions-item label="审核时间">
                       {{ formatDate(formData.auditingTime) }}
+                </el-descriptions-item>
+                <el-descriptions-item label="账单ID">
+                        {{ formData.billId }}
+                </el-descriptions-item>
+                <el-descriptions-item label="币种">
+                        {{ formData.currency }}
+                </el-descriptions-item>
+                <el-descriptions-item label="客户ID">
+                        {{ formData.customerId }}
+                </el-descriptions-item>
+                <el-descriptions-item label="备注">
+                        {{ formData.description }}
+                </el-descriptions-item>
+                <el-descriptions-item label="凭证">
+                        {{ formData.proof }}
+                </el-descriptions-item>
+                <el-descriptions-item label="管理ID 销售代表">
+                        {{ formData.userId }}
                 </el-descriptions-item>
         </el-descriptions>
     </el-drawer>
@@ -231,15 +218,15 @@ defineOptions({
 // 自动化生成的字典（可能为空）以及字段
 const review_statusOptions = ref([])
 const formData = ref({
-        billId: 0,
-        customerId: 0,
-        userId: 0,
-        description: '',
-        currency: '',
-        proof: '',
-        auditingStatus: '',
         approvedById: '',
+        auditingStatus: '',
         auditingTime: new Date(),
+        billId: 0,
+        currency: '',
+        customerId: 0,
+        description: '',
+        proof: '',
+        userId: 0,
         })
 
 
@@ -445,15 +432,15 @@ const getDetails = async (row) => {
 const closeDetailShow = () => {
   detailShow.value = false
   formData.value = {
-          billId: 0,
-          customerId: 0,
-          userId: 0,
-          description: '',
-          currency: '',
-          proof: '',
-          auditingStatus: '',
           approvedById: '',
+          auditingStatus: '',
           auditingTime: new Date(),
+          billId: 0,
+          currency: '',
+          customerId: 0,
+          description: '',
+          proof: '',
+          userId: 0,
           }
 }
 
@@ -468,15 +455,15 @@ const openDialog = () => {
 const closeDialog = () => {
     dialogFormVisible.value = false
     formData.value = {
-        billId: 0,
-        customerId: 0,
-        userId: 0,
-        description: '',
-        currency: '',
-        proof: '',
-        auditingStatus: '',
         approvedById: '',
+        auditingStatus: '',
         auditingTime: new Date(),
+        billId: 0,
+        currency: '',
+        customerId: 0,
+        description: '',
+        proof: '',
+        userId: 0,
         }
 }
 // 弹窗确定

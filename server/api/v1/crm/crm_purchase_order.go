@@ -16,13 +16,13 @@ type CrmPurchaseOrderApi struct {
 var crmPurchaseOrderService = service.ServiceGroupApp.CrmServiceGroup.CrmPurchaseOrderService
 
 
-// CreateCrmPurchaseOrder 创建crmPurchaseOrder表
+// CreateCrmPurchaseOrder 创建订购单管理
 // @Tags CrmPurchaseOrder
-// @Summary 创建crmPurchaseOrder表
+// @Summary 创建订购单管理
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body crm.CrmPurchaseOrder true "创建crmPurchaseOrder表"
+// @Param data body crm.CrmPurchaseOrder true "创建订购单管理"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"创建成功"}"
 // @Router /crmPurchaseOrder/createCrmPurchaseOrder [post]
 func (crmPurchaseOrderApi *CrmPurchaseOrderApi) CreateCrmPurchaseOrder(c *gin.Context) {
@@ -41,13 +41,13 @@ func (crmPurchaseOrderApi *CrmPurchaseOrderApi) CreateCrmPurchaseOrder(c *gin.Co
 	}
 }
 
-// DeleteCrmPurchaseOrder 删除crmPurchaseOrder表
+// DeleteCrmPurchaseOrder 删除订购单管理
 // @Tags CrmPurchaseOrder
-// @Summary 删除crmPurchaseOrder表
+// @Summary 删除订购单管理
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body crm.CrmPurchaseOrder true "删除crmPurchaseOrder表"
+// @Param data body crm.CrmPurchaseOrder true "删除订购单管理"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"删除成功"}"
 // @Router /crmPurchaseOrder/deleteCrmPurchaseOrder [delete]
 func (crmPurchaseOrderApi *CrmPurchaseOrderApi) DeleteCrmPurchaseOrder(c *gin.Context) {
@@ -60,9 +60,9 @@ func (crmPurchaseOrderApi *CrmPurchaseOrderApi) DeleteCrmPurchaseOrder(c *gin.Co
 	}
 }
 
-// DeleteCrmPurchaseOrderByIds 批量删除crmPurchaseOrder表
+// DeleteCrmPurchaseOrderByIds 批量删除订购单管理
 // @Tags CrmPurchaseOrder
-// @Summary 批量删除crmPurchaseOrder表
+// @Summary 批量删除订购单管理
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
@@ -78,13 +78,13 @@ func (crmPurchaseOrderApi *CrmPurchaseOrderApi) DeleteCrmPurchaseOrderByIds(c *g
 	}
 }
 
-// UpdateCrmPurchaseOrder 更新crmPurchaseOrder表
+// UpdateCrmPurchaseOrder 更新订购单管理
 // @Tags CrmPurchaseOrder
-// @Summary 更新crmPurchaseOrder表
+// @Summary 更新订购单管理
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body crm.CrmPurchaseOrder true "更新crmPurchaseOrder表"
+// @Param data body crm.CrmPurchaseOrder true "更新订购单管理"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"更新成功"}"
 // @Router /crmPurchaseOrder/updateCrmPurchaseOrder [put]
 func (crmPurchaseOrderApi *CrmPurchaseOrderApi) UpdateCrmPurchaseOrder(c *gin.Context) {
@@ -103,13 +103,13 @@ func (crmPurchaseOrderApi *CrmPurchaseOrderApi) UpdateCrmPurchaseOrder(c *gin.Co
 	}
 }
 
-// FindCrmPurchaseOrder 用id查询crmPurchaseOrder表
+// FindCrmPurchaseOrder 用id查询订购单管理
 // @Tags CrmPurchaseOrder
-// @Summary 用id查询crmPurchaseOrder表
+// @Summary 用id查询订购单管理
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data query crm.CrmPurchaseOrder true "用id查询crmPurchaseOrder表"
+// @Param data query crm.CrmPurchaseOrder true "用id查询订购单管理"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"查询成功"}"
 // @Router /crmPurchaseOrder/findCrmPurchaseOrder [get]
 func (crmPurchaseOrderApi *CrmPurchaseOrderApi) FindCrmPurchaseOrder(c *gin.Context) {
@@ -122,13 +122,13 @@ func (crmPurchaseOrderApi *CrmPurchaseOrderApi) FindCrmPurchaseOrder(c *gin.Cont
 	}
 }
 
-// GetCrmPurchaseOrderList 分页获取crmPurchaseOrder表列表
+// GetCrmPurchaseOrderList 分页获取订购单管理列表
 // @Tags CrmPurchaseOrder
-// @Summary 分页获取crmPurchaseOrder表列表
+// @Summary 分页获取订购单管理列表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data query crmReq.CrmPurchaseOrderSearch true "分页获取crmPurchaseOrder表列表"
+// @Param data query crmReq.CrmPurchaseOrderSearch true "分页获取订购单管理列表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"获取成功"}"
 // @Router /crmPurchaseOrder/getCrmPurchaseOrderList [get]
 func (crmPurchaseOrderApi *CrmPurchaseOrderApi) GetCrmPurchaseOrderList(c *gin.Context) {
@@ -151,18 +151,18 @@ func (crmPurchaseOrderApi *CrmPurchaseOrderApi) GetCrmPurchaseOrderList(c *gin.C
     }
 }
 
-// GetCrmPurchaseOrderPublic 不需要鉴权的crmPurchaseOrder表接口
+// GetCrmPurchaseOrderPublic 不需要鉴权的订购单管理接口
 // @Tags CrmPurchaseOrder
-// @Summary 不需要鉴权的crmPurchaseOrder表接口
+// @Summary 不需要鉴权的订购单管理接口
 // @accept application/json
 // @Produce application/json
-// @Param data query crmReq.CrmPurchaseOrderSearch true "分页获取crmPurchaseOrder表列表"
+// @Param data query crmReq.CrmPurchaseOrderSearch true "分页获取订购单管理列表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"获取成功"}"
 // @Router /crmPurchaseOrder/getCrmPurchaseOrderList [get]
 func (crmPurchaseOrderApi *CrmPurchaseOrderApi) GetCrmPurchaseOrderPublic(c *gin.Context) {
     // 此接口不需要鉴权
     // 示例为返回了一个固定的消息接口，一般本接口用于C端服务，需要自己实现业务逻辑
     response.OkWithDetailed(gin.H{
-       "info": "不需要鉴权的crmPurchaseOrder表接口信息",
+       "info": "不需要鉴权的订购单管理接口信息",
     }, "获取成功", c)
 }

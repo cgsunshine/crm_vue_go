@@ -8,6 +8,7 @@ const service = axios.create({
   baseURL: import.meta.env.VITE_BASE_API,
   timeout: 99999
 })
+
 let activeAxios = 0
 let timer
 let loadingInstance
@@ -47,6 +48,7 @@ service.interceptors.request.use(
       'x-user-id': userStore.userInfo.ID,
       ...config.headers
     }
+   
     return config
   },
   error => {
@@ -58,10 +60,10 @@ service.interceptors.request.use(
       message: error,
       type: 'error'
     })
+    console.log(service,111);
     return error
   }
 )
-
 // http response 拦截器
 service.interceptors.response.use(
   response => {

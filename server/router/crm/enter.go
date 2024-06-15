@@ -5,7 +5,6 @@ type RouterGroup struct {
 	CrmContractTypeRouter
 	CrmLoginLogRouter
 	CrmOperationRecordsRouter
-	CrmProcurementContractRouter
 	CrmProductGroupRouter
 	CrmProductTypeRouter
 	CrmUserRouter
@@ -13,20 +12,14 @@ type RouterGroup struct {
 	CrmApprovalProcessRouter
 	CrmApprovalRecordRouter
 	CrmApprovalTasksRouter
-	CrmTicketCommentsRouter
-	CrmTicketResponseTemplatesRouter
-	CrmTicketsRouter
-	CrmContactFileUploadAndDownloadsRouter
 	CrmCustomerGroupRouter
 	CrmCustomersRouter
 	CrmProductRouter
-	CrmBusinessOpportunityRouter
 	CrmBillRouter
 	CrmContractRouter
 	CrmOrderRouter
 	CrmPageCustomersRouter
 	CrmPaymentRouter
-	CrmPurchaseOrderRouter
 	CrmStatementAccountRouter
 	CrmSupplierRouter
 	CrmCommissionRebateRouter
@@ -42,5 +35,26 @@ type RouterGroup struct {
 	CrmPageOrderRouter
 
 	CrmPagePaymentCollentionRouter
+	CrmTicketCategoriesRouter
+	CrmTicketResponseTemplatesRouter
+	CrmTicketsRouter
+	CrmPageTicketsRouter
+	CrmTicketCommentsRouter
+	CrmStatementAccountFileRouter
+	CrmContactFileRouter
+
+	CrmUploadStatementAccountFileRouter
+	CrmUploadBusinessOpportunityFileRouter
+	CrmUploadContactFileRouter
+	CrmContactApprovalTasksRouter
+	CrmPageContactApprovalTasksRouter
+	CrmPageContactApprovalRecordRouter
+	CrmContactApprovalRecordRouter
+	CrmPurchaseOrderRouter
+	CrmPageTicketCommentsRouter
+	CrmBusinessOpportunityRouter
+	CrmBusinessOpportunityFileRouter
+	CrmAuthoritiesRouter
 	CrmPaymentCollentionRouter
+	CrmProcurementContractRouter
 }

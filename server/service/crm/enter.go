@@ -5,7 +5,6 @@ type ServiceGroup struct {
 	CrmContractTypeService
 	CrmLoginLogService
 	CrmOperationRecordsService
-	CrmProcurementContractService
 	CrmProductGroupService
 	CrmProductTypeService
 	CrmUserService
@@ -13,21 +12,28 @@ type ServiceGroup struct {
 	CrmApprovalProcessService
 	CrmApprovalRecordService
 	CrmApprovalTasksService
-	CrmTicketCommentsService
-	CrmTicketResponseTemplatesService
-	CrmTicketsService
-	CrmContactFileUploadAndDownloadsService
 	CrmCustomerGroupService
 	CrmCustomersService
 	CrmProductService
-	CrmBusinessOpportunityService
 	CrmBillService
 	CrmContractService
 	CrmOrderService
 	CrmPaymentService
-	CrmPurchaseOrderService
 	CrmStatementAccountService
 	CrmSupplierService
 	CrmCommissionRebateService
+	CrmTicketCategoriesService
+	CrmTicketResponseTemplatesService
+	CrmTicketsService
+	CrmTicketCommentsService
+	CrmStatementAccountFileService
+	CrmContactFileService
+	CrmContactApprovalTasksService
+	CrmContactApprovalRecordService
+	CrmPurchaseOrderService
+	CrmBusinessOpportunityService
+	CrmBusinessOpportunityFileService
+	CrmAuthoritiesService
 	CrmPaymentCollentionService
+	CrmProcurementContractService
 }

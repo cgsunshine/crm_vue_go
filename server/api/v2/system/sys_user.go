@@ -1,6 +1,7 @@
 package system
 
 import (
+	"fmt"
 	"strconv"
 	"time"
 
@@ -84,6 +85,7 @@ func (b *BaseApi) Login(c *gin.Context) {
 // TokenNext 登录以后签发jwt
 func (b *BaseApi) TokenNext(c *gin.Context, user system.SysUser) {
 	j := &utils.JWT{SigningKey: []byte(global.GVA_CONFIG.JWT.SigningKey)} // 唯一签名
+	fmt.Println("global.GVA_CONFIG.JWT.SigningKey:", global.GVA_CONFIG.JWT.SigningKey)
 	claims := j.CreateClaims(systemReq.BaseClaims{
 		UUID:        user.UUID,
 		ID:          user.ID,
@@ -105,6 +107,7 @@ func (b *BaseApi) TokenNext(c *gin.Context, user system.SysUser) {
 			Success: true,
 			Data: systemRes.CrmLSysUserResponse{
 				AccessToken:  token,
+				ID:           user.ID,
 				Avatar:       user.HeaderImg,
 				Expires:      "2030/10/30 00:00:00",
 				Nickname:     user.NickName,
@@ -132,6 +135,7 @@ func (b *BaseApi) TokenNext(c *gin.Context, user system.SysUser) {
 			Success: true,
 			Data: systemRes.CrmLSysUserResponse{
 				AccessToken:  token,
+				ID:           user.ID,
 				Avatar:       user.HeaderImg,
 				Expires:      "2030/10/30 00:00:00",
 				Nickname:     user.NickName,
@@ -164,6 +168,7 @@ func (b *BaseApi) TokenNext(c *gin.Context, user system.SysUser) {
 			Success: true,
 			Data: systemRes.CrmLSysUserResponse{
 				AccessToken:  token,
+				ID:           user.ID,
 				Avatar:       user.HeaderImg,
 				Expires:      "2030/10/30 00:00:00",
 				Nickname:     user.NickName,
@@ -305,6 +310,7 @@ func (b *BaseApi) SetUserAuthority(c *gin.Context) {
 	}
 	claims := utils.GetUserInfo(c)
 	j := &utils.JWT{SigningKey: []byte(global.GVA_CONFIG.JWT.SigningKey)} // 唯一签名
+	fmt.Println("global.GVA_CONFIG.JWT.SigningKey 313:", global.GVA_CONFIG.JWT.SigningKey)
 	claims.AuthorityId = sua.AuthorityId
 	if token, err := j.CreateToken(*claims); err != nil {
 		global.GVA_LOG.Error("修改失败!", zap.Error(err))

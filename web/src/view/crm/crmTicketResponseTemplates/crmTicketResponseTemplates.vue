@@ -41,10 +41,10 @@
             <template #default="scope">{{ formatDate(scope.row.CreatedAt) }}</template>
         </el-table-column>
         
-        <el-table-column align="left" label="回复模板名称" prop="templateName" width="120" />
-        <el-table-column align="left" label="回复内容" prop="content" width="120" />
         <el-table-column align="left" label="适用工单类别ID" prop="categoryId" width="120" />
+        <el-table-column align="left" label="回复内容" prop="content" width="120" />
         <el-table-column align="left" label="创建者ID" prop="createdBy" width="120" />
+        <el-table-column align="left" label="回复模板名称" prop="templateName" width="120" />
         <el-table-column align="left" label="操作" fixed="right" min-width="240">
             <template #default="scope">
             <el-button type="primary" link class="table-button" @click="getDetails(scope.row)">
@@ -80,17 +80,17 @@
             </template>
 
           <el-form :model="formData" label-position="top" ref="elFormRef" :rules="rule" label-width="80px">
-            <el-form-item label="回复模板名称:"  prop="templateName" >
-              <el-input v-model="formData.templateName" :clearable="true"  placeholder="请输入回复模板名称" />
+            <el-form-item label="适用工单类别ID:"  prop="categoryId" >
+              <el-input v-model.number="formData.categoryId" :clearable="true" placeholder="请输入适用工单类别ID" />
             </el-form-item>
             <el-form-item label="回复内容:"  prop="content" >
               <el-input v-model="formData.content" :clearable="true"  placeholder="请输入回复内容" />
             </el-form-item>
-            <el-form-item label="适用工单类别ID:"  prop="categoryId" >
-              <el-input v-model.number="formData.categoryId" :clearable="true" placeholder="请输入适用工单类别ID" />
-            </el-form-item>
             <el-form-item label="创建者ID:"  prop="createdBy" >
               <el-input v-model.number="formData.createdBy" :clearable="true" placeholder="请输入创建者ID" />
+            </el-form-item>
+            <el-form-item label="回复模板名称:"  prop="templateName" >
+              <el-input v-model="formData.templateName" :clearable="true"  placeholder="请输入回复模板名称" />
             </el-form-item>
           </el-form>
     </el-drawer>
@@ -102,17 +102,17 @@
              </div>
          </template>
         <el-descriptions :column="1" border>
-                <el-descriptions-item label="回复模板名称">
-                        {{ formData.templateName }}
+                <el-descriptions-item label="适用工单类别ID">
+                        {{ formData.categoryId }}
                 </el-descriptions-item>
                 <el-descriptions-item label="回复内容">
                         {{ formData.content }}
                 </el-descriptions-item>
-                <el-descriptions-item label="适用工单类别ID">
-                        {{ formData.categoryId }}
-                </el-descriptions-item>
                 <el-descriptions-item label="创建者ID">
                         {{ formData.createdBy }}
+                </el-descriptions-item>
+                <el-descriptions-item label="回复模板名称">
+                        {{ formData.templateName }}
                 </el-descriptions-item>
         </el-descriptions>
     </el-drawer>
@@ -140,10 +140,10 @@ defineOptions({
 
 // 自动化生成的字典（可能为空）以及字段
 const formData = ref({
-        templateName: '',
-        content: '',
         categoryId: 0,
+        content: '',
         createdBy: 0,
+        templateName: '',
         })
 
 
@@ -337,10 +337,10 @@ const getDetails = async (row) => {
 const closeDetailShow = () => {
   detailShow.value = false
   formData.value = {
-          templateName: '',
-          content: '',
           categoryId: 0,
+          content: '',
           createdBy: 0,
+          templateName: '',
           }
 }
 
@@ -355,10 +355,10 @@ const openDialog = () => {
 const closeDialog = () => {
     dialogFormVisible.value = false
     formData.value = {
-        templateName: '',
-        content: '',
         categoryId: 0,
+        content: '',
         createdBy: 0,
+        templateName: '',
         }
 }
 // 弹窗确定

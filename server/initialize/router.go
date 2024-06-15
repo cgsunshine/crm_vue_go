@@ -89,8 +89,6 @@ func Routers() *gin.Engine {
 		crmRouter.InitCrmLoginLogRouter(PrivateGroup, PublicGroup)
 		crmRouter.InitCrmOperationRecordsRouter(PrivateGroup, PublicGroup)
 
-		crmRouter.InitCrmProcurementContractRouter(PrivateGroup, PublicGroup)
-
 		crmRouter.InitCrmProductGroupRouter(PrivateGroup, PublicGroup)
 		crmRouter.InitCrmProductTypeRouter(PrivateGroup, PublicGroup)
 
@@ -99,14 +97,11 @@ func Routers() *gin.Engine {
 		crmRouter.InitCrmApprovalProcessRouter(PrivateGroup, PublicGroup)
 		crmRouter.InitCrmApprovalRecordRouter(PrivateGroup, PublicGroup)
 		crmRouter.InitCrmApprovalTasksRouter(PrivateGroup, PublicGroup)
-		crmRouter.InitCrmTicketCommentsRouter(PrivateGroup, PublicGroup)
-		crmRouter.InitCrmTicketResponseTemplatesRouter(PrivateGroup, PublicGroup)
-		crmRouter.InitCrmTicketsRouter(PrivateGroup, PublicGroup)
-		crmRouter.InitCrmContactFileUploadAndDownloadsRouter(PrivateGroup, PublicGroup)
+
 		crmRouter.InitCrmCustomerGroupRouter(PrivateGroup, PublicGroup)
 		crmRouter.InitCrmCustomersRouter(PrivateGroup, PublicGroup)
 		crmRouter.InitCrmProductRouter(PrivateGroup, PublicGroup)
-		crmRouter.InitCrmBusinessOpportunityRouter(PrivateGroup, PublicGroup)
+
 		crmRouter.InitCrmBillRouter(PrivateGroup, PublicGroup)
 		crmRouter.InitCrmContractRouter(PrivateGroup, PublicGroup)
 		crmRouter.InitCrmOrderRouter(PrivateGroup, PublicGroup)
@@ -115,7 +110,7 @@ func Routers() *gin.Engine {
 		crmRouter.InitCrmPageProductRouter(PrivateGroup, PublicGroup)
 		crmRouter.InitCrmPageBusinessOpportunityRouter(PrivateGroup, PublicGroup)
 		crmRouter.InitCrmPaymentRouter(PrivateGroup, PublicGroup)
-		crmRouter.InitCrmPurchaseOrderRouter(PrivateGroup, PublicGroup)
+
 		crmRouter.InitCrmStatementAccountRouter(PrivateGroup, PublicGroup)
 		crmRouter.InitCrmSupplierRouter(PrivateGroup, PublicGroup)
 		crmRouter.InitCrmCommissionRebateRouter(PrivateGroup, PublicGroup)
@@ -130,7 +125,36 @@ func Routers() *gin.Engine {
 		crmRouter.InitCrmPagOrderRouter(PrivateGroup, PublicGroup)
 
 		crmRouter.InitCrmPagePaymentCollentionRouter(PrivateGroup, PublicGroup)
+
+		crmRouter.InitCrmTicketCategoriesRouter(PrivateGroup, PublicGroup)
+
+		crmRouter.InitCrmTicketResponseTemplatesRouter(PrivateGroup, PublicGroup)
+		crmRouter.InitCrmTicketsRouter(PrivateGroup, PublicGroup)
+		crmRouter.InitCrmPageTicketsRouter(PrivateGroup, PublicGroup)
+		crmRouter.InitCrmTicketCommentsRouter(PrivateGroup, PublicGroup)
+
+		crmRouter.InitCrmStatementAccountFileRouter(PrivateGroup, PublicGroup)
+		crmRouter.InitCrmContactFileRouter(PrivateGroup, PublicGroup)
+
+		crmRouter.InitCrmUploadStatementAccountFileRouter(PrivateGroup, PublicGroup)
+		crmRouter.InitCrmUploadBusinessOpportunityFileRouter(PrivateGroup, PublicGroup)
+		crmRouter.InitCrmUploadContactFileRouter(PrivateGroup, PublicGroup)
+		crmRouter.InitCrmContactApprovalTasksRouter(PrivateGroup, PublicGroup)
+		crmRouter.InitCrmPageContactApprovalTasksRouter(PrivateGroup, PublicGroup)
+
+		crmRouter.InitCrmPageContactApprovalRecordRouter(PrivateGroup, PublicGroup)
+		crmRouter.InitCrmContactApprovalRecordRouter(PrivateGroup, PublicGroup)
+
+		crmRouter.InitCrmPurchaseOrderRouter(PrivateGroup, PublicGroup)
+
+		crmRouter.InitCrmPageTicketCommentsRouter(PrivateGroup, PublicGroup)
+		crmRouter.InitCrmBusinessOpportunityRouter(PrivateGroup, PublicGroup)
+		crmRouter.InitCrmBusinessOpportunityFileRouter(PrivateGroup, PublicGroup)
+		crmRouter.InitCrmAuthoritiesRouter(PrivateGroup, PublicGroup)
+		crmRouter.InitCustomerCrmAuthoritiesRouter(PrivateGroup, PublicGroup)
 		crmRouter.InitCrmPaymentCollentionRouter(PrivateGroup, PublicGroup)
+		crmRouter.InitCrmProcurementContractRouter(PrivateGroup, PublicGroup)
+
 	}
 
 	{

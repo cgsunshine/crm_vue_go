@@ -16,13 +16,13 @@ type CrmTicketCommentsApi struct {
 var crmTicketCommentsService = service.ServiceGroupApp.CrmServiceGroup.CrmTicketCommentsService
 
 
-// CreateCrmTicketComments 创建crmTicketComments表
+// CreateCrmTicketComments 创建共单回复
 // @Tags CrmTicketComments
-// @Summary 创建crmTicketComments表
+// @Summary 创建共单回复
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body crm.CrmTicketComments true "创建crmTicketComments表"
+// @Param data body crm.CrmTicketComments true "创建共单回复"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"创建成功"}"
 // @Router /crmTicketComments/createCrmTicketComments [post]
 func (crmTicketCommentsApi *CrmTicketCommentsApi) CreateCrmTicketComments(c *gin.Context) {
@@ -41,13 +41,13 @@ func (crmTicketCommentsApi *CrmTicketCommentsApi) CreateCrmTicketComments(c *gin
 	}
 }
 
-// DeleteCrmTicketComments 删除crmTicketComments表
+// DeleteCrmTicketComments 删除共单回复
 // @Tags CrmTicketComments
-// @Summary 删除crmTicketComments表
+// @Summary 删除共单回复
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body crm.CrmTicketComments true "删除crmTicketComments表"
+// @Param data body crm.CrmTicketComments true "删除共单回复"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"删除成功"}"
 // @Router /crmTicketComments/deleteCrmTicketComments [delete]
 func (crmTicketCommentsApi *CrmTicketCommentsApi) DeleteCrmTicketComments(c *gin.Context) {
@@ -60,9 +60,9 @@ func (crmTicketCommentsApi *CrmTicketCommentsApi) DeleteCrmTicketComments(c *gin
 	}
 }
 
-// DeleteCrmTicketCommentsByIds 批量删除crmTicketComments表
+// DeleteCrmTicketCommentsByIds 批量删除共单回复
 // @Tags CrmTicketComments
-// @Summary 批量删除crmTicketComments表
+// @Summary 批量删除共单回复
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
@@ -78,13 +78,13 @@ func (crmTicketCommentsApi *CrmTicketCommentsApi) DeleteCrmTicketCommentsByIds(c
 	}
 }
 
-// UpdateCrmTicketComments 更新crmTicketComments表
+// UpdateCrmTicketComments 更新共单回复
 // @Tags CrmTicketComments
-// @Summary 更新crmTicketComments表
+// @Summary 更新共单回复
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body crm.CrmTicketComments true "更新crmTicketComments表"
+// @Param data body crm.CrmTicketComments true "更新共单回复"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"更新成功"}"
 // @Router /crmTicketComments/updateCrmTicketComments [put]
 func (crmTicketCommentsApi *CrmTicketCommentsApi) UpdateCrmTicketComments(c *gin.Context) {
@@ -103,13 +103,13 @@ func (crmTicketCommentsApi *CrmTicketCommentsApi) UpdateCrmTicketComments(c *gin
 	}
 }
 
-// FindCrmTicketComments 用id查询crmTicketComments表
+// FindCrmTicketComments 用id查询共单回复
 // @Tags CrmTicketComments
-// @Summary 用id查询crmTicketComments表
+// @Summary 用id查询共单回复
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data query crm.CrmTicketComments true "用id查询crmTicketComments表"
+// @Param data query crm.CrmTicketComments true "用id查询共单回复"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"查询成功"}"
 // @Router /crmTicketComments/findCrmTicketComments [get]
 func (crmTicketCommentsApi *CrmTicketCommentsApi) FindCrmTicketComments(c *gin.Context) {
@@ -122,13 +122,13 @@ func (crmTicketCommentsApi *CrmTicketCommentsApi) FindCrmTicketComments(c *gin.C
 	}
 }
 
-// GetCrmTicketCommentsList 分页获取crmTicketComments表列表
+// GetCrmTicketCommentsList 分页获取共单回复列表
 // @Tags CrmTicketComments
-// @Summary 分页获取crmTicketComments表列表
+// @Summary 分页获取共单回复列表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data query crmReq.CrmTicketCommentsSearch true "分页获取crmTicketComments表列表"
+// @Param data query crmReq.CrmTicketCommentsSearch true "分页获取共单回复列表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"获取成功"}"
 // @Router /crmTicketComments/getCrmTicketCommentsList [get]
 func (crmTicketCommentsApi *CrmTicketCommentsApi) GetCrmTicketCommentsList(c *gin.Context) {
@@ -151,18 +151,18 @@ func (crmTicketCommentsApi *CrmTicketCommentsApi) GetCrmTicketCommentsList(c *gi
     }
 }
 
-// GetCrmTicketCommentsPublic 不需要鉴权的crmTicketComments表接口
+// GetCrmTicketCommentsPublic 不需要鉴权的共单回复接口
 // @Tags CrmTicketComments
-// @Summary 不需要鉴权的crmTicketComments表接口
+// @Summary 不需要鉴权的共单回复接口
 // @accept application/json
 // @Produce application/json
-// @Param data query crmReq.CrmTicketCommentsSearch true "分页获取crmTicketComments表列表"
+// @Param data query crmReq.CrmTicketCommentsSearch true "分页获取共单回复列表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"获取成功"}"
 // @Router /crmTicketComments/getCrmTicketCommentsList [get]
 func (crmTicketCommentsApi *CrmTicketCommentsApi) GetCrmTicketCommentsPublic(c *gin.Context) {
     // 此接口不需要鉴权
     // 示例为返回了一个固定的消息接口，一般本接口用于C端服务，需要自己实现业务逻辑
     response.OkWithDetailed(gin.H{
-       "info": "不需要鉴权的crmTicketComments表接口信息",
+       "info": "不需要鉴权的共单回复接口信息",
     }, "获取成功", c)
 }

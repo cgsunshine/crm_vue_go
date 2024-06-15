@@ -16,7 +16,28 @@ func (crmCustomersService *CrmCustomersService) GetPageCrmCustomersInfoList(info
 	var crmCustomerss []crm.CrmPageCustomers
 	// 如果有条件搜索 下方会自动创建搜索语句
 	if info.StartCreatedAt != nil && info.EndCreatedAt != nil {
-		db = db.Where("created_at BETWEEN ? AND ?", info.StartCreatedAt, info.EndCreatedAt)
+		db = db.Where(crmCustomersService.SplicingQueryConditions("created_at BETWEEN ? AND ?"), info.StartCreatedAt, info.EndCreatedAt)
+	}
+	if info.CustomerName != "" {
+		db = db.Where(crmCustomersService.SplicingQueryConditions("customer_name = ?"), info.CustomerName)
+	}
+	if info.CustomerPhoneData != "" {
+		db = db.Where(crmCustomersService.SplicingQueryConditions("customer_phone_data = ?"), info.CustomerPhoneData)
+	}
+	if info.UserId != nil {
+		db = db.Where(crmCustomersService.SplicingQueryConditions("user_id = ?"), info.UserId)
+	}
+	if info.CustomerCompany != "" {
+		db = db.Where(crmCustomersService.SplicingQueryConditions("customer_company LIKE ?"), "%"+info.CustomerCompany+"%")
+	}
+	if info.CustomerAddress != "" {
+		db = db.Where(crmCustomersService.SplicingQueryConditions("customer_address LIKE ?"), "%"+info.CustomerAddress+"%")
+	}
+	if info.CustomerStatus != "" {
+		db = db.Where(crmCustomersService.SplicingQueryConditions("customer_status = ?"), info.CustomerStatus)
+	}
+	if info.CustomerGroup != "" {
+		db = db.Where(crmCustomersService.SplicingQueryConditions("customer_group = ?"), info.CustomerGroup)
 	}
 	err = db.Count(&total).Error
 	if err != nil {
@@ -32,4 +53,20 @@ func (crmCustomersService *CrmCustomersService) GetPageCrmCustomersInfoList(info
 		Joins("LEFT JOIN crm_customer_group ON crm_customers.customer_group_id = crm_customer_group.id").
 		Find(&crmCustomerss).Error
 	return crmCustomerss, total, err
+}
+
+// GetCrmCustomers 根据ID获取crmCustomers表记录
+// Author [piexlmax](https://github.com/piexlmax)
+func (crmCustomersService *CrmCustomersService) GetCrmPageCustomers(ID string) (crmCustomers crm.CrmPageCustomers, err error) {
+	err = global.GVA_DB.Model(&crm.CrmCustomers{}).Where("crm_customers.id = ?", ID).
+		Select("crm_customers.*,sys_users.username,crm_customer_group.group_name").
+		Joins("LEFT JOIN sys_users ON crm_customers.user_id = sys_users.id").
+		Joins("LEFT JOIN crm_customer_group ON crm_customers.customer_group_id = crm_customer_group.id").
+		First(&crmCustomers).Error
+	return
+}
+
+// SplicingQueryConditions 拼接条件
+func (crmCustomersService *CrmCustomersService) SplicingQueryConditions(condition string) string {
+	return "crm_customers." + condition
 }

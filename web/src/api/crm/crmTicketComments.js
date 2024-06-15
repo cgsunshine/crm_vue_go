@@ -1,11 +1,11 @@
 import service from '@/utils/request'
 
 // @Tags CrmTicketComments
-// @Summary 创建crmTicketComments表
+// @Summary 创建共单回复
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body model.CrmTicketComments true "创建crmTicketComments表"
+// @Param data body model.CrmTicketComments true "创建共单回复"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"创建成功"}"
 // @Router /crmTicketComments/createCrmTicketComments [post]
 export const createCrmTicketComments = (data) => {
@@ -17,11 +17,11 @@ export const createCrmTicketComments = (data) => {
 }
 
 // @Tags CrmTicketComments
-// @Summary 删除crmTicketComments表
+// @Summary 删除共单回复
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body model.CrmTicketComments true "删除crmTicketComments表"
+// @Param data body model.CrmTicketComments true "删除共单回复"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"删除成功"}"
 // @Router /crmTicketComments/deleteCrmTicketComments [delete]
 export const deleteCrmTicketComments = (params) => {
@@ -33,11 +33,11 @@ export const deleteCrmTicketComments = (params) => {
 }
 
 // @Tags CrmTicketComments
-// @Summary 批量删除crmTicketComments表
+// @Summary 批量删除共单回复
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body request.IdsReq true "批量删除crmTicketComments表"
+// @Param data body request.IdsReq true "批量删除共单回复"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"删除成功"}"
 // @Router /crmTicketComments/deleteCrmTicketComments [delete]
 export const deleteCrmTicketCommentsByIds = (params) => {
@@ -49,11 +49,11 @@ export const deleteCrmTicketCommentsByIds = (params) => {
 }
 
 // @Tags CrmTicketComments
-// @Summary 更新crmTicketComments表
+// @Summary 更新共单回复
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body model.CrmTicketComments true "更新crmTicketComments表"
+// @Param data body model.CrmTicketComments true "更新共单回复"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"更新成功"}"
 // @Router /crmTicketComments/updateCrmTicketComments [put]
 export const updateCrmTicketComments = (data) => {
@@ -65,11 +65,11 @@ export const updateCrmTicketComments = (data) => {
 }
 
 // @Tags CrmTicketComments
-// @Summary 用id查询crmTicketComments表
+// @Summary 用id查询共单回复
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data query model.CrmTicketComments true "用id查询crmTicketComments表"
+// @Param data query model.CrmTicketComments true "用id查询共单回复"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"查询成功"}"
 // @Router /crmTicketComments/findCrmTicketComments [get]
 export const findCrmTicketComments = (params) => {
@@ -81,11 +81,11 @@ export const findCrmTicketComments = (params) => {
 }
 
 // @Tags CrmTicketComments
-// @Summary 分页获取crmTicketComments表列表
+// @Summary 分页获取共单回复列表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data query request.PageInfo true "分页获取crmTicketComments表列表"
+// @Param data query request.PageInfo true "分页获取共单回复列表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"获取成功"}"
 // @Router /crmTicketComments/getCrmTicketCommentsList [get]
 export const getCrmTicketCommentsList = (params) => {

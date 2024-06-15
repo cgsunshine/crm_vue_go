@@ -1,6 +1,7 @@
 package system
 
 import (
+	"fmt"
 	"strconv"
 	"time"
 
@@ -85,6 +86,7 @@ func (b *BaseApi) Login(c *gin.Context) {
 // TokenNext 登录以后签发jwt
 func (b *BaseApi) TokenNext(c *gin.Context, user system.SysUser) {
 	j := &utils.JWT{SigningKey: []byte(global.GVA_CONFIG.JWT.SigningKey)} // 唯一签名
+	fmt.Println("global.GVA_CONFIG.JWT.SigningKey:", global.GVA_CONFIG.JWT.SigningKey)
 	claims := j.CreateClaims(systemReq.BaseClaims{
 		UUID:        user.UUID,
 		ID:          user.ID,

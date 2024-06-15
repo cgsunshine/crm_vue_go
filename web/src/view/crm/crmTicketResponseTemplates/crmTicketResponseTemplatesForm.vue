@@ -2,17 +2,17 @@
   <div>
     <div class="gva-form-box">
       <el-form :model="formData" ref="elFormRef" label-position="right" :rules="rule" label-width="80px">
-        <el-form-item label="回复模板名称:" prop="templateName">
-          <el-input v-model="formData.templateName" :clearable="true"  placeholder="请输入回复模板名称" />
+        <el-form-item label="适用工单类别ID:" prop="categoryId">
+          <el-input v-model.number="formData.categoryId" :clearable="true" placeholder="请输入" />
        </el-form-item>
         <el-form-item label="回复内容:" prop="content">
           <el-input v-model="formData.content" :clearable="true"  placeholder="请输入回复内容" />
        </el-form-item>
-        <el-form-item label="适用工单类别ID:" prop="categoryId">
-          <el-input v-model.number="formData.categoryId" :clearable="true" placeholder="请输入" />
-       </el-form-item>
         <el-form-item label="创建者ID:" prop="createdBy">
           <el-input v-model.number="formData.createdBy" :clearable="true" placeholder="请输入" />
+       </el-form-item>
+        <el-form-item label="回复模板名称:" prop="templateName">
+          <el-input v-model="formData.templateName" :clearable="true"  placeholder="请输入回复模板名称" />
        </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="save">保存</el-button>
@@ -45,10 +45,10 @@ const router = useRouter()
 
 const type = ref('')
 const formData = ref({
-            templateName: '',
-            content: '',
             categoryId: 0,
+            content: '',
             createdBy: 0,
+            templateName: '',
         })
 // 验证规则
 const rule = reactive({

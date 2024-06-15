@@ -16,25 +16,25 @@ func (crmSupplierService *CrmSupplierService) GetCrmPageSupplierInfoList(info cr
 	var crmSuppliers []crm.CrmPageSupplier
 	// 如果有条件搜索 下方会自动创建搜索语句
 	if info.StartCreatedAt != nil && info.EndCreatedAt != nil {
-		db = db.Where("created_at BETWEEN ? AND ?", info.StartCreatedAt, info.EndCreatedAt)
+		db = db.Where(crmSupplierService.SplicingQueryConditions("created_at BETWEEN ? AND ?"), info.StartCreatedAt, info.EndCreatedAt)
 	}
 	if info.CommpanyName != "" {
-		db = db.Where("commpany_name LIKE ?", "%"+info.CommpanyName+"%")
+		db = db.Where(crmSupplierService.SplicingQueryConditions("commpany_name LIKE ?"), "%"+info.CommpanyName+"%")
 	}
 	if info.ContactPerson != "" {
-		db = db.Where("contact_person LIKE ?", "%"+info.ContactPerson+"%")
+		db = db.Where(crmSupplierService.SplicingQueryConditions("contact_person LIKE ?"), "%"+info.ContactPerson+"%")
 	}
 	if info.Email != "" {
-		db = db.Where("email LIKE ?", "%"+info.Email+"%")
+		db = db.Where(crmSupplierService.SplicingQueryConditions("email LIKE ?"), "%"+info.Email+"%")
 	}
 	if info.Telephone != "" {
-		db = db.Where("telephone = ?", info.Telephone)
+		db = db.Where(crmSupplierService.SplicingQueryConditions("telephone = ?"), info.Telephone)
 	}
 	if info.StartNoteAddTime != nil && info.EndNoteAddTime != nil {
-		db = db.Where("note_add_time BETWEEN ? AND ? ", info.StartNoteAddTime, info.EndNoteAddTime)
+		db = db.Where(crmSupplierService.SplicingQueryConditions("note_add_time BETWEEN ? AND ? "), info.StartNoteAddTime, info.EndNoteAddTime)
 	}
 	if info.UserId != nil {
-		db = db.Where("user_id = ?", info.UserId)
+		db = db.Where(crmSupplierService.SplicingQueryConditions("user_id = ?"), info.UserId)
 	}
 	err = db.Count(&total).Error
 	if err != nil {
@@ -49,4 +49,19 @@ func (crmSupplierService *CrmSupplierService) GetCrmPageSupplierInfoList(info cr
 		Joins("LEFT JOIN sys_users ON crm_supplier.user_id = sys_users.id").
 		Find(&crmSuppliers).Error
 	return crmSuppliers, total, err
+}
+
+// GetCrmSupplier 根据ID获取crmSupplier表记录
+// Author [piexlmax](https://github.com/piexlmax)
+func (crmSupplierService *CrmSupplierService) GetCrmPageSupplier(ID string) (crmSupplier crm.CrmPageSupplier, err error) {
+	err = global.GVA_DB.Model(&crm.CrmSupplier{}).Where("crm_supplier.id = ?", ID).
+		Select("crm_supplier.*,sys_users.username").
+		Joins("LEFT JOIN sys_users ON crm_supplier.user_id = sys_users.id").
+		First(&crmSupplier).Error
+	return
+}
+
+// SplicingQueryConditions 拼接条件
+func (crmSupplierService *CrmSupplierService) SplicingQueryConditions(condition string) string {
+	return "crm_supplier." + condition
 }

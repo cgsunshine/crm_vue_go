@@ -6,6 +6,7 @@ import (
 	crmReq "github.com/flipped-aurora/gin-vue-admin/server/model/crm/request"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
+	"strconv"
 )
 
 // GetCrmPaymentList 分页获取crmPayment表列表
@@ -24,6 +25,11 @@ func (crmPaymentApi *CrmPaymentApi) GetCrmPagePaymentList(c *gin.Context) {
 		response.FailWithMessage(err.Error(), c)
 		return
 	}
+
+	userID, _ := strconv.Atoi(c.GetHeader("X-User-Id"))
+
+	pageInfo.UserId = userService.FindUserDataStatusById(&userID)
+
 	if list, total, err := crmPaymentService.GetCrmPagePaymentInfoList(pageInfo); err != nil {
 		global.GVA_LOG.Error("获取失败!", zap.Error(err))
 		response.FailWithMessage("获取失败", c)
@@ -34,5 +40,24 @@ func (crmPaymentApi *CrmPaymentApi) GetCrmPagePaymentList(c *gin.Context) {
 			Page:     pageInfo.Page,
 			PageSize: pageInfo.PageSize,
 		}, "获取成功", c)
+	}
+}
+
+// FindCrmPagePayment 用id查询crmPayment表
+// @Tags CrmPayment
+// @Summary 用id查询crmPayment表
+// @Security ApiKeyAuth
+// @accept application/json
+// @Produce application/json
+// @Param data query crm.CrmPayment true "用id查询crmPayment表"
+// @Success 200 {string} string "{"success":true,"data":{},"msg":"查询成功"}"
+// @Router /crmPayment/findCrmPayment [get]
+func (crmPaymentApi *CrmPaymentApi) FindCrmPagePayment(c *gin.Context) {
+	ID := c.Query("ID")
+	if recrmPayment, err := crmPaymentService.GetCrmPagePayment(ID); err != nil {
+		global.GVA_LOG.Error("查询失败!", zap.Error(err))
+		response.FailWithMessage("查询失败", c)
+	} else {
+		response.OkWithData(gin.H{"recrmPayment": recrmPayment}, c)
 	}
 }

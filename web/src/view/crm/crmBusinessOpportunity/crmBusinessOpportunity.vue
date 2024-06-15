@@ -16,6 +16,11 @@
       <el-date-picker v-model="searchInfo.endCreatedAt" type="datetime" placeholder="结束日期" :disabled-date="time=> searchInfo.startCreatedAt ? time.getTime() < searchInfo.startCreatedAt.getTime() : false"></el-date-picker>
       </el-form-item>
       
+        <el-form-item label="商机金额" prop="amount">
+            
+             <el-input v-model.number="searchInfo.amount" placeholder="搜索条件" />
+
+        </el-form-item>
         <el-form-item label="商机名称" prop="businessOpportunityName">
          <el-input v-model="searchInfo.businessOpportunityName" placeholder="搜索条件" />
 
@@ -55,20 +60,16 @@
             <el-date-picker v-model="searchInfo.endOfferValidityPeriod" type="datetime" placeholder="结束日期" :disabled-date="time=> searchInfo.startOfferValidityPeriod ? time.getTime() < searchInfo.startOfferValidityPeriod.getTime() : false"></el-date-picker>
 
         </el-form-item>
-        <el-form-item label="商机金额" prop="price">
-            
-             <el-input v-model.number="searchInfo.price" placeholder="搜索条件" />
-
-        </el-form-item>
         <el-form-item label="产品id" prop="productId">
             
              <el-input v-model.number="searchInfo.productId" placeholder="搜索条件" />
 
         </el-form-item>
-        <el-form-item label="商机状态" prop="status">
-         <el-input v-model="searchInfo.status" placeholder="搜索条件" />
-
-        </el-form-item>
+           <el-form-item label="商机状态" prop="status">
+            <el-select v-model="searchInfo.status" clearable placeholder="请选择" @clear="()=>{searchInfo.status=undefined}">
+              <el-option v-for="(item,key) in statusOptions" :key="key" :label="item.label" :value="item.value" />
+            </el-select>
+            </el-form-item>
         <el-form-item label="员工id" prop="userId">
             
              <el-input v-model.number="searchInfo.userId" placeholder="搜索条件" />
@@ -99,6 +100,7 @@
             <template #default="scope">{{ formatDate(scope.row.CreatedAt) }}</template>
         </el-table-column>
         
+        <el-table-column align="left" label="商机金额" prop="amount" width="120" />
         <el-table-column align="left" label="商机名称" prop="businessOpportunityName" width="120" />
         <el-table-column align="left" label="客户ID" prop="customerId" width="120" />
         <el-table-column align="left" label="备注" prop="description" width="120" />
@@ -108,9 +110,12 @@
          <el-table-column align="left" label="报价有效期" width="180">
             <template #default="scope">{{ formatDate(scope.row.offerValidityPeriod) }}</template>
          </el-table-column>
-        <el-table-column align="left" label="商机金额" prop="price" width="120" />
         <el-table-column align="left" label="产品id" prop="productId" width="120" />
-        <el-table-column align="left" label="商机状态" prop="status" width="120" />
+        <el-table-column align="left" label="商机状态" prop="status" width="120">
+            <template #default="scope">
+            {{ filterDict(scope.row.status,statusOptions) }}
+            </template>
+        </el-table-column>
         <el-table-column align="left" label="员工id" prop="userId" width="120" />
         <el-table-column align="left" label="操作" fixed="right" min-width="240">
             <template #default="scope">
@@ -147,6 +152,9 @@
             </template>
 
           <el-form :model="formData" label-position="top" ref="elFormRef" :rules="rule" label-width="80px">
+            <el-form-item label="商机金额:"  prop="amount" >
+              <el-input-number v-model="formData.amount"  style="width:100%" :precision="2" :clearable="true"  />
+            </el-form-item>
             <el-form-item label="商机名称:"  prop="businessOpportunityName" >
               <el-input v-model="formData.businessOpportunityName" :clearable="true"  placeholder="请输入商机名称" />
             </el-form-item>
@@ -162,14 +170,13 @@
             <el-form-item label="报价有效期:"  prop="offerValidityPeriod" >
               <el-date-picker v-model="formData.offerValidityPeriod" type="date" style="width:100%" placeholder="选择日期" :clearable="true"  />
             </el-form-item>
-            <el-form-item label="商机金额:"  prop="price" >
-              <el-input-number v-model="formData.price"  style="width:100%" :precision="2" :clearable="true"  />
-            </el-form-item>
             <el-form-item label="产品id:"  prop="productId" >
               <el-input v-model.number="formData.productId" :clearable="true" placeholder="请输入产品id" />
             </el-form-item>
             <el-form-item label="商机状态:"  prop="status" >
-              <el-input v-model="formData.status" :clearable="true"  placeholder="请输入商机状态" />
+              <el-select v-model="formData.status" placeholder="请选择商机状态" style="width:100%" :clearable="true" >
+                <el-option v-for="(item,key) in statusOptions" :key="key" :label="item.label" :value="item.value" />
+              </el-select>
             </el-form-item>
             <el-form-item label="员工id:"  prop="userId" >
               <el-input v-model.number="formData.userId" :clearable="true" placeholder="请输入员工id" />
@@ -184,6 +191,9 @@
              </div>
          </template>
         <el-descriptions :column="1" border>
+                <el-descriptions-item label="商机金额">
+                        {{ formData.amount }}
+                </el-descriptions-item>
                 <el-descriptions-item label="商机名称">
                         {{ formData.businessOpportunityName }}
                 </el-descriptions-item>
@@ -199,14 +209,11 @@
                 <el-descriptions-item label="报价有效期">
                       {{ formatDate(formData.offerValidityPeriod) }}
                 </el-descriptions-item>
-                <el-descriptions-item label="商机金额">
-                        {{ formData.price }}
-                </el-descriptions-item>
                 <el-descriptions-item label="产品id">
                         {{ formData.productId }}
                 </el-descriptions-item>
                 <el-descriptions-item label="商机状态">
-                        {{ formData.status }}
+                        {{ filterDict(formData.status,statusOptions) }}
                 </el-descriptions-item>
                 <el-descriptions-item label="员工id">
                         {{ formData.userId }}
@@ -236,13 +243,14 @@ defineOptions({
 })
 
 // 自动化生成的字典（可能为空）以及字段
+const statusOptions = ref([])
 const formData = ref({
+        amount: 0,
         businessOpportunityName: '',
         customerId: 0,
         description: '',
         inputTime: new Date(),
         offerValidityPeriod: new Date(),
-        price: 0,
         productId: 0,
         status: '',
         userId: 0,
@@ -346,6 +354,7 @@ getTableData()
 
 // 获取需要的字典 可能为空 按需保留
 const setOptions = async () =>{
+    statusOptions.value = await getDictFunc('status')
 }
 
 // 获取需要的字典 可能为空 按需保留
@@ -461,12 +470,12 @@ const getDetails = async (row) => {
 const closeDetailShow = () => {
   detailShow.value = false
   formData.value = {
+          amount: 0,
           businessOpportunityName: '',
           customerId: 0,
           description: '',
           inputTime: new Date(),
           offerValidityPeriod: new Date(),
-          price: 0,
           productId: 0,
           status: '',
           userId: 0,
@@ -484,12 +493,12 @@ const openDialog = () => {
 const closeDialog = () => {
     dialogFormVisible.value = false
     formData.value = {
+        amount: 0,
         businessOpportunityName: '',
         customerId: 0,
         description: '',
         inputTime: new Date(),
         offerValidityPeriod: new Date(),
-        price: 0,
         productId: 0,
         status: '',
         userId: 0,

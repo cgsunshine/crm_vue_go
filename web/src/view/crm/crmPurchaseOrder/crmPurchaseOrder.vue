@@ -16,29 +16,14 @@
       <el-date-picker v-model="searchInfo.endCreatedAt" type="datetime" placeholder="结束日期" :disabled-date="time=> searchInfo.startCreatedAt ? time.getTime() < searchInfo.startCreatedAt.getTime() : false"></el-date-picker>
       </el-form-item>
       
-        <el-form-item label="合同ID" prop="contractId">
-            
-             <el-input v-model.number="searchInfo.contractId" placeholder="搜索条件" />
-
-        </el-form-item>
-        <el-form-item label="产品ID" prop="productId">
-            
-             <el-input v-model.number="searchInfo.productId" placeholder="搜索条件" />
-
-        </el-form-item>
-        <el-form-item label="数量" prop="quantity">
-            
-             <el-input v-model.number="searchInfo.quantity" placeholder="搜索条件" />
-
-        </el-form-item>
         <el-form-item label="金额" prop="amount">
             
              <el-input v-model.number="searchInfo.amount" placeholder="搜索条件" />
 
         </el-form-item>
-        <el-form-item label="负责人ID" prop="userId">
+        <el-form-item label="合同ID" prop="contractId">
             
-             <el-input v-model.number="searchInfo.userId" placeholder="搜索条件" />
+             <el-input v-model.number="searchInfo.contractId" placeholder="搜索条件" />
 
         </el-form-item>
         <el-form-item label="创建时间" prop="creationTime">
@@ -71,6 +56,21 @@
             <el-date-picker v-model="searchInfo.endExpirationTime" type="datetime" placeholder="结束日期" :disabled-date="time=> searchInfo.startExpirationTime ? time.getTime() < searchInfo.startExpirationTime.getTime() : false"></el-date-picker>
 
         </el-form-item>
+        <el-form-item label="产品ID" prop="productId">
+            
+             <el-input v-model.number="searchInfo.productId" placeholder="搜索条件" />
+
+        </el-form-item>
+        <el-form-item label="数量" prop="quantity">
+            
+             <el-input v-model.number="searchInfo.quantity" placeholder="搜索条件" />
+
+        </el-form-item>
+        <el-form-item label="负责人ID" prop="userId">
+            
+             <el-input v-model.number="searchInfo.userId" placeholder="搜索条件" />
+
+        </el-form-item>
         <el-form-item>
           <el-button type="primary" icon="search" @click="onSubmit">查询</el-button>
           <el-button icon="refresh" @click="onReset">重置</el-button>
@@ -96,17 +96,18 @@
             <template #default="scope">{{ formatDate(scope.row.CreatedAt) }}</template>
         </el-table-column>
         
-        <el-table-column align="left" label="合同ID" prop="contractId" width="120" />
-        <el-table-column align="left" label="产品ID" prop="productId" width="120" />
-        <el-table-column align="left" label="数量" prop="quantity" width="120" />
         <el-table-column align="left" label="金额" prop="amount" width="120" />
-        <el-table-column align="left" label="负责人ID" prop="userId" width="120" />
+        <el-table-column align="left" label="合同ID" prop="contractId" width="120" />
          <el-table-column align="left" label="创建时间" width="180">
             <template #default="scope">{{ formatDate(scope.row.creationTime) }}</template>
          </el-table-column>
+        <el-table-column align="left" label="备注" prop="description" width="120" />
          <el-table-column align="left" label="到期时间" width="180">
             <template #default="scope">{{ formatDate(scope.row.expirationTime) }}</template>
          </el-table-column>
+        <el-table-column align="left" label="产品ID" prop="productId" width="120" />
+        <el-table-column align="left" label="数量" prop="quantity" width="120" />
+        <el-table-column align="left" label="负责人ID" prop="userId" width="120" />
         <el-table-column align="left" label="操作" fixed="right" min-width="240">
             <template #default="scope">
             <el-button type="primary" link class="table-button" @click="getDetails(scope.row)">
@@ -142,8 +143,20 @@
             </template>
 
           <el-form :model="formData" label-position="top" ref="elFormRef" :rules="rule" label-width="80px">
+            <el-form-item label="金额:"  prop="amount" >
+              <el-input-number v-model="formData.amount"  style="width:100%" :precision="2" :clearable="true"  />
+            </el-form-item>
             <el-form-item label="合同ID:"  prop="contractId" >
               <el-input v-model.number="formData.contractId" :clearable="true" placeholder="请输入合同ID" />
+            </el-form-item>
+            <el-form-item label="创建时间:"  prop="creationTime" >
+              <el-date-picker v-model="formData.creationTime" type="date" style="width:100%" placeholder="选择日期" :clearable="true"  />
+            </el-form-item>
+            <el-form-item label="备注:"  prop="description" >
+              <el-input v-model="formData.description" :clearable="true"  placeholder="请输入备注" />
+            </el-form-item>
+            <el-form-item label="到期时间:"  prop="expirationTime" >
+              <el-date-picker v-model="formData.expirationTime" type="date" style="width:100%" placeholder="选择日期" :clearable="true"  />
             </el-form-item>
             <el-form-item label="产品ID:"  prop="productId" >
               <el-input v-model.number="formData.productId" :clearable="true" placeholder="请输入产品ID" />
@@ -151,17 +164,8 @@
             <el-form-item label="数量:"  prop="quantity" >
               <el-input v-model.number="formData.quantity" :clearable="true" placeholder="请输入数量" />
             </el-form-item>
-            <el-form-item label="金额:"  prop="amount" >
-              <el-input-number v-model="formData.amount"  style="width:100%" :precision="2" :clearable="true"  />
-            </el-form-item>
             <el-form-item label="负责人ID:"  prop="userId" >
               <el-input v-model.number="formData.userId" :clearable="true" placeholder="请输入负责人ID" />
-            </el-form-item>
-            <el-form-item label="创建时间:"  prop="creationTime" >
-              <el-date-picker v-model="formData.creationTime" type="date" style="width:100%" placeholder="选择日期" :clearable="true"  />
-            </el-form-item>
-            <el-form-item label="到期时间:"  prop="expirationTime" >
-              <el-date-picker v-model="formData.expirationTime" type="date" style="width:100%" placeholder="选择日期" :clearable="true"  />
             </el-form-item>
           </el-form>
     </el-drawer>
@@ -173,8 +177,20 @@
              </div>
          </template>
         <el-descriptions :column="1" border>
+                <el-descriptions-item label="金额">
+                        {{ formData.amount }}
+                </el-descriptions-item>
                 <el-descriptions-item label="合同ID">
                         {{ formData.contractId }}
+                </el-descriptions-item>
+                <el-descriptions-item label="创建时间">
+                      {{ formatDate(formData.creationTime) }}
+                </el-descriptions-item>
+                <el-descriptions-item label="备注">
+                        {{ formData.description }}
+                </el-descriptions-item>
+                <el-descriptions-item label="到期时间">
+                      {{ formatDate(formData.expirationTime) }}
                 </el-descriptions-item>
                 <el-descriptions-item label="产品ID">
                         {{ formData.productId }}
@@ -182,17 +198,8 @@
                 <el-descriptions-item label="数量">
                         {{ formData.quantity }}
                 </el-descriptions-item>
-                <el-descriptions-item label="金额">
-                        {{ formData.amount }}
-                </el-descriptions-item>
                 <el-descriptions-item label="负责人ID">
                         {{ formData.userId }}
-                </el-descriptions-item>
-                <el-descriptions-item label="创建时间">
-                      {{ formatDate(formData.creationTime) }}
-                </el-descriptions-item>
-                <el-descriptions-item label="到期时间">
-                      {{ formatDate(formData.expirationTime) }}
                 </el-descriptions-item>
         </el-descriptions>
     </el-drawer>
@@ -220,13 +227,14 @@ defineOptions({
 
 // 自动化生成的字典（可能为空）以及字段
 const formData = ref({
+        amount: 0,
         contractId: 0,
+        creationTime: new Date(),
+        description: '',
+        expirationTime: new Date(),
         productId: 0,
         quantity: 0,
-        amount: 0,
         userId: 0,
-        creationTime: new Date(),
-        expirationTime: new Date(),
         })
 
 
@@ -442,13 +450,14 @@ const getDetails = async (row) => {
 const closeDetailShow = () => {
   detailShow.value = false
   formData.value = {
+          amount: 0,
           contractId: 0,
+          creationTime: new Date(),
+          description: '',
+          expirationTime: new Date(),
           productId: 0,
           quantity: 0,
-          amount: 0,
           userId: 0,
-          creationTime: new Date(),
-          expirationTime: new Date(),
           }
 }
 
@@ -463,13 +472,14 @@ const openDialog = () => {
 const closeDialog = () => {
     dialogFormVisible.value = false
     formData.value = {
+        amount: 0,
         contractId: 0,
+        creationTime: new Date(),
+        description: '',
+        expirationTime: new Date(),
         productId: 0,
         quantity: 0,
-        amount: 0,
         userId: 0,
-        creationTime: new Date(),
-        expirationTime: new Date(),
         }
 }
 // 弹窗确定

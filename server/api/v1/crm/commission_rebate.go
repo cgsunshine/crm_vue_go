@@ -6,6 +6,7 @@ import (
 	crmReq "github.com/flipped-aurora/gin-vue-admin/server/model/crm/request"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
+	"strconv"
 )
 
 // GetCrmCommissionRebateList 分页获取crmCommissionRebate表列表
@@ -24,6 +25,9 @@ func (crmCommissionRebateApi *CrmCommissionRebateApi) GetCrmPageCommissionRebate
 		response.FailWithMessage(err.Error(), c)
 		return
 	}
+	userID, _ := strconv.Atoi(c.GetHeader("X-User-Id"))
+
+	pageInfo.UserId = userService.FindUserDataStatusById(&userID)
 	if list, total, err := crmCommissionRebateService.GetCrmPageCommissionRebateInfoList(pageInfo); err != nil {
 		global.GVA_LOG.Error("获取失败!", zap.Error(err))
 		response.FailWithMessage("获取失败", c)
@@ -34,5 +38,24 @@ func (crmCommissionRebateApi *CrmCommissionRebateApi) GetCrmPageCommissionRebate
 			Page:     pageInfo.Page,
 			PageSize: pageInfo.PageSize,
 		}, "获取成功", c)
+	}
+}
+
+// FindCrmPageCommissionRebate 用id查询crmCommissionRebate表
+// @Tags CrmCommissionRebate
+// @Summary 用id查询crmCommissionRebate表
+// @Security ApiKeyAuth
+// @accept application/json
+// @Produce application/json
+// @Param data query crm.CrmCommissionRebate true "用id查询crmCommissionRebate表"
+// @Success 200 {string} string "{"success":true,"data":{},"msg":"查询成功"}"
+// @Router /crmCommissionRebate/findCrmCommissionRebate [get]
+func (crmCommissionRebateApi *CrmCommissionRebateApi) FindCrmPageCommissionRebate(c *gin.Context) {
+	ID := c.Query("ID")
+	if recrmCommissionRebate, err := crmCommissionRebateService.GetCrmPageCommissionRebate(ID); err != nil {
+		global.GVA_LOG.Error("查询失败!", zap.Error(err))
+		response.FailWithMessage("查询失败", c)
+	} else {
+		response.OkWithData(gin.H{"recrmCommissionRebate": recrmCommissionRebate}, c)
 	}
 }

@@ -16,13 +16,13 @@ type CrmTicketResponseTemplatesApi struct {
 var crmTicketResponseTemplatesService = service.ServiceGroupApp.CrmServiceGroup.CrmTicketResponseTemplatesService
 
 
-// CreateCrmTicketResponseTemplates 创建crmTicketResponseTemplates表
+// CreateCrmTicketResponseTemplates 创建快捷回复模板
 // @Tags CrmTicketResponseTemplates
-// @Summary 创建crmTicketResponseTemplates表
+// @Summary 创建快捷回复模板
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body crm.CrmTicketResponseTemplates true "创建crmTicketResponseTemplates表"
+// @Param data body crm.CrmTicketResponseTemplates true "创建快捷回复模板"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"创建成功"}"
 // @Router /crmTicketResponseTemplates/createCrmTicketResponseTemplates [post]
 func (crmTicketResponseTemplatesApi *CrmTicketResponseTemplatesApi) CreateCrmTicketResponseTemplates(c *gin.Context) {
@@ -41,13 +41,13 @@ func (crmTicketResponseTemplatesApi *CrmTicketResponseTemplatesApi) CreateCrmTic
 	}
 }
 
-// DeleteCrmTicketResponseTemplates 删除crmTicketResponseTemplates表
+// DeleteCrmTicketResponseTemplates 删除快捷回复模板
 // @Tags CrmTicketResponseTemplates
-// @Summary 删除crmTicketResponseTemplates表
+// @Summary 删除快捷回复模板
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body crm.CrmTicketResponseTemplates true "删除crmTicketResponseTemplates表"
+// @Param data body crm.CrmTicketResponseTemplates true "删除快捷回复模板"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"删除成功"}"
 // @Router /crmTicketResponseTemplates/deleteCrmTicketResponseTemplates [delete]
 func (crmTicketResponseTemplatesApi *CrmTicketResponseTemplatesApi) DeleteCrmTicketResponseTemplates(c *gin.Context) {
@@ -60,9 +60,9 @@ func (crmTicketResponseTemplatesApi *CrmTicketResponseTemplatesApi) DeleteCrmTic
 	}
 }
 
-// DeleteCrmTicketResponseTemplatesByIds 批量删除crmTicketResponseTemplates表
+// DeleteCrmTicketResponseTemplatesByIds 批量删除快捷回复模板
 // @Tags CrmTicketResponseTemplates
-// @Summary 批量删除crmTicketResponseTemplates表
+// @Summary 批量删除快捷回复模板
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
@@ -78,13 +78,13 @@ func (crmTicketResponseTemplatesApi *CrmTicketResponseTemplatesApi) DeleteCrmTic
 	}
 }
 
-// UpdateCrmTicketResponseTemplates 更新crmTicketResponseTemplates表
+// UpdateCrmTicketResponseTemplates 更新快捷回复模板
 // @Tags CrmTicketResponseTemplates
-// @Summary 更新crmTicketResponseTemplates表
+// @Summary 更新快捷回复模板
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body crm.CrmTicketResponseTemplates true "更新crmTicketResponseTemplates表"
+// @Param data body crm.CrmTicketResponseTemplates true "更新快捷回复模板"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"更新成功"}"
 // @Router /crmTicketResponseTemplates/updateCrmTicketResponseTemplates [put]
 func (crmTicketResponseTemplatesApi *CrmTicketResponseTemplatesApi) UpdateCrmTicketResponseTemplates(c *gin.Context) {
@@ -103,13 +103,13 @@ func (crmTicketResponseTemplatesApi *CrmTicketResponseTemplatesApi) UpdateCrmTic
 	}
 }
 
-// FindCrmTicketResponseTemplates 用id查询crmTicketResponseTemplates表
+// FindCrmTicketResponseTemplates 用id查询快捷回复模板
 // @Tags CrmTicketResponseTemplates
-// @Summary 用id查询crmTicketResponseTemplates表
+// @Summary 用id查询快捷回复模板
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data query crm.CrmTicketResponseTemplates true "用id查询crmTicketResponseTemplates表"
+// @Param data query crm.CrmTicketResponseTemplates true "用id查询快捷回复模板"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"查询成功"}"
 // @Router /crmTicketResponseTemplates/findCrmTicketResponseTemplates [get]
 func (crmTicketResponseTemplatesApi *CrmTicketResponseTemplatesApi) FindCrmTicketResponseTemplates(c *gin.Context) {
@@ -122,13 +122,13 @@ func (crmTicketResponseTemplatesApi *CrmTicketResponseTemplatesApi) FindCrmTicke
 	}
 }
 
-// GetCrmTicketResponseTemplatesList 分页获取crmTicketResponseTemplates表列表
+// GetCrmTicketResponseTemplatesList 分页获取快捷回复模板列表
 // @Tags CrmTicketResponseTemplates
-// @Summary 分页获取crmTicketResponseTemplates表列表
+// @Summary 分页获取快捷回复模板列表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data query crmReq.CrmTicketResponseTemplatesSearch true "分页获取crmTicketResponseTemplates表列表"
+// @Param data query crmReq.CrmTicketResponseTemplatesSearch true "分页获取快捷回复模板列表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"获取成功"}"
 // @Router /crmTicketResponseTemplates/getCrmTicketResponseTemplatesList [get]
 func (crmTicketResponseTemplatesApi *CrmTicketResponseTemplatesApi) GetCrmTicketResponseTemplatesList(c *gin.Context) {
@@ -151,18 +151,18 @@ func (crmTicketResponseTemplatesApi *CrmTicketResponseTemplatesApi) GetCrmTicket
     }
 }
 
-// GetCrmTicketResponseTemplatesPublic 不需要鉴权的crmTicketResponseTemplates表接口
+// GetCrmTicketResponseTemplatesPublic 不需要鉴权的快捷回复模板接口
 // @Tags CrmTicketResponseTemplates
-// @Summary 不需要鉴权的crmTicketResponseTemplates表接口
+// @Summary 不需要鉴权的快捷回复模板接口
 // @accept application/json
 // @Produce application/json
-// @Param data query crmReq.CrmTicketResponseTemplatesSearch true "分页获取crmTicketResponseTemplates表列表"
+// @Param data query crmReq.CrmTicketResponseTemplatesSearch true "分页获取快捷回复模板列表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"获取成功"}"
 // @Router /crmTicketResponseTemplates/getCrmTicketResponseTemplatesList [get]
 func (crmTicketResponseTemplatesApi *CrmTicketResponseTemplatesApi) GetCrmTicketResponseTemplatesPublic(c *gin.Context) {
     // 此接口不需要鉴权
     // 示例为返回了一个固定的消息接口，一般本接口用于C端服务，需要自己实现业务逻辑
     response.OkWithDetailed(gin.H{
-       "info": "不需要鉴权的crmTicketResponseTemplates表接口信息",
+       "info": "不需要鉴权的快捷回复模板接口信息",
     }, "获取成功", c)
 }

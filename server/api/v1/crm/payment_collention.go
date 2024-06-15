@@ -6,6 +6,7 @@ import (
 	crmReq "github.com/flipped-aurora/gin-vue-admin/server/model/crm/request"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
+	"strconv"
 )
 
 // GetCrmPaymentCollentionList 分页获取crmPaymentCollention表列表
@@ -24,6 +25,11 @@ func (crmPaymentCollentionApi *CrmPaymentCollentionApi) GetCrmPagePaymentCollent
 		response.FailWithMessage(err.Error(), c)
 		return
 	}
+
+	userID, _ := strconv.Atoi(c.GetHeader("X-User-Id"))
+
+	pageInfo.UserId = userService.FindUserDataStatusById(&userID)
+
 	if list, total, err := crmPaymentCollentionService.GetCrmPagePaymentCollentionInfoList(pageInfo); err != nil {
 		global.GVA_LOG.Error("获取失败!", zap.Error(err))
 		response.FailWithMessage("获取失败", c)
@@ -34,5 +40,24 @@ func (crmPaymentCollentionApi *CrmPaymentCollentionApi) GetCrmPagePaymentCollent
 			Page:     pageInfo.Page,
 			PageSize: pageInfo.PageSize,
 		}, "获取成功", c)
+	}
+}
+
+// FindCrmPagePaymentCollention 用id查询crmPaymentCollention表
+// @Tags CrmPaymentCollention
+// @Summary 用id查询crmPaymentCollention表
+// @Security ApiKeyAuth
+// @accept application/json
+// @Produce application/json
+// @Param data query crm.CrmPaymentCollention true "用id查询crmPaymentCollention表"
+// @Success 200 {string} string "{"success":true,"data":{},"msg":"查询成功"}"
+// @Router /crmPaymentCollention/findCrmPaymentCollention [get]
+func (crmPaymentCollentionApi *CrmPaymentCollentionApi) FindCrmPagePaymentCollention(c *gin.Context) {
+	ID := c.Query("ID")
+	if recrmPaymentCollention, err := crmPaymentCollentionService.GetCrmPagePaymentCollention(ID); err != nil {
+		global.GVA_LOG.Error("查询失败!", zap.Error(err))
+		response.FailWithMessage("查询失败", c)
+	} else {
+		response.OkWithData(gin.H{"recrmPaymentCollention": recrmPaymentCollention}, c)
 	}
 }

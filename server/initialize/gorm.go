@@ -53,7 +53,7 @@ func RegisterTables() {
 		example.ExaFile{},
 		example.ExaCustomer{},
 		example.ExaFileChunk{},
-		example.ExaFileUploadAndDownload{}, crm.CrmTest{}, crm.CrmContractType{}, crm.CrmLoginLog{}, crm.CrmOperationRecords{}, crm.CrmProcurementContract{}, crm.CrmProductGroup{}, crm.CrmProductType{}, crm.CrmUser{}, crm.CrmApprovalNode{}, crm.CrmApprovalProcess{}, crm.CrmApprovalRecord{}, crm.CrmApprovalTasks{}, crm.CrmTicketComments{}, crm.CrmTicketResponseTemplates{}, crm.CrmTickets{}, crm.CrmContactFileUploadAndDownloads{}, crm.CrmCustomerGroup{}, crm.CrmCustomers{}, crm.CrmProduct{}, crm.CrmBusinessOpportunity{}, crm.CrmBill{}, crm.CrmContract{}, crm.CrmOrder{}, crm.CrmPayment{}, crm.CrmPurchaseOrder{}, crm.CrmStatementAccount{}, crm.CrmSupplier{}, crm.CrmCommissionRebate{}, crm.CrmPaymentCollention{},
+		example.ExaFileUploadAndDownload{}, crm.CrmTest{}, crm.CrmContractType{}, crm.CrmLoginLog{}, crm.CrmOperationRecords{}, crm.CrmProductGroup{}, crm.CrmProductType{}, crm.CrmUser{}, crm.CrmApprovalNode{}, crm.CrmApprovalProcess{}, crm.CrmApprovalRecord{}, crm.CrmApprovalTasks{}, crm.CrmCustomerGroup{}, crm.CrmCustomers{}, crm.CrmProduct{}, crm.CrmBill{}, crm.CrmContract{}, crm.CrmOrder{}, crm.CrmPayment{}, crm.CrmStatementAccount{}, crm.CrmSupplier{}, crm.CrmCommissionRebate{}, crm.CrmTicketCategories{}, crm.CrmTicketResponseTemplates{}, crm.CrmTickets{}, crm.CrmTicketComments{}, crm.CrmStatementAccountFile{}, crm.CrmContactFile{}, crm.CrmContactApprovalTasks{}, crm.CrmContactApprovalRecord{}, crm.CrmPurchaseOrder{}, crm.CrmBusinessOpportunity{}, crm.CrmBusinessOpportunityFile{}, crm.CrmAuthorities{}, crm.CrmPaymentCollention{}, crm.CrmProcurementContract{},
 	)
 	if err != nil {
 		global.GVA_LOG.Error("register table failed", zap.Error(err))

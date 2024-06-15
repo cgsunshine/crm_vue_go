@@ -16,6 +16,55 @@
       <el-date-picker v-model="searchInfo.endCreatedAt" type="datetime" placeholder="结束日期" :disabled-date="time=> searchInfo.startCreatedAt ? time.getTime() < searchInfo.startCreatedAt.getTime() : false"></el-date-picker>
       </el-form-item>
       
+        <el-form-item label="合同金额" prop="contractAmount">
+            
+             <el-input v-model.number="searchInfo.contractAmount" placeholder="搜索条件" />
+
+        </el-form-item>
+        <el-form-item label="合同名称" prop="contractName">
+         <el-input v-model="searchInfo.contractName" placeholder="搜索条件" />
+
+        </el-form-item>
+           <el-form-item label="合同状态" prop="contractStatus">
+            <el-select v-model="searchInfo.contractStatus" clearable placeholder="请选择" @clear="()=>{searchInfo.contractStatus=undefined}">
+              <el-option v-for="(item,key) in contract_statusOptions" :key="key" :label="item.label" :value="item.value" />
+            </el-select>
+            </el-form-item>
+        <el-form-item label="创建时间" prop="creationTime">
+            
+            <template #label>
+            <span>
+              创建时间
+              <el-tooltip content="搜索范围是开始日期（包含）至结束日期（不包含）">
+                <el-icon><QuestionFilled /></el-icon>
+              </el-tooltip>
+            </span>
+          </template>
+            <el-date-picker v-model="searchInfo.startCreationTime" type="datetime" placeholder="开始日期" :disabled-date="time=> searchInfo.endCreationTime ? time.getTime() > searchInfo.endCreationTime.getTime() : false"></el-date-picker>
+            —
+            <el-date-picker v-model="searchInfo.endCreationTime" type="datetime" placeholder="结束日期" :disabled-date="time=> searchInfo.startCreationTime ? time.getTime() < searchInfo.startCreationTime.getTime() : false"></el-date-picker>
+
+        </el-form-item>
+        <el-form-item label="到期时间" prop="expirationTime">
+            
+            <template #label>
+            <span>
+              到期时间
+              <el-tooltip content="搜索范围是开始日期（包含）至结束日期（不包含）">
+                <el-icon><QuestionFilled /></el-icon>
+              </el-tooltip>
+            </span>
+          </template>
+            <el-date-picker v-model="searchInfo.startExpirationTime" type="datetime" placeholder="开始日期" :disabled-date="time=> searchInfo.endExpirationTime ? time.getTime() > searchInfo.endExpirationTime.getTime() : false"></el-date-picker>
+            —
+            <el-date-picker v-model="searchInfo.endExpirationTime" type="datetime" placeholder="结束日期" :disabled-date="time=> searchInfo.startExpirationTime ? time.getTime() < searchInfo.startExpirationTime.getTime() : false"></el-date-picker>
+
+        </el-form-item>
+        <el-form-item label="负责人" prop="userId">
+            
+             <el-input v-model.number="searchInfo.userId" placeholder="搜索条件" />
+
+        </el-form-item>
         <el-form-item>
           <el-button type="primary" icon="search" @click="onSubmit">查询</el-button>
           <el-button icon="refresh" @click="onReset">重置</el-button>
@@ -41,17 +90,21 @@
             <template #default="scope">{{ formatDate(scope.row.CreatedAt) }}</template>
         </el-table-column>
         
+        <el-table-column align="left" label="合同金额" prop="contractAmount" width="120" />
+        <el-table-column align="left" label="合同文件" prop="contractFile" width="120" />
         <el-table-column align="left" label="合同名称" prop="contractName" width="120" />
+        <el-table-column align="left" label="合同状态" prop="contractStatus" width="120">
+            <template #default="scope">
+            {{ filterDict(scope.row.contractStatus,contract_statusOptions) }}
+            </template>
+        </el-table-column>
          <el-table-column align="left" label="创建时间" width="180">
             <template #default="scope">{{ formatDate(scope.row.creationTime) }}</template>
          </el-table-column>
          <el-table-column align="left" label="到期时间" width="180">
             <template #default="scope">{{ formatDate(scope.row.expirationTime) }}</template>
          </el-table-column>
-        <el-table-column align="left" label="合同文件" prop="contractFile" width="120" />
-        <el-table-column align="left" label="合同金额" prop="contractAmount" width="120" />
         <el-table-column align="left" label="负责人" prop="userId" width="120" />
-        <el-table-column align="left" label="合同状态" prop="contractStatus" width="120" />
         <el-table-column align="left" label="操作" fixed="right" min-width="240">
             <template #default="scope">
             <el-button type="primary" link class="table-button" @click="getDetails(scope.row)">
@@ -87,8 +140,19 @@
             </template>
 
           <el-form :model="formData" label-position="top" ref="elFormRef" :rules="rule" label-width="80px">
+            <el-form-item label="合同金额:"  prop="contractAmount" >
+              <el-input-number v-model="formData.contractAmount"  style="width:100%" :precision="2" :clearable="true"  />
+            </el-form-item>
+            <el-form-item label="合同文件:"  prop="contractFile" >
+              <el-input v-model="formData.contractFile" :clearable="true"  placeholder="请输入合同文件" />
+            </el-form-item>
             <el-form-item label="合同名称:"  prop="contractName" >
               <el-input v-model="formData.contractName" :clearable="true"  placeholder="请输入合同名称" />
+            </el-form-item>
+            <el-form-item label="合同状态:"  prop="contractStatus" >
+              <el-select v-model="formData.contractStatus" placeholder="请选择合同状态" style="width:100%" :clearable="true" >
+                <el-option v-for="(item,key) in contract_statusOptions" :key="key" :label="item.label" :value="item.value" />
+              </el-select>
             </el-form-item>
             <el-form-item label="创建时间:"  prop="creationTime" >
               <el-date-picker v-model="formData.creationTime" type="date" style="width:100%" placeholder="选择日期" :clearable="true"  />
@@ -96,17 +160,8 @@
             <el-form-item label="到期时间:"  prop="expirationTime" >
               <el-date-picker v-model="formData.expirationTime" type="date" style="width:100%" placeholder="选择日期" :clearable="true"  />
             </el-form-item>
-            <el-form-item label="合同文件:"  prop="contractFile" >
-              <el-input v-model="formData.contractFile" :clearable="true"  placeholder="请输入合同文件" />
-            </el-form-item>
-            <el-form-item label="合同金额:"  prop="contractAmount" >
-              <el-input-number v-model="formData.contractAmount"  style="width:100%" :precision="2" :clearable="true"  />
-            </el-form-item>
             <el-form-item label="负责人:"  prop="userId" >
               <el-input v-model.number="formData.userId" :clearable="true" placeholder="请输入负责人" />
-            </el-form-item>
-            <el-form-item label="合同状态:"  prop="contractStatus" >
-              <el-input v-model="formData.contractStatus" :clearable="true"  placeholder="请输入合同状态" />
             </el-form-item>
           </el-form>
     </el-drawer>
@@ -118,8 +173,17 @@
              </div>
          </template>
         <el-descriptions :column="1" border>
+                <el-descriptions-item label="合同金额">
+                        {{ formData.contractAmount }}
+                </el-descriptions-item>
+                <el-descriptions-item label="合同文件">
+                        {{ formData.contractFile }}
+                </el-descriptions-item>
                 <el-descriptions-item label="合同名称">
                         {{ formData.contractName }}
+                </el-descriptions-item>
+                <el-descriptions-item label="合同状态">
+                        {{ filterDict(formData.contractStatus,contract_statusOptions) }}
                 </el-descriptions-item>
                 <el-descriptions-item label="创建时间">
                       {{ formatDate(formData.creationTime) }}
@@ -127,17 +191,8 @@
                 <el-descriptions-item label="到期时间">
                       {{ formatDate(formData.expirationTime) }}
                 </el-descriptions-item>
-                <el-descriptions-item label="合同文件">
-                        {{ formData.contractFile }}
-                </el-descriptions-item>
-                <el-descriptions-item label="合同金额">
-                        {{ formData.contractAmount }}
-                </el-descriptions-item>
                 <el-descriptions-item label="负责人">
                         {{ formData.userId }}
-                </el-descriptions-item>
-                <el-descriptions-item label="合同状态">
-                        {{ formData.contractStatus }}
                 </el-descriptions-item>
         </el-descriptions>
     </el-drawer>
@@ -164,19 +219,37 @@ defineOptions({
 })
 
 // 自动化生成的字典（可能为空）以及字段
+const contract_statusOptions = ref([])
 const formData = ref({
+        contractAmount: 0,
+        contractFile: '',
         contractName: '',
+        contractStatus: '',
         creationTime: new Date(),
         expirationTime: new Date(),
-        contractFile: '',
-        contractAmount: 0,
         userId: 0,
-        contractStatus: '',
         })
 
 
 // 验证规则
 const rule = reactive({
+               contractAmount : [{
+                   required: true,
+                   message: '',
+                   trigger: ['input','blur'],
+               },
+              ],
+               contractName : [{
+                   required: true,
+                   message: '',
+                   trigger: ['input','blur'],
+               },
+               {
+                   whitespace: true,
+                   message: '不能只输入空格',
+                   trigger: ['input', 'blur'],
+              }
+              ],
 })
 
 const searchRule = reactive({
@@ -193,6 +266,28 @@ const searchRule = reactive({
       }
     }, trigger: 'change' }
   ],
+        creationTime : [{ validator: (rule, value, callback) => {
+        if (searchInfo.value.startCreationTime && !searchInfo.value.endCreationTime) {
+          callback(new Error('请填写结束日期'))
+        } else if (!searchInfo.value.startCreationTime && searchInfo.value.endCreationTime) {
+          callback(new Error('请填写开始日期'))
+        } else if (searchInfo.value.startCreationTime && searchInfo.value.endCreationTime && (searchInfo.value.startCreationTime.getTime() === searchInfo.value.endCreationTime.getTime() || searchInfo.value.startCreationTime.getTime() > searchInfo.value.endCreationTime.getTime())) {
+          callback(new Error('开始日期应当早于结束日期'))
+        } else {
+          callback()
+        }
+      }, trigger: 'change' }],
+        expirationTime : [{ validator: (rule, value, callback) => {
+        if (searchInfo.value.startExpirationTime && !searchInfo.value.endExpirationTime) {
+          callback(new Error('请填写结束日期'))
+        } else if (!searchInfo.value.startExpirationTime && searchInfo.value.endExpirationTime) {
+          callback(new Error('请填写开始日期'))
+        } else if (searchInfo.value.startExpirationTime && searchInfo.value.endExpirationTime && (searchInfo.value.startExpirationTime.getTime() === searchInfo.value.endExpirationTime.getTime() || searchInfo.value.startExpirationTime.getTime() > searchInfo.value.endExpirationTime.getTime())) {
+          callback(new Error('开始日期应当早于结束日期'))
+        } else {
+          callback()
+        }
+      }, trigger: 'change' }],
 })
 
 const elFormRef = ref()
@@ -250,6 +345,7 @@ getTableData()
 
 // 获取需要的字典 可能为空 按需保留
 const setOptions = async () =>{
+    contract_statusOptions.value = await getDictFunc('contract_status')
 }
 
 // 获取需要的字典 可能为空 按需保留
@@ -365,13 +461,13 @@ const getDetails = async (row) => {
 const closeDetailShow = () => {
   detailShow.value = false
   formData.value = {
+          contractAmount: 0,
+          contractFile: '',
           contractName: '',
+          contractStatus: '',
           creationTime: new Date(),
           expirationTime: new Date(),
-          contractFile: '',
-          contractAmount: 0,
           userId: 0,
-          contractStatus: '',
           }
 }
 
@@ -386,13 +482,13 @@ const openDialog = () => {
 const closeDialog = () => {
     dialogFormVisible.value = false
     formData.value = {
+        contractAmount: 0,
+        contractFile: '',
         contractName: '',
+        contractStatus: '',
         creationTime: new Date(),
         expirationTime: new Date(),
-        contractFile: '',
-        contractAmount: 0,
         userId: 0,
-        contractStatus: '',
         }
 }
 // 弹窗确定

@@ -1,11 +1,12 @@
 package crm
 
+import "github.com/flipped-aurora/gin-vue-admin/server/service"
+
 type ApiGroup struct {
 	CrmTestApi
 	CrmContractTypeApi
 	CrmLoginLogApi
 	CrmOperationRecordsApi
-	CrmProcurementContractApi
 	CrmProductGroupApi
 	CrmProductTypeApi
 	CrmUserApi
@@ -13,21 +14,32 @@ type ApiGroup struct {
 	CrmApprovalProcessApi
 	CrmApprovalRecordApi
 	CrmApprovalTasksApi
-	CrmTicketCommentsApi
-	CrmTicketResponseTemplatesApi
-	CrmTicketsApi
-	CrmContactFileUploadAndDownloadsApi
 	CrmCustomerGroupApi
 	CrmCustomersApi
 	CrmProductApi
-	CrmBusinessOpportunityApi
 	CrmBillApi
 	CrmContractApi
 	CrmOrderApi
 	CrmPaymentApi
-	CrmPurchaseOrderApi
 	CrmStatementAccountApi
 	CrmSupplierApi
 	CrmCommissionRebateApi
+	CrmTicketCategoriesApi
+	CrmTicketResponseTemplatesApi
+	CrmTicketsApi
+	CrmTicketCommentsApi
+	CrmStatementAccountFileApi
+	CrmContactFileApi
+	CrmContactApprovalTasksApi
+	CrmContactApprovalRecordApi
+	CrmPurchaseOrderApi
+	CrmBusinessOpportunityApi
+	CrmBusinessOpportunityFileApi
+	CrmAuthoritiesApi
 	CrmPaymentCollentionApi
+	CrmProcurementContractApi
 }
+
+var (
+	userService = service.ServiceGroupApp.SystemServiceGroup.UserService
+)

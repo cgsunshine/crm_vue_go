@@ -16,22 +16,22 @@ func (crmPaymentService *CrmPaymentService) GetCrmPagePaymentInfoList(info crmRe
 	var crmPayments []crm.CrmPagePayment
 	// 如果有条件搜索 下方会自动创建搜索语句
 	if info.StartCreatedAt != nil && info.EndCreatedAt != nil {
-		db = db.Where("created_at BETWEEN ? AND ?", info.StartCreatedAt, info.EndCreatedAt)
+		db = db.Where(crmPaymentService.SplicingQueryConditions("created_at BETWEEN ? AND ?"), info.StartCreatedAt, info.EndCreatedAt)
 	}
 	if info.OrderId != nil {
-		db = db.Where("order_id = ?", info.OrderId)
+		db = db.Where(crmPaymentService.SplicingQueryConditions("order_id = ?"), info.OrderId)
 	}
 	if info.PaymentAmount != nil {
-		db = db.Where("payment_amount = ?", info.PaymentAmount)
+		db = db.Where(crmPaymentService.SplicingQueryConditions("payment_amount = ?"), info.PaymentAmount)
 	}
 	if info.StartPaymentTime != nil && info.EndPaymentTime != nil {
-		db = db.Where("payment_time BETWEEN ? AND ? ", info.StartPaymentTime, info.EndPaymentTime)
+		db = db.Where(crmPaymentService.SplicingQueryConditions("payment_time BETWEEN ? AND ? "), info.StartPaymentTime, info.EndPaymentTime)
 	}
 	if info.PaymentVoucher != "" {
-		db = db.Where("payment_voucher = ?", info.PaymentVoucher)
+		db = db.Where(crmPaymentService.SplicingQueryConditions("payment_voucher = ?"), info.PaymentVoucher)
 	}
 	if info.UserId != nil {
-		db = db.Where("user_id = ?", info.UserId)
+		db = db.Where(crmPaymentService.SplicingQueryConditions("user_id = ?"), info.UserId)
 	}
 	err = db.Count(&total).Error
 	if err != nil {
@@ -45,4 +45,19 @@ func (crmPaymentService *CrmPaymentService) GetCrmPagePaymentInfoList(info crmRe
 	err = db.Select("crm_payment.*,sys_users.username").
 		Joins("LEFT JOIN sys_users ON crm_payment.user_id = sys_users.id").Find(&crmPayments).Error
 	return crmPayments, total, err
+}
+
+// GetCrmPayment 根据ID获取crmPayment表记录
+// Author [piexlmax](https://github.com/piexlmax)
+func (crmPaymentService *CrmPaymentService) GetCrmPagePayment(ID string) (crmPayment crm.CrmPagePayment, err error) {
+	err = global.GVA_DB.Model(&crm.CrmPayment{}).Where("crm_payment.id = ?", ID).
+		Select("crm_payment.*,sys_users.username").
+		Joins("LEFT JOIN sys_users ON crm_payment.user_id = sys_users.id").
+		First(&crmPayment).Error
+	return
+}
+
+// SplicingQueryConditions 拼接条件
+func (crmPaymentService *CrmPaymentService) SplicingQueryConditions(condition string) string {
+	return "crm_payment." + condition
 }

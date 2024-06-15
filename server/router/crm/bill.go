@@ -12,10 +12,13 @@ type CrmPageBillRouter struct {
 func (s *CrmBillRouter) InitCrmPageBillRouter(Router *gin.RouterGroup, PublicRouter *gin.RouterGroup) {
 	crmBillRouterWithoutRecord := Router.Group("crmBill")
 
+	crmBillRouterWithoutAuth := PublicRouter.Group("crmBill")
+
 	var crmBillApi = v1.ApiGroupApp.CrmApiGroup.CrmBillApi
-
 	{
-		crmBillRouterWithoutRecord.GET("getCrmPageBillList", crmBillApi.GetCrmPageBillList) // 获取crmBill表列表
+		crmBillRouterWithoutRecord.GET("findPageCrmBill", crmBillApi.FindPageCrmBill) // 根据ID获取crmBill表
 	}
-
+	{
+		crmBillRouterWithoutAuth.GET("getCrmPageBillList", crmBillApi.GetCrmPageBillList) // 获取crmBill表列表
+	}
 }

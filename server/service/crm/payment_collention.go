@@ -16,31 +16,23 @@ func (crmPaymentCollentionService *CrmPaymentCollentionService) GetCrmPagePaymen
 	var crmPaymentCollentions []crm.CrmPagePaymentCollention
 	// 如果有条件搜索 下方会自动创建搜索语句
 	if info.StartCreatedAt != nil && info.EndCreatedAt != nil {
-		db = db.Where("created_at BETWEEN ? AND ?", info.StartCreatedAt, info.EndCreatedAt)
+		db = db.Where(crmPaymentCollentionService.SplicingQueryConditions("created_at BETWEEN ? AND ?"), info.StartCreatedAt, info.EndCreatedAt)
 	}
 	if info.BillId != nil {
-		db = db.Where("bill_id = ?", info.BillId)
+		db = db.Where(crmPaymentCollentionService.SplicingQueryConditions("bill_id = ?"), info.BillId)
 	}
 	if info.CustomerId != nil {
-		db = db.Where("customer_id = ?", info.CustomerId)
+		db = db.Where(crmPaymentCollentionService.SplicingQueryConditions("customer_id = ?"), info.CustomerId)
 	}
 	if info.UserId != nil {
-		db = db.Where("user_id = ?", info.UserId)
+		db = db.Where(crmPaymentCollentionService.SplicingQueryConditions("user_id = ?"), info.UserId)
 	}
 	if info.Currency != "" {
-		db = db.Where("currency = ?", info.Currency)
+		db = db.Where(crmPaymentCollentionService.SplicingQueryConditions("currency = ?"), info.Currency)
 	}
-	if info.Proof != "" {
-		db = db.Where("proof = ?", info.Proof)
-	}
-	if info.AuditingStatus != "" {
-		db = db.Where("auditing_status = ?", info.AuditingStatus)
-	}
-	if info.ApprovedById != "" {
-		db = db.Where("approved_by_id = ?", info.ApprovedById)
-	}
+
 	if info.StartAuditingTime != nil && info.EndAuditingTime != nil {
-		db = db.Where("auditing_time BETWEEN ? AND ? ", info.StartAuditingTime, info.EndAuditingTime)
+		db = db.Where(crmPaymentCollentionService.SplicingQueryConditions("auditing_time BETWEEN ? AND ? "), info.StartAuditingTime, info.EndAuditingTime)
 	}
 	err = db.Count(&total).Error
 	if err != nil {
@@ -57,4 +49,21 @@ func (crmPaymentCollentionService *CrmPaymentCollentionService) GetCrmPagePaymen
 		Joins("LEFT JOIN crm_bill ON crm_bill.id = crm_payment_collention.bill_id").
 		Find(&crmPaymentCollentions).Error
 	return crmPaymentCollentions, total, err
+}
+
+// GetCrmPaymentCollention 根据ID获取crmPaymentCollention表记录
+// Author [piexlmax](https://github.com/piexlmax)
+func (crmPaymentCollentionService *CrmPaymentCollentionService) GetCrmPagePaymentCollention(ID string) (crmPaymentCollention crm.CrmPagePaymentCollention, err error) {
+	err = global.GVA_DB.Model(&crm.CrmPaymentCollention{}).Where("crm_payment_collention.id = ?", ID).
+		Select("crm_payment_collention.*,crm_customers.customer_name,sys_users.username,crm_bill.amount").
+		Joins("LEFT JOIN sys_users ON sys_users.id = crm_payment_collention.user_id").
+		Joins("LEFT JOIN crm_customers ON crm_customers.id = crm_payment_collention.customer_id").
+		Joins("LEFT JOIN crm_bill ON crm_bill.id = crm_payment_collention.bill_id").
+		First(&crmPaymentCollention).Error
+	return
+}
+
+// SplicingQueryConditions 拼接条件
+func (crmPaymentCollentionService *CrmPaymentCollentionService) SplicingQueryConditions(condition string) string {
+	return "crm_payment_collention." + condition
 }

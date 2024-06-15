@@ -16,6 +16,8 @@ type SysAuthority struct {
 	SysBaseMenus    []SysBaseMenu   `json:"menus" gorm:"many2many:sys_authority_menus;"`
 	Users           []SysUser       `json:"-" gorm:"many2many:sys_user_authority;"`
 	DefaultRouter   string          `json:"defaultRouter" gorm:"comment:默认菜单;default:dashboard"` // 默认菜单(默认dashboard)
+
+	Status string `json:"status" form:"status" gorm:"column:status;comment:数据权限;size:10;"` //数据权限  1 个人 2 所有
 }
 
 func (SysAuthority) TableName() string {

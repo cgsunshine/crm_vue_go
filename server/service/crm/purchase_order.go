@@ -16,28 +16,28 @@ func (crmPurchaseOrderService *CrmPurchaseOrderService) GetCrmPagePurchaseOrderI
 	var crmPurchaseOrders []crm.CrmPagePurchaseOrder
 	// 如果有条件搜索 下方会自动创建搜索语句
 	if info.StartCreatedAt != nil && info.EndCreatedAt != nil {
-		db = db.Where("created_at BETWEEN ? AND ?", info.StartCreatedAt, info.EndCreatedAt)
-	}
-	if info.ContractId != nil {
-		db = db.Where("contract_id = ?", info.ContractId)
-	}
-	if info.ProductId != nil {
-		db = db.Where("product_id = ?", info.ProductId)
-	}
-	if info.Quantity != nil {
-		db = db.Where("quantity = ?", info.Quantity)
+		db = db.Where(crmPurchaseOrderService.SplicingQueryConditions("created_at BETWEEN ? AND ?"), info.StartCreatedAt, info.EndCreatedAt)
 	}
 	if info.Amount != nil {
-		db = db.Where("amount = ?", info.Amount)
+		db = db.Where(crmPurchaseOrderService.SplicingQueryConditions("amount = ?"), info.Amount)
 	}
-	if info.UserId != nil {
-		db = db.Where("user_id = ?", info.UserId)
+	if info.ContractId != nil {
+		db = db.Where(crmPurchaseOrderService.SplicingQueryConditions("contract_id = ?"), info.ContractId)
 	}
 	if info.StartCreationTime != nil && info.EndCreationTime != nil {
-		db = db.Where("creation_time BETWEEN ? AND ? ", info.StartCreationTime, info.EndCreationTime)
+		db = db.Where(crmPurchaseOrderService.SplicingQueryConditions("creation_time BETWEEN ? AND ? "), info.StartCreationTime, info.EndCreationTime)
 	}
 	if info.StartExpirationTime != nil && info.EndExpirationTime != nil {
-		db = db.Where("expiration_time BETWEEN ? AND ? ", info.StartExpirationTime, info.EndExpirationTime)
+		db = db.Where(crmPurchaseOrderService.SplicingQueryConditions("expiration_time BETWEEN ? AND ? "), info.StartExpirationTime, info.EndExpirationTime)
+	}
+	if info.ProductId != nil {
+		db = db.Where(crmPurchaseOrderService.SplicingQueryConditions("product_id = ?"), info.ProductId)
+	}
+	if info.Quantity != nil {
+		db = db.Where(crmPurchaseOrderService.SplicingQueryConditions("quantity = ?"), info.Quantity)
+	}
+	if info.UserId != nil {
+		db = db.Where(crmPurchaseOrderService.SplicingQueryConditions("user_id = ?"), info.UserId)
 	}
 	err = db.Count(&total).Error
 	if err != nil {
@@ -53,4 +53,20 @@ func (crmPurchaseOrderService *CrmPurchaseOrderService) GetCrmPagePurchaseOrderI
 		Joins("LEFT JOIN crm_product ON crm_purchase_order.product_id = crm_product.id").
 		Find(&crmPurchaseOrders).Error
 	return crmPurchaseOrders, total, err
+}
+
+// GetCrmPurchaseOrder 根据ID获取订购单管理记录
+// Author [piexlmax](https://github.com/piexlmax)
+func (crmPurchaseOrderService *CrmPurchaseOrderService) GetCrmPagePurchaseOrder(ID string) (crmPurchaseOrder crm.CrmPagePurchaseOrder, err error) {
+	err = global.GVA_DB.Model(&crm.CrmPurchaseOrder{}).Where("crm_purchase_order.id = ?", ID).
+		Select("crm_purchase_order.*,sys_users.username,crm_product.product_name").
+		Joins("LEFT JOIN sys_users ON crm_purchase_order.user_id = sys_users.id").
+		Joins("LEFT JOIN crm_product ON crm_purchase_order.product_id = crm_product.id").
+		First(&crmPurchaseOrder).Error
+	return
+}
+
+// SplicingQueryConditions 拼接条件
+func (crmPurchaseOrderService *CrmPurchaseOrderService) SplicingQueryConditions(condition string) string {
+	return "crm_purchase_order." + condition
 }

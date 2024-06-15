@@ -9,42 +9,42 @@ import (
 type CrmTicketsService struct {
 }
 
-// CreateCrmTickets 创建crmTickets表记录
+// CreateCrmTickets 创建工单记录
 // Author [piexlmax](https://github.com/piexlmax)
 func (crmTicketsService *CrmTicketsService) CreateCrmTickets(crmTickets *crm.CrmTickets) (err error) {
 	err = global.GVA_DB.Create(crmTickets).Error
 	return err
 }
 
-// DeleteCrmTickets 删除crmTickets表记录
+// DeleteCrmTickets 删除工单记录
 // Author [piexlmax](https://github.com/piexlmax)
 func (crmTicketsService *CrmTicketsService)DeleteCrmTickets(ID string) (err error) {
 	err = global.GVA_DB.Delete(&crm.CrmTickets{},"id = ?",ID).Error
 	return err
 }
 
-// DeleteCrmTicketsByIds 批量删除crmTickets表记录
+// DeleteCrmTicketsByIds 批量删除工单记录
 // Author [piexlmax](https://github.com/piexlmax)
 func (crmTicketsService *CrmTicketsService)DeleteCrmTicketsByIds(IDs []string) (err error) {
 	err = global.GVA_DB.Delete(&[]crm.CrmTickets{},"id in ?",IDs).Error
 	return err
 }
 
-// UpdateCrmTickets 更新crmTickets表记录
+// UpdateCrmTickets 更新工单记录
 // Author [piexlmax](https://github.com/piexlmax)
 func (crmTicketsService *CrmTicketsService)UpdateCrmTickets(crmTickets crm.CrmTickets) (err error) {
 	err = global.GVA_DB.Save(&crmTickets).Error
 	return err
 }
 
-// GetCrmTickets 根据ID获取crmTickets表记录
+// GetCrmTickets 根据ID获取工单记录
 // Author [piexlmax](https://github.com/piexlmax)
 func (crmTicketsService *CrmTicketsService)GetCrmTickets(ID string) (crmTickets crm.CrmTickets, err error) {
 	err = global.GVA_DB.Where("id = ?", ID).First(&crmTickets).Error
 	return
 }
 
-// GetCrmTicketsInfoList 分页获取crmTickets表记录
+// GetCrmTicketsInfoList 分页获取工单记录
 // Author [piexlmax](https://github.com/piexlmax)
 func (crmTicketsService *CrmTicketsService)GetCrmTicketsInfoList(info crmReq.CrmTicketsSearch) (list []crm.CrmTickets, total int64, err error) {
 	limit := info.PageSize
@@ -55,6 +55,12 @@ func (crmTicketsService *CrmTicketsService)GetCrmTicketsInfoList(info crmReq.Crm
     // 如果有条件搜索 下方会自动创建搜索语句
     if info.StartCreatedAt !=nil && info.EndCreatedAt !=nil {
      db = db.Where("created_at BETWEEN ? AND ?", info.StartCreatedAt, info.EndCreatedAt)
+    }
+    if info.SubmitterId != nil {
+        db = db.Where("submitter_id = ?",info.SubmitterId)
+    }
+    if info.AssigneeId != nil {
+        db = db.Where("assignee_id = ?",info.AssigneeId)
     }
 	err = db.Count(&total).Error
 	if err!=nil {

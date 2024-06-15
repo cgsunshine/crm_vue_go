@@ -6,6 +6,7 @@ import (
 	crmReq "github.com/flipped-aurora/gin-vue-admin/server/model/crm/request"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
+	"strconv"
 )
 
 // GetCrmOrderList 分页获取crmOrder表列表
@@ -24,6 +25,10 @@ func (crmOrderApi *CrmOrderApi) GetCrmPageOrderList(c *gin.Context) {
 		response.FailWithMessage(err.Error(), c)
 		return
 	}
+	userID, _ := strconv.Atoi(c.GetHeader("X-User-Id"))
+
+	pageInfo.UserId = userService.FindUserDataStatusById(&userID)
+
 	if list, total, err := crmOrderService.GetCrmPageOrderInfoList(pageInfo); err != nil {
 		global.GVA_LOG.Error("获取失败!", zap.Error(err))
 		response.FailWithMessage("获取失败", c)
@@ -34,5 +39,24 @@ func (crmOrderApi *CrmOrderApi) GetCrmPageOrderList(c *gin.Context) {
 			Page:     pageInfo.Page,
 			PageSize: pageInfo.PageSize,
 		}, "获取成功", c)
+	}
+}
+
+// FindCrmPageOrder 用id查询crmOrder表
+// @Tags CrmOrder
+// @Summary 用id查询crmOrder表
+// @Security ApiKeyAuth
+// @accept application/json
+// @Produce application/json
+// @Param data query crm.CrmOrder true "用id查询crmOrder表"
+// @Success 200 {string} string "{"success":true,"data":{},"msg":"查询成功"}"
+// @Router /crmOrder/findCrmOrder [get]
+func (crmOrderApi *CrmOrderApi) FindCrmPageOrder(c *gin.Context) {
+	ID := c.Query("ID")
+	if recrmOrder, err := crmOrderService.GetCrmPageOrder(ID); err != nil {
+		global.GVA_LOG.Error("查询失败!", zap.Error(err))
+		response.FailWithMessage("查询失败", c)
+	} else {
+		response.OkWithData(gin.H{"recrmOrder": recrmOrder}, c)
 	}
 }

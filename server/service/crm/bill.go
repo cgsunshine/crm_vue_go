@@ -6,6 +6,18 @@ import (
 	crmReq "github.com/flipped-aurora/gin-vue-admin/server/model/crm/request"
 )
 
+// GetCrmBill 根据ID获取crmBill表记录
+// Author [piexlmax](https://github.com/piexlmax)
+func (crmBillService *CrmBillService) GetCrmPageBill(ID string) (crmBill crm.CrmPageBill, err error) {
+	err = global.GVA_DB.Model(&crm.CrmBill{}).
+		Where("crm_bill.id = ?", ID).
+		Select("crm_bill.*,crm_customers.customer_name,sys_users.username").
+		Joins("LEFT JOIN sys_users ON sys_users.id = crm_bill.user_id").
+		Joins("LEFT JOIN crm_customers ON crm_customers.id = crm_bill.customer_id").
+		First(&crmBill).Error
+	return
+}
+
 // GetCrmBillInfoList 分页获取crmBill表记录
 // Author [piexlmax](https://github.com/piexlmax)
 func (crmBillService *CrmBillService) GetCrmPageBillInfoList(info crmReq.CrmBillSearch) (list []crm.CrmPageBill, total int64, err error) {
@@ -16,37 +28,37 @@ func (crmBillService *CrmBillService) GetCrmPageBillInfoList(info crmReq.CrmBill
 	var crmBills []crm.CrmPageBill
 	// 如果有条件搜索 下方会自动创建搜索语句
 	if info.StartCreatedAt != nil && info.EndCreatedAt != nil {
-		db = db.Where("created_at BETWEEN ? AND ?", info.StartCreatedAt, info.EndCreatedAt)
+		db = db.Where(crmBillService.SplicingQueryConditions("created_at BETWEEN ? AND ?"), info.StartCreatedAt, info.EndCreatedAt)
 	}
 	if info.Amount != nil {
-		db = db.Where("amount = ?", info.Amount)
+		db = db.Where(crmBillService.SplicingQueryConditions("amount = ?"), info.Amount)
 	}
 	if info.Currency != "" {
-		db = db.Where("currency = ?", info.Currency)
+		db = db.Where(crmBillService.SplicingQueryConditions("currency = ?"), info.Currency)
 	}
 	if info.CustomerId != nil {
-		db = db.Where("customer_id = ?", info.CustomerId)
+		db = db.Where(crmBillService.SplicingQueryConditions("customer_id = ?"), info.CustomerId)
 	}
 	if info.StartExpirationTime != nil && info.EndExpirationTime != nil {
-		db = db.Where("expiration_time BETWEEN ? AND ? ", info.StartExpirationTime, info.EndExpirationTime)
+		db = db.Where(crmBillService.SplicingQueryConditions("expiration_time BETWEEN ? AND ? "), info.StartExpirationTime, info.EndExpirationTime)
 	}
 	if info.OrderId != nil {
-		db = db.Where("order_id = ?", info.OrderId)
+		db = db.Where(crmBillService.SplicingQueryConditions("order_id = ?"), info.OrderId)
 	}
 	if info.PaymentCollention != nil {
-		db = db.Where("payment_collention = ?", info.PaymentCollention)
+		db = db.Where(crmBillService.SplicingQueryConditions("payment_collention = ?"), info.PaymentCollention)
 	}
 	if info.PaymentStatus != "" {
-		db = db.Where("payment_status = ?", info.PaymentStatus)
+		db = db.Where(crmBillService.SplicingQueryConditions("payment_status = ?"), info.PaymentStatus)
 	}
 	if info.StartPaymentTime != nil && info.EndPaymentTime != nil {
-		db = db.Where("payment_time BETWEEN ? AND ? ", info.StartPaymentTime, info.EndPaymentTime)
+		db = db.Where(crmBillService.SplicingQueryConditions("payment_time BETWEEN ? AND ? "), info.StartPaymentTime, info.EndPaymentTime)
 	}
 	if info.PaymentType != "" {
-		db = db.Where("payment_type = ?", info.PaymentType)
+		db = db.Where(crmBillService.SplicingQueryConditions("payment_type = ?"), info.PaymentType)
 	}
 	if info.UserId != nil {
-		db = db.Where("user_id = ?", info.UserId)
+		db = db.Where(crmBillService.SplicingQueryConditions("user_id = ?"), info.UserId)
 	}
 	err = db.Count(&total).Error
 	if err != nil {
@@ -62,4 +74,9 @@ func (crmBillService *CrmBillService) GetCrmPageBillInfoList(info crmReq.CrmBill
 		Joins("LEFT JOIN crm_customers ON crm_customers.id = crm_bill.customer_id").
 		Find(&crmBills).Error
 	return crmBills, total, err
+}
+
+// SplicingQueryConditions 拼接条件
+func (crmBillService *CrmBillService) SplicingQueryConditions(condition string) string {
+	return "crm_bill." + condition
 }

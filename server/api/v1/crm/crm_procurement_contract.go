@@ -2,19 +2,18 @@ package crm
 
 import (
 	"github.com/flipped-aurora/gin-vue-admin/server/global"
-    "github.com/flipped-aurora/gin-vue-admin/server/model/crm"
-    crmReq "github.com/flipped-aurora/gin-vue-admin/server/model/crm/request"
-    "github.com/flipped-aurora/gin-vue-admin/server/model/common/response"
-    "github.com/flipped-aurora/gin-vue-admin/server/service"
-    "github.com/gin-gonic/gin"
-    "go.uber.org/zap"
+	"github.com/flipped-aurora/gin-vue-admin/server/model/common/response"
+	"github.com/flipped-aurora/gin-vue-admin/server/model/crm"
+	crmReq "github.com/flipped-aurora/gin-vue-admin/server/model/crm/request"
+	"github.com/flipped-aurora/gin-vue-admin/server/service"
+	"github.com/gin-gonic/gin"
+	"go.uber.org/zap"
 )
 
 type CrmProcurementContractApi struct {
 }
 
 var crmProcurementContractService = service.ServiceGroupApp.CrmServiceGroup.CrmProcurementContractService
-
 
 // CreateCrmProcurementContract 创建订购合同
 // @Tags CrmProcurementContract
@@ -34,7 +33,7 @@ func (crmProcurementContractApi *CrmProcurementContractApi) CreateCrmProcurement
 	}
 
 	if err := crmProcurementContractService.CreateCrmProcurementContract(&crmProcurementContract); err != nil {
-        global.GVA_LOG.Error("创建失败!", zap.Error(err))
+		global.GVA_LOG.Error("创建失败!", zap.Error(err))
 		response.FailWithMessage("创建失败", c)
 	} else {
 		response.OkWithMessage("创建成功", c)
@@ -53,7 +52,7 @@ func (crmProcurementContractApi *CrmProcurementContractApi) CreateCrmProcurement
 func (crmProcurementContractApi *CrmProcurementContractApi) DeleteCrmProcurementContract(c *gin.Context) {
 	ID := c.Query("ID")
 	if err := crmProcurementContractService.DeleteCrmProcurementContract(ID); err != nil {
-        global.GVA_LOG.Error("删除失败!", zap.Error(err))
+		global.GVA_LOG.Error("删除失败!", zap.Error(err))
 		response.FailWithMessage("删除失败", c)
 	} else {
 		response.OkWithMessage("删除成功", c)
@@ -71,7 +70,7 @@ func (crmProcurementContractApi *CrmProcurementContractApi) DeleteCrmProcurement
 func (crmProcurementContractApi *CrmProcurementContractApi) DeleteCrmProcurementContractByIds(c *gin.Context) {
 	IDs := c.QueryArray("IDs[]")
 	if err := crmProcurementContractService.DeleteCrmProcurementContractByIds(IDs); err != nil {
-        global.GVA_LOG.Error("批量删除失败!", zap.Error(err))
+		global.GVA_LOG.Error("批量删除失败!", zap.Error(err))
 		response.FailWithMessage("批量删除失败", c)
 	} else {
 		response.OkWithMessage("批量删除成功", c)
@@ -96,7 +95,7 @@ func (crmProcurementContractApi *CrmProcurementContractApi) UpdateCrmProcurement
 	}
 
 	if err := crmProcurementContractService.UpdateCrmProcurementContract(crmProcurementContract); err != nil {
-        global.GVA_LOG.Error("更新失败!", zap.Error(err))
+		global.GVA_LOG.Error("更新失败!", zap.Error(err))
 		response.FailWithMessage("更新失败", c)
 	} else {
 		response.OkWithMessage("更新成功", c)
@@ -115,7 +114,7 @@ func (crmProcurementContractApi *CrmProcurementContractApi) UpdateCrmProcurement
 func (crmProcurementContractApi *CrmProcurementContractApi) FindCrmProcurementContract(c *gin.Context) {
 	ID := c.Query("ID")
 	if recrmProcurementContract, err := crmProcurementContractService.GetCrmProcurementContract(ID); err != nil {
-        global.GVA_LOG.Error("查询失败!", zap.Error(err))
+		global.GVA_LOG.Error("查询失败!", zap.Error(err))
 		response.FailWithMessage("查询失败", c)
 	} else {
 		response.OkWithData(gin.H{"recrmProcurementContract": recrmProcurementContract}, c)
@@ -139,16 +138,16 @@ func (crmProcurementContractApi *CrmProcurementContractApi) GetCrmProcurementCon
 		return
 	}
 	if list, total, err := crmProcurementContractService.GetCrmProcurementContractInfoList(pageInfo); err != nil {
-	    global.GVA_LOG.Error("获取失败!", zap.Error(err))
-        response.FailWithMessage("获取失败", c)
-    } else {
-        response.OkWithDetailed(response.PageResult{
-            List:     list,
-            Total:    total,
-            Page:     pageInfo.Page,
-            PageSize: pageInfo.PageSize,
-        }, "获取成功", c)
-    }
+		global.GVA_LOG.Error("获取失败!", zap.Error(err))
+		response.FailWithMessage("获取失败", c)
+	} else {
+		response.OkWithDetailed(response.PageResult{
+			List:     list,
+			Total:    total,
+			Page:     pageInfo.Page,
+			PageSize: pageInfo.PageSize,
+		}, "获取成功", c)
+	}
 }
 
 // GetCrmProcurementContractPublic 不需要鉴权的订购合同接口
@@ -160,9 +159,9 @@ func (crmProcurementContractApi *CrmProcurementContractApi) GetCrmProcurementCon
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"获取成功"}"
 // @Router /crmProcurementContract/getCrmProcurementContractList [get]
 func (crmProcurementContractApi *CrmProcurementContractApi) GetCrmProcurementContractPublic(c *gin.Context) {
-    // 此接口不需要鉴权
-    // 示例为返回了一个固定的消息接口，一般本接口用于C端服务，需要自己实现业务逻辑
-    response.OkWithDetailed(gin.H{
-       "info": "不需要鉴权的订购合同接口信息",
-    }, "获取成功", c)
+	// 此接口不需要鉴权
+	// 示例为返回了一个固定的消息接口，一般本接口用于C端服务，需要自己实现业务逻辑
+	response.OkWithDetailed(gin.H{
+		"info": "不需要鉴权的订购合同接口信息",
+	}, "获取成功", c)
 }

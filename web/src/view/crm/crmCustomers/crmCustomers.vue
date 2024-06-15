@@ -11,9 +11,11 @@
           </el-tooltip>
         </span>
       </template>
-      <el-date-picker v-model="searchInfo.startCreatedAt" type="datetime" placeholder="开始日期" :disabled-date="time=> searchInfo.endCreatedAt ? time.getTime() > searchInfo.endCreatedAt.getTime() : false"></el-date-picker>
+      <!-- <el-date-picker v-model="searchInfo.startCreatedAt" type="datetime" placeholder="开始日期" :disabled-date="time=> searchInfo.endCreatedAt ? time.getTime() > searchInfo.endCreatedAt.getTime() : false"></el-date-picker>
        —
-      <el-date-picker v-model="searchInfo.endCreatedAt" type="datetime" placeholder="结束日期" :disabled-date="time=> searchInfo.startCreatedAt ? time.getTime() < searchInfo.startCreatedAt.getTime() : false"></el-date-picker>
+      <el-date-picker v-model="searchInfo.endCreatedAt" type="datetime" placeholder="结束日期" :disabled-date="time=> searchInfo.startCreatedAt ? time.getTime() < searchInfo.startCreatedAt.getTime() : false"></el-date-picker> -->
+      {{ searchInfo.startCreatedAt }}
+      <el-date-picker v-model="searchInfo.startCreatedAt"type="daterange" start-placeholder="Start date" end-placeholder="End date" :default-time="defaultTime" />
       </el-form-item>
       
         <el-form-item label="客户名" prop="customerName">
@@ -237,19 +239,19 @@ const rule = reactive({
 })
 
 const searchRule = reactive({
-  createdAt: [
-    { validator: (rule, value, callback) => {
-      if (searchInfo.value.startCreatedAt && !searchInfo.value.endCreatedAt) {
-        callback(new Error('请填写结束日期'))
-      } else if (!searchInfo.value.startCreatedAt && searchInfo.value.endCreatedAt) {
-        callback(new Error('请填写开始日期'))
-      } else if (searchInfo.value.startCreatedAt && searchInfo.value.endCreatedAt && (searchInfo.value.startCreatedAt.getTime() === searchInfo.value.endCreatedAt.getTime() || searchInfo.value.startCreatedAt.getTime() > searchInfo.value.endCreatedAt.getTime())) {
-        callback(new Error('开始日期应当早于结束日期'))
-      } else {
-        callback()
-      }
-    }, trigger: 'change' }
-  ],
+  // createdAt: [
+  //   { validator: (rule, value, callback) => {
+  //     if (searchInfo.value.startCreatedAt && !searchInfo.value.endCreatedAt) {
+  //       callback(new Error('请填写结束日期'))
+  //     } else if (!searchInfo.value.startCreatedAt && searchInfo.value.endCreatedAt) {
+  //       callback(new Error('请填写开始日期'))
+  //     } else if (searchInfo.value.startCreatedAt && searchInfo.value.endCreatedAt && (searchInfo.value.startCreatedAt.getTime() === searchInfo.value.endCreatedAt.getTime() || searchInfo.value.startCreatedAt.getTime() > searchInfo.value.endCreatedAt.getTime())) {
+  //       callback(new Error('开始日期应当早于结束日期'))
+  //     } else {
+  //       callback()
+  //     }
+  //   }, trigger: 'change' }
+  // ],
 })
 
 const elFormRef = ref()
@@ -267,9 +269,13 @@ const onReset = () => {
   searchInfo.value = {}
   getTableData()
 }
-
+const defaultTime = ref<[Date, Date]>([
+  new Date(2000, 1, 1, 0, 0, 0),
+  new Date(2000, 2, 1, 23, 59, 59)
+]);
 // 搜索
 const onSubmit = () => {
+    console.log(searchInfo.value)
   elSearchFormRef.value?.validate(async(valid) => {
     if (!valid) return
     page.value = 1
@@ -292,8 +298,10 @@ const handleCurrentChange = (val) => {
 
 // 查询
 const getTableData = async() => {
+    console.log(searchInfo.value)
   const table = await getCrmCustomersList({ page: page.value, pageSize: pageSize.value, ...searchInfo.value })
   if (table.code === 0) {
+    console.log(searchInfo.value,333);
     tableData.value = table.data.list
     total.value = table.data.total
     page.value = table.data.page
@@ -378,7 +386,6 @@ const updateCrmCustomersFunc = async(row) => {
     }
 }
 
-
 // 删除行
 const deleteCrmCustomersFunc = async (row) => {
     const res = await deleteCrmCustomers({ ID: row.ID })
@@ -397,10 +404,8 @@ const deleteCrmCustomersFunc = async (row) => {
 // 弹窗控制标记
 const dialogFormVisible = ref(false)
 
-
 // 查看详情控制标记
 const detailShow = ref(false)
-
 
 // 打开详情弹窗
 const openDetailShow = () => {
@@ -459,6 +464,8 @@ const closeDialog = () => {
         customerGroup: '',
         }
 }
+
+
 // 弹窗确定
 const enterDialog = async () => {
      elFormRef.value?.validate( async (valid) => {

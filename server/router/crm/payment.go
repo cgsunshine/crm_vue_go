@@ -11,10 +11,15 @@ type CrmPagePaymentRouter struct {
 // InitCrmPaymentRouter 初始化 crmPayment表 路由信息
 func (s *CrmPagePaymentRouter) InitCrmPagePaymentRouter(Router *gin.RouterGroup, PublicRouter *gin.RouterGroup) {
 	crmPaymentRouterWithoutRecord := Router.Group("crmPayment")
+	crmPaymentRouterWithoutAuth := PublicRouter.Group("crmPayment")
 
 	var crmPaymentApi = v1.ApiGroupApp.CrmApiGroup.CrmPaymentApi
 
 	{
-		crmPaymentRouterWithoutRecord.GET("getCrmPagePaymentList", crmPaymentApi.GetCrmPagePaymentList) // 获取crmPayment表列表
+		crmPaymentRouterWithoutRecord.GET("findCrmPagePayment", crmPaymentApi.FindCrmPagePayment) // 根据ID获取crmPayment表
+	}
+
+	{
+		crmPaymentRouterWithoutAuth.GET("getCrmPagePaymentList", crmPaymentApi.GetCrmPagePaymentList) // 获取crmPayment表列表
 	}
 }

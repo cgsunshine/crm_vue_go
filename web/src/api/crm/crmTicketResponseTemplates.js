@@ -1,11 +1,11 @@
 import service from '@/utils/request'
 
 // @Tags CrmTicketResponseTemplates
-// @Summary 创建crmTicketResponseTemplates表
+// @Summary 创建快捷回复模板
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body model.CrmTicketResponseTemplates true "创建crmTicketResponseTemplates表"
+// @Param data body model.CrmTicketResponseTemplates true "创建快捷回复模板"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"创建成功"}"
 // @Router /crmTicketResponseTemplates/createCrmTicketResponseTemplates [post]
 export const createCrmTicketResponseTemplates = (data) => {
@@ -17,11 +17,11 @@ export const createCrmTicketResponseTemplates = (data) => {
 }
 
 // @Tags CrmTicketResponseTemplates
-// @Summary 删除crmTicketResponseTemplates表
+// @Summary 删除快捷回复模板
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body model.CrmTicketResponseTemplates true "删除crmTicketResponseTemplates表"
+// @Param data body model.CrmTicketResponseTemplates true "删除快捷回复模板"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"删除成功"}"
 // @Router /crmTicketResponseTemplates/deleteCrmTicketResponseTemplates [delete]
 export const deleteCrmTicketResponseTemplates = (params) => {
@@ -33,11 +33,11 @@ export const deleteCrmTicketResponseTemplates = (params) => {
 }
 
 // @Tags CrmTicketResponseTemplates
-// @Summary 批量删除crmTicketResponseTemplates表
+// @Summary 批量删除快捷回复模板
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body request.IdsReq true "批量删除crmTicketResponseTemplates表"
+// @Param data body request.IdsReq true "批量删除快捷回复模板"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"删除成功"}"
 // @Router /crmTicketResponseTemplates/deleteCrmTicketResponseTemplates [delete]
 export const deleteCrmTicketResponseTemplatesByIds = (params) => {
@@ -49,11 +49,11 @@ export const deleteCrmTicketResponseTemplatesByIds = (params) => {
 }
 
 // @Tags CrmTicketResponseTemplates
-// @Summary 更新crmTicketResponseTemplates表
+// @Summary 更新快捷回复模板
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body model.CrmTicketResponseTemplates true "更新crmTicketResponseTemplates表"
+// @Param data body model.CrmTicketResponseTemplates true "更新快捷回复模板"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"更新成功"}"
 // @Router /crmTicketResponseTemplates/updateCrmTicketResponseTemplates [put]
 export const updateCrmTicketResponseTemplates = (data) => {
@@ -65,11 +65,11 @@ export const updateCrmTicketResponseTemplates = (data) => {
 }
 
 // @Tags CrmTicketResponseTemplates
-// @Summary 用id查询crmTicketResponseTemplates表
+// @Summary 用id查询快捷回复模板
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data query model.CrmTicketResponseTemplates true "用id查询crmTicketResponseTemplates表"
+// @Param data query model.CrmTicketResponseTemplates true "用id查询快捷回复模板"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"查询成功"}"
 // @Router /crmTicketResponseTemplates/findCrmTicketResponseTemplates [get]
 export const findCrmTicketResponseTemplates = (params) => {
@@ -81,11 +81,11 @@ export const findCrmTicketResponseTemplates = (params) => {
 }
 
 // @Tags CrmTicketResponseTemplates
-// @Summary 分页获取crmTicketResponseTemplates表列表
+// @Summary 分页获取快捷回复模板列表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data query request.PageInfo true "分页获取crmTicketResponseTemplates表列表"
+// @Param data query request.PageInfo true "分页获取快捷回复模板列表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"获取成功"}"
 // @Router /crmTicketResponseTemplates/getCrmTicketResponseTemplatesList [get]
 export const getCrmTicketResponseTemplatesList = (params) => {

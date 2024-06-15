@@ -56,6 +56,24 @@ func (crmProcurementContractService *CrmProcurementContractService)GetCrmProcure
     if info.StartCreatedAt !=nil && info.EndCreatedAt !=nil {
      db = db.Where("created_at BETWEEN ? AND ?", info.StartCreatedAt, info.EndCreatedAt)
     }
+    if info.ContractAmount != nil {
+        db = db.Where("contract_amount = ?",info.ContractAmount)
+    }
+    if info.ContractName != "" {
+        db = db.Where("contract_name LIKE ?","%"+ info.ContractName+"%")
+    }
+    if info.ContractStatus != "" {
+        db = db.Where("contract_status = ?",info.ContractStatus)
+    }
+        if info.StartCreationTime != nil && info.EndCreationTime != nil {
+            db = db.Where("creation_time BETWEEN ? AND ? ",info.StartCreationTime,info.EndCreationTime)
+        }
+        if info.StartExpirationTime != nil && info.EndExpirationTime != nil {
+            db = db.Where("expiration_time BETWEEN ? AND ? ",info.StartExpirationTime,info.EndExpirationTime)
+        }
+    if info.UserId != nil {
+        db = db.Where("user_id = ?",info.UserId)
+    }
 	err = db.Count(&total).Error
 	if err!=nil {
     	return

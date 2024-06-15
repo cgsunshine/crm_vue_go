@@ -1,11 +1,13 @@
 package crm
 
 import (
+	"fmt"
 	"github.com/flipped-aurora/gin-vue-admin/server/global"
 	"github.com/flipped-aurora/gin-vue-admin/server/model/common/response"
 	crmReq "github.com/flipped-aurora/gin-vue-admin/server/model/crm/request"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
+	"strconv"
 )
 
 // GetCrmBillList 分页获取crmBill表列表
@@ -24,6 +26,10 @@ func (crmBillApi *CrmBillApi) GetCrmPageBillList(c *gin.Context) {
 		response.FailWithMessage(err.Error(), c)
 		return
 	}
+	userID, _ := strconv.Atoi(c.GetHeader("X-User-Id"))
+
+	pageInfo.UserId = userService.FindUserDataStatusById(&userID)
+	fmt.Println(pageInfo.UserId)
 	if list, total, err := crmBillService.GetCrmPageBillInfoList(pageInfo); err != nil {
 		global.GVA_LOG.Error("获取失败!", zap.Error(err))
 		response.FailWithMessage("获取失败", c)
@@ -34,5 +40,24 @@ func (crmBillApi *CrmBillApi) GetCrmPageBillList(c *gin.Context) {
 			Page:     pageInfo.Page,
 			PageSize: pageInfo.PageSize,
 		}, "获取成功", c)
+	}
+}
+
+// FindPageCrmBill 用id查询crmBill表
+// @Tags CrmBill
+// @Summary 用id查询crmBill表
+// @Security ApiKeyAuth
+// @accept application/json
+// @Produce application/json
+// @Param data query crm.CrmBill true "用id查询crmBill表"
+// @Success 200 {string} string "{"success":true,"data":{},"msg":"查询成功"}"
+// @Router /crmBill/findCrmBill [get]
+func (crmBillApi *CrmBillApi) FindPageCrmBill(c *gin.Context) {
+	ID := c.Query("ID")
+	if recrmBill, err := crmBillService.GetCrmPageBill(ID); err != nil {
+		global.GVA_LOG.Error("查询失败!", zap.Error(err))
+		response.FailWithMessage("查询失败", c)
+	} else {
+		response.OkWithData(gin.H{"recrmBill": recrmBill}, c)
 	}
 }

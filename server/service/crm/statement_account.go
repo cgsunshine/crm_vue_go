@@ -16,25 +16,25 @@ func (crmStatementAccountService *CrmStatementAccountService) GetCrmPageStatemen
 	var crmStatementAccounts []crm.CrmPageStatementAccount
 	// 如果有条件搜索 下方会自动创建搜索语句
 	if info.StartCreatedAt != nil && info.EndCreatedAt != nil {
-		db = db.Where("created_at BETWEEN ? AND ?", info.StartCreatedAt, info.EndCreatedAt)
+		db = db.Where(crmStatementAccountService.SplicingQueryConditions("created_at BETWEEN ? AND ?"), info.StartCreatedAt, info.EndCreatedAt)
 	}
 	if info.PurchaseOrderId != nil {
-		db = db.Where("purchase_order_id = ?", info.PurchaseOrderId)
+		db = db.Where(crmStatementAccountService.SplicingQueryConditions("purchase_order_id = ?"), info.PurchaseOrderId)
 	}
 	if info.Amount != nil {
-		db = db.Where("amount = ?", info.Amount)
+		db = db.Where(crmStatementAccountService.SplicingQueryConditions("amount = ?"), info.Amount)
 	}
 	if info.StartCreationTime != nil && info.EndCreationTime != nil {
-		db = db.Where("creation_time BETWEEN ? AND ? ", info.StartCreationTime, info.EndCreationTime)
+		db = db.Where(crmStatementAccountService.SplicingQueryConditions("creation_time BETWEEN ? AND ? "), info.StartCreationTime, info.EndCreationTime)
 	}
 	if info.StartPayableTime != nil && info.EndPayableTime != nil {
-		db = db.Where("payable_time BETWEEN ? AND ? ", info.StartPayableTime, info.EndPayableTime)
+		db = db.Where(crmStatementAccountService.SplicingQueryConditions("payable_time BETWEEN ? AND ? "), info.StartPayableTime, info.EndPayableTime)
 	}
 	if info.PaymentStatus != "" {
-		db = db.Where("payment_status = ?", info.PaymentStatus)
+		db = db.Where(crmStatementAccountService.SplicingQueryConditions("payment_status = ?"), info.PaymentStatus)
 	}
 	if info.UserId != nil {
-		db = db.Where("user_id = ?", info.UserId)
+		db = db.Where(crmStatementAccountService.SplicingQueryConditions("user_id = ?"), info.UserId)
 	}
 	err = db.Count(&total).Error
 	if err != nil {
@@ -49,4 +49,19 @@ func (crmStatementAccountService *CrmStatementAccountService) GetCrmPageStatemen
 		Joins("LEFT JOIN sys_users ON crm_statement_account.user_id = sys_users.id").
 		Find(&crmStatementAccounts).Error
 	return crmStatementAccounts, total, err
+}
+
+// GetCrmStatementAccount 根据ID获取crmStatementAccount表记录
+// Author [piexlmax](https://github.com/piexlmax)
+func (crmStatementAccountService *CrmStatementAccountService) GetCrmPageStatementAccount(ID string) (crmStatementAccount crm.CrmPageStatementAccount, err error) {
+	err = global.GVA_DB.Model(&crm.CrmStatementAccount{}).Where("crm_statement_account.id = ?", ID).
+		Select("crm_statement_account.*,sys_users.username").
+		Joins("LEFT JOIN sys_users ON crm_statement_account.user_id = sys_users.id").
+		First(&crmStatementAccount).Error
+	return
+}
+
+// SplicingQueryConditions 拼接条件
+func (crmStatementAccountService *CrmStatementAccountService) SplicingQueryConditions(condition string) string {
+	return "crm_statement_account." + condition
 }

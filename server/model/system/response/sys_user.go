@@ -27,4 +27,5 @@ type CrmLSysUserResponse struct {
 	RefreshToken string   `json:"refreshToken"`
 	Roles        []string `json:"roles"`
 	Username     string   `json:"username"`
+	ID           uint     `json:"id"`
 }

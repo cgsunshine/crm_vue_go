@@ -9,42 +9,42 @@ import (
 type CrmTicketResponseTemplatesService struct {
 }
 
-// CreateCrmTicketResponseTemplates 创建crmTicketResponseTemplates表记录
+// CreateCrmTicketResponseTemplates 创建快捷回复模板记录
 // Author [piexlmax](https://github.com/piexlmax)
 func (crmTicketResponseTemplatesService *CrmTicketResponseTemplatesService) CreateCrmTicketResponseTemplates(crmTicketResponseTemplates *crm.CrmTicketResponseTemplates) (err error) {
 	err = global.GVA_DB.Create(crmTicketResponseTemplates).Error
 	return err
 }
 
-// DeleteCrmTicketResponseTemplates 删除crmTicketResponseTemplates表记录
+// DeleteCrmTicketResponseTemplates 删除快捷回复模板记录
 // Author [piexlmax](https://github.com/piexlmax)
 func (crmTicketResponseTemplatesService *CrmTicketResponseTemplatesService)DeleteCrmTicketResponseTemplates(ID string) (err error) {
 	err = global.GVA_DB.Delete(&crm.CrmTicketResponseTemplates{},"id = ?",ID).Error
 	return err
 }
 
-// DeleteCrmTicketResponseTemplatesByIds 批量删除crmTicketResponseTemplates表记录
+// DeleteCrmTicketResponseTemplatesByIds 批量删除快捷回复模板记录
 // Author [piexlmax](https://github.com/piexlmax)
 func (crmTicketResponseTemplatesService *CrmTicketResponseTemplatesService)DeleteCrmTicketResponseTemplatesByIds(IDs []string) (err error) {
 	err = global.GVA_DB.Delete(&[]crm.CrmTicketResponseTemplates{},"id in ?",IDs).Error
 	return err
 }
 
-// UpdateCrmTicketResponseTemplates 更新crmTicketResponseTemplates表记录
+// UpdateCrmTicketResponseTemplates 更新快捷回复模板记录
 // Author [piexlmax](https://github.com/piexlmax)
 func (crmTicketResponseTemplatesService *CrmTicketResponseTemplatesService)UpdateCrmTicketResponseTemplates(crmTicketResponseTemplates crm.CrmTicketResponseTemplates) (err error) {
 	err = global.GVA_DB.Save(&crmTicketResponseTemplates).Error
 	return err
 }
 
-// GetCrmTicketResponseTemplates 根据ID获取crmTicketResponseTemplates表记录
+// GetCrmTicketResponseTemplates 根据ID获取快捷回复模板记录
 // Author [piexlmax](https://github.com/piexlmax)
 func (crmTicketResponseTemplatesService *CrmTicketResponseTemplatesService)GetCrmTicketResponseTemplates(ID string) (crmTicketResponseTemplates crm.CrmTicketResponseTemplates, err error) {
 	err = global.GVA_DB.Where("id = ?", ID).First(&crmTicketResponseTemplates).Error
 	return
 }
 
-// GetCrmTicketResponseTemplatesInfoList 分页获取crmTicketResponseTemplates表记录
+// GetCrmTicketResponseTemplatesInfoList 分页获取快捷回复模板记录
 // Author [piexlmax](https://github.com/piexlmax)
 func (crmTicketResponseTemplatesService *CrmTicketResponseTemplatesService)GetCrmTicketResponseTemplatesInfoList(info crmReq.CrmTicketResponseTemplatesSearch) (list []crm.CrmTicketResponseTemplates, total int64, err error) {
 	limit := info.PageSize

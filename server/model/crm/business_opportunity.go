@@ -9,6 +9,7 @@ import (
 // crmBusinessOpportunity表 结构体  CrmBusinessOpportunity
 type CrmPageBusinessOpportunity struct {
 	global.GVA_MODEL
+	Amount                  *float64   `json:"amount" form:"amount" gorm:"column:amount;comment:商机金额;size:22;"`                                                       //商机金额
 	BusinessOpportunityName string     `json:"businessOpportunityName" form:"businessOpportunityName" gorm:"column:business_opportunity_name;comment:商机名称;size:191;"` //商机名称
 	CustomerId              *int       `json:"customerId" form:"customerId" gorm:"column:customer_id;comment:客户ID;"`                                                  //客户ID
 	Description             string     `json:"description" form:"description" gorm:"column:description;comment:备注;size:191;"`                                         //备注

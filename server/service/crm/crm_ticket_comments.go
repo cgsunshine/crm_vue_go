@@ -9,42 +9,42 @@ import (
 type CrmTicketCommentsService struct {
 }
 
-// CreateCrmTicketComments 创建crmTicketComments表记录
+// CreateCrmTicketComments 创建共单回复记录
 // Author [piexlmax](https://github.com/piexlmax)
 func (crmTicketCommentsService *CrmTicketCommentsService) CreateCrmTicketComments(crmTicketComments *crm.CrmTicketComments) (err error) {
 	err = global.GVA_DB.Create(crmTicketComments).Error
 	return err
 }
 
-// DeleteCrmTicketComments 删除crmTicketComments表记录
+// DeleteCrmTicketComments 删除共单回复记录
 // Author [piexlmax](https://github.com/piexlmax)
 func (crmTicketCommentsService *CrmTicketCommentsService)DeleteCrmTicketComments(ID string) (err error) {
 	err = global.GVA_DB.Delete(&crm.CrmTicketComments{},"id = ?",ID).Error
 	return err
 }
 
-// DeleteCrmTicketCommentsByIds 批量删除crmTicketComments表记录
+// DeleteCrmTicketCommentsByIds 批量删除共单回复记录
 // Author [piexlmax](https://github.com/piexlmax)
 func (crmTicketCommentsService *CrmTicketCommentsService)DeleteCrmTicketCommentsByIds(IDs []string) (err error) {
 	err = global.GVA_DB.Delete(&[]crm.CrmTicketComments{},"id in ?",IDs).Error
 	return err
 }
 
-// UpdateCrmTicketComments 更新crmTicketComments表记录
+// UpdateCrmTicketComments 更新共单回复记录
 // Author [piexlmax](https://github.com/piexlmax)
 func (crmTicketCommentsService *CrmTicketCommentsService)UpdateCrmTicketComments(crmTicketComments crm.CrmTicketComments) (err error) {
 	err = global.GVA_DB.Save(&crmTicketComments).Error
 	return err
 }
 
-// GetCrmTicketComments 根据ID获取crmTicketComments表记录
+// GetCrmTicketComments 根据ID获取共单回复记录
 // Author [piexlmax](https://github.com/piexlmax)
 func (crmTicketCommentsService *CrmTicketCommentsService)GetCrmTicketComments(ID string) (crmTicketComments crm.CrmTicketComments, err error) {
 	err = global.GVA_DB.Where("id = ?", ID).First(&crmTicketComments).Error
 	return
 }
 
-// GetCrmTicketCommentsInfoList 分页获取crmTicketComments表记录
+// GetCrmTicketCommentsInfoList 分页获取共单回复记录
 // Author [piexlmax](https://github.com/piexlmax)
 func (crmTicketCommentsService *CrmTicketCommentsService)GetCrmTicketCommentsInfoList(info crmReq.CrmTicketCommentsSearch) (list []crm.CrmTicketComments, total int64, err error) {
 	limit := info.PageSize
@@ -55,6 +55,9 @@ func (crmTicketCommentsService *CrmTicketCommentsService)GetCrmTicketCommentsInf
     // 如果有条件搜索 下方会自动创建搜索语句
     if info.StartCreatedAt !=nil && info.EndCreatedAt !=nil {
      db = db.Where("created_at BETWEEN ? AND ?", info.StartCreatedAt, info.EndCreatedAt)
+    }
+    if info.TicketId != nil {
+        db = db.Where("ticket_id = ?",info.TicketId)
     }
 	err = db.Count(&total).Error
 	if err!=nil {

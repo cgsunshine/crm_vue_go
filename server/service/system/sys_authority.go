@@ -2,9 +2,9 @@ package system
 
 import (
 	"errors"
-	"strconv"
-
+	"github.com/flipped-aurora/gin-vue-admin/server/model/crm"
 	systemReq "github.com/flipped-aurora/gin-vue-admin/server/model/system/request"
+	"strconv"
 
 	"github.com/flipped-aurora/gin-vue-admin/server/global"
 	"github.com/flipped-aurora/gin-vue-admin/server/model/common/request"
@@ -34,6 +34,14 @@ func (authorityService *AuthorityService) CreateAuthority(auth system.SysAuthori
 	e := global.GVA_DB.Transaction(func(tx *gorm.DB) error {
 
 		if err = tx.Create(&auth).Error; err != nil {
+			return err
+		}
+		id := int(auth.AuthorityId)
+
+		if err = tx.Create(&crm.CrmAuthorities{
+			AuthorityId: &id,
+			Status:      "1",
+		}).Error; err != nil {
 			return err
 		}
 
@@ -143,8 +151,13 @@ func (authorityService *AuthorityService) DeleteAuthority(auth *system.SysAuthor
 	}
 
 	return global.GVA_DB.Transaction(func(tx *gorm.DB) error {
+
 		var err error
 		if err = tx.Preload("SysBaseMenus").Preload("DataAuthorityId").Where("authority_id = ?", auth.AuthorityId).First(auth).Unscoped().Delete(auth).Error; err != nil {
+			return err
+		}
+
+		if err = tx.Where("authority_id = ?", auth.AuthorityId).Unscoped().Delete(&crm.CrmAuthorities{}).Error; err != nil {
 			return err
 		}
 
@@ -154,6 +167,7 @@ func (authorityService *AuthorityService) DeleteAuthority(auth *system.SysAuthor
 			}
 			// err = db.Association("SysBaseMenus").Delete(&auth)
 		}
+
 		if len(auth.DataAuthorityId) > 0 {
 			if err = tx.Model(auth).Association("DataAuthorityId").Delete(auth.DataAuthorityId); err != nil {
 				return err
@@ -163,6 +177,7 @@ func (authorityService *AuthorityService) DeleteAuthority(auth *system.SysAuthor
 		if err = tx.Delete(&system.SysUserAuthority{}, "sys_authority_authority_id = ?", auth.AuthorityId).Error; err != nil {
 			return err
 		}
+
 		if err = tx.Where("authority_id = ?", auth.AuthorityId).Delete(&[]system.SysAuthorityBtn{}).Error; err != nil {
 			return err
 		}
@@ -191,7 +206,11 @@ func (authorityService *AuthorityService) GetAuthorityInfoList(info request.Page
 		return
 	}
 	var authority []system.SysAuthority
-	err = db.Limit(limit).Offset(offset).Preload("DataAuthorityId").Where("parent_id = ?", "0").Find(&authority).Error
+	err = db.Limit(limit).Offset(offset).Preload("DataAuthorityId").
+		Select("sys_authorities.*,crm_authorities.status").
+		Joins("LEFT JOIN crm_authorities ON sys_authorities.authority_id = crm_authorities.authority_id").
+		Where("sys_authorities.parent_id = ?", "0").
+		Find(&authority).Error
 	for k := range authority {
 		err = authorityService.findChildrenAuthority(&authority[k])
 	}

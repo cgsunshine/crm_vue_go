@@ -2,8 +2,19 @@
   <div>
     <div class="gva-form-box">
       <el-form :model="formData" ref="elFormRef" label-position="right" :rules="rule" label-width="80px">
+        <el-form-item label="合同金额:" prop="contractAmount">
+          <el-input-number v-model="formData.contractAmount" :precision="2" :clearable="true"></el-input-number>
+       </el-form-item>
+        <el-form-item label="合同文件:" prop="contractFile">
+          <el-input v-model="formData.contractFile" :clearable="true"  placeholder="请输入合同文件" />
+       </el-form-item>
         <el-form-item label="合同名称:" prop="contractName">
           <el-input v-model="formData.contractName" :clearable="true"  placeholder="请输入合同名称" />
+       </el-form-item>
+        <el-form-item label="合同状态:" prop="contractStatus">
+           <el-select v-model="formData.contractStatus" placeholder="请选择合同状态" style="width:100%" :clearable="true" >
+              <el-option v-for="(item,key) in contract_statusOptions" :key="key" :label="item.label" :value="item.value" />
+           </el-select>
        </el-form-item>
         <el-form-item label="创建时间:" prop="creationTime">
           <el-date-picker v-model="formData.creationTime" type="date" placeholder="选择日期" :clearable="true"></el-date-picker>
@@ -11,17 +22,8 @@
         <el-form-item label="到期时间:" prop="expirationTime">
           <el-date-picker v-model="formData.expirationTime" type="date" placeholder="选择日期" :clearable="true"></el-date-picker>
        </el-form-item>
-        <el-form-item label="合同文件:" prop="contractFile">
-          <el-input v-model="formData.contractFile" :clearable="true"  placeholder="请输入合同文件" />
-       </el-form-item>
-        <el-form-item label="合同金额:" prop="contractAmount">
-          <el-input-number v-model="formData.contractAmount" :precision="2" :clearable="true"></el-input-number>
-       </el-form-item>
         <el-form-item label="负责人:" prop="userId">
           <el-input v-model.number="formData.userId" :clearable="true" placeholder="请输入" />
-       </el-form-item>
-        <el-form-item label="合同状态:" prop="contractStatus">
-          <el-input v-model="formData.contractStatus" :clearable="true"  placeholder="请输入合同状态" />
        </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="save">保存</el-button>
@@ -53,17 +55,28 @@ const route = useRoute()
 const router = useRouter()
 
 const type = ref('')
+const contract_statusOptions = ref([])
 const formData = ref({
+            contractAmount: 0,
+            contractFile: '',
             contractName: '',
+            contractStatus: '',
             creationTime: new Date(),
             expirationTime: new Date(),
-            contractFile: '',
-            contractAmount: 0,
             userId: 0,
-            contractStatus: '',
         })
 // 验证规则
 const rule = reactive({
+               contractAmount : [{
+                   required: true,
+                   message: '',
+                   trigger: ['input','blur'],
+               }],
+               contractName : [{
+                   required: true,
+                   message: '',
+                   trigger: ['input','blur'],
+               }],
 })
 
 const elFormRef = ref()
@@ -80,6 +93,7 @@ const init = async () => {
     } else {
       type.value = 'create'
     }
+    contract_statusOptions.value = await getDictFunc('contract_status')
 }
 
 init()

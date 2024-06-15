@@ -11,14 +11,14 @@ type CrmPurchaseOrderSearch struct{
         StartCreatedAt *time.Time `json:"startCreatedAt" form:"startCreatedAt"`
         EndCreatedAt   *time.Time `json:"endCreatedAt" form:"endCreatedAt"`
     
-                      ContractId  *int `json:"contractId" form:"contractId" `
-                      ProductId  *int `json:"productId" form:"productId" `
-                      Quantity  *int `json:"quantity" form:"quantity" `
                       Amount  *float64 `json:"amount" form:"amount" `
-                      UserId  *int `json:"userId" form:"userId" `
+                      ContractId  *int `json:"contractId" form:"contractId" `
                 StartCreationTime  *time.Time  `json:"startCreationTime" form:"startCreationTime"`
                 EndCreationTime  *time.Time  `json:"endCreationTime" form:"endCreationTime"`
                 StartExpirationTime  *time.Time  `json:"startExpirationTime" form:"startExpirationTime"`
                 EndExpirationTime  *time.Time  `json:"endExpirationTime" form:"endExpirationTime"`
+                      ProductId  *int `json:"productId" form:"productId" `
+                      Quantity  *int `json:"quantity" form:"quantity" `
+                      UserId  *int `json:"userId" form:"userId" `
     request.PageInfo
 }
