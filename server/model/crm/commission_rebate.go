@@ -18,4 +18,6 @@ type CrmPageCommissionRebate struct {
 	//以下是联表查询字段
 	//sys_user 表
 	Username string `json:"userName" gorm:"index;comment:用户登录名"` // 用户登录名
+	//crm_order 表
+	OrderName string `json:"orderName" form:"orderName" gorm:"column:order_name;comment:订单名称;size:10;" binding:"required"` //订单名称
 }

@@ -9,42 +9,42 @@ import (
 type CrmApprovalNodeService struct {
 }
 
-// CreateCrmApprovalNode 创建crmApprovalNode表记录
+// CreateCrmApprovalNode 创建审批节点记录
 // Author [piexlmax](https://github.com/piexlmax)
 func (crmApprovalNodeService *CrmApprovalNodeService) CreateCrmApprovalNode(crmApprovalNode *crm.CrmApprovalNode) (err error) {
 	err = global.GVA_DB.Create(crmApprovalNode).Error
 	return err
 }
 
-// DeleteCrmApprovalNode 删除crmApprovalNode表记录
+// DeleteCrmApprovalNode 删除审批节点记录
 // Author [piexlmax](https://github.com/piexlmax)
 func (crmApprovalNodeService *CrmApprovalNodeService)DeleteCrmApprovalNode(ID string) (err error) {
 	err = global.GVA_DB.Delete(&crm.CrmApprovalNode{},"id = ?",ID).Error
 	return err
 }
 
-// DeleteCrmApprovalNodeByIds 批量删除crmApprovalNode表记录
+// DeleteCrmApprovalNodeByIds 批量删除审批节点记录
 // Author [piexlmax](https://github.com/piexlmax)
 func (crmApprovalNodeService *CrmApprovalNodeService)DeleteCrmApprovalNodeByIds(IDs []string) (err error) {
 	err = global.GVA_DB.Delete(&[]crm.CrmApprovalNode{},"id in ?",IDs).Error
 	return err
 }
 
-// UpdateCrmApprovalNode 更新crmApprovalNode表记录
+// UpdateCrmApprovalNode 更新审批节点记录
 // Author [piexlmax](https://github.com/piexlmax)
 func (crmApprovalNodeService *CrmApprovalNodeService)UpdateCrmApprovalNode(crmApprovalNode crm.CrmApprovalNode) (err error) {
 	err = global.GVA_DB.Save(&crmApprovalNode).Error
 	return err
 }
 
-// GetCrmApprovalNode 根据ID获取crmApprovalNode表记录
+// GetCrmApprovalNode 根据ID获取审批节点记录
 // Author [piexlmax](https://github.com/piexlmax)
 func (crmApprovalNodeService *CrmApprovalNodeService)GetCrmApprovalNode(ID string) (crmApprovalNode crm.CrmApprovalNode, err error) {
 	err = global.GVA_DB.Where("id = ?", ID).First(&crmApprovalNode).Error
 	return
 }
 
-// GetCrmApprovalNodeInfoList 分页获取crmApprovalNode表记录
+// GetCrmApprovalNodeInfoList 分页获取审批节点记录
 // Author [piexlmax](https://github.com/piexlmax)
 func (crmApprovalNodeService *CrmApprovalNodeService)GetCrmApprovalNodeInfoList(info crmReq.CrmApprovalNodeSearch) (list []crm.CrmApprovalNode, total int64, err error) {
 	limit := info.PageSize
@@ -55,6 +55,9 @@ func (crmApprovalNodeService *CrmApprovalNodeService)GetCrmApprovalNodeInfoList(
     // 如果有条件搜索 下方会自动创建搜索语句
     if info.StartCreatedAt !=nil && info.EndCreatedAt !=nil {
      db = db.Where("created_at BETWEEN ? AND ?", info.StartCreatedAt, info.EndCreatedAt)
+    }
+    if info.ProcessId != nil {
+        db = db.Where("processId = ?",info.ProcessId)
     }
 	err = db.Count(&total).Error
 	if err!=nil {

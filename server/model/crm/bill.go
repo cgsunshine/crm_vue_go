@@ -25,4 +25,6 @@ type CrmPageBill struct {
 	Username string `json:"userName" gorm:"index;comment:用户登录名"` // 用户登录名
 	//crm_customers 表
 	CustomerName string `json:"customerName" form:"customerName" gorm:"column:customer_name;comment:客户名;size:191;"` //客户名
+	//crm_order 表
+	OrderName string `json:"orderName" form:"orderName" gorm:"column:order_name;comment:订单名称;size:10;" binding:"required"` //订单名称
 }

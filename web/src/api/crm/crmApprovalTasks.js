@@ -1,11 +1,11 @@
 import service from '@/utils/request'
 
 // @Tags CrmApprovalTasks
-// @Summary 创建crmApprovalTasks表
+// @Summary 创建审批任务
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body model.CrmApprovalTasks true "创建crmApprovalTasks表"
+// @Param data body model.CrmApprovalTasks true "创建审批任务"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"创建成功"}"
 // @Router /crmApprovalTasks/createCrmApprovalTasks [post]
 export const createCrmApprovalTasks = (data) => {
@@ -17,11 +17,11 @@ export const createCrmApprovalTasks = (data) => {
 }
 
 // @Tags CrmApprovalTasks
-// @Summary 删除crmApprovalTasks表
+// @Summary 删除审批任务
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body model.CrmApprovalTasks true "删除crmApprovalTasks表"
+// @Param data body model.CrmApprovalTasks true "删除审批任务"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"删除成功"}"
 // @Router /crmApprovalTasks/deleteCrmApprovalTasks [delete]
 export const deleteCrmApprovalTasks = (params) => {
@@ -33,11 +33,11 @@ export const deleteCrmApprovalTasks = (params) => {
 }
 
 // @Tags CrmApprovalTasks
-// @Summary 批量删除crmApprovalTasks表
+// @Summary 批量删除审批任务
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body request.IdsReq true "批量删除crmApprovalTasks表"
+// @Param data body request.IdsReq true "批量删除审批任务"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"删除成功"}"
 // @Router /crmApprovalTasks/deleteCrmApprovalTasks [delete]
 export const deleteCrmApprovalTasksByIds = (params) => {
@@ -49,11 +49,11 @@ export const deleteCrmApprovalTasksByIds = (params) => {
 }
 
 // @Tags CrmApprovalTasks
-// @Summary 更新crmApprovalTasks表
+// @Summary 更新审批任务
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body model.CrmApprovalTasks true "更新crmApprovalTasks表"
+// @Param data body model.CrmApprovalTasks true "更新审批任务"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"更新成功"}"
 // @Router /crmApprovalTasks/updateCrmApprovalTasks [put]
 export const updateCrmApprovalTasks = (data) => {
@@ -65,11 +65,11 @@ export const updateCrmApprovalTasks = (data) => {
 }
 
 // @Tags CrmApprovalTasks
-// @Summary 用id查询crmApprovalTasks表
+// @Summary 用id查询审批任务
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data query model.CrmApprovalTasks true "用id查询crmApprovalTasks表"
+// @Param data query model.CrmApprovalTasks true "用id查询审批任务"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"查询成功"}"
 // @Router /crmApprovalTasks/findCrmApprovalTasks [get]
 export const findCrmApprovalTasks = (params) => {
@@ -81,11 +81,11 @@ export const findCrmApprovalTasks = (params) => {
 }
 
 // @Tags CrmApprovalTasks
-// @Summary 分页获取crmApprovalTasks表列表
+// @Summary 分页获取审批任务列表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data query request.PageInfo true "分页获取crmApprovalTasks表列表"
+// @Param data query request.PageInfo true "分页获取审批任务列表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"获取成功"}"
 // @Router /crmApprovalTasks/getCrmApprovalTasksList [get]
 export const getCrmApprovalTasksList = (params) => {

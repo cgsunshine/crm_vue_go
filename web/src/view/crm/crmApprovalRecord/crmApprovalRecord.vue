@@ -16,6 +16,26 @@
       <el-date-picker v-model="searchInfo.endCreatedAt" type="datetime" placeholder="结束日期" :disabled-date="time=> searchInfo.startCreatedAt ? time.getTime() < searchInfo.startCreatedAt.getTime() : false"></el-date-picker>
       </el-form-item>
       
+        <el-form-item label="审批类型 1合同 2商机 3回款" prop="approvalType">
+            
+             <el-input v-model.number="searchInfo.approvalType" placeholder="搜索条件" />
+
+        </el-form-item>
+        <el-form-item label="当前审批人ID" prop="approverId">
+            
+             <el-input v-model.number="searchInfo.approverId" placeholder="搜索条件" />
+
+        </el-form-item>
+        <el-form-item label="关联id 合同 商机 回款" prop="associatedId">
+            
+             <el-input v-model.number="searchInfo.associatedId" placeholder="搜索条件" />
+
+        </el-form-item>
+           <el-form-item label="审批状态" prop="status">
+            <el-select v-model="searchInfo.status" clearable placeholder="请选择" @clear="()=>{searchInfo.status=undefined}">
+              <el-option v-for="(item,key) in approval_statusOptions" :key="key" :label="item.label" :value="item.value" />
+            </el-select>
+            </el-form-item>
         <el-form-item>
           <el-button type="primary" icon="search" @click="onSubmit">查询</el-button>
           <el-button icon="refresh" @click="onReset">重置</el-button>
@@ -41,36 +61,15 @@
             <template #default="scope">{{ formatDate(scope.row.CreatedAt) }}</template>
         </el-table-column>
         
-        <el-table-column align="left" label="审批流程代码" prop="code" width="120" />
-        <el-table-column align="left" label="审批事项ID或模块ID" prop="moduleId" width="120" />
-        <el-table-column align="left" label="审批相关信息或备注" prop="message" width="120" />
-        <el-table-column align="left" label="发起人ID" prop="applicantId" width="120" />
-         <el-table-column align="left" label="申请时间" width="180">
-            <template #default="scope">{{ formatDate(scope.row.applyTime) }}</template>
-         </el-table-column>
-        <el-table-column align="left" label="审批状态" prop="status" width="120" />
-        <el-table-column align="left" label="当前审批节点ID" prop="currentNodeId" width="120" />
-        <el-table-column align="left" label="当前审批人ID" prop="approverId" width="120" />
-         <el-table-column align="left" label="审批时间" width="180">
-            <template #default="scope">{{ formatDate(scope.row.approveTime) }}</template>
-         </el-table-column>
+        <el-table-column align="left" label="审批类型 1合同 2商机 3回款" prop="approvalType" width="120" />
         <el-table-column align="left" label="审批意见" prop="approveOpinion" width="120" />
-        <el-table-column align="left" label="最终审批结果" prop="finalResult" width="120" />
-         <el-table-column align="left" label="流程关闭时间" width="180">
-            <template #default="scope">{{ formatDate(scope.row.closeTime) }}</template>
-         </el-table-column>
-        <el-table-column align="left" label="记录创建者" prop="creator" width="120" />
-         <el-table-column align="left" label="创建时间" width="180">
-            <template #default="scope">{{ formatDate(scope.row.createTime) }}</template>
-         </el-table-column>
-        <el-table-column align="left" label="记录最后更新者" prop="updator" width="120" />
-         <el-table-column align="left" label="更新时间" width="180">
-            <template #default="scope">{{ formatDate(scope.row.updateTime) }}</template>
-         </el-table-column>
-         <el-table-column align="left" label="逻辑删除标志" width="180">
-            <template #default="scope">{{ formatDate(scope.row.isDeleted) }}</template>
-         </el-table-column>
-        <el-table-column align="left" label="审批状态" prop="流程状态" width="120" />
+        <el-table-column align="left" label="当前审批人ID" prop="approverId" width="120" />
+        <el-table-column align="left" label="关联id 合同 商机 回款" prop="associatedId" width="120" />
+        <el-table-column align="left" label="审批状态" prop="status" width="120">
+            <template #default="scope">
+            {{ filterDict(scope.row.status,approval_statusOptions) }}
+            </template>
+        </el-table-column>
         <el-table-column align="left" label="操作" fixed="right" min-width="240">
             <template #default="scope">
             <el-button type="primary" link class="table-button" @click="getDetails(scope.row)">
@@ -106,58 +105,22 @@
             </template>
 
           <el-form :model="formData" label-position="top" ref="elFormRef" :rules="rule" label-width="80px">
-            <el-form-item label="审批流程代码:"  prop="code" >
-              <el-input v-model="formData.code" :clearable="true"  placeholder="请输入审批流程代码" />
-            </el-form-item>
-            <el-form-item label="审批事项ID或模块ID:"  prop="moduleId" >
-              <el-input v-model="formData.moduleId" :clearable="true"  placeholder="请输入审批事项ID或模块ID" />
-            </el-form-item>
-            <el-form-item label="审批相关信息或备注:"  prop="message" >
-              <el-input v-model="formData.message" :clearable="true"  placeholder="请输入审批相关信息或备注" />
-            </el-form-item>
-            <el-form-item label="发起人ID:"  prop="applicantId" >
-              <el-input v-model="formData.applicantId" :clearable="true"  placeholder="请输入发起人ID" />
-            </el-form-item>
-            <el-form-item label="申请时间:"  prop="applyTime" >
-              <el-date-picker v-model="formData.applyTime" type="date" style="width:100%" placeholder="选择日期" :clearable="true"  />
-            </el-form-item>
-            <el-form-item label="审批状态:"  prop="status" >
-            </el-form-item>
-            <el-form-item label="当前审批节点ID:"  prop="currentNodeId" >
-              <el-input v-model="formData.currentNodeId" :clearable="true"  placeholder="请输入当前审批节点ID" />
-            </el-form-item>
-            <el-form-item label="当前审批人ID:"  prop="approverId" >
-              <el-input v-model="formData.approverId" :clearable="true"  placeholder="请输入当前审批人ID" />
-            </el-form-item>
-            <el-form-item label="审批时间:"  prop="approveTime" >
-              <el-date-picker v-model="formData.approveTime" type="date" style="width:100%" placeholder="选择日期" :clearable="true"  />
+            <el-form-item label="审批类型 1合同 2商机 3回款:"  prop="approvalType" >
+              <el-input v-model.number="formData.approvalType" :clearable="true" placeholder="请输入审批类型 1合同 2商机 3回款" />
             </el-form-item>
             <el-form-item label="审批意见:"  prop="approveOpinion" >
               <el-input v-model="formData.approveOpinion" :clearable="true"  placeholder="请输入审批意见" />
             </el-form-item>
-            <el-form-item label="最终审批结果:"  prop="finalResult" >
-              <el-input v-model="formData.finalResult" :clearable="true"  placeholder="请输入最终审批结果" />
+            <el-form-item label="当前审批人ID:"  prop="approverId" >
+              <el-input v-model.number="formData.approverId" :clearable="true" placeholder="请输入当前审批人ID" />
             </el-form-item>
-            <el-form-item label="流程关闭时间:"  prop="closeTime" >
-              <el-date-picker v-model="formData.closeTime" type="date" style="width:100%" placeholder="选择日期" :clearable="true"  />
+            <el-form-item label="关联id 合同 商机 回款:"  prop="associatedId" >
+              <el-input v-model.number="formData.associatedId" :clearable="true" placeholder="请输入关联id 合同 商机 回款" />
             </el-form-item>
-            <el-form-item label="记录创建者:"  prop="creator" >
-              <el-input v-model="formData.creator" :clearable="true"  placeholder="请输入记录创建者" />
-            </el-form-item>
-            <el-form-item label="创建时间:"  prop="createTime" >
-              <el-date-picker v-model="formData.createTime" type="date" style="width:100%" placeholder="选择日期" :clearable="true"  />
-            </el-form-item>
-            <el-form-item label="记录最后更新者:"  prop="updator" >
-              <el-input v-model="formData.updator" :clearable="true"  placeholder="请输入记录最后更新者" />
-            </el-form-item>
-            <el-form-item label="更新时间:"  prop="updateTime" >
-              <el-date-picker v-model="formData.updateTime" type="date" style="width:100%" placeholder="选择日期" :clearable="true"  />
-            </el-form-item>
-            <el-form-item label="逻辑删除标志:"  prop="isDeleted" >
-              <el-date-picker v-model="formData.isDeleted" type="date" style="width:100%" placeholder="选择日期" :clearable="true"  />
-            </el-form-item>
-            <el-form-item label="审批状态:"  prop="流程状态" >
-              <el-input v-model="formData.流程状态" :clearable="true"  placeholder="请输入审批状态" />
+            <el-form-item label="审批状态:"  prop="status" >
+              <el-select v-model="formData.status" placeholder="请选择审批状态" style="width:100%" :clearable="true" >
+                <el-option v-for="(item,key) in approval_statusOptions" :key="key" :label="item.label" :value="item.value" />
+              </el-select>
             </el-form-item>
           </el-form>
     </el-drawer>
@@ -169,59 +132,20 @@
              </div>
          </template>
         <el-descriptions :column="1" border>
-                <el-descriptions-item label="审批流程代码">
-                        {{ formData.code }}
-                </el-descriptions-item>
-                <el-descriptions-item label="审批事项ID或模块ID">
-                        {{ formData.moduleId }}
-                </el-descriptions-item>
-                <el-descriptions-item label="审批相关信息或备注">
-                        {{ formData.message }}
-                </el-descriptions-item>
-                <el-descriptions-item label="发起人ID">
-                        {{ formData.applicantId }}
-                </el-descriptions-item>
-                <el-descriptions-item label="申请时间">
-                      {{ formatDate(formData.applyTime) }}
-                </el-descriptions-item>
-                <el-descriptions-item label="审批状态">
-                        {{ formData.status }}
-                </el-descriptions-item>
-                <el-descriptions-item label="当前审批节点ID">
-                        {{ formData.currentNodeId }}
-                </el-descriptions-item>
-                <el-descriptions-item label="当前审批人ID">
-                        {{ formData.approverId }}
-                </el-descriptions-item>
-                <el-descriptions-item label="审批时间">
-                      {{ formatDate(formData.approveTime) }}
+                <el-descriptions-item label="审批类型 1合同 2商机 3回款">
+                        {{ formData.approvalType }}
                 </el-descriptions-item>
                 <el-descriptions-item label="审批意见">
                         {{ formData.approveOpinion }}
                 </el-descriptions-item>
-                <el-descriptions-item label="最终审批结果">
-                        {{ formData.finalResult }}
+                <el-descriptions-item label="当前审批人ID">
+                        {{ formData.approverId }}
                 </el-descriptions-item>
-                <el-descriptions-item label="流程关闭时间">
-                      {{ formatDate(formData.closeTime) }}
-                </el-descriptions-item>
-                <el-descriptions-item label="记录创建者">
-                        {{ formData.creator }}
-                </el-descriptions-item>
-                <el-descriptions-item label="创建时间">
-                      {{ formatDate(formData.createTime) }}
-                </el-descriptions-item>
-                <el-descriptions-item label="记录最后更新者">
-                        {{ formData.updator }}
-                </el-descriptions-item>
-                <el-descriptions-item label="更新时间">
-                      {{ formatDate(formData.updateTime) }}
-                </el-descriptions-item>
-                <el-descriptions-item label="逻辑删除标志">
-                      {{ formatDate(formData.isDeleted) }}
+                <el-descriptions-item label="关联id 合同 商机 回款">
+                        {{ formData.associatedId }}
                 </el-descriptions-item>
                 <el-descriptions-item label="审批状态">
-                        {{ formData.流程状态 }}
+                        {{ filterDict(formData.status,approval_statusOptions) }}
                 </el-descriptions-item>
         </el-descriptions>
     </el-drawer>
@@ -248,24 +172,13 @@ defineOptions({
 })
 
 // 自动化生成的字典（可能为空）以及字段
+const approval_statusOptions = ref([])
 const formData = ref({
-        code: '',
-        moduleId: '',
-        message: '',
-        applicantId: '',
-        applyTime: new Date(),
-        currentNodeId: '',
-        approverId: '',
-        approveTime: new Date(),
+        approvalType: 0,
         approveOpinion: '',
-        finalResult: '',
-        closeTime: new Date(),
-        creator: '',
-        createTime: new Date(),
-        updator: '',
-        updateTime: new Date(),
-        isDeleted: new Date(),
-        流程状态: '',
+        approverId: 0,
+        associatedId: 0,
+        status: '',
         })
 
 
@@ -344,6 +257,7 @@ getTableData()
 
 // 获取需要的字典 可能为空 按需保留
 const setOptions = async () =>{
+    approval_statusOptions.value = await getDictFunc('approval_status')
 }
 
 // 获取需要的字典 可能为空 按需保留
@@ -459,23 +373,11 @@ const getDetails = async (row) => {
 const closeDetailShow = () => {
   detailShow.value = false
   formData.value = {
-          code: '',
-          moduleId: '',
-          message: '',
-          applicantId: '',
-          applyTime: new Date(),
-          currentNodeId: '',
-          approverId: '',
-          approveTime: new Date(),
+          approvalType: 0,
           approveOpinion: '',
-          finalResult: '',
-          closeTime: new Date(),
-          creator: '',
-          createTime: new Date(),
-          updator: '',
-          updateTime: new Date(),
-          isDeleted: new Date(),
-          流程状态: '',
+          approverId: 0,
+          associatedId: 0,
+          status: '',
           }
 }
 
@@ -490,23 +392,11 @@ const openDialog = () => {
 const closeDialog = () => {
     dialogFormVisible.value = false
     formData.value = {
-        code: '',
-        moduleId: '',
-        message: '',
-        applicantId: '',
-        applyTime: new Date(),
-        currentNodeId: '',
-        approverId: '',
-        approveTime: new Date(),
+        approvalType: 0,
         approveOpinion: '',
-        finalResult: '',
-        closeTime: new Date(),
-        creator: '',
-        createTime: new Date(),
-        updator: '',
-        updateTime: new Date(),
-        isDeleted: new Date(),
-        流程状态: '',
+        approverId: 0,
+        associatedId: 0,
+        status: '',
         }
 }
 // 弹窗确定

@@ -29,6 +29,9 @@ func (crmContactApprovalTasksApi *CrmContactApprovalTasksApi) CreateCrmMultipleC
 		return
 	}
 
+	//userID, _ := strconv.Atoi(c.GetHeader("X-User-Id"))
+	//crmContactApprovalTasks.AssigneeId = userID
+
 	contact, err := crmContractService.GetCrmContract(strconv.Itoa(*crmContactApprovalTasks.ContactId))
 	if err != nil {
 		response.FailWithMessage(err.Error(), c)
@@ -43,9 +46,9 @@ func (crmContactApprovalTasksApi *CrmContactApprovalTasksApi) CreateCrmMultipleC
 	for _, assigneeId := range crmContactApprovalTasks.AssigneeId {
 		if err := crmContactApprovalTasksService.CreateCrmContactApprovalTasks(&crm.CrmContactApprovalTasks{
 			AssigneeId:     assigneeId,
-			ApprovalStatus: "1",
+			ApprovalStatus: comm.Approval_Status_Under,
 			ContactId:      crmContactApprovalTasks.ContactId,
-			Valid:          utils.Pointer(1),
+			Valid:          utils.Pointer(comm.Contact_Approval_Tasks_valid_Effective),
 		}); err != nil {
 			global.GVA_LOG.Error("创建失败!", zap.Error(err))
 			response.FailWithMessage("创建失败", c)
@@ -134,6 +137,11 @@ func (crmContactApprovalTasksApi *CrmContactApprovalTasksApi) UpdateCrmMultipleC
 		return
 	}
 
+	if *cats.Valid == comm.Contact_Approval_Tasks_Valid_Invalid {
+		response.FailWithMessage("审核流程结束，无需操作", c)
+		return
+	}
+
 	if err := crmContactApprovalTasksService.UpdCrmContactApprovalTasks(crmContactApprovalTasks.ID, map[string]interface{}{
 		"approval_status": crmContactApprovalTasks.ApprovalStatus,
 		"comments":        crmContactApprovalTasks.Comments,
@@ -145,12 +153,26 @@ func (crmContactApprovalTasksApi *CrmContactApprovalTasksApi) UpdateCrmMultipleC
 		//审批更新成功以后，根据审批状态，更新合同审批状态
 		if comm.Approval_Status_Pass == crmContactApprovalTasks.ApprovalStatus {
 			//审批通过检查所有人是否都同意
-			ok, err := crmContactApprovalTasksService.GetCrmQueryApproved(*crmContactApprovalTasks.ContactId, comm.Approval_Status_Pass)
+			//ok, err := crmContactApprovalTasksService.GetCrmQueryApproved(*crmContactApprovalTasks.ContactId, comm.Approval_Status_Pass)
+			//if err != nil {
+			//	global.GVA_LOG.Error("更新失败!", zap.Error(err))
+			//	response.FailWithMessage("更新失败", c)
+			//	return
+			//}
+
+			//查询审批需要的人数
+			node, err := crmApprovalNodeService.GetCrmApprovalNodeId(*cats.StepId)
+			if err != nil {
+				global.GVA_LOG.Error("更新失败!", zap.Error(err))
+				response.FailWithMessage("更新失败", c)
+			}
+			ok, err := crmContactApprovalTasksService.GetCrmQueryStepApproved(*crmContactApprovalTasks.ContactId, *node.NumberApprovedPersonnel, comm.Approval_Status_Pass)
 			if err != nil {
 				global.GVA_LOG.Error("更新失败!", zap.Error(err))
 				response.FailWithMessage("更新失败", c)
 				return
 			}
+
 			if ok {
 				//所有人都同意，修改合同状态
 				err = crmContractService.UpdApprovalStatus(crmContactApprovalTasks.ContactId, map[string]interface{}{

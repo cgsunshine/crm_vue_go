@@ -22,7 +22,8 @@ func (s *CrmPageContractRouter) InitCrmPageContractRouter(Router *gin.RouterGrou
 	}
 
 	{
-		crmContractRouterWithoutRecord.GET("findCrmPageContract", crmContractApi.FindCrmPageContract) // 根据ID获取crmContract表
+		crmContractRouterWithoutRecord.GET("findCrmPageContract", crmContractApi.FindCrmPageContract)         // 根据ID获取crmContract表
+		crmContractRouterWithoutRecord.GET("findCrmPageFileContract", crmContractApi.FindCrmPageFileContract) // 根据ID获取crmContract表
 	}
 
 	{

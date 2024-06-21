@@ -93,10 +93,6 @@ func Routers() *gin.Engine {
 		crmRouter.InitCrmProductTypeRouter(PrivateGroup, PublicGroup)
 
 		crmRouter.InitCrmUserRouter(PrivateGroup, PublicGroup)
-		crmRouter.InitCrmApprovalNodeRouter(PrivateGroup, PublicGroup)
-		crmRouter.InitCrmApprovalProcessRouter(PrivateGroup, PublicGroup)
-		crmRouter.InitCrmApprovalRecordRouter(PrivateGroup, PublicGroup)
-		crmRouter.InitCrmApprovalTasksRouter(PrivateGroup, PublicGroup)
 
 		crmRouter.InitCrmCustomerGroupRouter(PrivateGroup, PublicGroup)
 		crmRouter.InitCrmCustomersRouter(PrivateGroup, PublicGroup)
@@ -154,6 +150,19 @@ func Routers() *gin.Engine {
 		crmRouter.InitCustomerCrmAuthoritiesRouter(PrivateGroup, PublicGroup)
 		crmRouter.InitCrmPaymentCollentionRouter(PrivateGroup, PublicGroup)
 		crmRouter.InitCrmProcurementContractRouter(PrivateGroup, PublicGroup)
+
+		crmRouter.InitCrmApprovalProcessRouter(PrivateGroup, PublicGroup)
+
+		crmRouter.InitCrmConfigRouter(PrivateGroup, PublicGroup)
+		crmRouter.InitCrmPageApprovalNodeRouter(PrivateGroup, PublicGroup)
+		crmRouter.InitCrmApprovalNodeRouter(PrivateGroup, PublicGroup)
+		crmRouter.InitCrmBusinessOpportunityApprovalRecordRouter(PrivateGroup, PublicGroup)
+		crmRouter.InitCrmBusinessOpportunityApprovalTasksRouter(PrivateGroup, PublicGroup)
+		crmRouter.InitCrmPaymentCollentionApprovalRecordRouter(PrivateGroup, PublicGroup)
+		crmRouter.InitCrmPaymentCollentionApprovalTasksRouter(PrivateGroup, PublicGroup)
+		crmRouter.InitCrmApprovalRecordRouter(PrivateGroup, PublicGroup)
+		crmRouter.InitCrmApprovalTasksRouter(PrivateGroup, PublicGroup)
+		crmRouter.InitCrmPageApprovalTasksRouter(PrivateGroup, PublicGroup)
 
 	}
 

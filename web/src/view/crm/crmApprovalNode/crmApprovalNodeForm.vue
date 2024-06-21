@@ -2,23 +2,29 @@
   <div>
     <div class="gva-form-box">
       <el-form :model="formData" ref="elFormRef" label-position="right" :rules="rule" label-width="80px">
-        <el-form-item label="所属审批流程ID:" prop="processId">
-          <el-input v-model="formData.processId" :clearable="true"  placeholder="请输入所属审批流程ID" />
+        <el-form-item label="预留条件:" prop="conditionExpression">
+          <el-input v-model="formData.conditionExpression" :clearable="true"  placeholder="请输入预留条件" />
        </el-form-item>
         <el-form-item label="流程名称:" prop="nodeName">
           <el-input v-model="formData.nodeName" :clearable="true"  placeholder="请输入流程名称" />
        </el-form-item>
-        <el-form-item label="节点顺序，用于确定审批步骤:" prop="nodeOrder">
+        <el-form-item label="节点顺序:" prop="nodeOrder">
           <el-input v-model.number="formData.nodeOrder" :clearable="true" placeholder="请输入" />
        </el-form-item>
-        <el-form-item label="角色ID 多个逗号分隔:" prop="roleIds">
-          <el-input v-model="formData.roleIds" :clearable="true"  placeholder="请输入角色ID 多个逗号分隔" />
+        <el-form-item label="审批通过的人数，需要几人同意才能通过审批:" prop="numberApprovedPersonnel">
+          <el-input v-model.number="formData.numberApprovedPersonnel" :clearable="true" placeholder="请输入" />
        </el-form-item>
-        <el-form-item label="特定审批人ID 可以多个逗号分隔:" prop="userId">
-          <el-input v-model="formData.userId" :clearable="true"  placeholder="请输入特定审批人ID 可以多个逗号分隔" />
+        <el-form-item label="所属审批流程ID:" prop="processId">
+          <el-input v-model.number="formData.processId" :clearable="true" placeholder="请输入" />
        </el-form-item>
-        <el-form-item label="条件表达式，用于动态路由到不同节点，可为空:" prop="conditionExpression">
-          <el-input v-model="formData.conditionExpression" :clearable="true"  placeholder="请输入条件表达式，用于动态路由到不同节点，可为空" />
+        <el-form-item label="角色ID:" prop="roleIds">
+          <el-input v-model="formData.roleIds" :clearable="true"  placeholder="请输入角色ID" />
+       </el-form-item>
+        <el-form-item label="添加记录的用户:" prop="userId">
+          <el-input v-model.number="formData.userId" :clearable="true" placeholder="请输入" />
+       </el-form-item>
+        <el-form-item label="特定审批人ID:" prop="userIds">
+          <el-input v-model="formData.userIds" :clearable="true"  placeholder="请输入特定审批人ID" />
        </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="save">保存</el-button>
@@ -51,12 +57,14 @@ const router = useRouter()
 
 const type = ref('')
 const formData = ref({
-            processId: '',
+            conditionExpression: '',
             nodeName: '',
             nodeOrder: 0,
+            numberApprovedPersonnel: 0,
+            processId: 0,
             roleIds: '',
-            userId: '',
-            conditionExpression: '',
+            userId: 0,
+            userIds: '',
         })
 // 验证规则
 const rule = reactive({

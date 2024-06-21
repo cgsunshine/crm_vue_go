@@ -2,19 +2,31 @@
   <div>
     <div class="gva-form-box">
       <el-form :model="formData" ref="elFormRef" label-position="right" :rules="rule" label-width="80px">
+        <el-form-item label="审批状态:" prop="approvalStatus">
+           <el-select v-model="formData.approvalStatus" placeholder="请选择审批状态" style="width:100%" :clearable="true" >
+              <el-option v-for="(item,key) in approval_statusOptions" :key="key" :label="item.label" :value="item.value" />
+           </el-select>
+       </el-form-item>
+        <el-form-item label="审批类型 1合同 2商机 3回款:" prop="approvalType">
+          <el-input v-model.number="formData.approvalType" :clearable="true" placeholder="请输入" />
+       </el-form-item>
+        <el-form-item label="指派审批人id:" prop="assigneeId">
+          <el-input v-model.number="formData.assigneeId" :clearable="true" placeholder="请输入" />
+       </el-form-item>
+        <el-form-item label="关联id 合同 商机 回款:" prop="associatedId">
+          <el-input v-model.number="formData.associatedId" :clearable="true" placeholder="请输入" />
+       </el-form-item>
+        <el-form-item label="审批意见:" prop="comments">
+          <el-input v-model="formData.comments" :clearable="true"  placeholder="请输入审批意见" />
+       </el-form-item>
         <el-form-item label="关联的审批请求ID:" prop="requestId">
           <el-input v-model.number="formData.requestId" :clearable="true" placeholder="请输入" />
        </el-form-item>
         <el-form-item label="当前审批步骤ID:" prop="stepId">
           <el-input v-model.number="formData.stepId" :clearable="true" placeholder="请输入" />
        </el-form-item>
-        <el-form-item label="指派审批人:" prop="assignee">
-          <el-input v-model="formData.assignee" :clearable="true"  placeholder="请输入指派审批人" />
-       </el-form-item>
-        <el-form-item label="任务状态:" prop="status">
-       </el-form-item>
-        <el-form-item label="审批意见:" prop="comments">
-          <el-input v-model="formData.comments" :clearable="true"  placeholder="请输入审批意见" />
+        <el-form-item label="审批是否有效 1 有效 2 失效（多人审批中，有人拒绝）:" prop="valid">
+          <el-input v-model.number="formData.valid" :clearable="true" placeholder="请输入" />
        </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="save">保存</el-button>
@@ -46,11 +58,16 @@ const route = useRoute()
 const router = useRouter()
 
 const type = ref('')
+const approval_statusOptions = ref([])
 const formData = ref({
+            approvalStatus: '',
+            approvalType: 0,
+            assigneeId: 0,
+            associatedId: 0,
+            comments: '',
             requestId: 0,
             stepId: 0,
-            assignee: '',
-            comments: '',
+            valid: 0,
         })
 // 验证规则
 const rule = reactive({
@@ -70,6 +87,7 @@ const init = async () => {
     } else {
       type.value = 'create'
     }
+    approval_statusOptions.value = await getDictFunc('approval_status')
 }
 
 init()

@@ -11,5 +11,6 @@ type CrmApprovalNodeSearch struct{
         StartCreatedAt *time.Time `json:"startCreatedAt" form:"startCreatedAt"`
         EndCreatedAt   *time.Time `json:"endCreatedAt" form:"endCreatedAt"`
     
+                      ProcessId  *int `json:"processId" form:"processId" `
     request.PageInfo
 }

@@ -285,3 +285,16 @@ func (userService *UserService) ChangePositionStatus(ID uint, status string) (er
 	err = global.GVA_DB.Model(&system.SysUser{}).Where("id = ?", ID).Update("position_status", status).Error
 	return err
 }
+
+//@author: [piexlmax](https://github.com/piexlmax)
+//@function: changePositionStatus
+//@description: 改变职位状态
+//@param: ID uint,status string
+//@return: err error
+
+func (userService *UserService) GetRoleUsers(authority_id string) ([]system.SysUserAuthority, error) {
+
+	var sysUserAuthority []system.SysUserAuthority
+	err := global.GVA_DB.Model(&system.SysUserAuthority{}).Where("sys_authority_authority_id = ?", authority_id).Find(&sysUserAuthority).Error
+	return sysUserAuthority, err
+}

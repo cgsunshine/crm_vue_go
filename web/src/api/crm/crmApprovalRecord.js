@@ -1,11 +1,11 @@
 import service from '@/utils/request'
 
 // @Tags CrmApprovalRecord
-// @Summary 创建crmApprovalRecord表
+// @Summary 创建审批记录
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body model.CrmApprovalRecord true "创建crmApprovalRecord表"
+// @Param data body model.CrmApprovalRecord true "创建审批记录"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"创建成功"}"
 // @Router /crmApprovalRecord/createCrmApprovalRecord [post]
 export const createCrmApprovalRecord = (data) => {
@@ -17,11 +17,11 @@ export const createCrmApprovalRecord = (data) => {
 }
 
 // @Tags CrmApprovalRecord
-// @Summary 删除crmApprovalRecord表
+// @Summary 删除审批记录
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body model.CrmApprovalRecord true "删除crmApprovalRecord表"
+// @Param data body model.CrmApprovalRecord true "删除审批记录"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"删除成功"}"
 // @Router /crmApprovalRecord/deleteCrmApprovalRecord [delete]
 export const deleteCrmApprovalRecord = (params) => {
@@ -33,11 +33,11 @@ export const deleteCrmApprovalRecord = (params) => {
 }
 
 // @Tags CrmApprovalRecord
-// @Summary 批量删除crmApprovalRecord表
+// @Summary 批量删除审批记录
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body request.IdsReq true "批量删除crmApprovalRecord表"
+// @Param data body request.IdsReq true "批量删除审批记录"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"删除成功"}"
 // @Router /crmApprovalRecord/deleteCrmApprovalRecord [delete]
 export const deleteCrmApprovalRecordByIds = (params) => {
@@ -49,11 +49,11 @@ export const deleteCrmApprovalRecordByIds = (params) => {
 }
 
 // @Tags CrmApprovalRecord
-// @Summary 更新crmApprovalRecord表
+// @Summary 更新审批记录
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body model.CrmApprovalRecord true "更新crmApprovalRecord表"
+// @Param data body model.CrmApprovalRecord true "更新审批记录"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"更新成功"}"
 // @Router /crmApprovalRecord/updateCrmApprovalRecord [put]
 export const updateCrmApprovalRecord = (data) => {
@@ -65,11 +65,11 @@ export const updateCrmApprovalRecord = (data) => {
 }
 
 // @Tags CrmApprovalRecord
-// @Summary 用id查询crmApprovalRecord表
+// @Summary 用id查询审批记录
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data query model.CrmApprovalRecord true "用id查询crmApprovalRecord表"
+// @Param data query model.CrmApprovalRecord true "用id查询审批记录"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"查询成功"}"
 // @Router /crmApprovalRecord/findCrmApprovalRecord [get]
 export const findCrmApprovalRecord = (params) => {
@@ -81,11 +81,11 @@ export const findCrmApprovalRecord = (params) => {
 }
 
 // @Tags CrmApprovalRecord
-// @Summary 分页获取crmApprovalRecord表列表
+// @Summary 分页获取审批记录列表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data query request.PageInfo true "分页获取crmApprovalRecord表列表"
+// @Param data query request.PageInfo true "分页获取审批记录列表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"获取成功"}"
 // @Router /crmApprovalRecord/getCrmApprovalRecordList [get]
 export const getCrmApprovalRecordList = (params) => {

@@ -1,6 +1,7 @@
 package crm
 
 import (
+	"github.com/flipped-aurora/gin-vue-admin/server/api/v1/comm"
 	"github.com/flipped-aurora/gin-vue-admin/server/global"
 	"github.com/flipped-aurora/gin-vue-admin/server/model/common/response"
 	"github.com/flipped-aurora/gin-vue-admin/server/model/crm"
@@ -31,6 +32,8 @@ func (crmProcurementContractApi *CrmProcurementContractApi) CreateCrmProcurement
 		response.FailWithMessage(err.Error(), c)
 		return
 	}
+
+	crmProcurementContract.UserId = comm.GetHeaderUserId(c)
 
 	if err := crmProcurementContractService.CreateCrmProcurementContract(&crmProcurementContract); err != nil {
 		global.GVA_LOG.Error("创建失败!", zap.Error(err))

@@ -18,6 +18,7 @@ type CrmBusinessOpportunity struct {
 	ProductId               *int       `json:"productId" form:"productId" gorm:"column:product_id;comment:产品id;size:19;"`                                                                //产品id
 	Status                  string     `json:"status" form:"status" gorm:"column:status;comment:商机状态;size:191;"`                                                                         //商机状态
 	UserId                  *int       `json:"userId" form:"userId" gorm:"column:user_id;comment:员工id;size:19;"`                                                                         //员工id
+	ReviewStatus            string     `json:"reviewStatus" form:"reviewStatus" gorm:"column:review_status;comment:审核状态;size:191;"`                                                      //审核状态
 }
 
 // TableName 商机管理 CrmBusinessOpportunity自定义表名 crm_business_opportunity

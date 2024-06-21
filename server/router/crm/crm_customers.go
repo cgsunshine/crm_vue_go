@@ -23,10 +23,11 @@ func (s *CrmCustomersRouter) InitCrmCustomersRouter(Router *gin.RouterGroup, Pub
 		crmCustomersRouter.PUT("updateCrmCustomers", crmCustomersApi.UpdateCrmCustomers)              // 更新crmCustomers表
 	}
 	{
-		crmCustomersRouterWithoutRecord.GET("findCrmCustomers", crmCustomersApi.FindCrmCustomers)       // 根据ID获取crmCustomers表
-		crmCustomersRouterWithoutRecord.GET("getCrmCustomersList", crmCustomersApi.GetCrmCustomersList) // 获取crmCustomers表列表
+		crmCustomersRouterWithoutRecord.GET("findCrmCustomers", crmCustomersApi.FindCrmCustomers) // 根据ID获取crmCustomers表
+		//crmCustomersRouterWithoutRecord.GET("getCrmCustomersList", crmCustomersApi.GetCrmCustomersList) // 获取crmCustomers表列表
 	}
 	{
 		crmCustomersRouterWithoutAuth.GET("getCrmCustomersPublic", crmCustomersApi.GetCrmCustomersPublic) // 获取crmCustomers表列表
+		crmCustomersRouterWithoutRecord.GET("getCrmCustomersList", crmCustomersApi.GetCrmCustomersList)   // 获取crmCustomers表列表
 	}
 }

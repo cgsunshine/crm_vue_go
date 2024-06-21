@@ -68,6 +68,14 @@ func (crmOrderService *CrmOrderService) GetCrmPageOrder(ID string) (crmOrder crm
 	return
 }
 
+// UpdApprovalStatus 修改审批状态
+// Author [piexlmax](https://github.com/piexlmax)
+func (crmOrderService *CrmOrderService) UpdApprovalStatus(ID *int, data map[string]interface{}) (err error) {
+	db := global.GVA_DB.Model(&crm.CrmOrder{})
+	err = db.Where("id = ?", ID).Updates(data).Error
+	return
+}
+
 // SplicingQueryConditions 拼接条件
 func (crmOrderService *CrmOrderService) SplicingQueryConditions(condition string) string {
 	return "crm_order." + condition

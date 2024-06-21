@@ -7,16 +7,16 @@ import (
 	
 )
 
-// crmApprovalProcess表 结构体  CrmApprovalProcess
+// 审批流程 结构体  CrmApprovalProcess
 type CrmApprovalProcess struct {
  global.GVA_MODEL 
-      ProcessName  string `json:"processName" form:"processName" gorm:"column:processName;comment:审批流程名称，如“财务报销流程”;size:255;"`  //路程名称 
-      Description  string `json:"description" form:"description" gorm:"column:description;comment:审批流程描述;"`  //流程描述 
-      CreatedBy  string `json:"createdBy" form:"createdBy" gorm:"column:createdBy;comment:创建者ID;size:64;"`  //创建者ID 
+      Description  string `json:"description" form:"description" gorm:"column:description;comment:审批流程描述;size:191;"`  //审批流程描述 
+      ProcessName  string `json:"processName" form:"processName" gorm:"column:processName;comment:审批流程名称，如“财务报销流程”;size:255;"`  //审批流程名称，如“财务报销流程” 
+      UserId  *int `json:"userId" form:"userId" gorm:"column:user_id;comment:创建者ID;size:10;"`  //创建者ID 
 }
 
 
-// TableName crmApprovalProcess表 CrmApprovalProcess自定义表名 crm_approval_process
+// TableName 审批流程 CrmApprovalProcess自定义表名 crm_approval_process
 func (CrmApprovalProcess) TableName() string {
   return "crm_approval_process"
 }

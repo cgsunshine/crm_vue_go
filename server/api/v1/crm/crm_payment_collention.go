@@ -1,20 +1,20 @@
 package crm
 
 import (
+	"github.com/flipped-aurora/gin-vue-admin/server/api/v1/comm"
 	"github.com/flipped-aurora/gin-vue-admin/server/global"
-    "github.com/flipped-aurora/gin-vue-admin/server/model/crm"
-    crmReq "github.com/flipped-aurora/gin-vue-admin/server/model/crm/request"
-    "github.com/flipped-aurora/gin-vue-admin/server/model/common/response"
-    "github.com/flipped-aurora/gin-vue-admin/server/service"
-    "github.com/gin-gonic/gin"
-    "go.uber.org/zap"
+	"github.com/flipped-aurora/gin-vue-admin/server/model/common/response"
+	"github.com/flipped-aurora/gin-vue-admin/server/model/crm"
+	crmReq "github.com/flipped-aurora/gin-vue-admin/server/model/crm/request"
+	"github.com/flipped-aurora/gin-vue-admin/server/service"
+	"github.com/gin-gonic/gin"
+	"go.uber.org/zap"
 )
 
 type CrmPaymentCollentionApi struct {
 }
 
 var crmPaymentCollentionService = service.ServiceGroupApp.CrmServiceGroup.CrmPaymentCollentionService
-
 
 // CreateCrmPaymentCollention 创建crmPaymentCollention表
 // @Tags CrmPaymentCollention
@@ -33,8 +33,10 @@ func (crmPaymentCollentionApi *CrmPaymentCollentionApi) CreateCrmPaymentCollenti
 		return
 	}
 
+	crmPaymentCollention.UserId = comm.GetHeaderUserId(c)
+
 	if err := crmPaymentCollentionService.CreateCrmPaymentCollention(&crmPaymentCollention); err != nil {
-        global.GVA_LOG.Error("创建失败!", zap.Error(err))
+		global.GVA_LOG.Error("创建失败!", zap.Error(err))
 		response.FailWithMessage("创建失败", c)
 	} else {
 		response.OkWithMessage("创建成功", c)
@@ -53,7 +55,7 @@ func (crmPaymentCollentionApi *CrmPaymentCollentionApi) CreateCrmPaymentCollenti
 func (crmPaymentCollentionApi *CrmPaymentCollentionApi) DeleteCrmPaymentCollention(c *gin.Context) {
 	ID := c.Query("ID")
 	if err := crmPaymentCollentionService.DeleteCrmPaymentCollention(ID); err != nil {
-        global.GVA_LOG.Error("删除失败!", zap.Error(err))
+		global.GVA_LOG.Error("删除失败!", zap.Error(err))
 		response.FailWithMessage("删除失败", c)
 	} else {
 		response.OkWithMessage("删除成功", c)
@@ -71,7 +73,7 @@ func (crmPaymentCollentionApi *CrmPaymentCollentionApi) DeleteCrmPaymentCollenti
 func (crmPaymentCollentionApi *CrmPaymentCollentionApi) DeleteCrmPaymentCollentionByIds(c *gin.Context) {
 	IDs := c.QueryArray("IDs[]")
 	if err := crmPaymentCollentionService.DeleteCrmPaymentCollentionByIds(IDs); err != nil {
-        global.GVA_LOG.Error("批量删除失败!", zap.Error(err))
+		global.GVA_LOG.Error("批量删除失败!", zap.Error(err))
 		response.FailWithMessage("批量删除失败", c)
 	} else {
 		response.OkWithMessage("批量删除成功", c)
@@ -96,7 +98,7 @@ func (crmPaymentCollentionApi *CrmPaymentCollentionApi) UpdateCrmPaymentCollenti
 	}
 
 	if err := crmPaymentCollentionService.UpdateCrmPaymentCollention(crmPaymentCollention); err != nil {
-        global.GVA_LOG.Error("更新失败!", zap.Error(err))
+		global.GVA_LOG.Error("更新失败!", zap.Error(err))
 		response.FailWithMessage("更新失败", c)
 	} else {
 		response.OkWithMessage("更新成功", c)
@@ -115,7 +117,7 @@ func (crmPaymentCollentionApi *CrmPaymentCollentionApi) UpdateCrmPaymentCollenti
 func (crmPaymentCollentionApi *CrmPaymentCollentionApi) FindCrmPaymentCollention(c *gin.Context) {
 	ID := c.Query("ID")
 	if recrmPaymentCollention, err := crmPaymentCollentionService.GetCrmPaymentCollention(ID); err != nil {
-        global.GVA_LOG.Error("查询失败!", zap.Error(err))
+		global.GVA_LOG.Error("查询失败!", zap.Error(err))
 		response.FailWithMessage("查询失败", c)
 	} else {
 		response.OkWithData(gin.H{"recrmPaymentCollention": recrmPaymentCollention}, c)
@@ -139,16 +141,16 @@ func (crmPaymentCollentionApi *CrmPaymentCollentionApi) GetCrmPaymentCollentionL
 		return
 	}
 	if list, total, err := crmPaymentCollentionService.GetCrmPaymentCollentionInfoList(pageInfo); err != nil {
-	    global.GVA_LOG.Error("获取失败!", zap.Error(err))
-        response.FailWithMessage("获取失败", c)
-    } else {
-        response.OkWithDetailed(response.PageResult{
-            List:     list,
-            Total:    total,
-            Page:     pageInfo.Page,
-            PageSize: pageInfo.PageSize,
-        }, "获取成功", c)
-    }
+		global.GVA_LOG.Error("获取失败!", zap.Error(err))
+		response.FailWithMessage("获取失败", c)
+	} else {
+		response.OkWithDetailed(response.PageResult{
+			List:     list,
+			Total:    total,
+			Page:     pageInfo.Page,
+			PageSize: pageInfo.PageSize,
+		}, "获取成功", c)
+	}
 }
 
 // GetCrmPaymentCollentionPublic 不需要鉴权的crmPaymentCollention表接口
@@ -160,9 +162,9 @@ func (crmPaymentCollentionApi *CrmPaymentCollentionApi) GetCrmPaymentCollentionL
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"获取成功"}"
 // @Router /crmPaymentCollention/getCrmPaymentCollentionList [get]
 func (crmPaymentCollentionApi *CrmPaymentCollentionApi) GetCrmPaymentCollentionPublic(c *gin.Context) {
-    // 此接口不需要鉴权
-    // 示例为返回了一个固定的消息接口，一般本接口用于C端服务，需要自己实现业务逻辑
-    response.OkWithDetailed(gin.H{
-       "info": "不需要鉴权的crmPaymentCollention表接口信息",
-    }, "获取成功", c)
+	// 此接口不需要鉴权
+	// 示例为返回了一个固定的消息接口，一般本接口用于C端服务，需要自己实现业务逻辑
+	response.OkWithDetailed(gin.H{
+		"info": "不需要鉴权的crmPaymentCollention表接口信息",
+	}, "获取成功", c)
 }

@@ -10,10 +10,6 @@ type ApiGroup struct {
 	CrmProductGroupApi
 	CrmProductTypeApi
 	CrmUserApi
-	CrmApprovalNodeApi
-	CrmApprovalProcessApi
-	CrmApprovalRecordApi
-	CrmApprovalTasksApi
 	CrmCustomerGroupApi
 	CrmCustomersApi
 	CrmProductApi
@@ -38,8 +34,19 @@ type ApiGroup struct {
 	CrmAuthoritiesApi
 	CrmPaymentCollentionApi
 	CrmProcurementContractApi
+	CrmApprovalProcessApi
+	CrmConfigApi
+	CrmApprovalNodeApi
+	CrmBusinessOpportunityApprovalRecordApi
+	CrmBusinessOpportunityApprovalTasksApi
+	CrmPaymentCollentionApprovalRecordApi
+	CrmPaymentCollentionApprovalTasksApi
+	CrmApprovalRecordApi
+	CrmApprovalTasksApi
 }
 
 var (
-	userService = service.ServiceGroupApp.SystemServiceGroup.UserService
+	userService                  = service.ServiceGroupApp.SystemServiceGroup.UserService
+	customerService              = service.ServiceGroupApp.ExampleServiceGroup.CustomerService
+	fileUploadAndDownloadService = service.ServiceGroupApp.ExampleServiceGroup.FileUploadAndDownloadService
 )

@@ -41,9 +41,9 @@
             <template #default="scope">{{ formatDate(scope.row.CreatedAt) }}</template>
         </el-table-column>
         
-        <el-table-column align="left" label="路程名称" prop="processName" width="120" />
-        <el-table-column align="left" label="流程描述" prop="description" width="120" />
-        <el-table-column align="left" label="创建者ID" prop="createdBy" width="120" />
+        <el-table-column align="left" label="审批流程描述" prop="description" width="120" />
+        <el-table-column align="left" label="审批流程名称，如“财务报销流程”" prop="processName" width="120" />
+        <el-table-column align="left" label="创建者ID" prop="userId" width="120" />
         <el-table-column align="left" label="操作" fixed="right" min-width="240">
             <template #default="scope">
             <el-button type="primary" link class="table-button" @click="getDetails(scope.row)">
@@ -79,14 +79,14 @@
             </template>
 
           <el-form :model="formData" label-position="top" ref="elFormRef" :rules="rule" label-width="80px">
-            <el-form-item label="路程名称:"  prop="processName" >
-              <el-input v-model="formData.processName" :clearable="true"  placeholder="请输入路程名称" />
+            <el-form-item label="审批流程描述:"  prop="description" >
+              <el-input v-model="formData.description" :clearable="true"  placeholder="请输入审批流程描述" />
             </el-form-item>
-            <el-form-item label="流程描述:"  prop="description" >
-              <el-input v-model="formData.description" :clearable="true"  placeholder="请输入流程描述" />
+            <el-form-item label="审批流程名称，如“财务报销流程”:"  prop="processName" >
+              <el-input v-model="formData.processName" :clearable="true"  placeholder="请输入审批流程名称，如“财务报销流程”" />
             </el-form-item>
-            <el-form-item label="创建者ID:"  prop="createdBy" >
-              <el-input v-model="formData.createdBy" :clearable="true"  placeholder="请输入创建者ID" />
+            <el-form-item label="创建者ID:"  prop="userId" >
+              <el-input v-model.number="formData.userId" :clearable="true" placeholder="请输入创建者ID" />
             </el-form-item>
           </el-form>
     </el-drawer>
@@ -98,14 +98,14 @@
              </div>
          </template>
         <el-descriptions :column="1" border>
-                <el-descriptions-item label="路程名称">
-                        {{ formData.processName }}
-                </el-descriptions-item>
-                <el-descriptions-item label="流程描述">
+                <el-descriptions-item label="审批流程描述">
                         {{ formData.description }}
                 </el-descriptions-item>
+                <el-descriptions-item label="审批流程名称，如“财务报销流程”">
+                        {{ formData.processName }}
+                </el-descriptions-item>
                 <el-descriptions-item label="创建者ID">
-                        {{ formData.createdBy }}
+                        {{ formData.userId }}
                 </el-descriptions-item>
         </el-descriptions>
     </el-drawer>
@@ -133,9 +133,9 @@ defineOptions({
 
 // 自动化生成的字典（可能为空）以及字段
 const formData = ref({
-        processName: '',
         description: '',
-        createdBy: '',
+        processName: '',
+        userId: 0,
         })
 
 
@@ -329,9 +329,9 @@ const getDetails = async (row) => {
 const closeDetailShow = () => {
   detailShow.value = false
   formData.value = {
-          processName: '',
           description: '',
-          createdBy: '',
+          processName: '',
+          userId: 0,
           }
 }
 
@@ -346,9 +346,9 @@ const openDialog = () => {
 const closeDialog = () => {
     dialogFormVisible.value = false
     formData.value = {
-        processName: '',
         description: '',
-        createdBy: '',
+        processName: '',
+        userId: 0,
         }
 }
 // 弹窗确定

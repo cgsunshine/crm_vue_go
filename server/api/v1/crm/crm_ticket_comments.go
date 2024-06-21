@@ -1,20 +1,20 @@
 package crm
 
 import (
+	"github.com/flipped-aurora/gin-vue-admin/server/api/v1/comm"
 	"github.com/flipped-aurora/gin-vue-admin/server/global"
-    "github.com/flipped-aurora/gin-vue-admin/server/model/crm"
-    crmReq "github.com/flipped-aurora/gin-vue-admin/server/model/crm/request"
-    "github.com/flipped-aurora/gin-vue-admin/server/model/common/response"
-    "github.com/flipped-aurora/gin-vue-admin/server/service"
-    "github.com/gin-gonic/gin"
-    "go.uber.org/zap"
+	"github.com/flipped-aurora/gin-vue-admin/server/model/common/response"
+	"github.com/flipped-aurora/gin-vue-admin/server/model/crm"
+	crmReq "github.com/flipped-aurora/gin-vue-admin/server/model/crm/request"
+	"github.com/flipped-aurora/gin-vue-admin/server/service"
+	"github.com/gin-gonic/gin"
+	"go.uber.org/zap"
 )
 
 type CrmTicketCommentsApi struct {
 }
 
 var crmTicketCommentsService = service.ServiceGroupApp.CrmServiceGroup.CrmTicketCommentsService
-
 
 // CreateCrmTicketComments 创建共单回复
 // @Tags CrmTicketComments
@@ -33,8 +33,10 @@ func (crmTicketCommentsApi *CrmTicketCommentsApi) CreateCrmTicketComments(c *gin
 		return
 	}
 
+	crmTicketComments.UserId = comm.GetHeaderUserId(c)
+
 	if err := crmTicketCommentsService.CreateCrmTicketComments(&crmTicketComments); err != nil {
-        global.GVA_LOG.Error("创建失败!", zap.Error(err))
+		global.GVA_LOG.Error("创建失败!", zap.Error(err))
 		response.FailWithMessage("创建失败", c)
 	} else {
 		response.OkWithMessage("创建成功", c)
@@ -53,7 +55,7 @@ func (crmTicketCommentsApi *CrmTicketCommentsApi) CreateCrmTicketComments(c *gin
 func (crmTicketCommentsApi *CrmTicketCommentsApi) DeleteCrmTicketComments(c *gin.Context) {
 	ID := c.Query("ID")
 	if err := crmTicketCommentsService.DeleteCrmTicketComments(ID); err != nil {
-        global.GVA_LOG.Error("删除失败!", zap.Error(err))
+		global.GVA_LOG.Error("删除失败!", zap.Error(err))
 		response.FailWithMessage("删除失败", c)
 	} else {
 		response.OkWithMessage("删除成功", c)
@@ -71,7 +73,7 @@ func (crmTicketCommentsApi *CrmTicketCommentsApi) DeleteCrmTicketComments(c *gin
 func (crmTicketCommentsApi *CrmTicketCommentsApi) DeleteCrmTicketCommentsByIds(c *gin.Context) {
 	IDs := c.QueryArray("IDs[]")
 	if err := crmTicketCommentsService.DeleteCrmTicketCommentsByIds(IDs); err != nil {
-        global.GVA_LOG.Error("批量删除失败!", zap.Error(err))
+		global.GVA_LOG.Error("批量删除失败!", zap.Error(err))
 		response.FailWithMessage("批量删除失败", c)
 	} else {
 		response.OkWithMessage("批量删除成功", c)
@@ -96,7 +98,7 @@ func (crmTicketCommentsApi *CrmTicketCommentsApi) UpdateCrmTicketComments(c *gin
 	}
 
 	if err := crmTicketCommentsService.UpdateCrmTicketComments(crmTicketComments); err != nil {
-        global.GVA_LOG.Error("更新失败!", zap.Error(err))
+		global.GVA_LOG.Error("更新失败!", zap.Error(err))
 		response.FailWithMessage("更新失败", c)
 	} else {
 		response.OkWithMessage("更新成功", c)
@@ -115,7 +117,7 @@ func (crmTicketCommentsApi *CrmTicketCommentsApi) UpdateCrmTicketComments(c *gin
 func (crmTicketCommentsApi *CrmTicketCommentsApi) FindCrmTicketComments(c *gin.Context) {
 	ID := c.Query("ID")
 	if recrmTicketComments, err := crmTicketCommentsService.GetCrmTicketComments(ID); err != nil {
-        global.GVA_LOG.Error("查询失败!", zap.Error(err))
+		global.GVA_LOG.Error("查询失败!", zap.Error(err))
 		response.FailWithMessage("查询失败", c)
 	} else {
 		response.OkWithData(gin.H{"recrmTicketComments": recrmTicketComments}, c)
@@ -139,16 +141,16 @@ func (crmTicketCommentsApi *CrmTicketCommentsApi) GetCrmTicketCommentsList(c *gi
 		return
 	}
 	if list, total, err := crmTicketCommentsService.GetCrmTicketCommentsInfoList(pageInfo); err != nil {
-	    global.GVA_LOG.Error("获取失败!", zap.Error(err))
-        response.FailWithMessage("获取失败", c)
-    } else {
-        response.OkWithDetailed(response.PageResult{
-            List:     list,
-            Total:    total,
-            Page:     pageInfo.Page,
-            PageSize: pageInfo.PageSize,
-        }, "获取成功", c)
-    }
+		global.GVA_LOG.Error("获取失败!", zap.Error(err))
+		response.FailWithMessage("获取失败", c)
+	} else {
+		response.OkWithDetailed(response.PageResult{
+			List:     list,
+			Total:    total,
+			Page:     pageInfo.Page,
+			PageSize: pageInfo.PageSize,
+		}, "获取成功", c)
+	}
 }
 
 // GetCrmTicketCommentsPublic 不需要鉴权的共单回复接口
@@ -160,9 +162,9 @@ func (crmTicketCommentsApi *CrmTicketCommentsApi) GetCrmTicketCommentsList(c *gi
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"获取成功"}"
 // @Router /crmTicketComments/getCrmTicketCommentsList [get]
 func (crmTicketCommentsApi *CrmTicketCommentsApi) GetCrmTicketCommentsPublic(c *gin.Context) {
-    // 此接口不需要鉴权
-    // 示例为返回了一个固定的消息接口，一般本接口用于C端服务，需要自己实现业务逻辑
-    response.OkWithDetailed(gin.H{
-       "info": "不需要鉴权的共单回复接口信息",
-    }, "获取成功", c)
+	// 此接口不需要鉴权
+	// 示例为返回了一个固定的消息接口，一般本接口用于C端服务，需要自己实现业务逻辑
+	response.OkWithDetailed(gin.H{
+		"info": "不需要鉴权的共单回复接口信息",
+	}, "获取成功", c)
 }

@@ -2,14 +2,14 @@
   <div>
     <div class="gva-form-box">
       <el-form :model="formData" ref="elFormRef" label-position="right" :rules="rule" label-width="80px">
-        <el-form-item label="路程名称:" prop="processName">
-          <el-input v-model="formData.processName" :clearable="true"  placeholder="请输入路程名称" />
+        <el-form-item label="审批流程描述:" prop="description">
+          <el-input v-model="formData.description" :clearable="true"  placeholder="请输入审批流程描述" />
        </el-form-item>
-        <el-form-item label="流程描述:" prop="description">
-          <el-input v-model="formData.description" :clearable="true"  placeholder="请输入流程描述" />
+        <el-form-item label="审批流程名称，如“财务报销流程”:" prop="processName">
+          <el-input v-model="formData.processName" :clearable="true"  placeholder="请输入审批流程名称，如“财务报销流程”" />
        </el-form-item>
-        <el-form-item label="创建者ID:" prop="createdBy">
-          <el-input v-model="formData.createdBy" :clearable="true"  placeholder="请输入创建者ID" />
+        <el-form-item label="创建者ID:" prop="userId">
+          <el-input v-model.number="formData.userId" :clearable="true" placeholder="请输入" />
        </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="save">保存</el-button>
@@ -42,9 +42,9 @@ const router = useRouter()
 
 const type = ref('')
 const formData = ref({
-            processName: '',
             description: '',
-            createdBy: '',
+            processName: '',
+            userId: 0,
         })
 // 验证规则
 const rule = reactive({

@@ -1,13 +1,13 @@
 package crm
 
 import (
+	"github.com/flipped-aurora/gin-vue-admin/server/api/v1/comm"
 	"github.com/flipped-aurora/gin-vue-admin/server/global"
 	"github.com/flipped-aurora/gin-vue-admin/server/model/common/response"
 	"github.com/flipped-aurora/gin-vue-admin/server/model/crm"
 	crmReq "github.com/flipped-aurora/gin-vue-admin/server/model/crm/request"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
-	"strconv"
 )
 
 // CreateCrmTicketComments 创建共单回复
@@ -27,12 +27,7 @@ func (crmTicketCommentsApi *CrmTicketCommentsApi) CreateCrmPageTicketComments(c 
 		return
 	}
 
-	//userId, _ := strconv.Atoi(c.GetHeader("X-User-Id"))
-	//crmTicketComments.UserId = &userId
-
-	userID, _ := strconv.Atoi(c.GetHeader("X-User-Id"))
-
-	crmTicketComments.UserId = userService.FindUserDataStatusById(&userID)
+	crmTicketComments.UserId = comm.GetHeaderUserId(c)
 
 	if err := crmTicketCommentsService.CreateCrmTicketComments(&crmTicketComments); err != nil {
 		global.GVA_LOG.Error("创建失败!", zap.Error(err))

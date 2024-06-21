@@ -1,10 +1,12 @@
 package crm
 
 import (
+	"github.com/flipped-aurora/gin-vue-admin/server/api/v1/comm"
 	"github.com/flipped-aurora/gin-vue-admin/server/global"
 	"github.com/flipped-aurora/gin-vue-admin/server/model/common/response"
 	"github.com/flipped-aurora/gin-vue-admin/server/model/crm"
 	crmReq "github.com/flipped-aurora/gin-vue-admin/server/model/crm/request"
+	"github.com/flipped-aurora/gin-vue-admin/server/utils"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 	"strconv"
@@ -61,14 +63,51 @@ func (crmContractApi *CrmContractApi) CreatePageCrmContract(c *gin.Context) {
 		return
 	}
 
+	crmContract.UserId = comm.GetHeaderUserId(c)
+
 	crmContract.ContractStatus = "1"
-	crmContract.ReviewStatus = "1"
+	crmContract.ReviewStatus = comm.Approval_Status_Pending
 	crmContract.ReviewResult = "1"
+
+	//先查询合同审批对应的流程
+
+	//在查出第一步对应的角色id
+	roleInfo, err := crmConfigService.GetCrmNameToConfig(comm.ContractApproval)
+	if err != nil {
+		global.GVA_LOG.Error("创建失败!", zap.Error(err))
+		response.FailWithMessage("创建失败", c)
+		return
+	}
+
+	ids, err := userService.GetRoleUsers(roleInfo.RoleIds)
+	if err != nil {
+		global.GVA_LOG.Error("创建失败!", zap.Error(err))
+		response.FailWithMessage("创建失败", c)
+		return
+	}
 
 	if err := crmContractService.CreateCrmContract(&crmContract); err != nil {
 		global.GVA_LOG.Error("创建失败!", zap.Error(err))
 		response.FailWithMessage("创建失败", c)
 	} else {
+		contactId := int(crmContract.ID)
+		//插入角色id对应的用户的审批记录
+		for _, userAuth := range ids {
+			assigneeId := int(userAuth.SysUserId)
+
+			if err := crmApprovalTasksService.CreateCrmApprovalTasks(&crm.CrmApprovalTasks{
+				AssigneeId:     &assigneeId,
+				ApprovalStatus: comm.Approval_Status_Under,
+				AssociatedId:   &contactId,
+				Valid:          utils.Pointer(comm.Contact_Approval_Tasks_valid_Effective),
+				StepId:         roleInfo.NodeId,
+				ApprovalType:   utils.Pointer(comm.ContractApprovalType),
+			}); err != nil {
+				global.GVA_LOG.Error("创建失败!", zap.Error(err))
+				response.FailWithMessage("创建失败", c)
+				return
+			}
+		}
 		response.OkWithMessage("创建成功", c)
 	}
 }
@@ -89,5 +128,30 @@ func (crmContractApi *CrmContractApi) FindCrmPageContract(c *gin.Context) {
 		response.FailWithMessage("查询失败", c)
 	} else {
 		response.OkWithData(gin.H{"recrmContract": recrmContract}, c)
+	}
+}
+
+// FindCrmPageFileContract 用id查询crmContract表 获取相关文件图片
+// @Tags CrmContract
+// @Summary 用id查询crmContract表
+// @Security ApiKeyAuth
+// @accept application/json
+// @Produce application/json
+// @Param data query crm.CrmContract true "用id查询crmContract表"
+// @Success 200 {string} string "{"success":true,"data":{},"msg":"查询成功"}"
+// @Router /crmContract/findCrmContract [get]
+func (crmContractApi *CrmContractApi) FindCrmPageFileContract(c *gin.Context) {
+	ID := c.Query("ID")
+	if recrmContract, err := crmContractService.GetCrmPageContract(ID); err != nil {
+		global.GVA_LOG.Error("查询失败!", zap.Error(err))
+		response.FailWithMessage("查询失败", c)
+	} else {
+		//查询关联文件
+		list, _, err := fileUploadAndDownloadService.GetFileRecordInfoIdsList(recrmContract.ContractFile)
+		if err != nil {
+			global.GVA_LOG.Error("查询失败!", zap.Error(err))
+			response.FailWithMessage("查询失败", c)
+		}
+		response.OkWithData(gin.H{"recrmContract": list}, c)
 	}
 }

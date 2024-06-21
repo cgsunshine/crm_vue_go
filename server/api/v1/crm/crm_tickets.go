@@ -1,20 +1,20 @@
 package crm
 
 import (
+	"github.com/flipped-aurora/gin-vue-admin/server/api/v1/comm"
 	"github.com/flipped-aurora/gin-vue-admin/server/global"
-    "github.com/flipped-aurora/gin-vue-admin/server/model/crm"
-    crmReq "github.com/flipped-aurora/gin-vue-admin/server/model/crm/request"
-    "github.com/flipped-aurora/gin-vue-admin/server/model/common/response"
-    "github.com/flipped-aurora/gin-vue-admin/server/service"
-    "github.com/gin-gonic/gin"
-    "go.uber.org/zap"
+	"github.com/flipped-aurora/gin-vue-admin/server/model/common/response"
+	"github.com/flipped-aurora/gin-vue-admin/server/model/crm"
+	crmReq "github.com/flipped-aurora/gin-vue-admin/server/model/crm/request"
+	"github.com/flipped-aurora/gin-vue-admin/server/service"
+	"github.com/gin-gonic/gin"
+	"go.uber.org/zap"
 )
 
 type CrmTicketsApi struct {
 }
 
 var crmTicketsService = service.ServiceGroupApp.CrmServiceGroup.CrmTicketsService
-
 
 // CreateCrmTickets 创建工单
 // @Tags CrmTickets
@@ -32,9 +32,10 @@ func (crmTicketsApi *CrmTicketsApi) CreateCrmTickets(c *gin.Context) {
 		response.FailWithMessage(err.Error(), c)
 		return
 	}
+	crmTickets.SubmitterId = comm.GetHeaderUserId(c)
 
 	if err := crmTicketsService.CreateCrmTickets(&crmTickets); err != nil {
-        global.GVA_LOG.Error("创建失败!", zap.Error(err))
+		global.GVA_LOG.Error("创建失败!", zap.Error(err))
 		response.FailWithMessage("创建失败", c)
 	} else {
 		response.OkWithMessage("创建成功", c)
@@ -53,7 +54,7 @@ func (crmTicketsApi *CrmTicketsApi) CreateCrmTickets(c *gin.Context) {
 func (crmTicketsApi *CrmTicketsApi) DeleteCrmTickets(c *gin.Context) {
 	ID := c.Query("ID")
 	if err := crmTicketsService.DeleteCrmTickets(ID); err != nil {
-        global.GVA_LOG.Error("删除失败!", zap.Error(err))
+		global.GVA_LOG.Error("删除失败!", zap.Error(err))
 		response.FailWithMessage("删除失败", c)
 	} else {
 		response.OkWithMessage("删除成功", c)
@@ -71,7 +72,7 @@ func (crmTicketsApi *CrmTicketsApi) DeleteCrmTickets(c *gin.Context) {
 func (crmTicketsApi *CrmTicketsApi) DeleteCrmTicketsByIds(c *gin.Context) {
 	IDs := c.QueryArray("IDs[]")
 	if err := crmTicketsService.DeleteCrmTicketsByIds(IDs); err != nil {
-        global.GVA_LOG.Error("批量删除失败!", zap.Error(err))
+		global.GVA_LOG.Error("批量删除失败!", zap.Error(err))
 		response.FailWithMessage("批量删除失败", c)
 	} else {
 		response.OkWithMessage("批量删除成功", c)
@@ -96,7 +97,7 @@ func (crmTicketsApi *CrmTicketsApi) UpdateCrmTickets(c *gin.Context) {
 	}
 
 	if err := crmTicketsService.UpdateCrmTickets(crmTickets); err != nil {
-        global.GVA_LOG.Error("更新失败!", zap.Error(err))
+		global.GVA_LOG.Error("更新失败!", zap.Error(err))
 		response.FailWithMessage("更新失败", c)
 	} else {
 		response.OkWithMessage("更新成功", c)
@@ -115,7 +116,7 @@ func (crmTicketsApi *CrmTicketsApi) UpdateCrmTickets(c *gin.Context) {
 func (crmTicketsApi *CrmTicketsApi) FindCrmTickets(c *gin.Context) {
 	ID := c.Query("ID")
 	if recrmTickets, err := crmTicketsService.GetCrmTickets(ID); err != nil {
-        global.GVA_LOG.Error("查询失败!", zap.Error(err))
+		global.GVA_LOG.Error("查询失败!", zap.Error(err))
 		response.FailWithMessage("查询失败", c)
 	} else {
 		response.OkWithData(gin.H{"recrmTickets": recrmTickets}, c)
@@ -139,16 +140,16 @@ func (crmTicketsApi *CrmTicketsApi) GetCrmTicketsList(c *gin.Context) {
 		return
 	}
 	if list, total, err := crmTicketsService.GetCrmTicketsInfoList(pageInfo); err != nil {
-	    global.GVA_LOG.Error("获取失败!", zap.Error(err))
-        response.FailWithMessage("获取失败", c)
-    } else {
-        response.OkWithDetailed(response.PageResult{
-            List:     list,
-            Total:    total,
-            Page:     pageInfo.Page,
-            PageSize: pageInfo.PageSize,
-        }, "获取成功", c)
-    }
+		global.GVA_LOG.Error("获取失败!", zap.Error(err))
+		response.FailWithMessage("获取失败", c)
+	} else {
+		response.OkWithDetailed(response.PageResult{
+			List:     list,
+			Total:    total,
+			Page:     pageInfo.Page,
+			PageSize: pageInfo.PageSize,
+		}, "获取成功", c)
+	}
 }
 
 // GetCrmTicketsPublic 不需要鉴权的工单接口
@@ -160,9 +161,9 @@ func (crmTicketsApi *CrmTicketsApi) GetCrmTicketsList(c *gin.Context) {
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"获取成功"}"
 // @Router /crmTickets/getCrmTicketsList [get]
 func (crmTicketsApi *CrmTicketsApi) GetCrmTicketsPublic(c *gin.Context) {
-    // 此接口不需要鉴权
-    // 示例为返回了一个固定的消息接口，一般本接口用于C端服务，需要自己实现业务逻辑
-    response.OkWithDetailed(gin.H{
-       "info": "不需要鉴权的工单接口信息",
-    }, "获取成功", c)
+	// 此接口不需要鉴权
+	// 示例为返回了一个固定的消息接口，一般本接口用于C端服务，需要自己实现业务逻辑
+	response.OkWithDetailed(gin.H{
+		"info": "不需要鉴权的工单接口信息",
+	}, "获取成功", c)
 }

@@ -8,10 +8,6 @@ type RouterGroup struct {
 	CrmProductGroupRouter
 	CrmProductTypeRouter
 	CrmUserRouter
-	CrmApprovalNodeRouter
-	CrmApprovalProcessRouter
-	CrmApprovalRecordRouter
-	CrmApprovalTasksRouter
 	CrmCustomerGroupRouter
 	CrmCustomersRouter
 	CrmProductRouter
@@ -57,4 +53,15 @@ type RouterGroup struct {
 	CrmAuthoritiesRouter
 	CrmPaymentCollentionRouter
 	CrmProcurementContractRouter
+	CrmApprovalProcessRouter
+	CrmConfigRouter
+	CrmPageApprovalNodeRouter
+	CrmApprovalNodeRouter
+	CrmBusinessOpportunityApprovalRecordRouter
+	CrmBusinessOpportunityApprovalTasksRouter
+	CrmPaymentCollentionApprovalRecordRouter
+	CrmPaymentCollentionApprovalTasksRouter
+	CrmApprovalRecordRouter
+	CrmApprovalTasksRouter
+	CrmPageApprovalTasksRouter
 }

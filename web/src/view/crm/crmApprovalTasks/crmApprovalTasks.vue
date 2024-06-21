@@ -16,6 +16,31 @@
       <el-date-picker v-model="searchInfo.endCreatedAt" type="datetime" placeholder="结束日期" :disabled-date="time=> searchInfo.startCreatedAt ? time.getTime() < searchInfo.startCreatedAt.getTime() : false"></el-date-picker>
       </el-form-item>
       
+           <el-form-item label="审批状态" prop="approvalStatus">
+            <el-select v-model="searchInfo.approvalStatus" clearable placeholder="请选择" @clear="()=>{searchInfo.approvalStatus=undefined}">
+              <el-option v-for="(item,key) in approval_statusOptions" :key="key" :label="item.label" :value="item.value" />
+            </el-select>
+            </el-form-item>
+        <el-form-item label="审批类型 1合同 2商机 3回款" prop="approvalType">
+            
+             <el-input v-model.number="searchInfo.approvalType" placeholder="搜索条件" />
+
+        </el-form-item>
+        <el-form-item label="指派审批人id" prop="assigneeId">
+            
+             <el-input v-model.number="searchInfo.assigneeId" placeholder="搜索条件" />
+
+        </el-form-item>
+        <el-form-item label="关联id 合同 商机 回款" prop="associatedId">
+            
+             <el-input v-model.number="searchInfo.associatedId" placeholder="搜索条件" />
+
+        </el-form-item>
+        <el-form-item label="关联的审批请求ID" prop="requestId">
+            
+             <el-input v-model.number="searchInfo.requestId" placeholder="搜索条件" />
+
+        </el-form-item>
         <el-form-item>
           <el-button type="primary" icon="search" @click="onSubmit">查询</el-button>
           <el-button icon="refresh" @click="onReset">重置</el-button>
@@ -41,11 +66,18 @@
             <template #default="scope">{{ formatDate(scope.row.CreatedAt) }}</template>
         </el-table-column>
         
+        <el-table-column align="left" label="审批状态" prop="approvalStatus" width="120">
+            <template #default="scope">
+            {{ filterDict(scope.row.approvalStatus,approval_statusOptions) }}
+            </template>
+        </el-table-column>
+        <el-table-column align="left" label="审批类型 1合同 2商机 3回款" prop="approvalType" width="120" />
+        <el-table-column align="left" label="指派审批人id" prop="assigneeId" width="120" />
+        <el-table-column align="left" label="关联id 合同 商机 回款" prop="associatedId" width="120" />
+        <el-table-column align="left" label="审批意见" prop="comments" width="120" />
         <el-table-column align="left" label="关联的审批请求ID" prop="requestId" width="120" />
         <el-table-column align="left" label="当前审批步骤ID" prop="stepId" width="120" />
-        <el-table-column align="left" label="指派审批人" prop="assignee" width="120" />
-        <el-table-column align="left" label="任务状态" prop="status" width="120" />
-        <el-table-column align="left" label="审批意见" prop="comments" width="120" />
+        <el-table-column align="left" label="审批是否有效 1 有效 2 失效（多人审批中，有人拒绝）" prop="valid" width="120" />
         <el-table-column align="left" label="操作" fixed="right" min-width="240">
             <template #default="scope">
             <el-button type="primary" link class="table-button" @click="getDetails(scope.row)">
@@ -81,19 +113,31 @@
             </template>
 
           <el-form :model="formData" label-position="top" ref="elFormRef" :rules="rule" label-width="80px">
+            <el-form-item label="审批状态:"  prop="approvalStatus" >
+              <el-select v-model="formData.approvalStatus" placeholder="请选择审批状态" style="width:100%" :clearable="true" >
+                <el-option v-for="(item,key) in approval_statusOptions" :key="key" :label="item.label" :value="item.value" />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="审批类型 1合同 2商机 3回款:"  prop="approvalType" >
+              <el-input v-model.number="formData.approvalType" :clearable="true" placeholder="请输入审批类型 1合同 2商机 3回款" />
+            </el-form-item>
+            <el-form-item label="指派审批人id:"  prop="assigneeId" >
+              <el-input v-model.number="formData.assigneeId" :clearable="true" placeholder="请输入指派审批人id" />
+            </el-form-item>
+            <el-form-item label="关联id 合同 商机 回款:"  prop="associatedId" >
+              <el-input v-model.number="formData.associatedId" :clearable="true" placeholder="请输入关联id 合同 商机 回款" />
+            </el-form-item>
+            <el-form-item label="审批意见:"  prop="comments" >
+              <el-input v-model="formData.comments" :clearable="true"  placeholder="请输入审批意见" />
+            </el-form-item>
             <el-form-item label="关联的审批请求ID:"  prop="requestId" >
               <el-input v-model.number="formData.requestId" :clearable="true" placeholder="请输入关联的审批请求ID" />
             </el-form-item>
             <el-form-item label="当前审批步骤ID:"  prop="stepId" >
               <el-input v-model.number="formData.stepId" :clearable="true" placeholder="请输入当前审批步骤ID" />
             </el-form-item>
-            <el-form-item label="指派审批人:"  prop="assignee" >
-              <el-input v-model="formData.assignee" :clearable="true"  placeholder="请输入指派审批人" />
-            </el-form-item>
-            <el-form-item label="任务状态:"  prop="status" >
-            </el-form-item>
-            <el-form-item label="审批意见:"  prop="comments" >
-              <el-input v-model="formData.comments" :clearable="true"  placeholder="请输入审批意见" />
+            <el-form-item label="审批是否有效 1 有效 2 失效（多人审批中，有人拒绝）:"  prop="valid" >
+              <el-input v-model.number="formData.valid" :clearable="true" placeholder="请输入审批是否有效 1 有效 2 失效（多人审批中，有人拒绝）" />
             </el-form-item>
           </el-form>
     </el-drawer>
@@ -105,20 +149,29 @@
              </div>
          </template>
         <el-descriptions :column="1" border>
+                <el-descriptions-item label="审批状态">
+                        {{ filterDict(formData.approvalStatus,approval_statusOptions) }}
+                </el-descriptions-item>
+                <el-descriptions-item label="审批类型 1合同 2商机 3回款">
+                        {{ formData.approvalType }}
+                </el-descriptions-item>
+                <el-descriptions-item label="指派审批人id">
+                        {{ formData.assigneeId }}
+                </el-descriptions-item>
+                <el-descriptions-item label="关联id 合同 商机 回款">
+                        {{ formData.associatedId }}
+                </el-descriptions-item>
+                <el-descriptions-item label="审批意见">
+                        {{ formData.comments }}
+                </el-descriptions-item>
                 <el-descriptions-item label="关联的审批请求ID">
                         {{ formData.requestId }}
                 </el-descriptions-item>
                 <el-descriptions-item label="当前审批步骤ID">
                         {{ formData.stepId }}
                 </el-descriptions-item>
-                <el-descriptions-item label="指派审批人">
-                        {{ formData.assignee }}
-                </el-descriptions-item>
-                <el-descriptions-item label="任务状态">
-                        {{ formData.status }}
-                </el-descriptions-item>
-                <el-descriptions-item label="审批意见">
-                        {{ formData.comments }}
+                <el-descriptions-item label="审批是否有效 1 有效 2 失效（多人审批中，有人拒绝）">
+                        {{ formData.valid }}
                 </el-descriptions-item>
         </el-descriptions>
     </el-drawer>
@@ -145,11 +198,16 @@ defineOptions({
 })
 
 // 自动化生成的字典（可能为空）以及字段
+const approval_statusOptions = ref([])
 const formData = ref({
+        approvalStatus: '',
+        approvalType: 0,
+        assigneeId: 0,
+        associatedId: 0,
+        comments: '',
         requestId: 0,
         stepId: 0,
-        assignee: '',
-        comments: '',
+        valid: 0,
         })
 
 
@@ -228,6 +286,7 @@ getTableData()
 
 // 获取需要的字典 可能为空 按需保留
 const setOptions = async () =>{
+    approval_statusOptions.value = await getDictFunc('approval_status')
 }
 
 // 获取需要的字典 可能为空 按需保留
@@ -343,10 +402,14 @@ const getDetails = async (row) => {
 const closeDetailShow = () => {
   detailShow.value = false
   formData.value = {
+          approvalStatus: '',
+          approvalType: 0,
+          assigneeId: 0,
+          associatedId: 0,
+          comments: '',
           requestId: 0,
           stepId: 0,
-          assignee: '',
-          comments: '',
+          valid: 0,
           }
 }
 
@@ -361,10 +424,14 @@ const openDialog = () => {
 const closeDialog = () => {
     dialogFormVisible.value = false
     formData.value = {
+        approvalStatus: '',
+        approvalType: 0,
+        assigneeId: 0,
+        associatedId: 0,
+        comments: '',
         requestId: 0,
         stepId: 0,
-        assignee: '',
-        comments: '',
+        valid: 0,
         }
 }
 // 弹窗确定

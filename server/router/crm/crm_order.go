@@ -23,11 +23,11 @@ func (s *CrmOrderRouter) InitCrmOrderRouter(Router *gin.RouterGroup, PublicRoute
 		crmOrderRouter.PUT("updateCrmOrder", crmOrderApi.UpdateCrmOrder)              // 更新crmOrder表
 	}
 	{
-		crmOrderRouterWithoutRecord.GET("findCrmOrder", crmOrderApi.FindCrmOrder)       // 根据ID获取crmOrder表
-		crmOrderRouterWithoutRecord.GET("getCrmOrderList", crmOrderApi.GetCrmOrderList) // 获取crmOrder表列表
-		//crmOrderRouterWithoutRecord.GET("getPageCrmOrderList", crmOrderApi.GetPageCrmOrderList) // 获取crmOrder表列表
+		crmOrderRouterWithoutRecord.GET("findCrmOrder", crmOrderApi.FindCrmOrder) // 根据ID获取crmOrder表
+		//crmOrderRouterWithoutRecord.GET("getCrmOrderList", crmOrderApi.GetCrmOrderList) // 获取crmOrder表列表
 	}
 	{
 		crmOrderRouterWithoutAuth.GET("getCrmOrderPublic", crmOrderApi.GetCrmOrderPublic) // 获取crmOrder表列表
+		crmOrderRouterWithoutAuth.GET("getCrmOrderList", crmOrderApi.GetCrmOrderList)     // 获取crmOrder表列表
 	}
 }

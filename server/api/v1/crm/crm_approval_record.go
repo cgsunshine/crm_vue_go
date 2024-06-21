@@ -16,13 +16,13 @@ type CrmApprovalRecordApi struct {
 var crmApprovalRecordService = service.ServiceGroupApp.CrmServiceGroup.CrmApprovalRecordService
 
 
-// CreateCrmApprovalRecord 创建crmApprovalRecord表
+// CreateCrmApprovalRecord 创建审批记录
 // @Tags CrmApprovalRecord
-// @Summary 创建crmApprovalRecord表
+// @Summary 创建审批记录
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body crm.CrmApprovalRecord true "创建crmApprovalRecord表"
+// @Param data body crm.CrmApprovalRecord true "创建审批记录"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"创建成功"}"
 // @Router /crmApprovalRecord/createCrmApprovalRecord [post]
 func (crmApprovalRecordApi *CrmApprovalRecordApi) CreateCrmApprovalRecord(c *gin.Context) {
@@ -41,13 +41,13 @@ func (crmApprovalRecordApi *CrmApprovalRecordApi) CreateCrmApprovalRecord(c *gin
 	}
 }
 
-// DeleteCrmApprovalRecord 删除crmApprovalRecord表
+// DeleteCrmApprovalRecord 删除审批记录
 // @Tags CrmApprovalRecord
-// @Summary 删除crmApprovalRecord表
+// @Summary 删除审批记录
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body crm.CrmApprovalRecord true "删除crmApprovalRecord表"
+// @Param data body crm.CrmApprovalRecord true "删除审批记录"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"删除成功"}"
 // @Router /crmApprovalRecord/deleteCrmApprovalRecord [delete]
 func (crmApprovalRecordApi *CrmApprovalRecordApi) DeleteCrmApprovalRecord(c *gin.Context) {
@@ -60,9 +60,9 @@ func (crmApprovalRecordApi *CrmApprovalRecordApi) DeleteCrmApprovalRecord(c *gin
 	}
 }
 
-// DeleteCrmApprovalRecordByIds 批量删除crmApprovalRecord表
+// DeleteCrmApprovalRecordByIds 批量删除审批记录
 // @Tags CrmApprovalRecord
-// @Summary 批量删除crmApprovalRecord表
+// @Summary 批量删除审批记录
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
@@ -78,13 +78,13 @@ func (crmApprovalRecordApi *CrmApprovalRecordApi) DeleteCrmApprovalRecordByIds(c
 	}
 }
 
-// UpdateCrmApprovalRecord 更新crmApprovalRecord表
+// UpdateCrmApprovalRecord 更新审批记录
 // @Tags CrmApprovalRecord
-// @Summary 更新crmApprovalRecord表
+// @Summary 更新审批记录
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body crm.CrmApprovalRecord true "更新crmApprovalRecord表"
+// @Param data body crm.CrmApprovalRecord true "更新审批记录"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"更新成功"}"
 // @Router /crmApprovalRecord/updateCrmApprovalRecord [put]
 func (crmApprovalRecordApi *CrmApprovalRecordApi) UpdateCrmApprovalRecord(c *gin.Context) {
@@ -103,13 +103,13 @@ func (crmApprovalRecordApi *CrmApprovalRecordApi) UpdateCrmApprovalRecord(c *gin
 	}
 }
 
-// FindCrmApprovalRecord 用id查询crmApprovalRecord表
+// FindCrmApprovalRecord 用id查询审批记录
 // @Tags CrmApprovalRecord
-// @Summary 用id查询crmApprovalRecord表
+// @Summary 用id查询审批记录
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data query crm.CrmApprovalRecord true "用id查询crmApprovalRecord表"
+// @Param data query crm.CrmApprovalRecord true "用id查询审批记录"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"查询成功"}"
 // @Router /crmApprovalRecord/findCrmApprovalRecord [get]
 func (crmApprovalRecordApi *CrmApprovalRecordApi) FindCrmApprovalRecord(c *gin.Context) {
@@ -122,13 +122,13 @@ func (crmApprovalRecordApi *CrmApprovalRecordApi) FindCrmApprovalRecord(c *gin.C
 	}
 }
 
-// GetCrmApprovalRecordList 分页获取crmApprovalRecord表列表
+// GetCrmApprovalRecordList 分页获取审批记录列表
 // @Tags CrmApprovalRecord
-// @Summary 分页获取crmApprovalRecord表列表
+// @Summary 分页获取审批记录列表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data query crmReq.CrmApprovalRecordSearch true "分页获取crmApprovalRecord表列表"
+// @Param data query crmReq.CrmApprovalRecordSearch true "分页获取审批记录列表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"获取成功"}"
 // @Router /crmApprovalRecord/getCrmApprovalRecordList [get]
 func (crmApprovalRecordApi *CrmApprovalRecordApi) GetCrmApprovalRecordList(c *gin.Context) {
@@ -151,18 +151,18 @@ func (crmApprovalRecordApi *CrmApprovalRecordApi) GetCrmApprovalRecordList(c *gi
     }
 }
 
-// GetCrmApprovalRecordPublic 不需要鉴权的crmApprovalRecord表接口
+// GetCrmApprovalRecordPublic 不需要鉴权的审批记录接口
 // @Tags CrmApprovalRecord
-// @Summary 不需要鉴权的crmApprovalRecord表接口
+// @Summary 不需要鉴权的审批记录接口
 // @accept application/json
 // @Produce application/json
-// @Param data query crmReq.CrmApprovalRecordSearch true "分页获取crmApprovalRecord表列表"
+// @Param data query crmReq.CrmApprovalRecordSearch true "分页获取审批记录列表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"获取成功"}"
 // @Router /crmApprovalRecord/getCrmApprovalRecordList [get]
 func (crmApprovalRecordApi *CrmApprovalRecordApi) GetCrmApprovalRecordPublic(c *gin.Context) {
     // 此接口不需要鉴权
     // 示例为返回了一个固定的消息接口，一般本接口用于C端服务，需要自己实现业务逻辑
     response.OkWithDetailed(gin.H{
-       "info": "不需要鉴权的crmApprovalRecord表接口信息",
+       "info": "不需要鉴权的审批记录接口信息",
     }, "获取成功", c)
 }

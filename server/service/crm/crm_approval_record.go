@@ -9,42 +9,42 @@ import (
 type CrmApprovalRecordService struct {
 }
 
-// CreateCrmApprovalRecord 创建crmApprovalRecord表记录
+// CreateCrmApprovalRecord 创建审批记录记录
 // Author [piexlmax](https://github.com/piexlmax)
 func (crmApprovalRecordService *CrmApprovalRecordService) CreateCrmApprovalRecord(crmApprovalRecord *crm.CrmApprovalRecord) (err error) {
 	err = global.GVA_DB.Create(crmApprovalRecord).Error
 	return err
 }
 
-// DeleteCrmApprovalRecord 删除crmApprovalRecord表记录
+// DeleteCrmApprovalRecord 删除审批记录记录
 // Author [piexlmax](https://github.com/piexlmax)
 func (crmApprovalRecordService *CrmApprovalRecordService)DeleteCrmApprovalRecord(ID string) (err error) {
 	err = global.GVA_DB.Delete(&crm.CrmApprovalRecord{},"id = ?",ID).Error
 	return err
 }
 
-// DeleteCrmApprovalRecordByIds 批量删除crmApprovalRecord表记录
+// DeleteCrmApprovalRecordByIds 批量删除审批记录记录
 // Author [piexlmax](https://github.com/piexlmax)
 func (crmApprovalRecordService *CrmApprovalRecordService)DeleteCrmApprovalRecordByIds(IDs []string) (err error) {
 	err = global.GVA_DB.Delete(&[]crm.CrmApprovalRecord{},"id in ?",IDs).Error
 	return err
 }
 
-// UpdateCrmApprovalRecord 更新crmApprovalRecord表记录
+// UpdateCrmApprovalRecord 更新审批记录记录
 // Author [piexlmax](https://github.com/piexlmax)
 func (crmApprovalRecordService *CrmApprovalRecordService)UpdateCrmApprovalRecord(crmApprovalRecord crm.CrmApprovalRecord) (err error) {
 	err = global.GVA_DB.Save(&crmApprovalRecord).Error
 	return err
 }
 
-// GetCrmApprovalRecord 根据ID获取crmApprovalRecord表记录
+// GetCrmApprovalRecord 根据ID获取审批记录记录
 // Author [piexlmax](https://github.com/piexlmax)
 func (crmApprovalRecordService *CrmApprovalRecordService)GetCrmApprovalRecord(ID string) (crmApprovalRecord crm.CrmApprovalRecord, err error) {
 	err = global.GVA_DB.Where("id = ?", ID).First(&crmApprovalRecord).Error
 	return
 }
 
-// GetCrmApprovalRecordInfoList 分页获取crmApprovalRecord表记录
+// GetCrmApprovalRecordInfoList 分页获取审批记录记录
 // Author [piexlmax](https://github.com/piexlmax)
 func (crmApprovalRecordService *CrmApprovalRecordService)GetCrmApprovalRecordInfoList(info crmReq.CrmApprovalRecordSearch) (list []crm.CrmApprovalRecord, total int64, err error) {
 	limit := info.PageSize
@@ -55,6 +55,18 @@ func (crmApprovalRecordService *CrmApprovalRecordService)GetCrmApprovalRecordInf
     // 如果有条件搜索 下方会自动创建搜索语句
     if info.StartCreatedAt !=nil && info.EndCreatedAt !=nil {
      db = db.Where("created_at BETWEEN ? AND ?", info.StartCreatedAt, info.EndCreatedAt)
+    }
+    if info.ApprovalType != nil {
+        db = db.Where("approval_type = ?",info.ApprovalType)
+    }
+    if info.ApproverId != nil {
+        db = db.Where("approver_id = ?",info.ApproverId)
+    }
+    if info.AssociatedId != nil {
+        db = db.Where("associated_id = ?",info.AssociatedId)
+    }
+    if info.Status != "" {
+        db = db.Where("status = ?",info.Status)
     }
 	err = db.Count(&total).Error
 	if err!=nil {

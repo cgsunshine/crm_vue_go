@@ -19,6 +19,7 @@ type CrmPageBusinessOpportunity struct {
 	ProductId               *int       `json:"productId" form:"productId" gorm:"column:product_id;comment:产品id;"`                                                     //产品id
 	Status                  string     `json:"status" form:"status" gorm:"column:status;comment:商机状态;size:191;"`                                                      //商机状态
 	UserId                  *int       `json:"userId" form:"userId" gorm:"column:user_id;comment:员工id;"`                                                              //员工id
+	ReviewStatus            string     `json:"reviewStatus" form:"reviewStatus" gorm:"column:review_status;comment:审核状态;size:191;"`                                   //审核状态
 	//以下是联表字段
 	//sys_user 表
 	Username string `json:"userName" gorm:"index;comment:用户登录名"` // 用户登录名

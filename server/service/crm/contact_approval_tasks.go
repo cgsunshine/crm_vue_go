@@ -7,7 +7,7 @@ import (
 	crmReq "github.com/flipped-aurora/gin-vue-admin/server/model/crm/request"
 )
 
-// GetCrmQueryApproved 查询审核是否通过
+// GetCrmQueryApproved 查询审核是否通过（所有人都要同意）
 // Author [piexlmax](https://github.com/piexlmax)
 func (crmContactApprovalTasksService *CrmContactApprovalTasksService) GetCrmQueryApproved(contactId int, approvalStatus string) (bool, error) {
 	total := int64(0)
@@ -33,6 +33,37 @@ func (crmContactApprovalTasksService *CrmContactApprovalTasksService) GetCrmQuer
 	}
 
 	if total == count {
+		return true, nil
+	}
+	return false, nil
+}
+
+// GetCrmQueryStepApproved 查询审核是否通过 再此步骤中，可能需要部分人他同意即可通过审批，具体看配置
+// Author [piexlmax](https://github.com/piexlmax)
+func (crmContactApprovalTasksService *CrmContactApprovalTasksService) GetCrmQueryStepApproved(contactId, numberApprovedPersonnel int, approvalStatus string) (bool, error) {
+	total := int64(0)
+	//count := int64(0)
+	// 创建db
+	db := global.GVA_DB.Model(&crm.CrmContactApprovalTasks{})
+
+	db = db.Where("contact_id = ? AND valid = ?", contactId, comm.Contact_Approval_Tasks_valid_Effective)
+
+	err := db.Count(&total).Error
+	if err != nil {
+		return false, err
+	}
+
+	db = db.Where("approval_status = ?", approvalStatus)
+
+	if total == 0 {
+		return false, nil
+	}
+
+	//if total == count {
+	//	return true, nil
+	//}
+
+	if total >= int64(numberApprovedPersonnel) {
 		return true, nil
 	}
 	return false, nil

@@ -106,3 +106,25 @@ func (e *FileUploadAndDownloadService) UploadFile(header *multipart.FileHeader, 
 	}
 	return f, nil
 }
+
+//@author: [piexlmax](https://github.com/piexlmax)
+//@function: GetFileRecordInfoList
+//@description: 分通过ids 获取图片
+//@param: info request.PageInfo
+//@return: list interface{}, total int64, err error
+
+func (e *FileUploadAndDownloadService) GetFileRecordInfoIdsList(ids string) (fileLists []example.ExaFileUploadAndDownload, total int64, err error) {
+
+	db := global.GVA_DB.Model(&example.ExaFileUploadAndDownload{})
+	//var fileLists []example.ExaFileUploadAndDownload
+	//if len(keyword) > 0 {
+	//	db = db.Where("name LIKE ?", "%"+keyword+"%")
+	//}
+	db.Where("id in (?)", ids)
+	err = db.Count(&total).Error
+	if err != nil {
+		return
+	}
+	err = db.Order("updated_at desc").Find(&fileLists).Error
+	return fileLists, total, err
+}

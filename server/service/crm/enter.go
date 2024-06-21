@@ -8,10 +8,6 @@ type ServiceGroup struct {
 	CrmProductGroupService
 	CrmProductTypeService
 	CrmUserService
-	CrmApprovalNodeService
-	CrmApprovalProcessService
-	CrmApprovalRecordService
-	CrmApprovalTasksService
 	CrmCustomerGroupService
 	CrmCustomersService
 	CrmProductService
@@ -36,4 +32,13 @@ type ServiceGroup struct {
 	CrmAuthoritiesService
 	CrmPaymentCollentionService
 	CrmProcurementContractService
+	CrmApprovalProcessService
+	CrmConfigService
+	CrmApprovalNodeService
+	CrmBusinessOpportunityApprovalRecordService
+	CrmBusinessOpportunityApprovalTasksService
+	CrmPaymentCollentionApprovalRecordService
+	CrmPaymentCollentionApprovalTasksService
+	CrmApprovalRecordService
+	CrmApprovalTasksService
 }

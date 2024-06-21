@@ -67,3 +67,18 @@ func (crmPaymentCollentionService *CrmPaymentCollentionService) GetCrmPagePaymen
 func (crmPaymentCollentionService *CrmPaymentCollentionService) SplicingQueryConditions(condition string) string {
 	return "crm_payment_collention." + condition
 }
+
+// UpdApprovalStatus 修改审批状态
+// Author [piexlmax](https://github.com/piexlmax)
+func (crmPaymentCollentionService *CrmPaymentCollentionService) UpdApprovalStatus(ID *int, data map[string]interface{}) (err error) {
+	db := global.GVA_DB.Model(&crm.CrmContract{})
+	err = db.Where("id = ?", ID).Updates(data).Error
+	return
+}
+
+// GetCrmPaymentCollention 根据ID获取crmPaymentCollention表记录
+// Author [piexlmax](https://github.com/piexlmax)
+func (crmPaymentCollentionService *CrmPaymentCollentionService) GetCrmPaymentIdCollention(ID int) (crmPaymentCollention crm.CrmPaymentCollention, err error) {
+	err = global.GVA_DB.Where("id = ?", ID).First(&crmPaymentCollention).Error
+	return
+}

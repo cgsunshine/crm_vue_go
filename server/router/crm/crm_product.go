@@ -23,10 +23,11 @@ func (s *CrmProductRouter) InitCrmProductRouter(Router *gin.RouterGroup, PublicR
 		crmProductRouter.PUT("updateCrmProduct", crmProductApi.UpdateCrmProduct)              // 更新crmProduct表
 	}
 	{
-		crmProductRouterWithoutRecord.GET("findCrmProduct", crmProductApi.FindCrmProduct)       // 根据ID获取crmProduct表
-		crmProductRouterWithoutRecord.GET("getCrmProductList", crmProductApi.GetCrmProductList) // 获取crmProduct表列表
+		crmProductRouterWithoutRecord.GET("findCrmProduct", crmProductApi.FindCrmProduct) // 根据ID获取crmProduct表
+		//crmProductRouterWithoutRecord.GET("getCrmProductList", crmProductApi.GetCrmProductList) // 获取crmProduct表列表
 	}
 	{
 		crmProductRouterWithoutAuth.GET("getCrmProductPublic", crmProductApi.GetCrmProductPublic) // 获取crmProduct表列表
+		crmProductRouterWithoutAuth.GET("getCrmProductList", crmProductApi.GetCrmProductList)     // 获取crmProduct表列表
 	}
 }

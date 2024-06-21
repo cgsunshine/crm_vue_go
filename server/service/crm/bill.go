@@ -69,9 +69,10 @@ func (crmBillService *CrmBillService) GetCrmPageBillInfoList(info crmReq.CrmBill
 		db = db.Limit(limit).Offset(offset)
 	}
 
-	err = db.Select("crm_bill.*,crm_customers.customer_name,sys_users.username").
+	err = db.Select("crm_bill.*,crm_customers.customer_name,sys_users.username,crm_order.order_name").
 		Joins("LEFT JOIN sys_users ON sys_users.id = crm_bill.user_id").
 		Joins("LEFT JOIN crm_customers ON crm_customers.id = crm_bill.customer_id").
+		Joins("LEFT JOIN crm_order ON crm_order.id = crm_bill.order_id").
 		Find(&crmBills).Error
 	return crmBills, total, err
 }

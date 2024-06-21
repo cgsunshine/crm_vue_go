@@ -16,6 +16,11 @@
       <el-date-picker v-model="searchInfo.endCreatedAt" type="datetime" placeholder="结束日期" :disabled-date="time=> searchInfo.startCreatedAt ? time.getTime() < searchInfo.startCreatedAt.getTime() : false"></el-date-picker>
       </el-form-item>
       
+        <el-form-item label="所属审批流程ID" prop="processId">
+            
+             <el-input v-model.number="searchInfo.processId" placeholder="搜索条件" />
+
+        </el-form-item>
         <el-form-item>
           <el-button type="primary" icon="search" @click="onSubmit">查询</el-button>
           <el-button icon="refresh" @click="onReset">重置</el-button>
@@ -41,12 +46,14 @@
             <template #default="scope">{{ formatDate(scope.row.CreatedAt) }}</template>
         </el-table-column>
         
-        <el-table-column align="left" label="所属审批流程ID" prop="processId" width="120" />
+        <el-table-column align="left" label="预留条件" prop="conditionExpression" width="120" />
         <el-table-column align="left" label="流程名称" prop="nodeName" width="120" />
-        <el-table-column align="left" label="节点顺序，用于确定审批步骤" prop="nodeOrder" width="120" />
-        <el-table-column align="left" label="角色ID 多个逗号分隔" prop="roleIds" width="120" />
-        <el-table-column align="left" label="特定审批人ID 可以多个逗号分隔" prop="userId" width="120" />
-        <el-table-column align="left" label="条件表达式，用于动态路由到不同节点，可为空" prop="conditionExpression" width="120" />
+        <el-table-column align="left" label="节点顺序" prop="nodeOrder" width="120" />
+        <el-table-column align="left" label="审批通过的人数，需要几人同意才能通过审批" prop="numberApprovedPersonnel" width="120" />
+        <el-table-column align="left" label="所属审批流程ID" prop="processId" width="120" />
+        <el-table-column align="left" label="角色ID" prop="roleIds" width="120" />
+        <el-table-column align="left" label="添加记录的用户" prop="userId" width="120" />
+        <el-table-column align="left" label="特定审批人ID" prop="userIds" width="120" />
         <el-table-column align="left" label="操作" fixed="right" min-width="240">
             <template #default="scope">
             <el-button type="primary" link class="table-button" @click="getDetails(scope.row)">
@@ -82,23 +89,29 @@
             </template>
 
           <el-form :model="formData" label-position="top" ref="elFormRef" :rules="rule" label-width="80px">
-            <el-form-item label="所属审批流程ID:"  prop="processId" >
-              <el-input v-model="formData.processId" :clearable="true"  placeholder="请输入所属审批流程ID" />
+            <el-form-item label="预留条件:"  prop="conditionExpression" >
+              <el-input v-model="formData.conditionExpression" :clearable="true"  placeholder="请输入预留条件" />
             </el-form-item>
             <el-form-item label="流程名称:"  prop="nodeName" >
               <el-input v-model="formData.nodeName" :clearable="true"  placeholder="请输入流程名称" />
             </el-form-item>
-            <el-form-item label="节点顺序，用于确定审批步骤:"  prop="nodeOrder" >
-              <el-input v-model.number="formData.nodeOrder" :clearable="true" placeholder="请输入节点顺序，用于确定审批步骤" />
+            <el-form-item label="节点顺序:"  prop="nodeOrder" >
+              <el-input v-model.number="formData.nodeOrder" :clearable="true" placeholder="请输入节点顺序" />
             </el-form-item>
-            <el-form-item label="角色ID 多个逗号分隔:"  prop="roleIds" >
-              <el-input v-model="formData.roleIds" :clearable="true"  placeholder="请输入角色ID 多个逗号分隔" />
+            <el-form-item label="审批通过的人数，需要几人同意才能通过审批:"  prop="numberApprovedPersonnel" >
+              <el-input v-model.number="formData.numberApprovedPersonnel" :clearable="true" placeholder="请输入审批通过的人数，需要几人同意才能通过审批" />
             </el-form-item>
-            <el-form-item label="特定审批人ID 可以多个逗号分隔:"  prop="userId" >
-              <el-input v-model="formData.userId" :clearable="true"  placeholder="请输入特定审批人ID 可以多个逗号分隔" />
+            <el-form-item label="所属审批流程ID:"  prop="processId" >
+              <el-input v-model.number="formData.processId" :clearable="true" placeholder="请输入所属审批流程ID" />
             </el-form-item>
-            <el-form-item label="条件表达式，用于动态路由到不同节点，可为空:"  prop="conditionExpression" >
-              <el-input v-model="formData.conditionExpression" :clearable="true"  placeholder="请输入条件表达式，用于动态路由到不同节点，可为空" />
+            <el-form-item label="角色ID:"  prop="roleIds" >
+              <el-input v-model="formData.roleIds" :clearable="true"  placeholder="请输入角色ID" />
+            </el-form-item>
+            <el-form-item label="添加记录的用户:"  prop="userId" >
+              <el-input v-model.number="formData.userId" :clearable="true" placeholder="请输入添加记录的用户" />
+            </el-form-item>
+            <el-form-item label="特定审批人ID:"  prop="userIds" >
+              <el-input v-model="formData.userIds" :clearable="true"  placeholder="请输入特定审批人ID" />
             </el-form-item>
           </el-form>
     </el-drawer>
@@ -110,23 +123,29 @@
              </div>
          </template>
         <el-descriptions :column="1" border>
-                <el-descriptions-item label="所属审批流程ID">
-                        {{ formData.processId }}
+                <el-descriptions-item label="预留条件">
+                        {{ formData.conditionExpression }}
                 </el-descriptions-item>
                 <el-descriptions-item label="流程名称">
                         {{ formData.nodeName }}
                 </el-descriptions-item>
-                <el-descriptions-item label="节点顺序，用于确定审批步骤">
+                <el-descriptions-item label="节点顺序">
                         {{ formData.nodeOrder }}
                 </el-descriptions-item>
-                <el-descriptions-item label="角色ID 多个逗号分隔">
+                <el-descriptions-item label="审批通过的人数，需要几人同意才能通过审批">
+                        {{ formData.numberApprovedPersonnel }}
+                </el-descriptions-item>
+                <el-descriptions-item label="所属审批流程ID">
+                        {{ formData.processId }}
+                </el-descriptions-item>
+                <el-descriptions-item label="角色ID">
                         {{ formData.roleIds }}
                 </el-descriptions-item>
-                <el-descriptions-item label="特定审批人ID 可以多个逗号分隔">
+                <el-descriptions-item label="添加记录的用户">
                         {{ formData.userId }}
                 </el-descriptions-item>
-                <el-descriptions-item label="条件表达式，用于动态路由到不同节点，可为空">
-                        {{ formData.conditionExpression }}
+                <el-descriptions-item label="特定审批人ID">
+                        {{ formData.userIds }}
                 </el-descriptions-item>
         </el-descriptions>
     </el-drawer>
@@ -154,12 +173,14 @@ defineOptions({
 
 // 自动化生成的字典（可能为空）以及字段
 const formData = ref({
-        processId: '',
+        conditionExpression: '',
         nodeName: '',
         nodeOrder: 0,
+        numberApprovedPersonnel: 0,
+        processId: 0,
         roleIds: '',
-        userId: '',
-        conditionExpression: '',
+        userId: 0,
+        userIds: '',
         })
 
 
@@ -353,12 +374,14 @@ const getDetails = async (row) => {
 const closeDetailShow = () => {
   detailShow.value = false
   formData.value = {
-          processId: '',
+          conditionExpression: '',
           nodeName: '',
           nodeOrder: 0,
+          numberApprovedPersonnel: 0,
+          processId: 0,
           roleIds: '',
-          userId: '',
-          conditionExpression: '',
+          userId: 0,
+          userIds: '',
           }
 }
 
@@ -373,12 +396,14 @@ const openDialog = () => {
 const closeDialog = () => {
     dialogFormVisible.value = false
     formData.value = {
-        processId: '',
+        conditionExpression: '',
         nodeName: '',
         nodeOrder: 0,
+        numberApprovedPersonnel: 0,
+        processId: 0,
         roleIds: '',
-        userId: '',
-        conditionExpression: '',
+        userId: 0,
+        userIds: '',
         }
 }
 // 弹窗确定

@@ -1,6 +1,7 @@
 package crm
 
 import (
+	"github.com/flipped-aurora/gin-vue-admin/server/api/v1/comm"
 	"github.com/flipped-aurora/gin-vue-admin/server/global"
 	"github.com/flipped-aurora/gin-vue-admin/server/model/common/response"
 	"github.com/flipped-aurora/gin-vue-admin/server/model/crm"
@@ -80,9 +81,7 @@ func (crmCustomersApi *CrmCustomersApi) CreateCrmPageCustomers(c *gin.Context) {
 		return
 	}
 
-	userID, _ := strconv.Atoi(c.GetHeader("X-User-Id"))
-
-	crmCustomers.UserId = userService.FindUserDataStatusById(&userID)
+	crmCustomers.UserId = comm.GetHeaderUserId(c)
 
 	if err := crmCustomersService.CreateCrmCustomers(&crmCustomers); err != nil {
 		global.GVA_LOG.Error("创建失败!", zap.Error(err))

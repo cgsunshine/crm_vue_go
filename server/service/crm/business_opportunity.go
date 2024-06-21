@@ -71,6 +71,14 @@ func (crmBusinessOpportunityService *CrmBusinessOpportunityService) GetCrmPageBu
 	return
 }
 
+// UpdApprovalStatus 修改审批状态
+// Author [piexlmax](https://github.com/piexlmax)
+func (crmBusinessOpportunityService *CrmBusinessOpportunityService) UpdApprovalStatus(ID *int, data map[string]interface{}) (err error) {
+	db := global.GVA_DB.Model(&crm.CrmContract{})
+	err = db.Where("id = ?", ID).Updates(data).Error
+	return
+}
+
 // SplicingQueryConditions 拼接条件
 func (crmBusinessOpportunityService *CrmBusinessOpportunityService) SplicingQueryConditions(condition string) string {
 	return "crm_business_opportunity." + condition

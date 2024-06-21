@@ -9,7 +9,7 @@ import (
 type CrmApprovalProcessRouter struct {
 }
 
-// InitCrmApprovalProcessRouter 初始化 crmApprovalProcess表 路由信息
+// InitCrmApprovalProcessRouter 初始化 审批流程 路由信息
 func (s *CrmApprovalProcessRouter) InitCrmApprovalProcessRouter(Router *gin.RouterGroup,PublicRouter *gin.RouterGroup) {
 	crmApprovalProcessRouter := Router.Group("crmApprovalProcess").Use(middleware.OperationRecord())
 	crmApprovalProcessRouterWithoutRecord := Router.Group("crmApprovalProcess")
@@ -17,16 +17,16 @@ func (s *CrmApprovalProcessRouter) InitCrmApprovalProcessRouter(Router *gin.Rout
 
 	var crmApprovalProcessApi = v1.ApiGroupApp.CrmApiGroup.CrmApprovalProcessApi
 	{
-		crmApprovalProcessRouter.POST("createCrmApprovalProcess", crmApprovalProcessApi.CreateCrmApprovalProcess)   // 新建crmApprovalProcess表
-		crmApprovalProcessRouter.DELETE("deleteCrmApprovalProcess", crmApprovalProcessApi.DeleteCrmApprovalProcess) // 删除crmApprovalProcess表
-		crmApprovalProcessRouter.DELETE("deleteCrmApprovalProcessByIds", crmApprovalProcessApi.DeleteCrmApprovalProcessByIds) // 批量删除crmApprovalProcess表
-		crmApprovalProcessRouter.PUT("updateCrmApprovalProcess", crmApprovalProcessApi.UpdateCrmApprovalProcess)    // 更新crmApprovalProcess表
+		crmApprovalProcessRouter.POST("createCrmApprovalProcess", crmApprovalProcessApi.CreateCrmApprovalProcess)   // 新建审批流程
+		crmApprovalProcessRouter.DELETE("deleteCrmApprovalProcess", crmApprovalProcessApi.DeleteCrmApprovalProcess) // 删除审批流程
+		crmApprovalProcessRouter.DELETE("deleteCrmApprovalProcessByIds", crmApprovalProcessApi.DeleteCrmApprovalProcessByIds) // 批量删除审批流程
+		crmApprovalProcessRouter.PUT("updateCrmApprovalProcess", crmApprovalProcessApi.UpdateCrmApprovalProcess)    // 更新审批流程
 	}
 	{
-		crmApprovalProcessRouterWithoutRecord.GET("findCrmApprovalProcess", crmApprovalProcessApi.FindCrmApprovalProcess)        // 根据ID获取crmApprovalProcess表
-		crmApprovalProcessRouterWithoutRecord.GET("getCrmApprovalProcessList", crmApprovalProcessApi.GetCrmApprovalProcessList)  // 获取crmApprovalProcess表列表
+		crmApprovalProcessRouterWithoutRecord.GET("findCrmApprovalProcess", crmApprovalProcessApi.FindCrmApprovalProcess)        // 根据ID获取审批流程
+		crmApprovalProcessRouterWithoutRecord.GET("getCrmApprovalProcessList", crmApprovalProcessApi.GetCrmApprovalProcessList)  // 获取审批流程列表
 	}
 	{
-	    crmApprovalProcessRouterWithoutAuth.GET("getCrmApprovalProcessPublic", crmApprovalProcessApi.GetCrmApprovalProcessPublic)  // 获取crmApprovalProcess表列表
+	    crmApprovalProcessRouterWithoutAuth.GET("getCrmApprovalProcessPublic", crmApprovalProcessApi.GetCrmApprovalProcessPublic)  // 获取审批流程列表
 	}
 }
