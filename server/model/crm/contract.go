@@ -21,6 +21,7 @@ type CrmPageContract struct {
 	ReviewResult    string     `json:"reviewResult" form:"reviewResult" gorm:"column:review_result;comment:审核结果;size:191;"`       //审核结果
 	ReviewStatus    string     `json:"reviewStatus" form:"reviewStatus" gorm:"column:review_status;comment:审核状态;size:191;"`       //审核状态
 	UserId          *int       `json:"userId" form:"userId" gorm:"column:user_id;comment:管理ID 销售代表;"`                             //管理ID 销售代表
+	ContractNumber  string     `json:"contractNumber" form:"contractNumber" gorm:"column:contract_number;comment:合同编号;size:191;"` //合同编号
 	//以下是联表查询字段
 	//sys_user 表
 	Username string `json:"userName" gorm:"index;comment:用户登录名"` // 用户登录名
@@ -28,4 +29,9 @@ type CrmPageContract struct {
 	CustomerName string `json:"customerName" form:"customerName" gorm:"column:customer_name;comment:客户名;size:191;"` //客户名
 	//crm_order 表
 	OrderName string `json:"orderName" form:"orderName" gorm:"column:order_name;comment:订单名称;size:10;" binding:"required"` //订单名称
+	//crm_contract_type 表
+	ContractTypeName string `json:"contractTypeName" form:"contractTypeName" gorm:"column:contract_type_name;comment:合同类型名称;size:191;"` //合同类型名称
+	//crm_order 表
+	Amount   *float64 `json:"amount" form:"amount" gorm:"column:amount;comment:金额;"`               //金额
+	Currency string   `json:"currency" form:"currency" gorm:"column:currency;comment:币种;size:11;"` //币种
 }

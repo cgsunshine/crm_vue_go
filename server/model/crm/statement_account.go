@@ -19,4 +19,6 @@ type CrmPageStatementAccount struct {
 	//以下是联表查询字段
 	//sys_user 表
 	Username string `json:"userName" gorm:"index;comment:用户登录名"` // 用户登录名
+	//crm_purchase_order 表
+	PurchaseOrderName string `json:"purchaseOrderName" form:"purchaseOrderName" gorm:"column:purchase_order_name;comment:订购单名称;size:191;"` //订购单名称
 }

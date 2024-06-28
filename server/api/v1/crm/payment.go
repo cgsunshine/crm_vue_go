@@ -6,7 +6,6 @@ import (
 	crmReq "github.com/flipped-aurora/gin-vue-admin/server/model/crm/request"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
-	"strconv"
 )
 
 // GetCrmPaymentList 分页获取crmPayment表列表
@@ -26,9 +25,7 @@ func (crmPaymentApi *CrmPaymentApi) GetCrmPagePaymentList(c *gin.Context) {
 		return
 	}
 
-	userID, _ := strconv.Atoi(c.GetHeader("X-User-Id"))
-
-	pageInfo.UserId = userService.FindUserDataStatusById(&userID)
+	pageInfo.UserId = GetSearchUserId(pageInfo.UserId, c)
 
 	if list, total, err := crmPaymentService.GetCrmPagePaymentInfoList(pageInfo); err != nil {
 		global.GVA_LOG.Error("获取失败!", zap.Error(err))
@@ -58,6 +55,12 @@ func (crmPaymentApi *CrmPaymentApi) FindCrmPagePayment(c *gin.Context) {
 		global.GVA_LOG.Error("查询失败!", zap.Error(err))
 		response.FailWithMessage("查询失败", c)
 	} else {
+
+		recrmPayment.PaymentVoucher, _, err = fileUploadAndDownloadService.GetFileRecordInfoIdsString(recrmPayment.PaymentVoucher)
+		if err != nil {
+			global.GVA_LOG.Error("查询失败!", zap.Error(err))
+			response.FailWithMessage("查询失败", c)
+		}
 		response.OkWithData(gin.H{"recrmPayment": recrmPayment}, c)
 	}
 }

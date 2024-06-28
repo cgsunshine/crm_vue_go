@@ -90,11 +90,43 @@ func (crmOrderApi *CrmOrderApi) DeleteCrmOrderByIds(c *gin.Context) {
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"更新成功"}"
 // @Router /crmOrder/updateCrmOrder [put]
 func (crmOrderApi *CrmOrderApi) UpdateCrmOrder(c *gin.Context) {
-	var crmOrder crm.CrmOrder
-	err := c.ShouldBindJSON(&crmOrder)
+
+	var crmPageOrder crm.CrmReqOrder
+	err := c.ShouldBindJSON(&crmPageOrder)
 	if err != nil {
 		response.FailWithMessage(err.Error(), c)
 		return
+	}
+
+	crmPageOrder.UserId = comm.GetHeaderUserId(c)
+
+	//crmPageOrder.ReviewStatus = comm.Approval_Status_Pending
+
+	if crmPageOrder.ProductIds != nil {
+		err = crmOrderService.SetOrderProducts(crmPageOrder.ID, crmPageOrder.ProductIds)
+		if err != nil {
+			global.GVA_LOG.Error("修改失败!", zap.Error(err))
+			response.FailWithMessage("修改失败", c)
+			return
+		}
+	}
+
+	crmOrder := crm.CrmOrder{
+		GVA_MODEL:                crmPageOrder.GVA_MODEL,
+		Currency:                 crmPageOrder.Currency,
+		CustomerId:               crmPageOrder.CustomerId,
+		Description:              crmPageOrder.Description,
+		DiscountRate:             crmPageOrder.DiscountRate,
+		Amount:                   crmPageOrder.Amount,
+		SalesPrice:               crmPageOrder.SalesPrice,
+		UserId:                   crmPageOrder.UserId,
+		ContactId:                crmPageOrder.ContactId,
+		SupplementaryInformation: crmPageOrder.SupplementaryInformation,
+		OrderName:                crmPageOrder.OrderName,
+		ReviewStatus:             crmPageOrder.ReviewStatus,
+		CurrencyId:               crmPageOrder.CurrencyId,
+		OrderNumber:              crmPageOrder.OrderNumber,
+		BusinessOpportunityId:    crmPageOrder.BusinessOpportunityId,
 	}
 
 	if err := crmOrderService.UpdateCrmOrder(crmOrder); err != nil {
@@ -140,6 +172,8 @@ func (crmOrderApi *CrmOrderApi) GetCrmOrderList(c *gin.Context) {
 		response.FailWithMessage(err.Error(), c)
 		return
 	}
+
+	pageInfo.UserId = GetSearchUserId(pageInfo.UserId, c)
 	if list, total, err := crmOrderService.GetCrmOrderInfoList(pageInfo); err != nil {
 		global.GVA_LOG.Error("获取失败!", zap.Error(err))
 		response.FailWithMessage("获取失败", c)

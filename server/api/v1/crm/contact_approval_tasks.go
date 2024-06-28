@@ -29,9 +29,6 @@ func (crmContactApprovalTasksApi *CrmContactApprovalTasksApi) CreateCrmMultipleC
 		return
 	}
 
-	//userID, _ := strconv.Atoi(c.GetHeader("X-User-Id"))
-	//crmContactApprovalTasks.AssigneeId = userID
-
 	contact, err := crmContractService.GetCrmContract(strconv.Itoa(*crmContactApprovalTasks.ContactId))
 	if err != nil {
 		response.FailWithMessage(err.Error(), c)

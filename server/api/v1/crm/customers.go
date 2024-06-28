@@ -8,7 +8,6 @@ import (
 	crmReq "github.com/flipped-aurora/gin-vue-admin/server/model/crm/request"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
-	"strconv"
 )
 
 // GetPageCrmCustomersList 分页获取客户管理列表
@@ -28,9 +27,39 @@ func (crmCustomersApi *CrmCustomersApi) GetCrmPageCustomersList(c *gin.Context) 
 		return
 	}
 
-	userID, _ := strconv.Atoi(c.GetHeader("X-User-Id"))
+	pageInfo.UserId = GetSearchUserId(pageInfo.UserId, c)
 
-	pageInfo.UserId = userService.FindUserDataStatusById(&userID)
+	if list, total, err := crmCustomersService.GetPageCrmCustomersInfoList(pageInfo); err != nil {
+		global.GVA_LOG.Error("获取失败!", zap.Error(err))
+		response.FailWithMessage("获取失败", c)
+	} else {
+		response.OkWithDetailed(response.PageResult{
+			List:     list,
+			Total:    total,
+			Page:     pageInfo.Page,
+			PageSize: pageInfo.PageSize,
+		}, "获取成功", c)
+	}
+}
+
+// GetPageCrmCustomersList 分页获取客户管理列表所有用户
+// @Tags CrmCustomers
+// @Summary 分页获取客户管理列表
+// @Security ApiKeyAuth
+// @accept application/json
+// @Produce application/json
+// @Param data query crmReq.CrmCustomersSearch true "分页获取客户管理列表完整数据"
+// @Success 200 {string} string "{"success":true,"data":{},"msg":"获取成功"}"
+// @Router /crmCustomers/getPageCrmCustomersList [get]
+func (crmCustomersApi *CrmCustomersApi) GetCrmPageCustomersAllList(c *gin.Context) {
+	var pageInfo crmReq.CrmCustomersSearch
+	err := c.ShouldBindQuery(&pageInfo)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+
+	//pageInfo.UserId = GetSearchUserId(pageInfo.UserId, c)
 
 	if list, total, err := crmCustomersService.GetPageCrmCustomersInfoList(pageInfo); err != nil {
 		global.GVA_LOG.Error("获取失败!", zap.Error(err))

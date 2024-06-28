@@ -9,6 +9,7 @@ import (
 	"github.com/flipped-aurora/gin-vue-admin/server/service"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
+	"time"
 )
 
 type CrmPaymentCollentionApi struct {
@@ -33,12 +34,23 @@ func (crmPaymentCollentionApi *CrmPaymentCollentionApi) CreateCrmPaymentCollenti
 		return
 	}
 
+	t := time.Now()
+
 	crmPaymentCollention.UserId = comm.GetHeaderUserId(c)
+	crmPaymentCollention.PaymentTime = &t
 
 	if err := crmPaymentCollentionService.CreateCrmPaymentCollention(&crmPaymentCollention); err != nil {
 		global.GVA_LOG.Error("创建失败!", zap.Error(err))
 		response.FailWithMessage("创建失败", c)
 	} else {
+		err = crmBillService.UpdAssOrderID(crmPaymentCollention.OrderId, map[string]interface{}{
+			"payment_collention_id": crmPaymentCollention.ID,
+		})
+		if err != nil {
+			global.GVA_LOG.Error("创建失败!", zap.Error(err))
+			response.FailWithMessage("创建失败", c)
+			return
+		}
 		response.OkWithMessage("创建成功", c)
 	}
 }
@@ -58,8 +70,16 @@ func (crmPaymentCollentionApi *CrmPaymentCollentionApi) DeleteCrmPaymentCollenti
 		global.GVA_LOG.Error("删除失败!", zap.Error(err))
 		response.FailWithMessage("删除失败", c)
 	} else {
-		response.OkWithMessage("删除成功", c)
+
+		//关联删除审批
+		err := crmApprovalTasksService.DelCrmAssociatedIdApprovalTasks(ID, comm.PaymentCollentionApprovalType)
+		if err != nil {
+			global.GVA_LOG.Error("删除失败!", zap.Error(err))
+			response.FailWithMessage("删除失败", c)
+		}
+
 	}
+	response.OkWithMessage("删除成功", c)
 }
 
 // DeleteCrmPaymentCollentionByIds 批量删除crmPaymentCollention表
@@ -120,6 +140,11 @@ func (crmPaymentCollentionApi *CrmPaymentCollentionApi) FindCrmPaymentCollention
 		global.GVA_LOG.Error("查询失败!", zap.Error(err))
 		response.FailWithMessage("查询失败", c)
 	} else {
+		recrmPaymentCollention.Proof, _, err = fileUploadAndDownloadService.GetFileRecordInfoIdsString(recrmPaymentCollention.Proof)
+		if err != nil {
+			global.GVA_LOG.Error("查询失败!", zap.Error(err))
+			response.FailWithMessage("查询失败", c)
+		}
 		response.OkWithData(gin.H{"recrmPaymentCollention": recrmPaymentCollention}, c)
 	}
 }
@@ -140,6 +165,8 @@ func (crmPaymentCollentionApi *CrmPaymentCollentionApi) GetCrmPaymentCollentionL
 		response.FailWithMessage(err.Error(), c)
 		return
 	}
+
+	pageInfo.UserId = GetSearchUserId(pageInfo.UserId, c)
 	if list, total, err := crmPaymentCollentionService.GetCrmPaymentCollentionInfoList(pageInfo); err != nil {
 		global.GVA_LOG.Error("获取失败!", zap.Error(err))
 		response.FailWithMessage("获取失败", c)

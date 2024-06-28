@@ -33,12 +33,23 @@ func (crmOrderService *CrmOrderService) GetCrmPageOrderInfoList(info crmReq.CrmO
 	if info.ProductId != "" {
 		db = db.Where(crmOrderService.SplicingQueryConditions("product_id = ?"), info.ProductId)
 	}
+
 	if info.SalesPrice != nil {
 		db = db.Where(crmOrderService.SplicingQueryConditions("sales_price = ?"), info.SalesPrice)
 	}
+
 	if info.UserId != nil {
 		db = db.Where(crmOrderService.SplicingQueryConditions("user_id = ?"), info.UserId)
 	}
+
+	if info.OrderName != "" {
+		db = db.Where(crmOrderService.SplicingQueryConditions("order_name LIKE ?"), "%"+info.OrderName+"%")
+	}
+
+	if info.ReviewStatus != "" {
+		db = db.Where(crmOrderService.SplicingQueryConditions("review_status = ?"), info.ReviewStatus)
+	}
+
 	err = db.Count(&total).Error
 	if err != nil {
 		return
@@ -48,10 +59,12 @@ func (crmOrderService *CrmOrderService) GetCrmPageOrderInfoList(info crmReq.CrmO
 		db = db.Limit(limit).Offset(offset)
 	}
 
-	err = db.Select("crm_order.*,crm_product.product_name,crm_customers.customer_name,sys_users.username").
+	err = db.Select("crm_order.*,crm_product.product_name,crm_customers.customer_name,sys_users.username,crm_business_opportunity.business_opportunity_name").
 		Joins("LEFT JOIN sys_users ON sys_users.id = crm_order.user_id").
 		Joins("LEFT JOIN crm_customers ON crm_customers.id = crm_order.customer_id").
 		Joins("LEFT JOIN crm_product ON crm_product.id = crm_order.product_id").
+		Joins("LEFT JOIN crm_business_opportunity ON crm_business_opportunity.id = crm_order.business_opportunity_id").
+		Preload("Products").
 		Find(&crmOrders).Error
 	return crmOrders, total, err
 }
@@ -60,11 +73,20 @@ func (crmOrderService *CrmOrderService) GetCrmPageOrderInfoList(info crmReq.CrmO
 // Author [piexlmax](https://github.com/piexlmax)
 func (crmOrderService *CrmOrderService) GetCrmPageOrder(ID string) (crmOrder crm.CrmPageOrder, err error) {
 	err = global.GVA_DB.Model(&crm.CrmOrder{}).Where("crm_order.id = ?", ID).
-		Select("crm_order.*,crm_product.product_name,crm_customers.customer_name,sys_users.username").
+		Select("crm_order.*,crm_product.product_name,crm_customers.customer_name,sys_users.username,crm_business_opportunity.business_opportunity_name").
 		Joins("LEFT JOIN sys_users ON sys_users.id = crm_order.user_id").
 		Joins("LEFT JOIN crm_customers ON crm_customers.id = crm_order.customer_id").
 		Joins("LEFT JOIN crm_product ON crm_product.id = crm_order.product_id").
+		Joins("LEFT JOIN crm_business_opportunity ON crm_business_opportunity.id = crm_order.business_opportunity_id").
+		Preload("Products").
 		First(&crmOrder).Error
+	return
+}
+
+// GetCrmOrder 根据ID获取crmOrder表记录
+// Author [piexlmax](https://github.com/piexlmax)
+func (crmOrderService *CrmOrderService) GetCrmOrderId(ID *int) (crmOrder crm.CrmOrder, err error) {
+	err = global.GVA_DB.Where("id = ?", ID).First(&crmOrder).Error
 	return
 }
 
@@ -79,4 +101,30 @@ func (crmOrderService *CrmOrderService) UpdApprovalStatus(ID *int, data map[stri
 // SplicingQueryConditions 拼接条件
 func (crmOrderService *CrmOrderService) SplicingQueryConditions(condition string) string {
 	return "crm_order." + condition
+}
+
+//@author: [piexlmax](https://github.com/piexlmax)
+//@function: SetOrderProducts
+//@description: 设置一个订单的产品
+//@param: id uint, authorityIds []string
+//@return: err error
+
+func (crmOrderService *CrmOrderService) SetOrderProducts(id uint, productIds []uint) (err error) {
+	db := global.GVA_DB.Model(&crm.CrmOrderProduct{})
+	err = db.Delete(&[]crm.CrmOrderProduct{}, "order_id = ?", id).Error
+	if err != nil {
+		return
+	}
+
+	var orderProduct []crm.CrmOrderProduct
+	for _, v := range productIds {
+		orderProduct = append(orderProduct, crm.CrmOrderProduct{
+			OrderId: id, ProductId: v,
+		})
+	}
+	err = db.Create(&orderProduct).Error
+	if err != nil {
+		return
+	}
+	return
 }

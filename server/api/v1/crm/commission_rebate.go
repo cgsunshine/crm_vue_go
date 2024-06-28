@@ -6,7 +6,6 @@ import (
 	crmReq "github.com/flipped-aurora/gin-vue-admin/server/model/crm/request"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
-	"strconv"
 )
 
 // GetCrmCommissionRebateList 分页获取crmCommissionRebate表列表
@@ -25,9 +24,8 @@ func (crmCommissionRebateApi *CrmCommissionRebateApi) GetCrmPageCommissionRebate
 		response.FailWithMessage(err.Error(), c)
 		return
 	}
-	userID, _ := strconv.Atoi(c.GetHeader("X-User-Id"))
 
-	pageInfo.UserId = userService.FindUserDataStatusById(&userID)
+	pageInfo.UserId = GetSearchUserId(pageInfo.UserId, c)
 	if list, total, err := crmCommissionRebateService.GetCrmPageCommissionRebateInfoList(pageInfo); err != nil {
 		global.GVA_LOG.Error("获取失败!", zap.Error(err))
 		response.FailWithMessage("获取失败", c)

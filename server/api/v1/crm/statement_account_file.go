@@ -19,7 +19,7 @@ import (
 // @accept    multipart/form-data
 // @Produce   application/json
 // @Param     file  formData  file                                                           true  "上传文件示例"
-// @Success   200   {object}  response.Response{data=exampleRes.ExaFileResponse,msg=string}  "上传文件示例,返回包括文件详情"
+// @Success   200   {object}  response.Response{data=crmRes.CrmStatementAccountResponse,msg=string}  "上传文件示例,返回包括文件详情"
 // @Router    /fileUploadAndDownload/upload [post]
 func (b *CrmStatementAccountFileApi) UploadFile(c *gin.Context) {
 	var file crm.CrmStatementAccountFile
@@ -53,7 +53,7 @@ func (b *CrmStatementAccountFileApi) UploadFile(c *gin.Context) {
 // @accept    multipart/form-data
 // @Produce   application/json
 // @Param     file  formData  file                                                           true  "上传文件示例"
-// @Success   200   {object}  response.Response{data=exampleRes.ExaFileResponse,msg=string}  "上传文件示例,返回包括文件详情"
+// @Success   200   "file"  "上传文件示例,返回包括文件详情"
 // @Router    /fileUploadAndDownload/upload [post]
 func (CrmContactFileApi *CrmStatementAccountFileApi) DownloadFile(c *gin.Context) {
 
@@ -71,5 +71,4 @@ func (CrmContactFileApi *CrmStatementAccountFileApi) DownloadFile(c *gin.Context
 	c.Header("Content-Disposition", fmt.Sprintf("attachment; filename=%s", file_name)) // 对下载的文件重命名
 	c.Header("success", "true")
 	c.Data(http.StatusOK, "application/octet-stream", file)
-
 }

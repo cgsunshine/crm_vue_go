@@ -35,6 +35,8 @@ func (crmBillApi *CrmBillApi) CreateCrmBill(c *gin.Context) {
 
 	crmBill.UserId = comm.GetHeaderUserId(c)
 
+	crmBill.PaymentStatus = comm.PaymentStatusUnpaid
+
 	if err := crmBillService.CreateCrmBill(&crmBill); err != nil {
 		global.GVA_LOG.Error("创建失败!", zap.Error(err))
 		response.FailWithMessage("创建失败", c)
@@ -116,7 +118,7 @@ func (crmBillApi *CrmBillApi) UpdateCrmBill(c *gin.Context) {
 // @Router /crmBill/findCrmBill [get]
 func (crmBillApi *CrmBillApi) FindCrmBill(c *gin.Context) {
 	ID := c.Query("ID")
-	if recrmBill, err := crmBillService.GetCrmBill(ID); err != nil {
+	if recrmBill, err := crmBillService.GetCrmPageIdBill(ID); err != nil {
 		global.GVA_LOG.Error("查询失败!", zap.Error(err))
 		response.FailWithMessage("查询失败", c)
 	} else {

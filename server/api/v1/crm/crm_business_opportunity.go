@@ -26,14 +26,28 @@ var crmBusinessOpportunityService = service.ServiceGroupApp.CrmServiceGroup.CrmB
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"创建成功"}"
 // @Router /crmBusinessOpportunity/createCrmBusinessOpportunity [post]
 func (crmBusinessOpportunityApi *CrmBusinessOpportunityApi) CreateCrmBusinessOpportunity(c *gin.Context) {
-	var crmBusinessOpportunity crm.CrmBusinessOpportunity
-	err := c.ShouldBindJSON(&crmBusinessOpportunity)
+	var req crmReq.CrmBusinessOpportunity
+	err := c.ShouldBindJSON(&req)
 	if err != nil {
 		response.FailWithMessage(err.Error(), c)
 		return
 	}
 
-	crmBusinessOpportunity.UserId = comm.GetHeaderUserId(c)
+	req.UserId = comm.GetHeaderUserId(c)
+
+	crmBusinessOpportunity := crm.CrmBusinessOpportunity{
+		Amount:                  req.Amount,
+		BusinessOpportunityName: req.BusinessOpportunityName,
+		CustomerId:              req.CustomerId,
+		Description:             req.Description,
+		InputTime:               req.InputTime,
+		OfferValidityPeriod:     req.OfferValidityPeriod,
+		//ProductId:               req.CreatedAt,
+		Status:       req.Status,
+		UserId:       req.UserId,
+		ReviewStatus: req.ReviewStatus,
+		Currency:     req.Currency,
+	}
 
 	if err := crmBusinessOpportunityService.CreateCrmBusinessOpportunity(&crmBusinessOpportunity); err != nil {
 		global.GVA_LOG.Error("创建失败!", zap.Error(err))
@@ -58,8 +72,15 @@ func (crmBusinessOpportunityApi *CrmBusinessOpportunityApi) DeleteCrmBusinessOpp
 		global.GVA_LOG.Error("删除失败!", zap.Error(err))
 		response.FailWithMessage("删除失败", c)
 	} else {
-		response.OkWithMessage("删除成功", c)
+		//关联删除审批
+		err := crmApprovalTasksService.DelCrmAssociatedIdApprovalTasks(ID, comm.BusinessOpportunityApprovalType)
+		if err != nil {
+			global.GVA_LOG.Error("删除失败!", zap.Error(err))
+			response.FailWithMessage("删除失败", c)
+		}
 	}
+
+	response.OkWithMessage("删除成功", c)
 }
 
 // DeleteCrmBusinessOpportunityByIds 批量删除商机管理
@@ -90,11 +111,35 @@ func (crmBusinessOpportunityApi *CrmBusinessOpportunityApi) DeleteCrmBusinessOpp
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"更新成功"}"
 // @Router /crmBusinessOpportunity/updateCrmBusinessOpportunity [put]
 func (crmBusinessOpportunityApi *CrmBusinessOpportunityApi) UpdateCrmBusinessOpportunity(c *gin.Context) {
-	var crmBusinessOpportunity crm.CrmBusinessOpportunity
-	err := c.ShouldBindJSON(&crmBusinessOpportunity)
+	var req crm.CrmReqBusinessOpportunity
+	err := c.ShouldBindJSON(&req)
 	if err != nil {
 		response.FailWithMessage(err.Error(), c)
 		return
+	}
+
+	if req.Products != nil {
+		err = crmBusinessOpportunityService.SetBusinessOpportunityProducts(req.ID, req.ProductIds)
+		if err != nil {
+			global.GVA_LOG.Error("修改失败!", zap.Error(err))
+			response.FailWithMessage("修改失败", c)
+			return
+		}
+	}
+
+	crmBusinessOpportunity := crm.CrmBusinessOpportunity{
+		GVA_MODEL:               req.GVA_MODEL,
+		Amount:                  req.Amount,
+		BusinessOpportunityName: req.BusinessOpportunityName,
+		CustomerId:              req.CustomerId,
+		Description:             req.Description,
+		InputTime:               req.InputTime,
+		OfferValidityPeriod:     req.OfferValidityPeriod,
+		//ProductId:               req.CreatedAt,
+		Status:       req.Status,
+		UserId:       req.UserId,
+		ReviewStatus: req.ReviewStatus,
+		Currency:     req.Currency,
 	}
 
 	if err := crmBusinessOpportunityService.UpdateCrmBusinessOpportunity(crmBusinessOpportunity); err != nil {

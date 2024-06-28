@@ -25,10 +25,6 @@ func (crmProductApi *CrmProductApi) GetCrmPageProductList(c *gin.Context) {
 		return
 	}
 
-	//userID, _ := strconv.Atoi(c.GetHeader("X-User-Id"))
-	//
-	//pageInfo.UserId = userService.FindUserDataStatusById(&userID)
-
 	if list, total, err := crmProductService.GetCrmPageProductInfoList(pageInfo); err != nil {
 		global.GVA_LOG.Error("获取失败!", zap.Error(err))
 		response.FailWithMessage("获取失败", c)

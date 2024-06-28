@@ -190,3 +190,27 @@ func (b *FileUploadAndDownloadApi) GetFileList(c *gin.Context) {
 		PageSize: pageInfo.PageSize,
 	}, "获取成功", c)
 }
+
+// GetFileIdsList
+// @Tags      ExaFileUploadAndDownload
+// @Summary   分页文件列表
+// @Security  ApiKeyAuth
+// @accept    application/json
+// @Produce   application/json
+// @Param     data  body      request.PageInfo                                        true  "页码, 每页大小"
+// @Success   200   {object}  response.Response{data=response.PageResult,msg=string}  "分页文件列表,返回包括列表,总数,页码,每页数量"
+// @Router    /fileUploadAndDownload/getFileList [get]
+func (b *FileUploadAndDownloadApi) GetFileIdsList(c *gin.Context) {
+	IDs := c.Query("ids")
+
+	list, _, err := fileUploadAndDownloadService.GetFileRecordInfoIdsList(IDs)
+	if err != nil {
+		global.GVA_LOG.Error("获取失败!", zap.Error(err))
+		response.FailWithMessage("获取失败", c)
+		return
+	}
+
+	response.OkWithDetailed(response.Response{
+		Data: list,
+	}, "获取成功", c)
+}

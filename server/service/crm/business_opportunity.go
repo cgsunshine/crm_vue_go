@@ -43,6 +43,11 @@ func (crmBusinessOpportunityService *CrmBusinessOpportunityService) GetPageCrmBu
 	if info.UserId != nil {
 		db = db.Where(crmBusinessOpportunityService.SplicingQueryConditions("user_id = ?"), info.UserId)
 	}
+
+	if info.ReviewStatus != "" {
+		db = db.Where(crmBusinessOpportunityService.SplicingQueryConditions("review_status = ?"), info.ReviewStatus)
+	}
+
 	err = db.Count(&total).Error
 	if err != nil {
 		return
@@ -55,7 +60,9 @@ func (crmBusinessOpportunityService *CrmBusinessOpportunityService) GetPageCrmBu
 	err = db.Select("crm_business_opportunity.*,sys_users.username,crm_product.product_name,crm_customers.customer_name").
 		Joins("LEFT JOIN crm_customers ON crm_business_opportunity.customer_id = crm_customers.id").
 		Joins("LEFT JOIN sys_users ON crm_customers.user_id = sys_users.id").
-		Joins("LEFT JOIN crm_product ON crm_business_opportunity.product_id = crm_product.id").Find(&crmBusinessOpportunitys).Error
+		Joins("LEFT JOIN crm_product ON crm_business_opportunity.product_id = crm_product.id").
+		Preload("Products").
+		Find(&crmBusinessOpportunitys).Error
 	return crmBusinessOpportunitys, total, err
 }
 
@@ -67,6 +74,7 @@ func (crmBusinessOpportunityService *CrmBusinessOpportunityService) GetCrmPageBu
 		Joins("LEFT JOIN crm_customers ON crm_business_opportunity.customer_id = crm_customers.id").
 		Joins("LEFT JOIN sys_users ON crm_customers.user_id = sys_users.id").
 		Joins("LEFT JOIN crm_product ON crm_business_opportunity.product_id = crm_product.id").
+		Preload("Products").
 		First(&crmBusinessOpportunity).Error
 	return
 }
@@ -74,7 +82,7 @@ func (crmBusinessOpportunityService *CrmBusinessOpportunityService) GetCrmPageBu
 // UpdApprovalStatus 修改审批状态
 // Author [piexlmax](https://github.com/piexlmax)
 func (crmBusinessOpportunityService *CrmBusinessOpportunityService) UpdApprovalStatus(ID *int, data map[string]interface{}) (err error) {
-	db := global.GVA_DB.Model(&crm.CrmContract{})
+	db := global.GVA_DB.Model(&crm.CrmBusinessOpportunity{})
 	err = db.Where("id = ?", ID).Updates(data).Error
 	return
 }
@@ -82,4 +90,30 @@ func (crmBusinessOpportunityService *CrmBusinessOpportunityService) UpdApprovalS
 // SplicingQueryConditions 拼接条件
 func (crmBusinessOpportunityService *CrmBusinessOpportunityService) SplicingQueryConditions(condition string) string {
 	return "crm_business_opportunity." + condition
+}
+
+//@author: [piexlmax](https://github.com/piexlmax)
+//@function: SetOrderProducts
+//@description: 设置一个商机的产品
+//@param: id uint, authorityIds []string
+//@return: err error
+
+func (crmBusinessOpportunityService *CrmBusinessOpportunityService) SetBusinessOpportunityProducts(id uint, productIds []uint) (err error) {
+	db := global.GVA_DB.Model(&crm.CrmBusinessOpportunityProduct{})
+	err = db.Delete(&[]crm.CrmBusinessOpportunityProduct{}, "business_opportunity_id = ?", id).Error
+	if err != nil {
+		return
+	}
+
+	var orderProduct []crm.CrmBusinessOpportunityProduct
+	for _, v := range productIds {
+		orderProduct = append(orderProduct, crm.CrmBusinessOpportunityProduct{
+			BusinessOpportunityId: id, ProductId: v,
+		})
+	}
+	err = db.Create(&orderProduct).Error
+	if err != nil {
+		return
+	}
+	return
 }

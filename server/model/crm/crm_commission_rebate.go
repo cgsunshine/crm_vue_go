@@ -13,7 +13,8 @@ type CrmCommissionRebate struct {
 	Payee         string   `json:"payee" form:"payee" gorm:"column:payee;comment:收款人;size:191;" `                          //收款人
 	PaymentMethod string   `json:"paymentMethod" form:"paymentMethod" gorm:"column:payment_method;comment:收款方式;size:191;"` //收款方式
 	Account       string   `json:"account" form:"account" gorm:"column:account;comment:账户;size:191;"`                      //账户
-	Amount        *float64 `json:"amount" form:"amount" gorm:"column:amount;comment:金额;" binding:"required"`               //金额
+	Amount        *float64 `json:"amount" form:"amount" gorm:"column:amount;comment:金额;"`                                  //金额
+	Currency      string   `json:"currency" form:"currency" gorm:"column:currency;comment:币种;size:11;"`                    //币种
 	RebateDetails string   `json:"rebateDetails" form:"rebateDetails" gorm:"column:rebate_details;comment:返利详情;size:191;"` //返利详情
 }
 

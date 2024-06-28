@@ -56,36 +56,7 @@ func (crmBillService *CrmBillService) GetCrmBillInfoList(info crmReq.CrmBillSear
 	if info.StartCreatedAt != nil && info.EndCreatedAt != nil {
 		db = db.Where("created_at BETWEEN ? AND ?", info.StartCreatedAt, info.EndCreatedAt)
 	}
-	if info.Amount != nil {
-		db = db.Where("amount = ?", info.Amount)
-	}
-	if info.Currency != "" {
-		db = db.Where("currency = ?", info.Currency)
-	}
-	if info.CustomerId != nil {
-		db = db.Where("customer_id = ?", info.CustomerId)
-	}
-	if info.StartExpirationTime != nil && info.EndExpirationTime != nil {
-		db = db.Where("expiration_time BETWEEN ? AND ? ", info.StartExpirationTime, info.EndExpirationTime)
-	}
-	if info.OrderId != nil {
-		db = db.Where("order_id = ?", info.OrderId)
-	}
-	if info.PaymentCollention != nil {
-		db = db.Where("payment_collention = ?", info.PaymentCollention)
-	}
-	if info.PaymentStatus != "" {
-		db = db.Where("payment_status = ?", info.PaymentStatus)
-	}
-	if info.StartPaymentTime != nil && info.EndPaymentTime != nil {
-		db = db.Where("payment_time BETWEEN ? AND ? ", info.StartPaymentTime, info.EndPaymentTime)
-	}
-	if info.PaymentType != "" {
-		db = db.Where("payment_type = ?", info.PaymentType)
-	}
-	if info.UserId != nil {
-		db = db.Where("user_id = ?", info.UserId)
-	}
+
 	err = db.Count(&total).Error
 	if err != nil {
 		return

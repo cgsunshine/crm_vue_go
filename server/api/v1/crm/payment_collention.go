@@ -9,7 +9,7 @@ import (
 	"github.com/flipped-aurora/gin-vue-admin/server/utils"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
-	"strconv"
+	"time"
 )
 
 // GetCrmPaymentCollentionList 分页获取crmPaymentCollention表列表
@@ -29,9 +29,7 @@ func (crmPaymentCollentionApi *CrmPaymentCollentionApi) GetCrmPagePaymentCollent
 		return
 	}
 
-	userID, _ := strconv.Atoi(c.GetHeader("X-User-Id"))
-
-	pageInfo.UserId = userService.FindUserDataStatusById(&userID)
+	pageInfo.UserId = GetSearchUserId(pageInfo.UserId, c)
 
 	if list, total, err := crmPaymentCollentionService.GetCrmPagePaymentCollentionInfoList(pageInfo); err != nil {
 		global.GVA_LOG.Error("获取失败!", zap.Error(err))
@@ -61,6 +59,11 @@ func (crmPaymentCollentionApi *CrmPaymentCollentionApi) FindCrmPagePaymentCollen
 		global.GVA_LOG.Error("查询失败!", zap.Error(err))
 		response.FailWithMessage("查询失败", c)
 	} else {
+		recrmPaymentCollention.Proof, _, err = fileUploadAndDownloadService.GetFileRecordInfoIdsString(recrmPaymentCollention.Proof)
+		if err != nil {
+			global.GVA_LOG.Error("查询失败!", zap.Error(err))
+			response.FailWithMessage("查询失败", c)
+		}
 		response.OkWithData(gin.H{"recrmPaymentCollention": recrmPaymentCollention}, c)
 	}
 }
@@ -81,6 +84,9 @@ func (crmPaymentCollentionApi *CrmPaymentCollentionApi) CreateCrmPagePaymentColl
 		response.FailWithMessage(err.Error(), c)
 		return
 	}
+	t := time.Now()
+	crmPaymentCollention.UserId = comm.GetHeaderUserId(c)
+	crmPaymentCollention.PaymentTime = &t
 
 	crmPaymentCollention.UserId = comm.GetHeaderUserId(c)
 
@@ -104,6 +110,16 @@ func (crmPaymentCollentionApi *CrmPaymentCollentionApi) CreateCrmPagePaymentColl
 	if err := crmPaymentCollentionService.CreateCrmPaymentCollention(&crmPaymentCollention); err != nil {
 		global.GVA_LOG.Error("创建失败!", zap.Error(err))
 		response.FailWithMessage("创建失败", c)
+	}
+
+	err = crmBillService.UpdAssOrderID(crmPaymentCollention.OrderId, map[string]interface{}{
+		"payment_collention_id": crmPaymentCollention.ID,
+	})
+
+	if err != nil {
+		global.GVA_LOG.Error("创建失败!", zap.Error(err))
+		response.FailWithMessage("创建失败", c)
+		return
 	}
 
 	paymentCollentionId := int(crmPaymentCollention.ID)

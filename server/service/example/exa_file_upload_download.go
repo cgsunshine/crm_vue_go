@@ -2,7 +2,9 @@ package example
 
 import (
 	"errors"
+	"fmt"
 	"mime/multipart"
+	"strconv"
 	"strings"
 
 	"github.com/flipped-aurora/gin-vue-admin/server/global"
@@ -17,7 +19,7 @@ import (
 //@param: file model.ExaFileUploadAndDownload
 //@return: error
 
-func (e *FileUploadAndDownloadService) Upload(file example.ExaFileUploadAndDownload) error {
+func (e *FileUploadAndDownloadService) Upload(file *example.ExaFileUploadAndDownload) error {
 	return global.GVA_DB.Create(&file).Error
 }
 
@@ -102,7 +104,7 @@ func (e *FileUploadAndDownloadService) UploadFile(header *multipart.FileHeader, 
 		Key:  key,
 	}
 	if noSave == "0" {
-		return f, e.Upload(f)
+		return f, e.Upload(&f)
 	}
 	return f, nil
 }
@@ -120,11 +122,64 @@ func (e *FileUploadAndDownloadService) GetFileRecordInfoIdsList(ids string) (fil
 	//if len(keyword) > 0 {
 	//	db = db.Where("name LIKE ?", "%"+keyword+"%")
 	//}
-	db.Where("id in (?)", ids)
+
+	// 将字符串转换为整数切片
+	var idList []uint
+	for _, idStr := range strings.Split(ids, ",") {
+		id, err := strconv.ParseUint(idStr, 10, 32)
+		if err != nil {
+			fmt.Println("Error parsing ID:", err)
+			continue
+		}
+		idList = append(idList, uint(id))
+	}
+	db.Where("id in (?)", idList)
 	err = db.Count(&total).Error
 	if err != nil {
 		return
 	}
-	err = db.Order("updated_at desc").Find(&fileLists).Error
+
+	err = db.Order("updated_at desc").Debug().Find(&fileLists).Error
 	return fileLists, total, err
+}
+
+//@author: [piexlmax](https://github.com/piexlmax)
+//@function: GetFileRecordInfoIdsString
+//@description: 分通过ids 获取图片
+//@param: info request.PageInfo
+//@return: list interface{}, total int64, err error
+
+func (e *FileUploadAndDownloadService) GetFileRecordInfoIdsString(ids string) (img string, total int64, err error) {
+
+	db := global.GVA_DB.Model(&example.ExaFileUploadAndDownload{})
+	//var fileLists []example.ExaFileUploadAndDownload
+	//if len(keyword) > 0 {
+	//	db = db.Where("name LIKE ?", "%"+keyword+"%")
+	//}
+
+	// 将字符串转换为整数切片
+	var idList []uint
+	for _, idStr := range strings.Split(ids, ",") {
+		id, err := strconv.ParseUint(idStr, 10, 32)
+		if err != nil {
+			fmt.Println("Error parsing ID:", err)
+			continue
+		}
+		idList = append(idList, uint(id))
+	}
+	db.Where("id in (?)", idList)
+	err = db.Count(&total).Error
+	if err != nil {
+		return
+	}
+
+	fileLists := make([]example.ExaFileUploadAndDownload, 0)
+
+	err = db.Order("updated_at desc").Debug().Find(&fileLists).Error
+	result := make([]string, len(fileLists))
+	for i, list := range fileLists {
+		result[i] = list.Url
+	}
+	img = strings.Join(result, ",")
+	return img, total, err
 }

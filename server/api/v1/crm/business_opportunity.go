@@ -9,10 +9,9 @@ import (
 	"github.com/flipped-aurora/gin-vue-admin/server/utils"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
-	"strconv"
 )
 
-// GetCrmBusinessOpportunityList 分页获取crmBusinessOpportunity表列表
+// GetCrmPageBusinessOpportunityList 分页获取crmBusinessOpportunity表列表
 // @Tags CrmBusinessOpportunity
 // @Summary 分页获取crmBusinessOpportunity表列表
 // @Security ApiKeyAuth
@@ -29,9 +28,7 @@ func (crmBusinessOpportunityApi *CrmBusinessOpportunityApi) GetCrmPageBusinessOp
 		return
 	}
 
-	userID, _ := strconv.Atoi(c.GetHeader("X-User-Id"))
-
-	pageInfo.UserId = userService.FindUserDataStatusById(&userID)
+	pageInfo.UserId = GetSearchUserId(pageInfo.UserId, c)
 	if list, total, err := crmBusinessOpportunityService.GetPageCrmBusinessOpportunityInfoList(pageInfo); err != nil {
 		global.GVA_LOG.Error("获取失败!", zap.Error(err))
 		response.FailWithMessage("获取失败", c)
@@ -74,16 +71,40 @@ func (crmBusinessOpportunityApi *CrmBusinessOpportunityApi) FindCrmPageBusinessO
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"创建成功"}"
 // @Router /crmBusinessOpportunity/createCrmBusinessOpportunity [post]
 func (crmBusinessOpportunityApi *CrmBusinessOpportunityApi) CreateCrmPageBusinessOpportunity(c *gin.Context) {
-	var crmBusinessOpportunity crm.CrmBusinessOpportunity
-	err := c.ShouldBindJSON(&crmBusinessOpportunity)
+
+	var req crmReq.CrmBusinessOpportunity
+	err := c.ShouldBindJSON(&req)
 	if err != nil {
 		response.FailWithMessage(err.Error(), c)
 		return
 	}
 
-	userID, _ := strconv.Atoi(c.GetHeader("X-User-Id"))
+	req.UserId = comm.GetHeaderUserId(c)
 
-	crmBusinessOpportunity.UserId = &userID
+	var products []crm.CrmProduct
+	for _, v := range req.ProductIds {
+		products = append(products, crm.CrmProduct{
+			GVA_MODEL: global.GVA_MODEL{
+				ID: v,
+			},
+		})
+	}
+
+	crmBusinessOpportunity := crm.CrmBusinessOpportunity{
+		Amount:                  req.Amount,
+		BusinessOpportunityName: req.BusinessOpportunityName,
+		CustomerId:              req.CustomerId,
+		Description:             req.Description,
+		InputTime:               req.InputTime,
+		OfferValidityPeriod:     req.OfferValidityPeriod,
+		Status:                  req.Status,
+		UserId:                  req.UserId,
+		ReviewStatus:            req.ReviewStatus,
+		Currency:                req.Currency,
+		Products:                products,
+	}
+
+	crmBusinessOpportunity.UserId = comm.GetHeaderUserId(c)
 
 	crmBusinessOpportunity.ReviewStatus = comm.Approval_Status_Pending
 
@@ -128,28 +149,3 @@ func (crmBusinessOpportunityApi *CrmBusinessOpportunityApi) CreateCrmPageBusines
 
 	response.OkWithMessage("创建成功", c)
 }
-
-//// FindCrmFilePageBusinessOpportunity 用id查询商机管理 获取关联图片文件
-//// @Tags CrmBusinessOpportunity
-//// @Summary 用id查询商机管理
-//// @Security ApiKeyAuth
-//// @accept application/json
-//// @Produce application/json
-//// @Param data query crm.CrmBusinessOpportunity true "用id查询商机管理"
-//// @Success 200 {string} string "{"success":true,"data":{},"msg":"查询成功"}"
-//// @Router /crmBusinessOpportunity/findCrmBusinessOpportunity [get]
-//func (crmBusinessOpportunityApi *CrmBusinessOpportunityApi) FindCrmFilePageBusinessOpportunity(c *gin.Context) {
-//	ID := c.Query("ID")
-//	if recrmBusinessOpportunity, err := crmBusinessOpportunityService.GetCrmPageBusinessOpportunity(ID); err != nil {
-//		global.GVA_LOG.Error("查询失败!", zap.Error(err))
-//		response.FailWithMessage("查询失败", c)
-//	} else {
-//		//查询关联文件
-//		list, _, err := fileUploadAndDownloadService.GetFileRecordInfoIdsList(recrmBusinessOpportunity.)
-//		if err != nil {
-//			global.GVA_LOG.Error("查询失败!", zap.Error(err))
-//			response.FailWithMessage("查询失败", c)
-//		}
-//		response.OkWithData(gin.H{"recrmBusinessOpportunity": recrmBusinessOpportunity}, c)
-//	}
-//}

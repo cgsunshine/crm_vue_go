@@ -6,7 +6,6 @@ import (
 	crmReq "github.com/flipped-aurora/gin-vue-admin/server/model/crm/request"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
-	"strconv"
 )
 
 // GetCrmSupplierList 分页获取crmSupplier表列表
@@ -25,9 +24,8 @@ func (crmSupplierApi *CrmSupplierApi) GetCrmPageSupplierList(c *gin.Context) {
 		response.FailWithMessage(err.Error(), c)
 		return
 	}
-	userID, _ := strconv.Atoi(c.GetHeader("X-User-Id"))
 
-	pageInfo.UserId = userService.FindUserDataStatusById(&userID)
+	pageInfo.UserId = GetSearchUserId(pageInfo.UserId, c)
 
 	if list, total, err := crmSupplierService.GetCrmPageSupplierInfoList(pageInfo); err != nil {
 		global.GVA_LOG.Error("获取失败!", zap.Error(err))

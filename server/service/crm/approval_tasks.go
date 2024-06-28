@@ -53,6 +53,8 @@ func (crmApprovalTasksService *CrmApprovalTasksService) GetCrmContractApprovalTa
 
 	err = db.Select("crm_approval_tasks.*,crm_contract.contract_name").
 		Joins("LEFT JOIN crm_contract ON crm_contract.id = crm_approval_tasks.associated_id").
+		Debug().
+		Order("crm_approval_tasks.created_at DESC").
 		Find(&crmApprovalTaskss).Error
 	return crmApprovalTaskss, total, err
 }
@@ -78,6 +80,7 @@ func (crmApprovalTasksService *CrmApprovalTasksService) GetCrmBusinessOpportunit
 
 	err = db.Select("crm_approval_tasks.*,crm_business_opportunity.business_opportunity_name").
 		Joins("LEFT JOIN crm_business_opportunity ON crm_business_opportunity.id = crm_approval_tasks.associated_id").
+		Order("crm_approval_tasks.created_at DESC").
 		Find(&crmApprovalTaskss).Error
 	return crmApprovalTaskss, total, err
 }
@@ -103,6 +106,7 @@ func (crmApprovalTasksService *CrmApprovalTasksService) GetCrmPaymentCollentionA
 
 	err = db.Select("crm_approval_tasks.*,crm_payment_collention.payment_collention_name").
 		Joins("LEFT JOIN crm_payment_collention ON crm_payment_collention.id = crm_approval_tasks.associated_id").
+		Order("crm_approval_tasks.created_at DESC").
 		Find(&crmApprovalTaskss).Error
 	return crmApprovalTaskss, total, err
 }
@@ -128,6 +132,7 @@ func (crmApprovalTasksService *CrmApprovalTasksService) GetCrmOrderApprovalTasks
 
 	err = db.Select("crm_approval_tasks.*,crm_order.order_name").
 		Joins("LEFT JOIN crm_order ON crm_order.id = crm_approval_tasks.associated_id").
+		Order("crm_approval_tasks.created_at DESC").
 		Find(&crmApprovalTaskss).Error
 	return crmApprovalTaskss, total, err
 }
@@ -197,20 +202,19 @@ func (crmApprovalTasksService *CrmApprovalTasksService) GetCrmQueryApproved(asso
 
 // GetCrmQueryStepApproved 查询审核是否通过 再此步骤中，可能需要部分人他同意即可通过审批，具体看配置
 // Author [piexlmax](https://github.com/piexlmax)
-func (crmApprovalTasksService *CrmApprovalTasksService) GetCrmQueryStepApproved(associatedId, numberApprovedPersonnel int, approvalStatus string) (bool, error) {
+func (crmApprovalTasksService *CrmApprovalTasksService) GetCrmQueryStepApproved(associatedId, numberApprovedPersonnel int, approvalType int, approvalStatus string) (bool, error) {
 	total := int64(0)
 	//count := int64(0)
 	// 创建db
 	db := global.GVA_DB.Model(&crm.CrmApprovalTasks{})
 
-	db = db.Where("associated_id = ? AND valid = ?", associatedId, comm.Contact_Approval_Tasks_valid_Effective)
+	db = db.Where("associated_id = ? AND valid = ? AND approval_type = ?", associatedId, comm.Contact_Approval_Tasks_valid_Effective, approvalType)
+	db = db.Where("approval_status = ?", approvalStatus)
 
 	err := db.Count(&total).Error
 	if err != nil {
 		return false, err
 	}
-
-	db = db.Where("approval_status = ?", approvalStatus)
 
 	if total == 0 {
 		return false, nil
@@ -233,10 +237,17 @@ func (crmApprovalTasksService *CrmApprovalTasksService) UpdCrmApprovalTasks(ID u
 	return
 }
 
-// GetCrmBusinessOpportunityApprovalTasks 更新 通过associatedId关联
+// UpdCrmAssociatedIdApprovalTasks 更新 通过associatedId关联
 // Author [piexlmax](https://github.com/piexlmax)
 func (crmApprovalTasksService *CrmApprovalTasksService) UpdCrmAssociatedIdApprovalTasks(associatedId, approvalType int, data map[string]interface{}) (err error) {
-	err = global.GVA_DB.Model(&crm.CrmBusinessOpportunityApprovalTasks{}).Where("associated_id = ? AND approval_type = ?", associatedId, approvalType).Updates(data).Error
+	err = global.GVA_DB.Model(&crm.CrmApprovalTasks{}).Where("associated_id = ? AND approval_type = ?", associatedId, approvalType).Updates(data).Error
+	return
+}
+
+// DelCrmAssociatedIdApprovalTasks 删除 通过associatedId关联
+// Author [piexlmax](https://github.com/piexlmax)
+func (crmApprovalTasksService *CrmApprovalTasksService) DelCrmAssociatedIdApprovalTasks(associatedId string, approvalType int) (err error) {
+	err = global.GVA_DB.Model(&crm.CrmApprovalTasks{}).Where("associated_id = ? AND approval_type = ?", associatedId, approvalType).Delete(&crm.CrmApprovalTasks{}).Error
 	return
 }
 

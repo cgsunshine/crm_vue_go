@@ -8,6 +8,10 @@ const (
 )
 
 const (
+	BusinessOpportunityStatus = "2" //商机状态
+)
+
+const (
 	Contact_Approval_Tasks_valid_Effective = 1 //审批任务有效
 	Contact_Approval_Tasks_Valid_Invalid   = 2 //审批任务无效
 )
@@ -25,3 +29,19 @@ const (
 	PaymentCollentionApprovalType   = 3
 	OrderApprovalType               = 4
 )
+
+const (
+	PaymentStatusUnpaid = "1" //未付款
+	PaymentStatusPaid   = "2" //已付款
+)
+
+// 审批类型对应的名称
+var ApprovalConfigToType = map[int]string{
+	ContractApprovalType:            ContractApproval,
+	BusinessOpportunityApprovalType: BusinessOpportunityApproval,
+	PaymentCollentionApprovalType:   PaymentCollentionApproval,
+	OrderApprovalType:               OrderApproval,
+}
+
+// 默认审批通过人数
+const NumberApprovedPersonnel = 1

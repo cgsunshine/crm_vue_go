@@ -56,10 +56,11 @@ func (crmContractService *CrmContractService) GetCrmPageContractInfoList(info cr
 		db = db.Limit(limit).Offset(offset)
 	}
 
-	err = db.Select("crm_contract.*,crm_customers.customer_name,sys_users.username,crm_order.order_name").
+	err = db.Select("crm_contract.*,crm_customers.customer_name,sys_users.username,crm_order.order_name,crm_contract_type.contract_type_name,crm_order.amount,crm_order.currency").
 		Joins("LEFT JOIN sys_users ON sys_users.id = crm_contract.user_id").
 		Joins("LEFT JOIN crm_customers ON crm_customers.id = crm_contract.customer_id").
 		Joins("LEFT JOIN crm_order ON crm_order.id = crm_contract.order_id").
+		Joins("LEFT JOIN crm_contract_type ON crm_contract_type.id = crm_contract.contract_type_id").
 		Find(&crmContracts).Error
 	return crmContracts, total, err
 }
@@ -76,11 +77,12 @@ func (crmContractService *CrmContractService) UpdApprovalStatus(ID *int, data ma
 // Author [piexlmax](https://github.com/piexlmax)
 func (crmContractService *CrmContractService) GetCrmPageContract(ID string) (crmContract crm.CrmPageContract, err error) {
 	err = global.GVA_DB.Model(&crm.CrmContract{}).
-		Select("crm_contract.*,crm_customers.customer_name,sys_users.username,crm_order.order_name").
+		Select("crm_contract.*,crm_customers.customer_name,sys_users.username,crm_order.order_name,crm_contract_type.contract_type_name,crm_order.amount,crm_order.currency").
 		Where("crm_contract.id = ?", ID).
 		Joins("LEFT JOIN sys_users ON sys_users.id = crm_contract.user_id").
 		Joins("LEFT JOIN crm_customers ON crm_customers.id = crm_contract.customer_id").
 		Joins("LEFT JOIN crm_order ON crm_order.id = crm_contract.order_id").
+		Joins("LEFT JOIN crm_contract_type ON crm_contract_type.id = crm_contract.contract_type_id").
 		First(&crmContract).Error
 	return
 }

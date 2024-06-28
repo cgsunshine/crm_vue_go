@@ -7,9 +7,9 @@ import (
 	"github.com/flipped-aurora/gin-vue-admin/server/model/example"
 	"github.com/flipped-aurora/gin-vue-admin/server/model/system"
 
+	"github.com/flipped-aurora/gin-vue-admin/server/model/crm"
 	"go.uber.org/zap"
 	"gorm.io/gorm"
-	"github.com/flipped-aurora/gin-vue-admin/server/model/crm"
 )
 
 func Gorm() *gorm.DB {
@@ -53,7 +53,7 @@ func RegisterTables() {
 		example.ExaFile{},
 		example.ExaCustomer{},
 		example.ExaFileChunk{},
-		example.ExaFileUploadAndDownload{}, crm.CrmTest{}, crm.CrmContractType{}, crm.CrmLoginLog{}, crm.CrmOperationRecords{}, crm.CrmProductGroup{}, crm.CrmProductType{}, crm.CrmUser{}, crm.CrmCustomerGroup{}, crm.CrmCustomers{}, crm.CrmProduct{}, crm.CrmBill{}, crm.CrmContract{}, crm.CrmOrder{}, crm.CrmPayment{}, crm.CrmStatementAccount{}, crm.CrmSupplier{}, crm.CrmCommissionRebate{}, crm.CrmTicketCategories{}, crm.CrmTicketResponseTemplates{}, crm.CrmTickets{}, crm.CrmTicketComments{}, crm.CrmStatementAccountFile{}, crm.CrmContactFile{}, crm.CrmContactApprovalTasks{}, crm.CrmContactApprovalRecord{}, crm.CrmPurchaseOrder{}, crm.CrmBusinessOpportunity{}, crm.CrmBusinessOpportunityFile{}, crm.CrmAuthorities{}, crm.CrmPaymentCollention{}, crm.CrmProcurementContract{}, crm.CrmApprovalProcess{}, crm.CrmConfig{}, crm.CrmApprovalNode{}, crm.CrmBusinessOpportunityApprovalRecord{}, crm.CrmBusinessOpportunityApprovalTasks{}, crm.CrmPaymentCollentionApprovalRecord{}, crm.CrmPaymentCollentionApprovalTasks{}, crm.CrmApprovalRecord{}, crm.CrmApprovalTasks{},
+		example.ExaFileUploadAndDownload{}, crm.CrmTest{}, crm.CrmContractType{}, crm.CrmLoginLog{}, crm.CrmOperationRecords{}, crm.CrmProductGroup{}, crm.CrmProductType{}, crm.CrmUser{}, crm.CrmCustomerGroup{}, crm.CrmCustomers{}, crm.CrmProduct{}, crm.CrmBill{}, crm.CrmContract{}, crm.CrmOrder{}, crm.CrmPayment{}, crm.CrmStatementAccount{}, crm.CrmSupplier{}, crm.CrmCommissionRebate{}, crm.CrmTicketCategories{}, crm.CrmTicketResponseTemplates{}, crm.CrmTickets{}, crm.CrmTicketComments{}, crm.CrmStatementAccountFile{}, crm.CrmContactFile{}, crm.CrmContactApprovalTasks{}, crm.CrmContactApprovalRecord{}, crm.CrmPurchaseOrder{}, crm.CrmBusinessOpportunity{}, crm.CrmBusinessOpportunityFile{}, crm.CrmAuthorities{}, crm.CrmPaymentCollention{}, crm.CrmProcurementContract{}, crm.CrmApprovalProcess{}, crm.CrmConfig{}, crm.CrmApprovalNode{}, crm.CrmBusinessOpportunityApprovalRecord{}, crm.CrmBusinessOpportunityApprovalTasks{}, crm.CrmPaymentCollentionApprovalRecord{}, crm.CrmPaymentCollentionApprovalTasks{}, crm.CrmApprovalRecord{}, crm.CrmApprovalTasks{}, crm.CrmCurrency{}, crm.CrmOrderProduct{}, crm.CrmBusinessOpportunityProduct{},
 	)
 	if err != nil {
 		global.GVA_LOG.Error("register table failed", zap.Error(err))

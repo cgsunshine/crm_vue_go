@@ -21,6 +21,7 @@ type CrmContract struct {
 	ReviewResult    string     `json:"reviewResult" form:"reviewResult" gorm:"column:review_result;comment:审核结果;size:191;"`                    //审核结果
 	ReviewStatus    string     `json:"reviewStatus" form:"reviewStatus" gorm:"column:review_status;comment:审核状态;size:191;"`                    //审核状态
 	UserId          *int       `json:"userId" form:"userId" gorm:"column:user_id;comment:管理ID 销售代表;"`                                          //管理ID 销售代表
+	ContractNumber  string     `json:"contractNumber" form:"contractNumber" gorm:"column:contract_number;comment:合同编号;size:191;"`              //合同编号
 }
 
 // TableName crmContract表 CrmContract自定义表名 crm_contract

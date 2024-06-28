@@ -1,13 +1,11 @@
 package crm
 
 import (
-	"fmt"
 	"github.com/flipped-aurora/gin-vue-admin/server/global"
 	"github.com/flipped-aurora/gin-vue-admin/server/model/common/response"
 	crmReq "github.com/flipped-aurora/gin-vue-admin/server/model/crm/request"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
-	"strconv"
 )
 
 // GetCrmBillList 分页获取crmBill表列表
@@ -26,10 +24,9 @@ func (crmBillApi *CrmBillApi) GetCrmPageBillList(c *gin.Context) {
 		response.FailWithMessage(err.Error(), c)
 		return
 	}
-	userID, _ := strconv.Atoi(c.GetHeader("X-User-Id"))
 
-	pageInfo.UserId = userService.FindUserDataStatusById(&userID)
-	fmt.Println(pageInfo.UserId)
+	pageInfo.UserId = GetSearchUserId(pageInfo.UserId, c)
+
 	if list, total, err := crmBillService.GetCrmPageBillInfoList(pageInfo); err != nil {
 		global.GVA_LOG.Error("获取失败!", zap.Error(err))
 		response.FailWithMessage("获取失败", c)

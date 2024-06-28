@@ -34,11 +34,19 @@ func (crmPaymentApi *CrmPaymentApi) CreateCrmPayment(c *gin.Context) {
 	}
 
 	crmPayment.UserId = comm.GetHeaderUserId(c)
-
+	crmPayment.PaymentStatus = comm.PaymentStatusPaid
 	if err := crmPaymentService.CreateCrmPayment(&crmPayment); err != nil {
 		global.GVA_LOG.Error("创建失败!", zap.Error(err))
 		response.FailWithMessage("创建失败", c)
 	} else {
+		err = crmBillService.UpdAssOrderID(crmPayment.OrderId, map[string]interface{}{
+			"payment_id": crmPayment.ID,
+		})
+		if err != nil {
+			global.GVA_LOG.Error("创建失败!", zap.Error(err))
+			response.FailWithMessage("创建失败", c)
+			return
+		}
 		response.OkWithMessage("创建成功", c)
 	}
 }

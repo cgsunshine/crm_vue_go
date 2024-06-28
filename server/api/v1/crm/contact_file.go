@@ -18,7 +18,7 @@ import (
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body crm.CrmContactFileUploadAndDownloads true "更新crmContactFileUploadAndDownloads表"
+// @Param data body []string true "更新crmContactFileUploadAndDownloads表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"更新成功"}"
 // @Router /crmContactFileUploadAndDownloads/updateCrmContactFileUploadAndDownloads [put]
 func (CrmContactFileApi *CrmContactFileApi) UpdateCrmContactFileSort(c *gin.Context) {
@@ -44,7 +44,7 @@ func (CrmContactFileApi *CrmContactFileApi) UpdateCrmContactFileSort(c *gin.Cont
 // @accept    multipart/form-data
 // @Produce   application/json
 // @Param     file  formData  file                                                           true  "上传文件示例"
-// @Success   200   {object}  response.Response{data=exampleRes.ExaFileResponse,msg=string}  "上传文件示例,返回包括文件详情"
+// @Success   200   {object}  response.Response{data=crmRes.CrmContactFileResponse,msg=string}  "上传文件示例,返回包括文件详情"
 // @Router    /fileUploadAndDownload/upload [post]
 func (CrmContactFileApi *CrmContactFileApi) UploadFile(c *gin.Context) {
 	var file crm.CrmContactFile
@@ -77,7 +77,7 @@ func (CrmContactFileApi *CrmContactFileApi) UploadFile(c *gin.Context) {
 // @accept    multipart/form-data
 // @Produce   application/json
 // @Param     file  formData  file                                                           true  "上传文件示例"
-// @Success   200   {object}  response.Response{data=exampleRes.ExaFileResponse,msg=string}  "上传文件示例,返回包括文件详情"
+// @Success   200   "file"  "上传文件示例,返回包括文件详情"
 // @Router    /fileUploadAndDownload/upload [post]
 func (CrmContactFileApi *CrmContactFileApi) DownloadFile(c *gin.Context) {
 

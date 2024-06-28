@@ -34,6 +34,14 @@ func (crmPaymentCollentionService *CrmPaymentCollentionService) GetCrmPagePaymen
 	if info.StartAuditingTime != nil && info.EndAuditingTime != nil {
 		db = db.Where(crmPaymentCollentionService.SplicingQueryConditions("auditing_time BETWEEN ? AND ? "), info.StartAuditingTime, info.EndAuditingTime)
 	}
+
+	if info.PaymentCollentionName != "" {
+		db = db.Where(crmPaymentCollentionService.SplicingQueryConditions("payment_collention_name LIKE ?"), "%"+info.PaymentCollentionName+"%")
+	}
+
+	if info.ReviewStatus != "" {
+		db = db.Where(crmPaymentCollentionService.SplicingQueryConditions("review_status = ?"), info.ReviewStatus)
+	}
 	err = db.Count(&total).Error
 	if err != nil {
 		return
@@ -43,9 +51,12 @@ func (crmPaymentCollentionService *CrmPaymentCollentionService) GetCrmPagePaymen
 		db = db.Limit(limit).Offset(offset)
 	}
 
-	err = db.Select("crm_payment_collention.*,crm_customers.customer_name,sys_users.username,crm_bill.amount").
+	err = db.
+		Select("crm_payment_collention.*,crm_customers.customer_name,sys_users.username,crm_business_opportunity.business_opportunity_name,crm_order.price,crm_order.order_name,crm_order.customer_id,crm_bill.bill_name").
 		Joins("LEFT JOIN sys_users ON sys_users.id = crm_payment_collention.user_id").
-		Joins("LEFT JOIN crm_customers ON crm_customers.id = crm_payment_collention.customer_id").
+		Joins("LEFT JOIN crm_business_opportunity ON crm_business_opportunity.id = crm_payment_collention.business_opportunity_id").
+		Joins("LEFT JOIN crm_order ON crm_order.id = crm_payment_collention.order_id").
+		Joins("LEFT JOIN crm_customers ON crm_customers.id = crm_order.customer_id").
 		Joins("LEFT JOIN crm_bill ON crm_bill.id = crm_payment_collention.bill_id").
 		Find(&crmPaymentCollentions).Error
 	return crmPaymentCollentions, total, err
@@ -55,9 +66,11 @@ func (crmPaymentCollentionService *CrmPaymentCollentionService) GetCrmPagePaymen
 // Author [piexlmax](https://github.com/piexlmax)
 func (crmPaymentCollentionService *CrmPaymentCollentionService) GetCrmPagePaymentCollention(ID string) (crmPaymentCollention crm.CrmPagePaymentCollention, err error) {
 	err = global.GVA_DB.Model(&crm.CrmPaymentCollention{}).Where("crm_payment_collention.id = ?", ID).
-		Select("crm_payment_collention.*,crm_customers.customer_name,sys_users.username,crm_bill.amount").
+		Select("crm_payment_collention.*,crm_customers.customer_name,sys_users.username,crm_business_opportunity.business_opportunity_name,crm_order.price,crm_order.order_name,crm_order.customer_id,crm_bill.bill_name").
 		Joins("LEFT JOIN sys_users ON sys_users.id = crm_payment_collention.user_id").
-		Joins("LEFT JOIN crm_customers ON crm_customers.id = crm_payment_collention.customer_id").
+		Joins("LEFT JOIN crm_business_opportunity ON crm_business_opportunity.id = crm_payment_collention.business_opportunity_id").
+		Joins("LEFT JOIN crm_order ON crm_order.id = crm_payment_collention.order_id").
+		Joins("LEFT JOIN crm_customers ON crm_customers.id = crm_order.customer_id").
 		Joins("LEFT JOIN crm_bill ON crm_bill.id = crm_payment_collention.bill_id").
 		First(&crmPaymentCollention).Error
 	return
@@ -71,7 +84,7 @@ func (crmPaymentCollentionService *CrmPaymentCollentionService) SplicingQueryCon
 // UpdApprovalStatus 修改审批状态
 // Author [piexlmax](https://github.com/piexlmax)
 func (crmPaymentCollentionService *CrmPaymentCollentionService) UpdApprovalStatus(ID *int, data map[string]interface{}) (err error) {
-	db := global.GVA_DB.Model(&crm.CrmContract{})
+	db := global.GVA_DB.Model(&crm.CrmPaymentCollention{})
 	err = db.Where("id = ?", ID).Updates(data).Error
 	return
 }

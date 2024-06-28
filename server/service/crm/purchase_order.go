@@ -48,9 +48,10 @@ func (crmPurchaseOrderService *CrmPurchaseOrderService) GetCrmPagePurchaseOrderI
 		db = db.Limit(limit).Offset(offset)
 	}
 
-	err = db.Select("crm_purchase_order.*,sys_users.username,crm_product.product_name").
+	err = db.Select("crm_purchase_order.*,sys_users.username,crm_product.product_name,crm_currency.currency_name").
 		Joins("LEFT JOIN sys_users ON crm_purchase_order.user_id = sys_users.id").
 		Joins("LEFT JOIN crm_product ON crm_purchase_order.product_id = crm_product.id").
+		Joins("LEFT JOIN crm_currency ON crm_currency.id = crm_purchase_order.currency_id").
 		Find(&crmPurchaseOrders).Error
 	return crmPurchaseOrders, total, err
 }
@@ -59,9 +60,10 @@ func (crmPurchaseOrderService *CrmPurchaseOrderService) GetCrmPagePurchaseOrderI
 // Author [piexlmax](https://github.com/piexlmax)
 func (crmPurchaseOrderService *CrmPurchaseOrderService) GetCrmPagePurchaseOrder(ID string) (crmPurchaseOrder crm.CrmPagePurchaseOrder, err error) {
 	err = global.GVA_DB.Model(&crm.CrmPurchaseOrder{}).Where("crm_purchase_order.id = ?", ID).
-		Select("crm_purchase_order.*,sys_users.username,crm_product.product_name").
+		Select("crm_purchase_order.*,sys_users.username,crm_product.product_name,crm_currency.currency_name").
 		Joins("LEFT JOIN sys_users ON crm_purchase_order.user_id = sys_users.id").
 		Joins("LEFT JOIN crm_product ON crm_purchase_order.product_id = crm_product.id").
+		Joins("LEFT JOIN crm_currency ON crm_currency.id = crm_purchase_order.currency_id").
 		First(&crmPurchaseOrder).Error
 	return
 }

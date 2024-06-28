@@ -77,7 +77,7 @@ func Routers() *gin.Engine {
 		systemRouter.InitAuthorityBtnRouterRouter(PrivateGroup)
 		systemRouter.InitSysExportTemplateRouter(PrivateGroup)
 		exampleRouter.InitCustomerRouter(PrivateGroup)
-		exampleRouter.InitFileUploadAndDownloadRouter(PrivateGroup)
+		exampleRouter.InitFileUploadAndDownloadRouter(PrivateGroup, PublicGroup)
 	}
 
 	{
@@ -163,6 +163,9 @@ func Routers() *gin.Engine {
 		crmRouter.InitCrmApprovalRecordRouter(PrivateGroup, PublicGroup)
 		crmRouter.InitCrmApprovalTasksRouter(PrivateGroup, PublicGroup)
 		crmRouter.InitCrmPageApprovalTasksRouter(PrivateGroup, PublicGroup)
+		crmRouter.InitCrmCurrencyRouter(PrivateGroup, PublicGroup)
+		crmRouter.InitCrmOrderProductRouter(PrivateGroup, PublicGroup)
+		crmRouter.InitCrmBusinessOpportunityProductRouter(PrivateGroup, PublicGroup)
 
 	}
 

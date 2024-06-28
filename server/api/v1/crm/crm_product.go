@@ -168,3 +168,22 @@ func (crmProductApi *CrmProductApi) GetCrmProductPublic(c *gin.Context) {
 		"info": "不需要鉴权的crmProduct表接口信息",
 	}, "获取成功", c)
 }
+
+// GetCrmProductIds 用id查询crmProduct表
+// @Tags CrmProduct
+// @Summary 用ids 查询crmProduct表
+// @Security ApiKeyAuth
+// @accept application/json
+// @Produce application/json
+// @Param data query crm.CrmProduct true "用id查询crmProduct表"
+// @Success 200 {string} string "{"success":true,"data":{},"msg":"查询成功"}"
+// @Router /crmProduct/findCrmProduct [get]
+func (crmProductApi *CrmProductApi) GetCrmProductIds(c *gin.Context) {
+	ID := c.Query("ids")
+	if crmProduct, _, err := crmProductService.GetCrmProductInfoIdsList(ID); err != nil {
+		global.GVA_LOG.Error("查询失败!", zap.Error(err))
+		response.FailWithMessage("查询失败", c)
+	} else {
+		response.OkWithData(gin.H{"recrmProduct": crmProduct}, c)
+	}
+}

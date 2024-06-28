@@ -36,8 +36,8 @@ func (crmCustomersService *CrmCustomersService) GetPageCrmCustomersInfoList(info
 	if info.CustomerStatus != "" {
 		db = db.Where(crmCustomersService.SplicingQueryConditions("customer_status = ?"), info.CustomerStatus)
 	}
-	if info.CustomerGroup != "" {
-		db = db.Where(crmCustomersService.SplicingQueryConditions("customer_group = ?"), info.CustomerGroup)
+	if info.CustomerGroupId != nil {
+		db = db.Where(crmCustomersService.SplicingQueryConditions("customer_group_id = ?"), info.CustomerGroupId)
 	}
 	err = db.Count(&total).Error
 	if err != nil {

@@ -41,4 +41,7 @@ type ServiceGroup struct {
 	CrmPaymentCollentionApprovalTasksService
 	CrmApprovalRecordService
 	CrmApprovalTasksService
+	CrmCurrencyService
+	CrmOrderProductService
+	CrmBusinessOpportunityProductService
 }

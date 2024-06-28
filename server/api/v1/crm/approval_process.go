@@ -1,12 +1,12 @@
 package crm
 
 import (
+	"github.com/flipped-aurora/gin-vue-admin/server/api/v1/comm"
 	"github.com/flipped-aurora/gin-vue-admin/server/global"
 	"github.com/flipped-aurora/gin-vue-admin/server/model/common/response"
 	"github.com/flipped-aurora/gin-vue-admin/server/model/crm"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
-	"strconv"
 )
 
 // CreateCrmPageApprovalProcess 创建审批流程
@@ -26,9 +26,7 @@ func (crmApprovalProcessApi *CrmApprovalProcessApi) CreateCrmPageApprovalProcess
 		return
 	}
 
-	userID, _ := strconv.Atoi(c.GetHeader("X-User-Id"))
-
-	crmApprovalProcess.UserId = userService.FindUserDataStatusById(&userID)
+	crmApprovalProcess.UserId = comm.GetHeaderUserId(c)
 
 	if err := crmApprovalProcessService.CreateCrmApprovalProcess(&crmApprovalProcess); err != nil {
 		global.GVA_LOG.Error("创建失败!", zap.Error(err))

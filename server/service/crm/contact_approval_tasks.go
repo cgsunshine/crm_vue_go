@@ -101,6 +101,7 @@ func (crmContactApprovalTasksService *CrmContactApprovalTasksService) GetCrmPage
 
 	err = db.Select("crm_contact_approval_tasks.*,crm_contract.contract_name").
 		Joins("LEFT JOIN crm_contract ON crm_contract.id = crm_contact_approval_tasks.contact_id").
+		Order("created_at DESC").
 		Find(&crmContactApprovalTaskss).Error
 	return crmContactApprovalTaskss, total, err
 }

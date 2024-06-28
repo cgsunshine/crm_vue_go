@@ -64,4 +64,7 @@ type RouterGroup struct {
 	CrmApprovalRecordRouter
 	CrmApprovalTasksRouter
 	CrmPageApprovalTasksRouter
+	CrmCurrencyRouter
+	CrmOrderProductRouter
+	CrmBusinessOpportunityProductRouter
 }

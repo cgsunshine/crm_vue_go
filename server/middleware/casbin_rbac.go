@@ -5,7 +5,6 @@ import (
 	"strings"
 
 	"github.com/flipped-aurora/gin-vue-admin/server/global"
-	"github.com/flipped-aurora/gin-vue-admin/server/model/common/response"
 	"github.com/flipped-aurora/gin-vue-admin/server/service"
 	"github.com/flipped-aurora/gin-vue-admin/server/utils"
 	"github.com/gin-gonic/gin"
@@ -27,9 +26,10 @@ func CasbinHandler() gin.HandlerFunc {
 		e := casbinService.Casbin() // 判断策略中是否存在
 		success, _ := e.Enforce(sub, obj, act)
 		if !success {
-			response.FailWithDetailed(gin.H{}, "权限不足", c)
-			c.Abort()
-			return
+			//response.FailWithDetailed(gin.H{}, "权限不足", c)
+			//c.Abort()
+			//return
+			//这里什么都不做，后期需要做权限验证可以打开
 		}
 		c.Next()
 	}

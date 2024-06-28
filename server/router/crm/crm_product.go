@@ -29,5 +29,6 @@ func (s *CrmProductRouter) InitCrmProductRouter(Router *gin.RouterGroup, PublicR
 	{
 		crmProductRouterWithoutAuth.GET("getCrmProductPublic", crmProductApi.GetCrmProductPublic) // 获取crmProduct表列表
 		crmProductRouterWithoutAuth.GET("getCrmProductList", crmProductApi.GetCrmProductList)     // 获取crmProduct表列表
+		crmProductRouterWithoutAuth.GET("getCrmProductIds", crmProductApi.GetCrmProductIds)       // 获取crmProduct表列表
 	}
 }

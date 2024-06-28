@@ -27,5 +27,6 @@ func (s *CrmPageOrderRouter) InitCrmPagOrderRouter(Router *gin.RouterGroup, Publ
 
 	{
 		crmOrderRouterWithoutAuth.GET("getCrmPageOrderList", crmOrderApi.GetCrmPageOrderList) // 获取crmOrder表列表
+		crmOrderRouterWithoutAuth.GET("setOrderProducts", crmOrderApi.SetOrderProducts)       // 获取crmOrder表列表
 	}
 }

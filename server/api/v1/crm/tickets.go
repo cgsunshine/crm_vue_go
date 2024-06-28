@@ -26,9 +26,7 @@ func (crmTicketsApi *CrmTicketsApi) GetCrmSubmitterTicketsList(c *gin.Context) {
 		return
 	}
 
-	userID, _ := strconv.Atoi(c.GetHeader("X-User-Id"))
-
-	pageInfo.SubmitterId = userService.FindUserDataStatusById(&userID)
+	pageInfo.SubmitterId = GetSearchUserId(pageInfo.SubmitterId, c)
 
 	if list, total, err := crmTicketsService.GetCrmPageTicketsInfoList(pageInfo); err != nil {
 		global.GVA_LOG.Error("获取失败!", zap.Error(err))

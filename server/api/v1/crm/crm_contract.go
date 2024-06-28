@@ -58,8 +58,15 @@ func (crmContractApi *CrmContractApi) DeleteCrmContract(c *gin.Context) {
 		global.GVA_LOG.Error("删除失败!", zap.Error(err))
 		response.FailWithMessage("删除失败", c)
 	} else {
-		response.OkWithMessage("删除成功", c)
+		//关联删除审批
+		err := crmApprovalTasksService.DelCrmAssociatedIdApprovalTasks(ID, comm.ContractApprovalType)
+		if err != nil {
+			global.GVA_LOG.Error("删除失败!", zap.Error(err))
+			response.FailWithMessage("删除失败", c)
+		}
+
 	}
+	response.OkWithMessage("删除成功", c)
 }
 
 // DeleteCrmContractByIds 批量删除crmContract表
@@ -76,6 +83,7 @@ func (crmContractApi *CrmContractApi) DeleteCrmContractByIds(c *gin.Context) {
 		global.GVA_LOG.Error("批量删除失败!", zap.Error(err))
 		response.FailWithMessage("批量删除失败", c)
 	} else {
+
 		response.OkWithMessage("批量删除成功", c)
 	}
 }

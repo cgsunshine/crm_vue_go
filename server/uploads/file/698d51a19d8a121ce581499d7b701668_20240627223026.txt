@@ -1,0 +1,2 @@
+2024/05/07 19:29:15 tcp:47.104.64.101:5918 accepted tcp:www.aaa.com:443 [sp000001 -> f3a1127c-5943-4757-93e1-d9be9b859c0f-proxy] email: 978713436@qq.com
+2024/05/07 19:29:15 tcp:47.104.64.101:5918 accepted tcp:www.bai.com:443 [sp000001 -> f3a1127c-5943-4757-93e1-d9be9b859c0f-proxy] email: 978713436@qq.com

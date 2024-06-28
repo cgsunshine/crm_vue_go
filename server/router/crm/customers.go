@@ -27,6 +27,7 @@ func (s *CrmPageCustomersRouter) InitCrmPageCustomersRouter(Router *gin.RouterGr
 	}
 
 	{
-		crmCustomersRouterWithoutAuth.GET("getCrmPageCustomersList", crmCustomersApi.GetCrmPageCustomersList) // 获取crmCustomers表列表
+		crmCustomersRouterWithoutAuth.GET("getCrmPageCustomersList", crmCustomersApi.GetCrmPageCustomersList)       // 获取crmCustomers表列表
+		crmCustomersRouterWithoutAuth.GET("getCrmPageCustomersAllList", crmCustomersApi.GetCrmPageCustomersAllList) // 获取crmCustomers表列表
 	}
 }

@@ -29,8 +29,7 @@ func (crmApprovalTasksApi *CrmApprovalTasksApi) GetCrmContractApprovalTasksList(
 		return
 	}
 
-	AssigneeId, _ := strconv.Atoi(c.GetHeader("X-User-Id"))
-	pageInfo.AssigneeId = userService.FindUserDataStatusById(&AssigneeId)
+	pageInfo.AssigneeId = GetSearchUserId(nil, c)
 
 	pageInfo.ApprovalType = utils.Pointer(comm.ContractApprovalType)
 
@@ -137,7 +136,7 @@ func (crmApprovalTasksApi *CrmApprovalTasksApi) GetCrmOrderApprovalTasksList(c *
 	AssigneeId, _ := strconv.Atoi(c.GetHeader("X-User-Id"))
 	pageInfo.AssigneeId = userService.FindUserDataStatusById(&AssigneeId)
 
-	pageInfo.ApprovalType = utils.Pointer(comm.PaymentCollentionApprovalType)
+	pageInfo.ApprovalType = utils.Pointer(comm.OrderApprovalType)
 
 	if list, total, err := crmApprovalTasksService.GetCrmOrderApprovalTasksInfoList(pageInfo); err != nil {
 		global.GVA_LOG.Error("获取失败!", zap.Error(err))
@@ -216,7 +215,7 @@ func (crmApprovalTasksApi *CrmApprovalTasksApi) UpdateCrmMultipleApprovalTasks(c
 				global.GVA_LOG.Error("更新失败!", zap.Error(err))
 				response.FailWithMessage("更新失败", c)
 			}
-			ok, err := crmBusinessOpportunityApprovalTasksService.GetCrmQueryStepApproved(*cats.AssociatedId, *node.NumberApprovedPersonnel, comm.Approval_Status_Pass)
+			ok, err := crmApprovalTasksService.GetCrmQueryStepApproved(*cats.AssociatedId, *node.NumberApprovedPersonnel, *cats.ApprovalType, comm.Approval_Status_Pass)
 			if err != nil {
 				global.GVA_LOG.Error("更新失败!", zap.Error(err))
 				response.FailWithMessage("更新失败", c)
@@ -224,72 +223,157 @@ func (crmApprovalTasksApi *CrmApprovalTasksApi) UpdateCrmMultipleApprovalTasks(c
 			}
 
 			if ok {
-				if *cats.ApprovalType == comm.ContractApprovalType {
-					//合同审批
-					//所有人都同意，修改合同状态
-					err = crmContractService.UpdApprovalStatus(cats.AssociatedId, map[string]interface{}{
-						"review_status": comm.Approval_Status_Pass,
-					})
+
+				nodeInfo, err := crmApprovalNodeService.GetCrmApprovalNodeId(*cats.StepId)
+				if err != nil {
+					global.GVA_LOG.Error("创建失败!", zap.Error(err))
+					response.FailWithMessage("创建失败", c)
+					return
+				}
+
+				//这里判断审批走的逻辑是不是最后一步如果是终止路程，如果不是要进入下一步审批
+				if crmConfigService.GetCrmLastNameToConfig(comm.ApprovalConfigToType[*cats.ApprovalType], nodeInfo.NodeOrder) {
+					if *cats.ApprovalType == comm.ContractApprovalType {
+						//合同审批
+						//所有人都同意，修改合同状态
+						err = crmContractService.UpdApprovalStatus(cats.AssociatedId, map[string]interface{}{
+							"review_status": comm.Approval_Status_Pass,
+						})
+						if err != nil {
+							global.GVA_LOG.Error("更新失败!", zap.Error(err))
+							response.FailWithMessage("更新失败", c)
+							return
+						}
+					}
+
+					if *cats.ApprovalType == comm.BusinessOpportunityApprovalType {
+						//商机审批
+						//所有人都同意，修改商机状态
+						err = crmBusinessOpportunityService.UpdApprovalStatus(cats.AssociatedId, map[string]interface{}{
+							"review_status": comm.Approval_Status_Pass,
+						})
+						if err != nil {
+							global.GVA_LOG.Error("更新失败!", zap.Error(err))
+							response.FailWithMessage("更新失败", c)
+							return
+						}
+					}
+
+					if *cats.ApprovalType == comm.PaymentCollentionApprovalType {
+						//回款审批
+						//所有人都同意，修改商机状态
+						err = crmPaymentCollentionService.UpdApprovalStatus(cats.AssociatedId, map[string]interface{}{
+							"review_status": comm.Approval_Status_Pass,
+						})
+						if err != nil {
+							global.GVA_LOG.Error("更新失败!", zap.Error(err))
+							response.FailWithMessage("更新失败", c)
+							return
+						}
+
+						pc, err := crmPaymentCollentionService.GetCrmPaymentIdCollention(*cats.AssociatedId)
+						if err != nil {
+							global.GVA_LOG.Error("更新失败!", zap.Error(err))
+							response.FailWithMessage("更新失败", c)
+							return
+						}
+
+						//通过审批以后，商机更新为已关单
+						err = crmBusinessOpportunityService.UpdApprovalStatus(pc.BusinessOpportunityId, map[string]interface{}{
+							"status": comm.BusinessOpportunityStatus,
+						})
+						if err != nil {
+							global.GVA_LOG.Error("更新失败!", zap.Error(err))
+							response.FailWithMessage("更新失败", c)
+							return
+						}
+
+						order, err := crmOrderService.GetCrmOrderId(pc.OrderId)
+						if err != nil {
+							global.GVA_LOG.Error("更新失败!", zap.Error(err))
+							response.FailWithMessage("更新失败", c)
+							return
+						}
+
+						//通过审批以后，商机更新为已关单
+						err = crmBusinessOpportunityService.UpdApprovalStatus(order.BusinessOpportunityId, map[string]interface{}{
+							"status": comm.BusinessOpportunityStatus,
+						})
+
+						if err != nil {
+							global.GVA_LOG.Error("更新失败!", zap.Error(err))
+							response.FailWithMessage("更新失败", c)
+							return
+						}
+
+						//跟新账单状态 付款状态
+						err = crmBillService.UpdApprovalStatus(pc.BillId, map[string]interface{}{
+							"payment_status": comm.PaymentStatusPaid,
+						})
+						if err != nil {
+							global.GVA_LOG.Error("更新失败!", zap.Error(err))
+							response.FailWithMessage("更新失败", c)
+							return
+						}
+					}
+
+					if *cats.ApprovalType == comm.OrderApprovalType {
+						//订单审批
+						//所有人都同意，修改订单状态
+						err = crmOrderService.UpdApprovalStatus(cats.AssociatedId, map[string]interface{}{
+							"review_status": comm.Approval_Status_Pass,
+						})
+						if err != nil {
+							global.GVA_LOG.Error("更新失败!", zap.Error(err))
+							response.FailWithMessage("更新失败", c)
+							return
+						}
+					}
+
+				} else {
+					//不是最后一步，走下一步流程
+
+					//在查出第一步对应的角色id
+					roleInfo, err := crmConfigService.GetCrmNextNameToConfig(comm.ApprovalConfigToType[*cats.ApprovalType], nodeInfo.NodeOrder)
 					if err != nil {
-						global.GVA_LOG.Error("更新失败!", zap.Error(err))
-						response.FailWithMessage("更新失败", c)
+						global.GVA_LOG.Error("创建失败!", zap.Error(err))
+						response.FailWithMessage("创建失败", c)
 						return
+					}
+
+					ids, err := userService.GetRoleUsers(roleInfo.RoleIds)
+					if err != nil {
+						global.GVA_LOG.Error("创建失败!", zap.Error(err))
+						response.FailWithMessage("创建失败", c)
+						return
+					}
+
+					//插入角色id对应的用户的审批记录
+					for _, userAuth := range ids {
+						assigneeId := int(userAuth.SysUserId)
+
+						if err := crmApprovalTasksService.CreateCrmApprovalTasks(&crm.CrmApprovalTasks{
+							AssigneeId:     &assigneeId,
+							ApprovalStatus: comm.Approval_Status_Under,
+							AssociatedId:   cats.AssociatedId,
+							Valid:          utils.Pointer(comm.Contact_Approval_Tasks_valid_Effective),
+							StepId:         roleInfo.NodeId,
+							ApprovalType:   utils.Pointer(comm.ContractApprovalType),
+						}); err != nil {
+							global.GVA_LOG.Error("创建失败!", zap.Error(err))
+							response.FailWithMessage("创建失败", c)
+							return
+						}
 					}
 				}
 
-				if *cats.ApprovalType == comm.BusinessOpportunityApprovalType {
-					//商机审批
-					//所有人都同意，修改商机状态
-					err = crmBusinessOpportunityService.UpdApprovalStatus(cats.AssociatedId, map[string]interface{}{
-						"review_status": comm.Approval_Status_Pass,
-					})
-					if err != nil {
-						global.GVA_LOG.Error("更新失败!", zap.Error(err))
-						response.FailWithMessage("更新失败", c)
-						return
-					}
-				}
-
-				if *cats.ApprovalType == comm.PaymentCollentionApprovalType {
-					//回款审批
-					//所有人都同意，修改商机状态
-					err = crmPaymentCollentionService.UpdApprovalStatus(cats.AssociatedId, map[string]interface{}{
-						"review_status": comm.Approval_Status_Pass,
-					})
-					if err != nil {
-						global.GVA_LOG.Error("更新失败!", zap.Error(err))
-						response.FailWithMessage("更新失败", c)
-						return
-					}
-
-					pc, err := crmPaymentCollentionService.GetCrmPaymentIdCollention(*cats.AssociatedId)
-					if err != nil {
-						global.GVA_LOG.Error("更新失败!", zap.Error(err))
-						response.FailWithMessage("更新失败", c)
-						return
-					}
-					//通过审批以后，商机更新为已关单
-					err = crmBusinessOpportunityService.UpdApprovalStatus(pc.BusinessOpportunityId, map[string]interface{}{
-						"status": comm.Approval_Status_Pass,
-					})
-					if err != nil {
-						global.GVA_LOG.Error("更新失败!", zap.Error(err))
-						response.FailWithMessage("更新失败", c)
-						return
-					}
-				}
-
-				if *cats.ApprovalType == comm.OrderApprovalType {
-					//商机审批
-					//所有人都同意，修改商机状态
-					err = crmOrderService.UpdApprovalStatus(cats.AssociatedId, map[string]interface{}{
-						"review_status": comm.Approval_Status_Pass,
-					})
-					if err != nil {
-						global.GVA_LOG.Error("更新失败!", zap.Error(err))
-						response.FailWithMessage("更新失败", c)
-						return
-					}
+				//在将任务审批标记一下 通过审批也要终止流程
+				if err = crmApprovalTasksService.UpdCrmAssociatedIdApprovalTasks(*cats.AssociatedId, *cats.ApprovalType, map[string]interface{}{
+					"valid": comm.Contact_Approval_Tasks_Valid_Invalid,
+				}); err != nil {
+					global.GVA_LOG.Error("更新失败!", zap.Error(err))
+					response.FailWithMessage("更新失败", c)
+					return
 				}
 
 			}
@@ -336,7 +420,7 @@ func (crmApprovalTasksApi *CrmApprovalTasksApi) UpdateCrmMultipleApprovalTasks(c
 
 			if *cats.ApprovalType == comm.PaymentCollentionApprovalType {
 				//回款审批
-				//所有人都同意，修改商机状态
+				//通过人数达到设置值都同意，修改审批状态
 				err = crmPaymentCollentionService.UpdApprovalStatus(cats.AssociatedId, map[string]interface{}{
 					"review_status": comm.Approval_Status_Rafuse,
 				})
@@ -361,7 +445,7 @@ func (crmApprovalTasksApi *CrmApprovalTasksApi) UpdateCrmMultipleApprovalTasks(c
 			}
 
 			//在将任务审批标记一下 改成失效 终止审批流程
-			if err = crmApprovalTasksService.UpdCrmAssociatedIdApprovalTasks(*CrmApprovalTasks.AssociatedId, comm.PaymentCollentionApprovalType, map[string]interface{}{
+			if err = crmApprovalTasksService.UpdCrmAssociatedIdApprovalTasks(*cats.AssociatedId, *cats.ApprovalType, map[string]interface{}{
 				"valid": comm.Contact_Approval_Tasks_Valid_Invalid,
 			}); err != nil {
 				global.GVA_LOG.Error("更新失败!", zap.Error(err))

@@ -2,7 +2,6 @@ package system
 
 import (
 	"github.com/flipped-aurora/gin-vue-admin/server/global"
-	"github.com/flipped-aurora/gin-vue-admin/server/model/crm"
 	"github.com/flipped-aurora/gin-vue-admin/server/model/system"
 )
 
@@ -17,7 +16,7 @@ func (userService *UserService) FindUserDataStatusById(id *int) *int {
 	if err := global.GVA_DB.Where("id = ?", id).First(&u).Error; err != nil {
 		return id
 	}
-	var a crm.CrmAuthorities
+	var a system.SysAuthority
 	if err := global.GVA_DB.Where("authority_id = ?", u.AuthorityId).First(&a).Error; err != nil {
 		return id
 	}
