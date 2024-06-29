@@ -19,6 +19,7 @@ type CrmBill struct {
 	PaymentStatus       string     `json:"paymentStatus" form:"paymentStatus" gorm:"column:payment_status;comment:付款状态;size:191;"`            //付款状态
 	ExpirationTime      *time.Time `json:"expirationTime" form:"expirationTime" gorm:"column:expiration_time;comment:到期时间;"`                  //到期时间
 	BillName            string     `json:"billName" form:"billName" gorm:"column:bill_name;comment:账单名称;size:191;"`                           //账单名称
+	CustomerId          *int       `json:"customerId" form:"customerId" gorm:"column:customer_id;comment:客户ID;size:19;"`                      //客户ID
 }
 
 // TableName crmBill表 CrmBill自定义表名 crm_bill

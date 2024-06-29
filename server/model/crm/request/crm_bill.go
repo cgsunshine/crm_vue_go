@@ -14,5 +14,6 @@ type CrmBillSearch struct {
 	PaymentId           *int   `json:"PaymentId" form:"PaymentId"`                     //付款ID
 	UserId              *int   `json:"userId" form:"userId" `                          //管理ID 销售代表
 	PaymentStatus       string `json:"paymentStatus" form:"paymentStatus"`             //付款状态
+	CustomerId          *int   `json:"customerId" form:"customerId" `                  //客户ID
 	request.PageInfo
 }

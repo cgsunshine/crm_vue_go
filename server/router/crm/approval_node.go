@@ -17,7 +17,8 @@ func (s *CrmPageApprovalNodeRouter) InitCrmPageApprovalNodeRouter(Router *gin.Ro
 
 	var crmApprovalNodeApi = v1.ApiGroupApp.CrmApiGroup.CrmApprovalNodeApi
 	{
-		crmApprovalNodeRouter.POST("createCrmPageApprovalNode", crmApprovalNodeApi.CreateCrmPageApprovalNode) // 新建节点审批
+		crmApprovalNodeRouter.POST("createCrmPageApprovalNode", crmApprovalNodeApi.CreateCrmPageApprovalNode) // 新建多个节点审批
+		//crmApprovalNodeRouter.POST("createCrmPageOneApprovalNode", crmApprovalNodeApi.CreateCrmPageOneApprovalNode) // 新建一个节点审批
 	}
 	{
 		crmApprovalNodeRouterWithoutRecord.GET("getCrmPageApprovalNodeList", crmApprovalNodeApi.GetCrmPageApprovalNodeList) // 根据ID获取节点审批

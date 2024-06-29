@@ -46,6 +46,9 @@ func (crmBillService *CrmBillService) GetCrmPageBillInfoList(info crmReq.CrmBill
 	if info.PaymentStatus != "" {
 		db = db.Where(crmBillService.SplicingQueryConditions("payment_status = ?"), info.PaymentStatus)
 	}
+	if info.CustomerId != nil {
+		db = db.Where(crmBillService.SplicingQueryConditions("customer_id = ?"), info.CustomerId)
+	}
 	err = db.Count(&total).Error
 	if err != nil {
 		return
@@ -62,7 +65,7 @@ func (crmBillService *CrmBillService) GetCrmPageBillInfoList(info crmReq.CrmBill
 		"crm_payment_collention.payment_collention_name,crm_payment_collention.payment_time").
 		Joins("LEFT JOIN crm_order ON crm_order.id = crm_bill.order_id").
 		Joins("LEFT JOIN sys_users ON sys_users.id = crm_order.user_id").
-		Joins("LEFT JOIN crm_customers ON crm_customers.id = crm_order.customer_id").
+		Joins("LEFT JOIN crm_customers ON crm_customers.id = crm_bill.customer_id").
 		Joins("LEFT JOIN crm_payment_collention ON crm_payment_collention.bill_id = crm_bill.id").
 		Find(&crmBills).Error
 	return crmBills, total, err
@@ -96,7 +99,7 @@ func (crmBillService *CrmBillService) GetCrmPageIdBill(ID string) (crmBill crm.C
 			"crm_payment_collention.payment_collention_name,crm_payment_collention.payment_time").
 		Joins("LEFT JOIN crm_order ON crm_order.id = crm_bill.order_id").
 		Joins("LEFT JOIN sys_users ON sys_users.id = crm_order.user_id").
-		Joins("LEFT JOIN crm_customers ON crm_customers.id = crm_order.customer_id").
+		Joins("LEFT JOIN crm_customers ON crm_customers.id = crm_bill.customer_id").
 		Joins("LEFT JOIN crm_payment_collention ON crm_payment_collention.id = crm_bill.payment_collention_id").
 		Joins("LEFT JOIN crm_payment ON crm_payment.id = crm_bill.payment_id").
 		First(&crmBill).Error

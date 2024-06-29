@@ -32,6 +32,13 @@ func (crmApprovalNodeApi *CrmApprovalNodeApi) CreateCrmPageApprovalNode(c *gin.C
 
 	nodes := make([]crm.CrmApprovalNode, 0)
 
+	node, err := crmApprovalNodeService.GetCrmLastApprovalNode(crmPageApprovalNode.ProcessId)
+	if err != nil {
+		global.GVA_LOG.Error("创建失败!", zap.Error(err))
+		response.FailWithMessage("创建失败", c)
+		return
+	}
+
 	for index, roleId := range crmPageApprovalNode.RoleIds {
 		crmApprovalNode := crm.CrmApprovalNode{
 			NodeName: crmPageApprovalNode.NodeName,
@@ -40,7 +47,59 @@ func (crmApprovalNodeApi *CrmApprovalNodeApi) CreateCrmPageApprovalNode(c *gin.C
 			ProcessId:               crmPageApprovalNode.ProcessId,
 			UserIds:                 crmPageApprovalNode.UserIds,
 		}
-		ind := index + 1
+		ind := index + 1 + *node.NodeOrder
+		crmApprovalNode.UserId = userService.FindUserDataStatusById(userID)
+		crmApprovalNode.NodeOrder = &ind
+		crmApprovalNode.RoleIds = roleId
+		nodes = append(nodes, crmApprovalNode)
+	}
+
+	if err := crmApprovalNodeService.CreateCrmBatApprovalNode(&nodes); err != nil {
+		global.GVA_LOG.Error("创建失败!", zap.Error(err))
+		response.FailWithMessage("创建失败", c)
+		return
+	}
+
+	response.OkWithMessage("创建成功", c)
+
+}
+
+// CreateCrmPageApprovalNode 创建审批节点
+// @Tags CrmApprovalNode
+// @Summary 创建审批节点
+// @Security ApiKeyAuth
+// @accept application/json
+// @Produce application/json
+// @Param data body crm.CrmApprovalNode true "创建审批节点"
+// @Success 200 {string} string "{"success":true,"data":{},"msg":"创建成功"}"
+// @Router /crmApprovalNode/createCrmPageApprovalNode [post]
+func (crmApprovalNodeApi *CrmApprovalNodeApi) CreateCrmPageOneApprovalNode(c *gin.Context) {
+	var crmPageApprovalNode crm.CrmPageInfoApprovalNode
+	err := c.ShouldBindJSON(&crmPageApprovalNode)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+
+	userID := comm.GetHeaderUserId(c)
+
+	nodes := make([]crm.CrmApprovalNode, 0)
+
+	node, err := crmApprovalNodeService.GetCrmLastApprovalNode(crmPageApprovalNode.ProcessId)
+	if err != nil {
+		global.GVA_LOG.Error("创建失败!", zap.Error(err))
+		response.FailWithMessage("创建失败", c)
+		return
+	}
+
+	for _, roleId := range crmPageApprovalNode.RoleIds {
+		crmApprovalNode := crm.CrmApprovalNode{
+			NodeName:                crmPageApprovalNode.NodeName,
+			NumberApprovedPersonnel: utils.Pointer(comm.NumberApprovedPersonnel),
+			ProcessId:               crmPageApprovalNode.ProcessId,
+			UserIds:                 crmPageApprovalNode.UserIds,
+		}
+		ind := *node.NodeOrder + 1
 		crmApprovalNode.UserId = userService.FindUserDataStatusById(userID)
 		crmApprovalNode.NodeOrder = &ind
 		crmApprovalNode.RoleIds = roleId

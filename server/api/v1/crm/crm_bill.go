@@ -36,6 +36,13 @@ func (crmBillApi *CrmBillApi) CreateCrmBill(c *gin.Context) {
 	crmBill.UserId = comm.GetHeaderUserId(c)
 
 	crmBill.PaymentStatus = comm.PaymentStatusUnpaid
+	order, err := crmOrderService.GetCrmOrderId(crmBill.OrderId)
+	if err != nil {
+		global.GVA_LOG.Error("创建失败!", zap.Error(err))
+		response.FailWithMessage("创建失败", c)
+	}
+
+	crmBill.CustomerId = order.CustomerId
 
 	if err := crmBillService.CreateCrmBill(&crmBill); err != nil {
 		global.GVA_LOG.Error("创建失败!", zap.Error(err))

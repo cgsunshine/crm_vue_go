@@ -4,6 +4,7 @@ import (
 	"github.com/flipped-aurora/gin-vue-admin/server/global"
 	"github.com/flipped-aurora/gin-vue-admin/server/model/crm"
 	crmReq "github.com/flipped-aurora/gin-vue-admin/server/model/crm/request"
+	"github.com/flipped-aurora/gin-vue-admin/server/utils"
 )
 
 // GetCrmApprovalNodeId 根据ID获取节点审批记录
@@ -52,4 +53,23 @@ func (crmApprovalNodeService *CrmApprovalNodeService) GetCrmPageApprovalNodeInfo
 		Error
 
 	return crmApprovalNodes, total, err
+}
+
+// GetCrmLastApprovalNode 查询审批节点的最后一步
+// Author [piexlmax](https://github.com/piexlmax)
+func (crmApprovalNodeService *CrmApprovalNodeService) GetCrmLastApprovalNode(processId *int) (*crm.CrmApprovalNode, error) {
+	crmConfig := crm.CrmApprovalNode{}
+	err := global.GVA_DB.Model(&crm.CrmApprovalNode{}).Where("processId = ?", processId).
+		Order("nodeOrder DESC").
+		First(&crmConfig).Error
+
+	if err != nil {
+		//if err == sql.ErrNoRows {
+		//	return &crmConfig, err
+		//}
+		crmConfig.NodeOrder = utils.Pointer(0)
+		//return &crmConfig, nil
+	}
+
+	return &crmConfig, nil
 }
