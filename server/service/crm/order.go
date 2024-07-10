@@ -65,6 +65,7 @@ func (crmOrderService *CrmOrderService) GetCrmPageOrderInfoList(info crmReq.CrmO
 		Joins("LEFT JOIN crm_product ON crm_product.id = crm_order.product_id").
 		Joins("LEFT JOIN crm_business_opportunity ON crm_business_opportunity.id = crm_order.business_opportunity_id").
 		Preload("Products").
+		Order("crm_order.created_at DESC").
 		Find(&crmOrders).Error
 	return crmOrders, total, err
 }
@@ -79,6 +80,7 @@ func (crmOrderService *CrmOrderService) GetCrmPageOrder(ID string) (crmOrder crm
 		Joins("LEFT JOIN crm_product ON crm_product.id = crm_order.product_id").
 		Joins("LEFT JOIN crm_business_opportunity ON crm_business_opportunity.id = crm_order.business_opportunity_id").
 		Preload("Products").
+		Order("crm_order.created_at DESC").
 		First(&crmOrder).Error
 	return
 }

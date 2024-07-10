@@ -67,6 +67,7 @@ func (crmBillService *CrmBillService) GetCrmPageBillInfoList(info crmReq.CrmBill
 		Joins("LEFT JOIN sys_users ON sys_users.id = crm_order.user_id").
 		Joins("LEFT JOIN crm_customers ON crm_customers.id = crm_bill.customer_id").
 		Joins("LEFT JOIN crm_payment_collention ON crm_payment_collention.bill_id = crm_bill.id").
+		Order("crm_bill.created_at DESC").
 		Find(&crmBills).Error
 	return crmBills, total, err
 }

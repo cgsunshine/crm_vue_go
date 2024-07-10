@@ -29,7 +29,7 @@ type CrmBusinessOpportunity struct {
 	global.GVA_MODEL
 	Amount                  *float64   `json:"amount" form:"amount" gorm:"column:amount;comment:商机金额;size:22;" binding:"required"`                                                       //商机金额
 	BusinessOpportunityName string     `json:"businessOpportunityName" form:"businessOpportunityName" gorm:"column:business_opportunity_name;comment:商机名称;size:191;" binding:"required"` //商机名称
-	CustomerId              *int       `json:"customerId" form:"customerId" gorm:"column:customer_id;comment:客户ID;size:19;"`                                                             //客户ID
+	CustomerId              *int       `json:"customerId" form:"customerId" gorm:"column:customer_id;comment:客户ID;size:19;" binding:"required"`                                          //客户ID
 	Description             string     `json:"description" form:"description" gorm:"column:description;comment:备注;size:191;"`                                                            //备注
 	InputTime               *time.Time `json:"inputTime" form:"inputTime" gorm:"column:input_time;comment:商机录入时间;"`                                                                      //商机录入时间
 	OfferValidityPeriod     *time.Time `json:"offerValidityPeriod" form:"offerValidityPeriod" gorm:"column:offer_validity_period;comment:报价有效期;"`                                        //报价有效期

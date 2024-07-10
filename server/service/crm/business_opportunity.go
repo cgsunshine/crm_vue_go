@@ -61,6 +61,7 @@ func (crmBusinessOpportunityService *CrmBusinessOpportunityService) GetPageCrmBu
 		Joins("LEFT JOIN crm_customers ON crm_business_opportunity.customer_id = crm_customers.id").
 		Joins("LEFT JOIN sys_users ON crm_customers.user_id = sys_users.id").
 		Joins("LEFT JOIN crm_product ON crm_business_opportunity.product_id = crm_product.id").
+		Order("crm_business_opportunity.created_at DESC").
 		Preload("Products").
 		Find(&crmBusinessOpportunitys).Error
 	return crmBusinessOpportunitys, total, err

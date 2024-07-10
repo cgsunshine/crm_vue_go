@@ -58,6 +58,12 @@ func (crmOrderApi *CrmOrderApi) DeleteCrmOrder(c *gin.Context) {
 		global.GVA_LOG.Error("删除失败!", zap.Error(err))
 		response.FailWithMessage("删除失败", c)
 	} else {
+		//关联删除审批
+		err := crmApprovalTasksService.DelCrmAssociatedIdApprovalTasks(ID, comm.OrderApprovalType)
+		if err != nil {
+			global.GVA_LOG.Error("删除失败!", zap.Error(err))
+			response.FailWithMessage("删除失败", c)
+		}
 		response.OkWithMessage("删除成功", c)
 	}
 }
