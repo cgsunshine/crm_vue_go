@@ -61,6 +61,7 @@ func (crmContractService *CrmContractService) GetCrmPageContractInfoList(info cr
 		Joins("LEFT JOIN crm_customers ON crm_customers.id = crm_contract.customer_id").
 		Joins("LEFT JOIN crm_order ON crm_order.id = crm_contract.order_id").
 		Joins("LEFT JOIN crm_contract_type ON crm_contract_type.id = crm_contract.contract_type_id").
+		Order("crm_contract.created_at DESC").
 		Find(&crmContracts).Error
 	return crmContracts, total, err
 }

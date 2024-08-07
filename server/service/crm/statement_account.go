@@ -48,6 +48,7 @@ func (crmStatementAccountService *CrmStatementAccountService) GetCrmPageStatemen
 	err = db.Select("crm_statement_account.*,sys_users.username,crm_purchase_order.purchase_order_name").
 		Joins("LEFT JOIN sys_users ON crm_statement_account.user_id = sys_users.id").
 		Joins("LEFT JOIN crm_purchase_order ON crm_statement_account.purchase_order_id = crm_purchase_order.id").
+		Order("crm_statement_account.created_at DESC").
 		Find(&crmStatementAccounts).Error
 	return crmStatementAccounts, total, err
 }

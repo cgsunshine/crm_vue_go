@@ -48,6 +48,7 @@ func (crmCommissionRebateService *CrmCommissionRebateService) GetCrmPageCommissi
 	err = db.Select("crm_commission_rebate.*,sys_users.username,crm_order.order_name").
 		Joins("LEFT JOIN sys_users ON crm_commission_rebate.user_id = sys_users.id").
 		Joins("LEFT JOIN crm_order ON crm_order.id = crm_commission_rebate.order_id").
+		Order("crm_commission_rebate.created_at DESC").
 		Find(&crmCommissionRebates).Error
 	return crmCommissionRebates, total, err
 }

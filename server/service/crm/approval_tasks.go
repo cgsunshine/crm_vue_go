@@ -53,7 +53,6 @@ func (crmApprovalTasksService *CrmApprovalTasksService) GetCrmContractApprovalTa
 
 	err = db.Select("crm_approval_tasks.*,crm_contract.contract_name").
 		Joins("LEFT JOIN crm_contract ON crm_contract.id = crm_approval_tasks.associated_id").
-		Debug().
 		Order("crm_approval_tasks.created_at DESC").
 		Find(&crmApprovalTaskss).Error
 	return crmApprovalTaskss, total, err
@@ -80,6 +79,32 @@ func (crmApprovalTasksService *CrmApprovalTasksService) GetCrmBusinessOpportunit
 
 	err = db.Select("crm_approval_tasks.*,crm_business_opportunity.business_opportunity_name").
 		Joins("LEFT JOIN crm_business_opportunity ON crm_business_opportunity.id = crm_approval_tasks.associated_id").
+		Order("crm_approval_tasks.created_at DESC").
+		Find(&crmApprovalTaskss).Error
+	return crmApprovalTaskss, total, err
+}
+
+// GetCrmApprovalTasksInfoList 分页押金审批任务记录 商机
+// Author [piexlmax](https://github.com/piexlmax)
+func (crmApprovalTasksService *CrmApprovalTasksService) GetCrmDepositsApprovalTasksInfoList(info crmReq.CrmApprovalTasksSearch) (list []crm.CrmDepositsInfoApprovalTasks, total int64, err error) {
+	limit := info.PageSize
+	offset := info.PageSize * (info.Page - 1)
+	// 创建db
+	db := global.GVA_DB.Model(&crm.CrmApprovalTasks{})
+	var crmApprovalTaskss []crm.CrmDepositsInfoApprovalTasks
+	// 如果有条件搜索 下方会自动创建搜索语句
+	crmApprovalTasksService.SearchCriteria(info, db)
+	err = db.Count(&total).Error
+	if err != nil {
+		return
+	}
+
+	if limit != 0 {
+		db = db.Limit(limit).Offset(offset)
+	}
+
+	err = db.Select("crm_approval_tasks.*,crm_deposits.deposits_name").
+		Joins("LEFT JOIN crm_deposits ON crm_deposits.id = crm_approval_tasks.associated_id").
 		Order("crm_approval_tasks.created_at DESC").
 		Find(&crmApprovalTaskss).Error
 	return crmApprovalTaskss, total, err
@@ -137,6 +162,32 @@ func (crmApprovalTasksService *CrmApprovalTasksService) GetCrmOrderApprovalTasks
 	return crmApprovalTaskss, total, err
 }
 
+// GetCrmApprovalTasksInfoList 分页获取审批任务记录 回款
+// Author [piexlmax](https://github.com/piexlmax)
+func (crmApprovalTasksService *CrmApprovalTasksService) GetCrmStatementAccountApprovalTasksInfoList(info crmReq.CrmApprovalTasksSearch) (list []crm.CrmStatementAccountInfoApprovalTasks, total int64, err error) {
+	limit := info.PageSize
+	offset := info.PageSize * (info.Page - 1)
+	// 创建db
+	db := global.GVA_DB.Model(&crm.CrmApprovalTasks{})
+	var crmApprovalTaskss []crm.CrmStatementAccountInfoApprovalTasks
+	// 如果有条件搜索 下方会自动创建搜索语句
+	crmApprovalTasksService.SearchCriteria(info, db)
+	err = db.Count(&total).Error
+	if err != nil {
+		return
+	}
+
+	if limit != 0 {
+		db = db.Limit(limit).Offset(offset)
+	}
+
+	err = db.Select("crm_approval_tasks.*,crm_statement_account.statement_account_name").
+		Joins("LEFT JOIN crm_statement_account ON crm_statement_account.id = crm_approval_tasks.associated_id").
+		Order("crm_approval_tasks.created_at DESC").
+		Find(&crmApprovalTaskss).Error
+	return crmApprovalTaskss, total, err
+}
+
 // GetCrmPageContractApprovalTasks 根据ID获合同审批记录
 // Author [piexlmax](https://github.com/piexlmax)
 func (crmApprovalTasksService *CrmApprovalTasksService) GetCrmPageContractApprovalTasks(ID string) (CrmContactInfoApprovalTasks crm.CrmContactInfoApprovalTasks, err error) {
@@ -164,6 +215,16 @@ func (crmApprovalTasksService *CrmApprovalTasksService) GetCrmPagePaymentCollent
 		Select("crm_approval_tasks.*,crm_contract.payment_collention_name").
 		Joins("LEFT JOIN crm_payment_collention ON crm_payment_collention.id = crm_approval_tasks.associated_id").
 		First(&CrmContactInfoApprovalTasks).Error
+	return
+}
+
+// GetCrmPageDepositsApprovalTasks 根据ID获押金审批记录
+// Author [piexlmax](https://github.com/piexlmax)
+func (crmApprovalTasksService *CrmApprovalTasksService) GetCrmPageDepositsApprovalTasks(ID string) (crmDepositsInfoApprovalTasks crm.CrmDepositsInfoApprovalTasks, err error) {
+	err = global.GVA_DB.Model(&crm.CrmApprovalTasks{}).Where("id = ?", ID).
+		Select("crm_approval_tasks.*,crm_deposits.deposits_name").
+		Joins("LEFT JOIN crm_deposits ON crm_deposits.id = crm_approval_tasks.associated_id").
+		First(&crmDepositsInfoApprovalTasks).Error
 	return
 }
 

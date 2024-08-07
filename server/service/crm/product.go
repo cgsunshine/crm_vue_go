@@ -55,6 +55,7 @@ func (crmProductService *CrmProductService) GetCrmPageProductInfoList(info crmRe
 		Joins("LEFT JOIN sys_users ON crm_product.user_id = sys_users.id").
 		Joins("LEFT JOIN crm_product_group ON crm_product.product_group_id = crm_product_group.id").
 		Joins("LEFT JOIN crm_product_type ON crm_product.product_type_id = crm_product_type.id").
+		Order("crm_product.created_at DESC").
 		Find(&crmProducts).Error
 	return crmProducts, total, err
 }

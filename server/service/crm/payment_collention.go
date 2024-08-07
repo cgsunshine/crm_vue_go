@@ -58,6 +58,7 @@ func (crmPaymentCollentionService *CrmPaymentCollentionService) GetCrmPagePaymen
 		Joins("LEFT JOIN crm_order ON crm_order.id = crm_payment_collention.order_id").
 		Joins("LEFT JOIN crm_customers ON crm_customers.id = crm_order.customer_id").
 		Joins("LEFT JOIN crm_bill ON crm_bill.id = crm_payment_collention.bill_id").
+		Order("crm_payment_collention.created_at DESC").
 		Find(&crmPaymentCollentions).Error
 	return crmPaymentCollentions, total, err
 }

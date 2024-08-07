@@ -47,6 +47,7 @@ func (crmSupplierService *CrmSupplierService) GetCrmPageSupplierInfoList(info cr
 
 	err = db.Select("crm_supplier.*,sys_users.username").
 		Joins("LEFT JOIN sys_users ON crm_supplier.user_id = sys_users.id").
+		Order("crm_supplier.created_at DESC").
 		Find(&crmSuppliers).Error
 	return crmSuppliers, total, err
 }

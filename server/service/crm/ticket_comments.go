@@ -32,6 +32,7 @@ func (crmTicketCommentsService *CrmTicketCommentsService) GetCrmPageTicketCommen
 
 	err = db.Select("crm_ticket_comments.*,sys_users.username").
 		Joins("LEFT JOIN sys_users ON sys_users.id = crm_ticket_comments.user_id").
+		Order("crm_ticket_comments.created_at DESC").
 		Find(&crmTicketCommentss).Error
 	return crmTicketCommentss, total, err
 }

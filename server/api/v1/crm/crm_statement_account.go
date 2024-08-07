@@ -7,6 +7,7 @@ import (
 	"github.com/flipped-aurora/gin-vue-admin/server/model/crm"
 	crmReq "github.com/flipped-aurora/gin-vue-admin/server/model/crm/request"
 	"github.com/flipped-aurora/gin-vue-admin/server/service"
+	"github.com/flipped-aurora/gin-vue-admin/server/utils"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 )
@@ -39,6 +40,39 @@ func (crmStatementAccountApi *CrmStatementAccountApi) CreateCrmStatementAccount(
 		global.GVA_LOG.Error("创建失败!", zap.Error(err))
 		response.FailWithMessage("创建失败", c)
 	} else {
+		//在查出第一步对应的角色id
+		roleInfo, err := crmConfigService.GetCrmNameToConfig(comm.StatementAccountApproval)
+		if err != nil {
+			global.GVA_LOG.Error("创建失败!", zap.Error(err))
+			response.FailWithMessage("创建失败", c)
+			return
+		}
+
+		ids, err := userService.GetRoleUsers(roleInfo.RoleIds)
+		if err != nil {
+			global.GVA_LOG.Error("创建失败!", zap.Error(err))
+			response.FailWithMessage("创建失败", c)
+			return
+		}
+		statementAccountId := int(crmStatementAccount.ID)
+		//插入角色id对应的用户的审批记录
+		for _, userAuth := range ids {
+			assigneeId := int(userAuth.SysUserId)
+
+			if err := crmApprovalTasksService.CreateCrmApprovalTasks(&crm.CrmApprovalTasks{
+				AssigneeId:     &assigneeId,
+				ApprovalStatus: comm.Approval_Status_Under,
+				AssociatedId:   &statementAccountId,
+				Valid:          utils.Pointer(comm.Contact_Approval_Tasks_valid_Effective),
+				StepId:         roleInfo.NodeId,
+				ApprovalType:   utils.Pointer(comm.StatementAccountApprovalType),
+			}); err != nil {
+				global.GVA_LOG.Error("创建失败!", zap.Error(err))
+				response.FailWithMessage("创建失败", c)
+				return
+			}
+		}
+
 		response.OkWithMessage("创建成功", c)
 	}
 }
@@ -140,6 +174,7 @@ func (crmStatementAccountApi *CrmStatementAccountApi) GetCrmStatementAccountList
 		response.FailWithMessage(err.Error(), c)
 		return
 	}
+
 	if list, total, err := crmStatementAccountService.GetCrmStatementAccountInfoList(pageInfo); err != nil {
 		global.GVA_LOG.Error("获取失败!", zap.Error(err))
 		response.FailWithMessage("获取失败", c)
