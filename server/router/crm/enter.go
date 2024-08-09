@@ -67,4 +67,8 @@ type RouterGroup struct {
 	CrmCurrencyRouter
 	CrmOrderProductRouter
 	CrmBusinessOpportunityProductRouter
+	CrmDepositsRouter
+	CrmRefundTasksRouter
+	CrmBillPaymentRouter
+	CrmAdminHomeRouter
 }

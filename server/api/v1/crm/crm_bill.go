@@ -44,6 +44,14 @@ func (crmBillApi *CrmBillApi) CreateCrmBill(c *gin.Context) {
 
 	crmBill.CustomerId = order.CustomerId
 
+	//更新用户余额 新增账单需要扣减用户余额，放到审批或者这里
+	err = crmCustomersService.UpdateBalanceDecrease(*crmBill.CustomerId, *crmBill.BalanceConsumption)
+	if err != nil {
+		global.GVA_LOG.Error("更新失败!", zap.Error(err))
+		response.FailWithMessage("更新失败", c)
+		return
+	}
+
 	if err := crmBillService.CreateCrmBill(&crmBill); err != nil {
 		global.GVA_LOG.Error("创建失败!", zap.Error(err))
 		response.FailWithMessage("创建失败", c)

@@ -24,6 +24,7 @@ type CrmPaymentCollention struct {
 	PaymentTime           *time.Time `json:"paymentTime" form:"paymentTime" gorm:"column:payment_time;comment:付款时间;"`                                         //回款时间
 	PaymentType           string     `json:"paymentType" form:"paymentType" gorm:"column:payment_type;comment:付款方式;size:10;"`                                 //回款方式
 	BillId                *int       `json:"billId" form:"billId" gorm:"column:bill_id;comment:账单id;"`                                                        //账单id
+	PaymentCollentionType string     `json:"paymentCollentionType" form:"paymentCollentionType" gorm:"column:payment_collention_type;comment:审核状态;size:191;"` //回款类型
 }
 
 // TableName crmPaymentCollention表 CrmPaymentCollention自定义表名 crm_payment_collention

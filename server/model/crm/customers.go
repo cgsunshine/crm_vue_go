@@ -22,5 +22,6 @@ type CrmPageCustomers struct {
 	//sys_user 表
 	Username string `json:"userName" gorm:"index;comment:用户登录名"` // 用户登录名
 	//crm_customer_group 表
-	GroupName string `json:"groupName" form:"groupName" gorm:"column:group_name;comment:分组名称;size:90;"` //分组名称
+	GroupName string   `json:"groupName" form:"groupName" gorm:"column:group_name;comment:分组名称;size:90;"` //分组名称
+	Balance   *float64 `json:"balance" form:"balance" gorm:"column:balance;comment:余额;default:0;"`        //余额 （预付款金额）
 }

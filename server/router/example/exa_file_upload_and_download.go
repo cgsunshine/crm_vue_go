@@ -28,5 +28,6 @@ func (e *FileUploadAndDownloadRouter) InitFileUploadAndDownloadRouter(Router *gi
 
 	{
 		filePublicUploadAndDownloadRouter.GET("getFileIdsListInfo", exaFileUploadAndDownloadApi.GetFileIdsList) // 查询列表
+		filePublicUploadAndDownloadRouter.GET("downloadFile", exaFileUploadAndDownloadApi.DownloadFile)         // 查询列表
 	}
 }

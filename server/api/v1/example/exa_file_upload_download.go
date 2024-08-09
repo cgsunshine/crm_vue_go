@@ -1,6 +1,7 @@
 package example
 
 import (
+	"fmt"
 	"github.com/flipped-aurora/gin-vue-admin/server/global"
 	"github.com/flipped-aurora/gin-vue-admin/server/model/common/request"
 	"github.com/flipped-aurora/gin-vue-admin/server/model/common/response"
@@ -8,6 +9,7 @@ import (
 	exampleRes "github.com/flipped-aurora/gin-vue-admin/server/model/example/response"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
+	"net/http"
 )
 
 type FileUploadAndDownloadApi struct{}
@@ -210,7 +212,33 @@ func (b *FileUploadAndDownloadApi) GetFileIdsList(c *gin.Context) {
 		return
 	}
 
-	response.OkWithDetailed(response.Response{
-		Data: list,
-	}, "获取成功", c)
+	response.OkWithDetailed(list, "获取成功", c)
+}
+
+// DownloadFile
+// @Tags      CrmContactFileUploadAndDownloads
+// @Summary   合同文件下载
+// @Security  ApiKeyAuth
+// @accept    multipart/form-data
+// @Produce   application/json
+// @Param     file  formData  file                                                           true  "上传文件示例"
+// @Success   200   "file"  "上传文件示例,返回包括文件详情"
+// @Router    /fileUploadAndDownload/upload [post]
+func (b *FileUploadAndDownloadApi) DownloadFile(c *gin.Context) {
+
+	id, ok := c.GetQuery("id")
+	if !ok {
+		response.FailWithMessage("参数错误", c)
+		return
+	}
+	file, file_name, err := fileUploadAndDownloadService.DownloadFile(id) // 文件上传后拿到文件路径
+	if err != nil {
+		global.GVA_LOG.Error("修改数据库链接失败!", zap.Error(err))
+		response.FailWithMessage("修改数据库链接失败", c)
+		return
+	}
+	c.Header("Content-Disposition", fmt.Sprintf("attachment; filename=%s", file_name)) // 对下载的文件重命名
+	c.Header("success", "true")
+	c.Data(http.StatusOK, "application/octet-stream", file)
+
 }

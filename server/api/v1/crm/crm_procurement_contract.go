@@ -120,6 +120,11 @@ func (crmProcurementContractApi *CrmProcurementContractApi) FindCrmProcurementCo
 		global.GVA_LOG.Error("查询失败!", zap.Error(err))
 		response.FailWithMessage("查询失败", c)
 	} else {
+		//recrmProcurementContract.ContractFile, _, err = fileUploadAndDownloadService.GetFileRecordInfoIdsString(recrmProcurementContract.ContractFile)
+		//if err != nil {
+		//	global.GVA_LOG.Error("查询失败!", zap.Error(err))
+		//	response.FailWithMessage("查询失败", c)
+		//}
 		response.OkWithData(gin.H{"recrmProcurementContract": recrmProcurementContract}, c)
 	}
 }
@@ -140,7 +145,7 @@ func (crmProcurementContractApi *CrmProcurementContractApi) GetCrmProcurementCon
 		response.FailWithMessage(err.Error(), c)
 		return
 	}
-	if list, total, err := crmProcurementContractService.GetCrmProcurementContractInfoList(pageInfo); err != nil {
+	if list, total, err := crmProcurementContractService.GetCrmPageProcurementContractInfoList(pageInfo); err != nil {
 		global.GVA_LOG.Error("获取失败!", zap.Error(err))
 		response.FailWithMessage("获取失败", c)
 	} else {

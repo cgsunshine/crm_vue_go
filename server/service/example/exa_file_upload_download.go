@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"mime/multipart"
+	"os"
 	"strconv"
 	"strings"
 
@@ -30,6 +31,18 @@ func (e *FileUploadAndDownloadService) Upload(file *example.ExaFileUploadAndDown
 //@return: model.ExaFileUploadAndDownload, error
 
 func (e *FileUploadAndDownloadService) FindFile(id uint) (example.ExaFileUploadAndDownload, error) {
+	var file example.ExaFileUploadAndDownload
+	err := global.GVA_DB.Where("id = ?", id).First(&file).Error
+	return file, err
+}
+
+//@author: [piexlmax](https://github.com/piexlmax)
+//@function: FindFile
+//@description: 查询文件记录
+//@param: id uint
+//@return: model.ExaFileUploadAndDownload, error
+
+func (e *FileUploadAndDownloadService) FindIdFile(id string) (example.ExaFileUploadAndDownload, error) {
 	var file example.ExaFileUploadAndDownload
 	err := global.GVA_DB.Where("id = ?", id).First(&file).Error
 	return file, err
@@ -139,7 +152,7 @@ func (e *FileUploadAndDownloadService) GetFileRecordInfoIdsList(ids string) (fil
 		return
 	}
 
-	err = db.Order("updated_at desc").Debug().Find(&fileLists).Error
+	err = db.Order("updated_at desc").Find(&fileLists).Error
 	return fileLists, total, err
 }
 
@@ -182,4 +195,30 @@ func (e *FileUploadAndDownloadService) GetFileRecordInfoIdsString(ids string) (i
 	}
 	img = strings.Join(result, ",")
 	return img, total, err
+}
+
+//@author: [piexlmax](https://github.com/piexlmax)
+//@function: UploadFile
+//@description: 根据配置文件判断是文件上传到本地或者七牛云
+//@param: header *multipart.FileHeader, noSave string
+//@return: file model.ExaFileUploadAndDownload, err error
+
+func (c *FileUploadAndDownloadService) DownloadFile(id string) (file []byte, file_name string, err error) {
+	//oss := upload.NewOss()
+	//filePath, key, uploadErr := oss.UploadFile(header)
+	//if uploadErr != nil {
+	//	panic(uploadErr)
+	//}
+	fileInfo, err := c.FindIdFile(id)
+	file_name = fileInfo.Name
+	if err != nil {
+		return nil, "", err
+	}
+	// 打开文件
+	file, err = os.ReadFile(fileInfo.Url)
+	if err != nil {
+		return nil, "", err
+	}
+
+	return
 }

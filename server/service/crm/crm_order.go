@@ -4,6 +4,7 @@ import (
 	"github.com/flipped-aurora/gin-vue-admin/server/global"
 	"github.com/flipped-aurora/gin-vue-admin/server/model/crm"
 	crmReq "github.com/flipped-aurora/gin-vue-admin/server/model/crm/request"
+	"time"
 )
 
 type CrmOrderService struct {
@@ -96,4 +97,11 @@ func (crmOrderService *CrmOrderService) GetCrmOrderInfoList(info crmReq.CrmOrder
 
 	err = db.Find(&crmOrders).Error
 	return crmOrders, total, err
+}
+
+func (crmOrderService *CrmOrderService) OrderCycleTimeAdd(userId *int, startDate, endDate *time.Time) (total int64, err error) {
+	db := global.GVA_DB.Model(&crm.CrmOrder{})
+	SearchCondition(db, userId, startDate, endDate)
+	err = db.Count(&total).Error
+	return
 }

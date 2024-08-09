@@ -4,6 +4,7 @@ import (
 	"github.com/flipped-aurora/gin-vue-admin/server/global"
 	"github.com/flipped-aurora/gin-vue-admin/server/model/crm"
 	crmReq "github.com/flipped-aurora/gin-vue-admin/server/model/crm/request"
+	"gorm.io/gorm"
 )
 
 // GetPageCrmCustomersInfoList 分页获取客户管理记录
@@ -51,6 +52,7 @@ func (crmCustomersService *CrmCustomersService) GetPageCrmCustomersInfoList(info
 	err = db.Select("crm_customers.*,sys_users.username,crm_customer_group.group_name").
 		Joins("LEFT JOIN sys_users ON crm_customers.user_id = sys_users.id").
 		Joins("LEFT JOIN crm_customer_group ON crm_customers.customer_group_id = crm_customer_group.id").
+		Order("crm_customers.created_at DESC").
 		Find(&crmCustomerss).Error
 	return crmCustomerss, total, err
 }
@@ -69,4 +71,14 @@ func (crmCustomersService *CrmCustomersService) GetCrmPageCustomers(ID string) (
 // SplicingQueryConditions 拼接条件
 func (crmCustomersService *CrmCustomersService) SplicingQueryConditions(condition string) string {
 	return "crm_customers." + condition
+}
+
+// 更新用户余额 增加
+func (crmCustomersService *CrmCustomersService) UpdateBalanceIncrease(id int, decrementValue float64) error {
+	return global.GVA_DB.Model(&crm.CrmCustomers{}).Where("id = ?", id).Update("balance", gorm.Expr("balance + ?", decrementValue)).Error
+}
+
+// 更新用户余额 减少
+func (crmCustomersService *CrmCustomersService) UpdateBalanceDecrease(id int, decrementValue float64) error {
+	return global.GVA_DB.Model(&crm.CrmCustomers{}).Where("id = ?", id).Update("balance", gorm.Expr("balance - ?", decrementValue)).Error
 }

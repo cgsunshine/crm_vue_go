@@ -21,6 +21,9 @@ const (
 	BusinessOpportunityApproval = "商机审批"
 	PaymentCollentionApproval   = "回款审批"
 	OrderApproval               = "订单审批"
+	DepositsApproval            = "押金审批"
+	StatementAccountApproval    = "对账单审批"
+	PaymentApproval             = "付款审批" //付款审批
 )
 
 const (
@@ -28,11 +31,23 @@ const (
 	BusinessOpportunityApprovalType = 2
 	PaymentCollentionApprovalType   = 3
 	OrderApprovalType               = 4
+	DepositsApprovalType            = 5
+	StatementAccountApprovalType    = 6
+	PaymentApprovalType             = 7
+)
+
+const (
+	DepositsRefundType = 1 //押金
 )
 
 const (
 	PaymentStatusUnpaid = "1" //未付款
 	PaymentStatusPaid   = "2" //已付款
+)
+
+const (
+	Deposits_Processing_Status_Unprocessed = "1" //未处理
+	Deposits_Processing_Status_Processed   = "2" //已处理
 )
 
 // 审批类型对应的名称
@@ -41,7 +56,36 @@ var ApprovalConfigToType = map[int]string{
 	BusinessOpportunityApprovalType: BusinessOpportunityApproval,
 	PaymentCollentionApprovalType:   PaymentCollentionApproval,
 	OrderApprovalType:               OrderApproval,
+	DepositsApprovalType:            DepositsApproval,
+	StatementAccountApprovalType:    StatementAccountApproval,
+	PaymentApprovalType:             PaymentApproval,
 }
+
+const (
+	Deposits_Status_Under   = "1" //待处理
+	Deposits_Status_Payment = "2" //已支付
+	Deposits_Status_Refund  = "3" //已退款
+)
 
 // 默认审批通过人数
 const NumberApprovedPersonnel = 1
+
+const (
+	Cash_Payment   = "1" //现付款
+	Pre_Deposit    = "2" //预存款
+	Advance_charge = "3" //预付款
+)
+
+const (
+	RUnsubmitted_Refund_Status = "1" //未提交
+	Submitted_Refund_Status    = "2" //已提交
+	Processed_Refund_Status    = "3" //已处理
+)
+
+// ascending descending
+func OrderHandle(o string) string {
+	if o == "ascending" {
+		return "ASC"
+	}
+	return "DESC"
+}

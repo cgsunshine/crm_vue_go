@@ -18,8 +18,8 @@ func (crmPaymentService *CrmPaymentService) GetCrmPagePaymentInfoList(info crmRe
 	if info.StartCreatedAt != nil && info.EndCreatedAt != nil {
 		db = db.Where(crmPaymentService.SplicingQueryConditions("created_at BETWEEN ? AND ?"), info.StartCreatedAt, info.EndCreatedAt)
 	}
-	if info.OrderId != nil {
-		db = db.Where(crmPaymentService.SplicingQueryConditions("order_id = ?"), info.OrderId)
+	if info.StatementAccountId != nil {
+		db = db.Where(crmPaymentService.SplicingQueryConditions("statement_account_id = ?"), info.StatementAccountId)
 	}
 	if info.PaymentAmount != nil {
 		db = db.Where(crmPaymentService.SplicingQueryConditions("payment_amount = ?"), info.PaymentAmount)
@@ -42,9 +42,10 @@ func (crmPaymentService *CrmPaymentService) GetCrmPagePaymentInfoList(info crmRe
 		db = db.Limit(limit).Offset(offset)
 	}
 
-	err = db.Select("crm_payment.*,sys_users.username,crm_order.order_name").
+	err = db.Select("crm_payment.*,sys_users.username,crm_statement_account.statement_account_name").
 		Joins("LEFT JOIN sys_users ON crm_payment.user_id = sys_users.id").
-		Joins("LEFT JOIN crm_order ON crm_order.id = crm_payment.order_id").
+		Joins("LEFT JOIN crm_statement_account ON crm_statement_account.id = crm_payment.statement_account_id").
+		Order("crm_payment.created_at DESC").
 		Find(&crmPayments).Error
 	return crmPayments, total, err
 }
@@ -53,9 +54,9 @@ func (crmPaymentService *CrmPaymentService) GetCrmPagePaymentInfoList(info crmRe
 // Author [piexlmax](https://github.com/piexlmax)
 func (crmPaymentService *CrmPaymentService) GetCrmPagePayment(ID string) (crmPayment crm.CrmPagePayment, err error) {
 	err = global.GVA_DB.Model(&crm.CrmPayment{}).Where("crm_payment.id = ?", ID).
-		Select("crm_payment.*,sys_users.username,crm_order.order_name").
+		Select("crm_payment.*,sys_users.username,crm_statement_account.statement_account_name").
 		Joins("LEFT JOIN sys_users ON crm_payment.user_id = sys_users.id").
-		Joins("LEFT JOIN crm_order ON crm_order.id = crm_payment.order_id").
+		Joins("LEFT JOIN crm_statement_account ON crm_statement_account.id = crm_payment.statement_account_id").
 		First(&crmPayment).Error
 	return
 }
@@ -63,4 +64,12 @@ func (crmPaymentService *CrmPaymentService) GetCrmPagePayment(ID string) (crmPay
 // SplicingQueryConditions 拼接条件
 func (crmPaymentService *CrmPaymentService) SplicingQueryConditions(condition string) string {
 	return "crm_payment." + condition
+}
+
+// UpdApprovalStatus 修改审批状态
+// Author [piexlmax](https://github.com/piexlmax)
+func (crmPaymentService *CrmPaymentService) UpdApprovalStatus(ID *int, data map[string]interface{}) (err error) {
+	db := global.GVA_DB.Model(&crm.CrmPayment{})
+	err = db.Where("id = ?", ID).Updates(data).Error
+	return
 }

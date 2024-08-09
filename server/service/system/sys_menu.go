@@ -56,14 +56,21 @@ func (menuService *MenuService) getMenuTreeMap(authorityId uint) (treeMap map[ui
 		return
 	}
 	var btnMap = make(map[uint]map[string]uint)
+	var btnAuth = make(map[uint][]string)
 	for _, v := range btns {
 		if btnMap[v.SysMenuID] == nil {
 			btnMap[v.SysMenuID] = make(map[string]uint)
 		}
 		btnMap[v.SysMenuID][v.SysBaseMenuBtn.Name] = authorityId
+		if btnAuth[v.SysMenuID] == nil {
+			btnAuth[v.SysMenuID] = make([]string, 0)
+		}
+		btnAuth[v.SysMenuID] = append(btnAuth[v.SysMenuID], v.SysBaseMenuBtn.Name)
 	}
 	for _, v := range allMenus {
 		v.Btns = btnMap[v.SysBaseMenu.ID]
+		v.Auths = btnAuth[v.SysBaseMenu.ID]
+
 		treeMap[v.ParentId] = append(treeMap[v.ParentId], v)
 	}
 	return treeMap, err

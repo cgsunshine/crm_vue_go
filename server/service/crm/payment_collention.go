@@ -1,9 +1,11 @@
 package crm
 
 import (
+	"github.com/flipped-aurora/gin-vue-admin/server/api/v1/comm"
 	"github.com/flipped-aurora/gin-vue-admin/server/global"
 	"github.com/flipped-aurora/gin-vue-admin/server/model/crm"
 	crmReq "github.com/flipped-aurora/gin-vue-admin/server/model/crm/request"
+	"time"
 )
 
 // GetCrmPaymentCollentionInfoList 分页获取crmPaymentCollention表记录
@@ -58,6 +60,7 @@ func (crmPaymentCollentionService *CrmPaymentCollentionService) GetCrmPagePaymen
 		Joins("LEFT JOIN crm_order ON crm_order.id = crm_payment_collention.order_id").
 		Joins("LEFT JOIN crm_customers ON crm_customers.id = crm_order.customer_id").
 		Joins("LEFT JOIN crm_bill ON crm_bill.id = crm_payment_collention.bill_id").
+		Order("crm_payment_collention.created_at DESC").
 		Find(&crmPaymentCollentions).Error
 	return crmPaymentCollentions, total, err
 }
@@ -93,5 +96,15 @@ func (crmPaymentCollentionService *CrmPaymentCollentionService) UpdApprovalStatu
 // Author [piexlmax](https://github.com/piexlmax)
 func (crmPaymentCollentionService *CrmPaymentCollentionService) GetCrmPaymentIdCollention(ID int) (crmPaymentCollention crm.CrmPaymentCollention, err error) {
 	err = global.GVA_DB.Where("id = ?", ID).First(&crmPaymentCollention).Error
+	return
+}
+
+// 周期内回款金额总计
+func (crmPaymentCollentionService *CrmPaymentCollentionService) PaymentCollentionAmountCycleTime(userId *int, startDate, endDate *time.Time) (total int64, err error) {
+	db := global.GVA_DB.Model(&crm.CrmContract{})
+	SearchCondition(db, userId, startDate, endDate)
+	db.Select("SUM(amount)")
+	db.Where("review_status = ?", comm.Approval_Status_Pass)
+	err = db.Count(&total).Error
 	return
 }
