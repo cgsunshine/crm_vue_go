@@ -1,0 +1,76 @@
+package crm
+
+import (
+	"github.com/flipped-aurora/gin-vue-admin/server/global"
+	"github.com/flipped-aurora/gin-vue-admin/server/model/crm"
+    crmReq "github.com/flipped-aurora/gin-vue-admin/server/model/crm/request"
+)
+
+type CrmContactApprovalTasksService struct {
+}
+
+// CreateCrmContactApprovalTasks 创建合同审批表记录
+// Author [piexlmax](https://github.com/piexlmax)
+func (crmContactApprovalTasksService *CrmContactApprovalTasksService) CreateCrmContactApprovalTasks(crmContactApprovalTasks *crm.CrmContactApprovalTasks) (err error) {
+	err = global.GVA_DB.Create(crmContactApprovalTasks).Error
+	return err
+}
+
+// DeleteCrmContactApprovalTasks 删除合同审批表记录
+// Author [piexlmax](https://github.com/piexlmax)
+func (crmContactApprovalTasksService *CrmContactApprovalTasksService)DeleteCrmContactApprovalTasks(ID string) (err error) {
+	err = global.GVA_DB.Delete(&crm.CrmContactApprovalTasks{},"id = ?",ID).Error
+	return err
+}
+
+// DeleteCrmContactApprovalTasksByIds 批量删除合同审批表记录
+// Author [piexlmax](https://github.com/piexlmax)
+func (crmContactApprovalTasksService *CrmContactApprovalTasksService)DeleteCrmContactApprovalTasksByIds(IDs []string) (err error) {
+	err = global.GVA_DB.Delete(&[]crm.CrmContactApprovalTasks{},"id in ?",IDs).Error
+	return err
+}
+
+// UpdateCrmContactApprovalTasks 更新合同审批表记录
+// Author [piexlmax](https://github.com/piexlmax)
+func (crmContactApprovalTasksService *CrmContactApprovalTasksService)UpdateCrmContactApprovalTasks(crmContactApprovalTasks crm.CrmContactApprovalTasks) (err error) {
+	err = global.GVA_DB.Save(&crmContactApprovalTasks).Error
+	return err
+}
+
+// GetCrmContactApprovalTasks 根据ID获取合同审批表记录
+// Author [piexlmax](https://github.com/piexlmax)
+func (crmContactApprovalTasksService *CrmContactApprovalTasksService)GetCrmContactApprovalTasks(ID string) (crmContactApprovalTasks crm.CrmContactApprovalTasks, err error) {
+	err = global.GVA_DB.Where("id = ?", ID).First(&crmContactApprovalTasks).Error
+	return
+}
+
+// GetCrmContactApprovalTasksInfoList 分页获取合同审批表记录
+// Author [piexlmax](https://github.com/piexlmax)
+func (crmContactApprovalTasksService *CrmContactApprovalTasksService)GetCrmContactApprovalTasksInfoList(info crmReq.CrmContactApprovalTasksSearch) (list []crm.CrmContactApprovalTasks, total int64, err error) {
+	limit := info.PageSize
+	offset := info.PageSize * (info.Page - 1)
+    // 创建db
+	db := global.GVA_DB.Model(&crm.CrmContactApprovalTasks{})
+    var crmContactApprovalTaskss []crm.CrmContactApprovalTasks
+    // 如果有条件搜索 下方会自动创建搜索语句
+    if info.StartCreatedAt !=nil && info.EndCreatedAt !=nil {
+     db = db.Where("created_at BETWEEN ? AND ?", info.StartCreatedAt, info.EndCreatedAt)
+    }
+    if info.Assignee != "" {
+        db = db.Where("assignee = ?",info.Assignee)
+    }
+    if info.ApprovalStatus != "" {
+        db = db.Where("approval_status = ?",info.ApprovalStatus)
+    }
+	err = db.Count(&total).Error
+	if err!=nil {
+    	return
+    }
+
+	if limit != 0 {
+       db = db.Limit(limit).Offset(offset)
+    }
+	
+	err = db.Find(&crmContactApprovalTaskss).Error
+	return  crmContactApprovalTaskss, total, err
+}

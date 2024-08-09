@@ -1,0 +1,19 @@
+package request
+
+import (
+	"github.com/flipped-aurora/gin-vue-admin/server/model/common/request"
+	"time"
+	
+)
+
+type CrmApprovalRecordSearch struct{
+    
+        StartCreatedAt *time.Time `json:"startCreatedAt" form:"startCreatedAt"`
+        EndCreatedAt   *time.Time `json:"endCreatedAt" form:"endCreatedAt"`
+    
+                      Code  string `json:"code" form:"code" `
+                      ModuleId  string `json:"moduleId" form:"moduleId" `
+                StartCreateTime  *time.Time  `json:"startCreateTime" form:"startCreateTime"`
+                EndCreateTime  *time.Time  `json:"endCreateTime" form:"endCreateTime"`
+    request.PageInfo
+}

@@ -1,0 +1,32 @@
+package crm
+
+import (
+	"github.com/flipped-aurora/gin-vue-admin/server/api/v1"
+	"github.com/flipped-aurora/gin-vue-admin/server/middleware"
+	"github.com/gin-gonic/gin"
+)
+
+type CrmBusinessOpportunityFileUploadAndDownloadsRouter struct {
+}
+
+// InitCrmBusinessOpportunityFileUploadAndDownloadsRouter 初始化 上传商机文件 路由信息
+func (s *CrmBusinessOpportunityFileUploadAndDownloadsRouter) InitCrmBusinessOpportunityFileUploadAndDownloadsRouter(Router *gin.RouterGroup,PublicRouter *gin.RouterGroup) {
+	crmBusinessOpportunityFileUploadAndDownloadsRouter := Router.Group("crmBusinessOpportunityFileUploadAndDownloads").Use(middleware.OperationRecord())
+	crmBusinessOpportunityFileUploadAndDownloadsRouterWithoutRecord := Router.Group("crmBusinessOpportunityFileUploadAndDownloads")
+	crmBusinessOpportunityFileUploadAndDownloadsRouterWithoutAuth := PublicRouter.Group("crmBusinessOpportunityFileUploadAndDownloads")
+
+	var crmBusinessOpportunityFileUploadAndDownloadsApi = v1.ApiGroupApp.CrmApiGroup.CrmBusinessOpportunityFileUploadAndDownloadsApi
+	{
+		crmBusinessOpportunityFileUploadAndDownloadsRouter.POST("createCrmBusinessOpportunityFileUploadAndDownloads", crmBusinessOpportunityFileUploadAndDownloadsApi.CreateCrmBusinessOpportunityFileUploadAndDownloads)   // 新建上传商机文件
+		crmBusinessOpportunityFileUploadAndDownloadsRouter.DELETE("deleteCrmBusinessOpportunityFileUploadAndDownloads", crmBusinessOpportunityFileUploadAndDownloadsApi.DeleteCrmBusinessOpportunityFileUploadAndDownloads) // 删除上传商机文件
+		crmBusinessOpportunityFileUploadAndDownloadsRouter.DELETE("deleteCrmBusinessOpportunityFileUploadAndDownloadsByIds", crmBusinessOpportunityFileUploadAndDownloadsApi.DeleteCrmBusinessOpportunityFileUploadAndDownloadsByIds) // 批量删除上传商机文件
+		crmBusinessOpportunityFileUploadAndDownloadsRouter.PUT("updateCrmBusinessOpportunityFileUploadAndDownloads", crmBusinessOpportunityFileUploadAndDownloadsApi.UpdateCrmBusinessOpportunityFileUploadAndDownloads)    // 更新上传商机文件
+	}
+	{
+		crmBusinessOpportunityFileUploadAndDownloadsRouterWithoutRecord.GET("findCrmBusinessOpportunityFileUploadAndDownloads", crmBusinessOpportunityFileUploadAndDownloadsApi.FindCrmBusinessOpportunityFileUploadAndDownloads)        // 根据ID获取上传商机文件
+		crmBusinessOpportunityFileUploadAndDownloadsRouterWithoutRecord.GET("getCrmBusinessOpportunityFileUploadAndDownloadsList", crmBusinessOpportunityFileUploadAndDownloadsApi.GetCrmBusinessOpportunityFileUploadAndDownloadsList)  // 获取上传商机文件列表
+	}
+	{
+	    crmBusinessOpportunityFileUploadAndDownloadsRouterWithoutAuth.GET("getCrmBusinessOpportunityFileUploadAndDownloadsPublic", crmBusinessOpportunityFileUploadAndDownloadsApi.GetCrmBusinessOpportunityFileUploadAndDownloadsPublic)  // 获取上传商机文件列表
+	}
+}
