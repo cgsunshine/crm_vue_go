@@ -24,6 +24,8 @@ const (
 	DepositsApproval            = "押金审批"
 	StatementAccountApproval    = "对账单审批"
 	PaymentApproval             = "付款审批" //付款审批
+	PurchaseOrderApproval       = "订购单"  //付款审批
+	ProcurementContractApproval = "订购合同" //付款审批
 )
 
 const (
@@ -34,6 +36,8 @@ const (
 	DepositsApprovalType            = 5
 	StatementAccountApprovalType    = 6
 	PaymentApprovalType             = 7
+	PurchaseOrderApprovalType       = 8
+	ProcurementContractApprovalType = 9
 )
 
 const (
@@ -59,6 +63,8 @@ var ApprovalConfigToType = map[int]string{
 	DepositsApprovalType:            DepositsApproval,
 	StatementAccountApprovalType:    StatementAccountApproval,
 	PaymentApprovalType:             PaymentApproval,
+	PurchaseOrderApprovalType:       PurchaseOrderApproval,
+	ProcurementContractApprovalType: ProcurementContractApproval,
 }
 
 const (

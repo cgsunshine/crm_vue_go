@@ -72,7 +72,7 @@ func (crmBusinessOpportunityApi *CrmBusinessOpportunityApi) FindCrmPageBusinessO
 // @Router /crmBusinessOpportunity/createCrmBusinessOpportunity [post]
 func (crmBusinessOpportunityApi *CrmBusinessOpportunityApi) CreateCrmPageBusinessOpportunity(c *gin.Context) {
 
-	var req crmReq.CrmBusinessOpportunity
+	var req crmReq.CrmReqBusinessOpportunity
 	err := c.ShouldBindJSON(&req)
 	if err != nil {
 		response.FailWithMessage(err.Error(), c)
@@ -81,14 +81,14 @@ func (crmBusinessOpportunityApi *CrmBusinessOpportunityApi) CreateCrmPageBusines
 
 	req.UserId = comm.GetHeaderUserId(c)
 
-	var products []crm.CrmProduct
-	for _, v := range req.ProductIds {
-		products = append(products, crm.CrmProduct{
-			GVA_MODEL: global.GVA_MODEL{
-				ID: v,
-			},
-		})
-	}
+	//var products []crm.CrmProduct
+	//for _, v := range req.ProductIds {
+	//	products = append(products, crm.CrmProduct{
+	//		GVA_MODEL: global.GVA_MODEL{
+	//			ID: v,
+	//		},
+	//	})
+	//}
 
 	crmBusinessOpportunity := crm.CrmBusinessOpportunity{
 		Amount:                  req.Amount,
@@ -101,7 +101,7 @@ func (crmBusinessOpportunityApi *CrmBusinessOpportunityApi) CreateCrmPageBusines
 		UserId:                  req.UserId,
 		ReviewStatus:            req.ReviewStatus,
 		Currency:                req.Currency,
-		Products:                products,
+		//Products:                products,
 	}
 
 	crmBusinessOpportunity.UserId = comm.GetHeaderUserId(c)
@@ -110,6 +110,22 @@ func (crmBusinessOpportunityApi *CrmBusinessOpportunityApi) CreateCrmPageBusines
 
 	if err := crmBusinessOpportunityService.CreateCrmBusinessOpportunity(&crmBusinessOpportunity); err != nil {
 		global.GVA_LOG.Error("创建失败!", zap.Error(err))
+		response.FailWithMessage("创建失败", c)
+	}
+
+	crmOrderProducts := make([]*crm.CrmOrderProduct, 0)
+	for _, v := range req.OrderProduct {
+		crmOrderProduct := &crm.CrmOrderProduct{
+			OrderId:        crmBusinessOpportunity.ID,
+			ProductId:      v.ProductId,
+			Quantity:       v.Quantity,
+			Specifications: v.Specifications,
+		}
+		crmOrderProducts = append(crmOrderProducts, crmOrderProduct)
+	}
+
+	if err := crmOrderProductService.CreateCrmOrderProducts(crmOrderProducts); err != nil {
+		global.GVA_LOG.Error("插入对应关系失败!", zap.Error(err))
 		response.FailWithMessage("创建失败", c)
 	}
 

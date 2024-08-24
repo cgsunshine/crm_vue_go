@@ -49,7 +49,7 @@ func (crmTicketsApi *CrmTicketsApi) GetCrmSubmitterTicketsList(c *gin.Context) {
 // @Produce application/json
 // @Param data query crmReq.CrmTicketsSearch true "分页获取工单列表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"获取成功"}"
-// @Router /crmTickets/getCrmTicketsList [get]
+// @Router /crmTickets/getCrmAssigneeTicketsList [get]
 func (crmTicketsApi *CrmTicketsApi) GetCrmAssigneeTicketsList(c *gin.Context) {
 	var pageInfo crmReq.CrmTicketsSearch
 	err := c.ShouldBindQuery(&pageInfo)

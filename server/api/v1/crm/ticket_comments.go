@@ -33,6 +33,13 @@ func (crmTicketCommentsApi *CrmTicketCommentsApi) CreateCrmPageTicketComments(c 
 		global.GVA_LOG.Error("创建失败!", zap.Error(err))
 		response.FailWithMessage("创建失败", c)
 	} else {
+		//回复成功以后，修改最后一次回复时间
+		if err := crmTicketsService.UpdTicketsInfo(crmTicketComments.TicketId, map[string]interface{}{
+			"last_reply_time": crmTicketComments.CreatedAt,
+		}); err != nil {
+			global.GVA_LOG.Error("更新回复时间失败!", zap.Error(err))
+			response.FailWithMessage("创建失败", c)
+		}
 		response.OkWithMessage("创建成功", c)
 	}
 }

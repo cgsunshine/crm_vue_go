@@ -16,6 +16,13 @@ func (crmOrderProductService *CrmOrderProductService) CreateCrmOrderProduct(crmO
 	return err
 }
 
+// CreateCrmOrderProduct 创建crmOrderProduct表记录
+// Author [piexlmax](https://github.com/piexlmax)
+func (crmOrderProductService *CrmOrderProductService) CreateCrmOrderProducts(crmOrderProduct []*crm.CrmOrderProduct) (err error) {
+	err = global.GVA_DB.Create(crmOrderProduct).Error
+	return err
+}
+
 // DeleteCrmOrderProduct 删除crmOrderProduct表记录
 // Author [piexlmax](https://github.com/piexlmax)
 func (crmOrderProductService *CrmOrderProductService) DeleteCrmOrderProduct(ID string) (err error) {

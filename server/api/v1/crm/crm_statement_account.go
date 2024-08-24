@@ -41,6 +41,21 @@ func (crmStatementAccountApi *CrmStatementAccountApi) CreateCrmStatementAccount(
 		global.GVA_LOG.Error("创建失败!", zap.Error(err))
 		response.FailWithMessage("创建失败", c)
 	} else {
+		statementAccountId := int(crmStatementAccount.ID)
+		crmBillPayment := crm.CrmBillPayment{
+			Amount:             crmStatementAccount.Amount,
+			BillPaymentName:    "",
+			Currency:           "", //缺个币种
+			PaymentStatus:      comm.PaymentStatusUnpaid,
+			StatementAccountId: &statementAccountId,
+			UserId:             crmStatementAccount.UserId,
+		}
+
+		if err := crmBillPaymentService.CreateCrmBillPayment(&crmBillPayment); err != nil {
+			global.GVA_LOG.Error("创建失败!", zap.Error(err))
+			response.FailWithMessage("创建失败", c)
+			return
+		}
 		//在查出第一步对应的角色id
 		roleInfo, err := crmConfigService.GetCrmNameToConfig(comm.StatementAccountApproval)
 		if err != nil {

@@ -26,7 +26,7 @@ var crmBusinessOpportunityService = service.ServiceGroupApp.CrmServiceGroup.CrmB
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"创建成功"}"
 // @Router /crmBusinessOpportunity/createCrmBusinessOpportunity [post]
 func (crmBusinessOpportunityApi *CrmBusinessOpportunityApi) CreateCrmBusinessOpportunity(c *gin.Context) {
-	var req crmReq.CrmBusinessOpportunity
+	var req crmReq.CrmReqBusinessOpportunity
 	err := c.ShouldBindJSON(&req)
 	if err != nil {
 		response.FailWithMessage(err.Error(), c)

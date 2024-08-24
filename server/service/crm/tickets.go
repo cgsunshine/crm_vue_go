@@ -65,3 +65,11 @@ func (crmTicketsService *CrmTicketsService) GetCrmPageTickets(ID string) (crmTic
 func (crmTicketsService *CrmTicketsService) SplicingQueryConditions(condition string) string {
 	return "crm_tickets." + condition
 }
+
+// UpdApprovalStatus 修改工单信息
+// Author [piexlmax](https://github.com/piexlmax)
+func (crmTicketsService *CrmTicketsService) UpdTicketsInfo(ID *int, data map[string]interface{}) (err error) {
+	db := global.GVA_DB.Model(&crm.CrmTickets{})
+	err = db.Where("id = ?", ID).Updates(data).Error
+	return
+}
