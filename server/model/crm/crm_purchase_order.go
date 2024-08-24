@@ -19,6 +19,7 @@ type CrmPurchaseOrder struct {
 	UserId            *int       `json:"userId" form:"userId" gorm:"column:user_id;comment:负责人ID;"`                                            //负责人ID
 	PurchaseOrderName string     `json:"purchaseOrderName" form:"purchaseOrderName" gorm:"column:purchase_order_name;comment:订购单名称;size:191;"` //订购单名称
 	CurrencyId        *int       `json:"currencyId" form:"currencyId" gorm:"column:currency_id;comment:币种id;size:11;"`                         //币种ID
+	ReviewStatus      string     `json:"reviewStatus" form:"reviewStatus" gorm:"column:review_status;comment:审核状态;size:191;"`                  //审核状态
 }
 
 // TableName 订购单管理 CrmPurchaseOrder自定义表名 crm_purchase_order

@@ -70,7 +70,7 @@ func (crmStatementAccountApi *CrmStatementAccountApi) CreateCrmStatementAccount(
 			response.FailWithMessage("创建失败", c)
 			return
 		}
-		statementAccountId := int(crmStatementAccount.ID)
+		//statementAccountId := int(crmStatementAccount.ID)
 		//插入角色id对应的用户的审批记录
 		for _, userAuth := range ids {
 			assigneeId := int(userAuth.SysUserId)

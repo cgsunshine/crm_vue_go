@@ -215,6 +215,58 @@ func (crmApprovalTasksService *CrmApprovalTasksService) GetCrmPaymentApprovalTas
 	return crmApprovalTaskss, total, err
 }
 
+// GetCrmApprovalTasksInfoList 分页获取审批任务记录 订购单
+// Author [piexlmax](https://github.com/piexlmax)
+func (crmApprovalTasksService *CrmApprovalTasksService) GetCrmPurchaseOrderApprovalTasksInfoList(info crmReq.CrmApprovalTasksSearch) (list []crm.CrmPurchaseOrderInfoApprovalTasks, total int64, err error) {
+	limit := info.PageSize
+	offset := info.PageSize * (info.Page - 1)
+	// 创建db
+	db := global.GVA_DB.Model(&crm.CrmApprovalTasks{})
+	var crmApprovalTaskss []crm.CrmPurchaseOrderInfoApprovalTasks
+	// 如果有条件搜索 下方会自动创建搜索语句
+	crmApprovalTasksService.SearchCriteria(info, db)
+	err = db.Count(&total).Error
+	if err != nil {
+		return
+	}
+
+	if limit != 0 {
+		db = db.Limit(limit).Offset(offset)
+	}
+
+	err = db.Select("crm_approval_tasks.*,crm_purchase_order.purchase_order_name").
+		Joins("LEFT JOIN crm_purchase_order ON crm_purchase_order.id = crm_approval_tasks.associated_id").
+		Order("crm_approval_tasks.created_at DESC").
+		Find(&crmApprovalTaskss).Error
+	return crmApprovalTaskss, total, err
+}
+
+// GetCrmApprovalTasksInfoList 分页获取审批任务记录 订购合同
+// Author [piexlmax](https://github.com/piexlmax)
+func (crmApprovalTasksService *CrmApprovalTasksService) GetCrmProcurementContractApprovalTasksInfoList(info crmReq.CrmApprovalTasksSearch) (list []crm.CrmProcurementContractInfoApprovalTasks, total int64, err error) {
+	limit := info.PageSize
+	offset := info.PageSize * (info.Page - 1)
+	// 创建db
+	db := global.GVA_DB.Model(&crm.CrmApprovalTasks{})
+	var crmApprovalTaskss []crm.CrmProcurementContractInfoApprovalTasks
+	// 如果有条件搜索 下方会自动创建搜索语句
+	crmApprovalTasksService.SearchCriteria(info, db)
+	err = db.Count(&total).Error
+	if err != nil {
+		return
+	}
+
+	if limit != 0 {
+		db = db.Limit(limit).Offset(offset)
+	}
+
+	err = db.Select("crm_approval_tasks.*,crm_procurement_contract.payment_name").
+		Joins("LEFT JOIN crm_procurement_contract ON crm_procurement_contract.id = crm_approval_tasks.associated_id").
+		Order("crm_approval_tasks.created_at DESC").
+		Find(&crmApprovalTaskss).Error
+	return crmApprovalTaskss, total, err
+}
+
 // GetCrmPageContractApprovalTasks 根据ID获合同审批记录
 // Author [piexlmax](https://github.com/piexlmax)
 func (crmApprovalTasksService *CrmApprovalTasksService) GetCrmPageContractApprovalTasks(ID string) (CrmContactInfoApprovalTasks crm.CrmContactInfoApprovalTasks, err error) {

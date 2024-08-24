@@ -254,7 +254,76 @@ func (crmApprovalTasksApi *CrmApprovalTasksApi) GetCrmPaymentApprovalTasksList(c
 			PageSize: pageInfo.PageSize,
 		}, "获取成功", c)
 	}
+}
 
+// GetCrmPurchaseOrderApprovalTasksList 订购单分页获取审批任务列表
+// @Tags CrmApprovalTasks
+// @Summary 分页获取审批任务列表
+// @Security ApiKeyAuth
+// @accept application/json
+// @Produce application/json
+// @Param data query crmReq.CrmApprovalTasksSearch true "分页获取审批任务列表"
+// @Success 200 {string} string "{"success":true,"data":{},"msg":"获取成功"}"
+// @Router /crmApprovalTasks/getCrmPaymentApprovalTasksList [get]
+func (crmApprovalTasksApi *CrmApprovalTasksApi) GetCrmPurchaseOrderApprovalTasksList(c *gin.Context) {
+	var pageInfo crmReq.CrmApprovalTasksSearch
+	err := c.ShouldBindQuery(&pageInfo)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+
+	AssigneeId, _ := strconv.Atoi(c.GetHeader("X-User-Id"))
+	pageInfo.AssigneeId = userService.FindUserDataStatusById(&AssigneeId)
+
+	pageInfo.ApprovalType = utils.Pointer(comm.PaymentApprovalType)
+
+	if list, total, err := crmApprovalTasksService.GetCrmPaymentApprovalTasksInfoList(pageInfo); err != nil {
+		global.GVA_LOG.Error("获取失败!", zap.Error(err))
+		response.FailWithMessage("获取失败", c)
+	} else {
+		response.OkWithDetailed(response.PageResult{
+			List:     list,
+			Total:    total,
+			Page:     pageInfo.Page,
+			PageSize: pageInfo.PageSize,
+		}, "获取成功", c)
+	}
+}
+
+// GetCrmProcurementContractApprovalTasksList 订购合同分页获取审批任务列表
+// @Tags CrmApprovalTasks
+// @Summary 分页获取审批任务列表
+// @Security ApiKeyAuth
+// @accept application/json
+// @Produce application/json
+// @Param data query crmReq.CrmApprovalTasksSearch true "分页获取审批任务列表"
+// @Success 200 {string} string "{"success":true,"data":{},"msg":"获取成功"}"
+// @Router /crmApprovalTasks/getCrmPaymentApprovalTasksList [get]
+func (crmApprovalTasksApi *CrmApprovalTasksApi) GetCrmProcurementContractApprovalTasksList(c *gin.Context) {
+	var pageInfo crmReq.CrmApprovalTasksSearch
+	err := c.ShouldBindQuery(&pageInfo)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+
+	AssigneeId, _ := strconv.Atoi(c.GetHeader("X-User-Id"))
+	pageInfo.AssigneeId = userService.FindUserDataStatusById(&AssigneeId)
+
+	pageInfo.ApprovalType = utils.Pointer(comm.PaymentApprovalType)
+
+	if list, total, err := crmApprovalTasksService.GetCrmPaymentApprovalTasksInfoList(pageInfo); err != nil {
+		global.GVA_LOG.Error("获取失败!", zap.Error(err))
+		response.FailWithMessage("获取失败", c)
+	} else {
+		response.OkWithDetailed(response.PageResult{
+			List:     list,
+			Total:    total,
+			Page:     pageInfo.Page,
+			PageSize: pageInfo.PageSize,
+		}, "获取成功", c)
+	}
 }
 
 // UpdateCrmMultipleApprovalTasks 更新合同审批

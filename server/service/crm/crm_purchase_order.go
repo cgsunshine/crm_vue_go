@@ -93,3 +93,11 @@ func (crmPurchaseOrderService *CrmPurchaseOrderService) GetCrmPurchaseOrderInfoL
 	err = db.Find(&crmPurchaseOrders).Error
 	return crmPurchaseOrders, total, err
 }
+
+// UpdApprovalStatus 修改审批状态
+// Author [piexlmax](https://github.com/piexlmax)
+func (crmPurchaseOrderService *CrmPurchaseOrderService) UpdApprovalStatus(ID *int, data map[string]interface{}) (err error) {
+	db := global.GVA_DB.Model(&crm.CrmPurchaseOrder{})
+	err = db.Where("id = ?", ID).Updates(data).Error
+	return
+}
