@@ -16,6 +16,7 @@ type CrmOrderProductSearch struct {
 
 // Modify  user's auth structure
 type SetOrderProduct struct {
-	ID         uint
-	ProductIds []uint `json:"productIds"` // 产品ID
+	ID           uint
+	ProductIds   []uint                  `json:"productIds"` // 产品ID
+	ProductsInfo map[int]CrmOrderProduct `json:"productsInfo" form:"productsInfo"`
 }

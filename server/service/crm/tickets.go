@@ -20,11 +20,29 @@ func (crmTicketsService *CrmTicketsService) GetCrmPageTicketsInfoList(info crmRe
 	if info.StartCreatedAt != nil && info.EndCreatedAt != nil {
 		db = db.Where(crmTicketsService.SplicingQueryConditions("created_at BETWEEN ? AND ?"), info.StartCreatedAt, info.EndCreatedAt)
 	}
+	if info.StartActualResolutionTime != nil && info.EndActualResolutionTime != nil {
+		db = db.Where(crmTicketsService.SplicingQueryConditions("actual_resolution_time BETWEEN ? AND ?"), info.StartActualResolutionTime, info.EndActualResolutionTime)
+	}
+	if info.StartLastReplyTime != nil && info.EndLastReplyTime != nil {
+		db = db.Where(crmTicketsService.SplicingQueryConditions("last_reply_time BETWEEN ? AND ?"), info.StartCreatedAt, info.EndCreatedAt)
+	}
 	if info.SubmitterId != nil {
 		db = db.Where(crmTicketsService.SplicingQueryConditions("submitter_id = ?"), info.SubmitterId)
 	}
 	if info.AssigneeId != nil {
 		db = db.Where(crmTicketsService.SplicingQueryConditions("assignee_id = ?"), info.AssigneeId)
+	}
+
+	if info.TicketStatus != "" {
+		db = db.Where(crmTicketsService.SplicingQueryConditions("ticket_status = ?"), info.TicketStatus)
+	}
+
+	if info.Title != "" {
+		db = db.Where(crmTicketsService.SplicingQueryConditions("title LIKE ?"), "%"+info.Title+"%")
+	}
+
+	if info.Priority != "" {
+		db = db.Where(crmTicketsService.SplicingQueryConditions("priority = ?"), info.Priority)
 	}
 
 	if info.CategoryId != nil {

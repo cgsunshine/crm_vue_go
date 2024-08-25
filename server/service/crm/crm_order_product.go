@@ -16,6 +16,11 @@ func (crmOrderProductService *CrmOrderProductService) CreateCrmOrderProduct(crmO
 	return err
 }
 
+func (crmOrderProductService *CrmOrderProductService) CreateCrmOrderProductInc(crmOrderProduct interface{}) (err error) {
+	err = global.GVA_DB.Create(crmOrderProduct).Error
+	return err
+}
+
 // CreateCrmOrderProduct 创建crmOrderProduct表记录
 // Author [piexlmax](https://github.com/piexlmax)
 func (crmOrderProductService *CrmOrderProductService) CreateCrmOrderProducts(crmOrderProduct []*crm.CrmOrderProduct) (err error) {
@@ -41,6 +46,13 @@ func (crmOrderProductService *CrmOrderProductService) DeleteUnscopedCrmOrderProd
 // Author [piexlmax](https://github.com/piexlmax)
 func (crmOrderProductService *CrmOrderProductService) DeleteCrmOrderProductByIds(IDs []string) (err error) {
 	err = global.GVA_DB.Delete(&[]crm.CrmOrderProduct{}, "id in ?", IDs).Error
+	return err
+}
+
+// DeleteCrmOrderProductBy 通过oid和pid删除，订单id和产品id
+// Author [piexlmax](https://github.com/piexlmax)
+func (crmOrderProductService *CrmOrderProductService) DeleteCrmOrderProductBy(oid, pid *int) (err error) {
+	err = global.GVA_DB.Unscoped().Delete(&crm.CrmOrderProduct{}, "order_id = ? and  product_id = ?", oid, pid).Error
 	return err
 }
 

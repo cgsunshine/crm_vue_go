@@ -17,6 +17,6 @@ type CrmOrderSearch struct {
 	SalesPrice   *float64 `json:"salesPrice" form:"salesPrice" `
 	UserId       *int     `json:"userId" form:"userId" `
 	OrderName    string   `json:"orderName" form:"orderName"`
-	ReviewStatus string   `json:"reviewStatus" form:"reviewStatus" `
+	ReviewStatus string   `json:"reviewStatus" form:"reviewStatus"`
 	request.PageInfo
 }

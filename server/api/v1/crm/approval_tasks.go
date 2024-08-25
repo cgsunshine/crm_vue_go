@@ -276,9 +276,9 @@ func (crmApprovalTasksApi *CrmApprovalTasksApi) GetCrmPurchaseOrderApprovalTasks
 	AssigneeId, _ := strconv.Atoi(c.GetHeader("X-User-Id"))
 	pageInfo.AssigneeId = userService.FindUserDataStatusById(&AssigneeId)
 
-	pageInfo.ApprovalType = utils.Pointer(comm.PaymentApprovalType)
+	pageInfo.ApprovalType = utils.Pointer(comm.PurchaseOrderApprovalType)
 
-	if list, total, err := crmApprovalTasksService.GetCrmPaymentApprovalTasksInfoList(pageInfo); err != nil {
+	if list, total, err := crmApprovalTasksService.GetCrmPurchaseOrderApprovalTasksInfoList(pageInfo); err != nil {
 		global.GVA_LOG.Error("获取失败!", zap.Error(err))
 		response.FailWithMessage("获取失败", c)
 	} else {
@@ -311,9 +311,9 @@ func (crmApprovalTasksApi *CrmApprovalTasksApi) GetCrmProcurementContractApprova
 	AssigneeId, _ := strconv.Atoi(c.GetHeader("X-User-Id"))
 	pageInfo.AssigneeId = userService.FindUserDataStatusById(&AssigneeId)
 
-	pageInfo.ApprovalType = utils.Pointer(comm.PaymentApprovalType)
+	pageInfo.ApprovalType = utils.Pointer(comm.ProcurementContractApprovalType)
 
-	if list, total, err := crmApprovalTasksService.GetCrmPaymentApprovalTasksInfoList(pageInfo); err != nil {
+	if list, total, err := crmApprovalTasksService.GetCrmProcurementContractApprovalTasksInfoList(pageInfo); err != nil {
 		global.GVA_LOG.Error("获取失败!", zap.Error(err))
 		response.FailWithMessage("获取失败", c)
 	} else {

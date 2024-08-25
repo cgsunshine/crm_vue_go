@@ -42,5 +42,5 @@ type CrmRelationProduct struct {
 	SalesPrice     *float64 `json:"salesPrice" form:"salesPrice" gorm:"column:sales_price;comment:产品销售价格;"`                              //产品销售价格
 	ResourceId     *int     `json:"resourceId" form:"resourceId" gorm:"column:resource_id;comment:资源id;size:10;"`                        //资源id
 	//OrderProducts  []CrmOrderProduct `gorm:"foreignKey:ProductID"`
-	OrderProducts []CrmOrderProduct
+	OrderProducts []CrmOrderProduct `gorm:"foreignKey:productID"`
 }

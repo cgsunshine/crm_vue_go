@@ -83,14 +83,14 @@ func (crmOrderApi *CrmOrderApi) CreateCrmPageOrder(c *gin.Context) {
 
 	crmPageOrder.ReviewStatus = comm.Approval_Status_Pending
 
-	var products []crm.CrmProduct
-	for _, v := range crmPageOrder.ProductIds {
-		products = append(products, crm.CrmProduct{
-			GVA_MODEL: global.GVA_MODEL{
-				ID: v,
-			},
-		})
-	}
+	//var products []crm.CrmProduct
+	//for _, v := range crmPageOrder.ProductIds {
+	//	products = append(products, crm.CrmProduct{
+	//		GVA_MODEL: global.GVA_MODEL{
+	//			ID: v,
+	//		},
+	//	})
+	//}
 
 	crmOrder := crm.CrmOrder{
 		Currency:                 crmPageOrder.Currency,
@@ -106,8 +106,8 @@ func (crmOrderApi *CrmOrderApi) CreateCrmPageOrder(c *gin.Context) {
 		ReviewStatus:             crmPageOrder.ReviewStatus,
 		CurrencyId:               crmPageOrder.CurrencyId,
 		OrderNumber:              crmPageOrder.OrderNumber,
-		Products:                 products,
-		BusinessOpportunityId:    crmPageOrder.BusinessOpportunityId,
+		//Products:                 products,
+		BusinessOpportunityId: crmPageOrder.BusinessOpportunityId,
 	}
 
 	if err := crmOrderService.CreateCrmOrder(&crmOrder); err != nil {
@@ -117,7 +117,7 @@ func (crmOrderApi *CrmOrderApi) CreateCrmPageOrder(c *gin.Context) {
 	}
 
 	//添加多个关联产品
-
+	//
 	//for _, idStr := range strings.Split(crmOrder.ProductIds, ",") {
 	//	id, err := strconv.ParseInt(idStr, 10, 32)
 	//	if err != nil {
@@ -137,6 +137,23 @@ func (crmOrderApi *CrmOrderApi) CreateCrmPageOrder(c *gin.Context) {
 	//	}
 	//}
 
+	orderId := int(crmOrder.ID)
+	orderProducts := make([]*crm.CrmOrderProduct, 0)
+	for productId, productInfo := range crmPageOrder.ProductsInfo {
+		orderProducts = append(orderProducts, &crm.CrmOrderProduct{
+			OrderId:        &orderId,
+			ProductId:      &productId,
+			Quantity:       productInfo.Quantity,
+			Specifications: productInfo.Specifications,
+		})
+	}
+
+	if err := crmOrderProductService.CreateCrmOrderProductInc(orderProducts); err != nil {
+		global.GVA_LOG.Error("创建失败!", zap.Error(err))
+		response.FailWithMessage("创建失败", c)
+		return
+	}
+
 	//修改合同中关联的订单id
 	err = crmContractService.UpdApprovalStatus(crmOrder.ContactId, map[string]interface{}{
 		"order_id": crmOrder.ID,
@@ -147,7 +164,6 @@ func (crmOrderApi *CrmOrderApi) CreateCrmPageOrder(c *gin.Context) {
 		return
 	}
 
-	orderId := int(crmOrder.ID)
 	////自动生成账单信息
 	//crmBill := crm.CrmBill{
 	//	OrderId: &orderId,
@@ -213,12 +229,33 @@ func (crmOrderApi *CrmOrderApi) SetOrderProducts(c *gin.Context) {
 		return
 	}
 
-	err = crmOrderService.SetOrderProducts(crmPageOrder.ID, crmPageOrder.ProductIds)
-	if err != nil {
-		global.GVA_LOG.Error("修改失败!", zap.Error(err))
-		response.FailWithMessage("修改失败", c)
+	orderId := int(crmPageOrder.ID)
+	orderProducts := make([]*crm.CrmOrderProduct, 0)
+	for productId, productInfo := range crmPageOrder.ProductsInfo {
+		orderProducts = append(orderProducts, &crm.CrmOrderProduct{
+			OrderId:        &orderId,
+			ProductId:      &productId,
+			Quantity:       productInfo.Quantity,
+			Specifications: productInfo.Specifications,
+		})
+		err = crmOrderProductService.DeleteCrmOrderProductBy(&orderId, &productId)
+		if err != nil {
+			global.GVA_LOG.Error("删除异常!", zap.Error(err))
+		}
+	}
+
+	if err := crmOrderProductService.CreateCrmOrderProductInc(orderProducts); err != nil {
+		global.GVA_LOG.Error("创建失败!", zap.Error(err))
+		response.FailWithMessage("创建失败", c)
 		return
 	}
+
+	//err = crmOrderService.SetOrderProducts(crmPageOrder.ID, crmPageOrder.ProductIds)
+	//if err != nil {
+	//	global.GVA_LOG.Error("修改失败!", zap.Error(err))
+	//	response.FailWithMessage("修改失败", c)
+	//	return
+	//}
 	response.OkWithMessage("修改成功", c)
 
 }

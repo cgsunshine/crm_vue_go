@@ -23,9 +23,9 @@ const (
 	OrderApproval               = "订单审批"
 	DepositsApproval            = "押金审批"
 	StatementAccountApproval    = "对账单审批"
-	PaymentApproval             = "付款审批" //付款审批
-	PurchaseOrderApproval       = "订购单"  //付款审批
-	ProcurementContractApproval = "订购合同" //付款审批
+	PaymentApproval             = "付款审批"
+	PurchaseOrderApproval       = "订购单审批"
+	ProcurementContractApproval = "订购合同审批"
 )
 
 const (

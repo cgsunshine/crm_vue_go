@@ -108,14 +108,14 @@ func (crmOrderApi *CrmOrderApi) UpdateCrmOrder(c *gin.Context) {
 
 	//crmPageOrder.ReviewStatus = comm.Approval_Status_Pending
 
-	if crmPageOrder.ProductIds != nil {
-		err = crmOrderService.SetOrderProducts(crmPageOrder.ID, crmPageOrder.ProductIds)
-		if err != nil {
-			global.GVA_LOG.Error("修改失败!", zap.Error(err))
-			response.FailWithMessage("修改失败", c)
-			return
-		}
-	}
+	//if crmPageOrder.ProductIds != nil {
+	//	err = crmOrderService.SetOrderProducts(crmPageOrder.ID, crmPageOrder.ProductIds)
+	//	if err != nil {
+	//		global.GVA_LOG.Error("修改失败!", zap.Error(err))
+	//		response.FailWithMessage("修改失败", c)
+	//		return
+	//	}
+	//}
 
 	crmOrder := crm.CrmOrder{
 		GVA_MODEL:                crmPageOrder.GVA_MODEL,

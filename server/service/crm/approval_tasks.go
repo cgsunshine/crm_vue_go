@@ -260,7 +260,7 @@ func (crmApprovalTasksService *CrmApprovalTasksService) GetCrmProcurementContrac
 		db = db.Limit(limit).Offset(offset)
 	}
 
-	err = db.Select("crm_approval_tasks.*,crm_procurement_contract.payment_name").
+	err = db.Select("crm_approval_tasks.*,crm_procurement_contract.contract_name").
 		Joins("LEFT JOIN crm_procurement_contract ON crm_procurement_contract.id = crm_approval_tasks.associated_id").
 		Order("crm_approval_tasks.created_at DESC").
 		Find(&crmApprovalTaskss).Error

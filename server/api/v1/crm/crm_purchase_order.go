@@ -7,6 +7,7 @@ import (
 	"github.com/flipped-aurora/gin-vue-admin/server/model/crm"
 	crmReq "github.com/flipped-aurora/gin-vue-admin/server/model/crm/request"
 	"github.com/flipped-aurora/gin-vue-admin/server/service"
+	"github.com/flipped-aurora/gin-vue-admin/server/utils"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 )
@@ -34,6 +35,7 @@ func (crmPurchaseOrderApi *CrmPurchaseOrderApi) CreateCrmPurchaseOrder(c *gin.Co
 	}
 
 	crmPurchaseOrder.UserId = comm.GetHeaderUserId(c)
+	crmPurchaseOrder.ReviewStatus = comm.Approval_Status_Pending
 
 	if err := crmPurchaseOrderService.CreateCrmPurchaseOrder(&crmPurchaseOrder); err != nil {
 		global.GVA_LOG.Error("创建失败!", zap.Error(err))
@@ -41,6 +43,41 @@ func (crmPurchaseOrderApi *CrmPurchaseOrderApi) CreateCrmPurchaseOrder(c *gin.Co
 	} else {
 		response.OkWithMessage("创建成功", c)
 	}
+
+	purchaseOrderId := int(crmPurchaseOrder.ID)
+
+	//在查出第一步对应的角色id
+	roleInfo, err := crmConfigService.GetCrmNameToConfig(comm.PurchaseOrderApproval)
+	if err != nil {
+		global.GVA_LOG.Error("创建失败!", zap.Error(err))
+		response.FailWithMessage("创建失败", c)
+		return
+	}
+
+	ids, err := userService.GetRoleUsers(roleInfo.RoleIds)
+	if err != nil {
+		global.GVA_LOG.Error("创建失败!", zap.Error(err))
+		response.FailWithMessage("创建失败", c)
+		return
+	}
+
+	//插入角色id对应的用户的审批记录
+	for _, userAuth := range ids {
+		assigneeId := int(userAuth.SysUserId)
+		if err := crmApprovalTasksService.CreateCrmApprovalTasks(&crm.CrmApprovalTasks{
+			AssigneeId:     &assigneeId,
+			ApprovalStatus: comm.Approval_Status_Under,
+			AssociatedId:   &purchaseOrderId,
+			Valid:          utils.Pointer(comm.Contact_Approval_Tasks_valid_Effective),
+			StepId:         roleInfo.NodeId,
+			ApprovalType:   utils.Pointer(comm.PurchaseOrderApprovalType),
+		}); err != nil {
+			global.GVA_LOG.Error("创建失败!", zap.Error(err))
+			response.FailWithMessage("创建失败", c)
+			return
+		}
+	}
+
 }
 
 // DeleteCrmPurchaseOrder 删除订购单管理

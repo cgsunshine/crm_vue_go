@@ -15,4 +15,6 @@ var ApprovalEntrance = map[int]ApprovalInc{
 	comm.DepositsApprovalType:            NewApprovalIncDeposits(),
 	comm.StatementAccountApprovalType:    NewApprovalIncStatementAccount(),
 	comm.PaymentApprovalType:             NewApprovalIncPayment(),
+	comm.PurchaseOrderApprovalType:       NewApprovalIncPurchaseOrder(),
+	comm.ProcurementContractApprovalType: NewApprovalIncProcurementContract(),
 }

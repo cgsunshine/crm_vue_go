@@ -64,7 +64,8 @@ func (crmOrderService *CrmOrderService) GetCrmPageOrderInfoList(info crmReq.CrmO
 		Joins("LEFT JOIN crm_customers ON crm_customers.id = crm_order.customer_id").
 		Joins("LEFT JOIN crm_product ON crm_product.id = crm_order.product_id").
 		Joins("LEFT JOIN crm_business_opportunity ON crm_business_opportunity.id = crm_order.business_opportunity_id").
-		Preload("Products").
+		//Preload("Products.OrderProducts").
+		Preload("OrderProducts.Product").
 		Order("crm_order.created_at DESC").
 		Find(&crmOrders).Error
 	return crmOrders, total, err
@@ -79,7 +80,8 @@ func (crmOrderService *CrmOrderService) GetCrmPageOrder(ID string) (crmOrder crm
 		Joins("LEFT JOIN crm_customers ON crm_customers.id = crm_order.customer_id").
 		Joins("LEFT JOIN crm_product ON crm_product.id = crm_order.product_id").
 		Joins("LEFT JOIN crm_business_opportunity ON crm_business_opportunity.id = crm_order.business_opportunity_id").
-		Preload("Products").
+		//Preload("Products").
+		Preload("OrderProducts.Product").
 		Order("crm_order.created_at DESC").
 		First(&crmOrder).Error
 	return
@@ -111,7 +113,7 @@ func (crmOrderService *CrmOrderService) SplicingQueryConditions(condition string
 //@param: id uint, authorityIds []string
 //@return: err error
 
-func (crmOrderService *CrmOrderService) SetOrderProducts(id uint, productIds []uint) (err error) {
+func (crmOrderService *CrmOrderService) SetOrderProducts(id int, productIds []int) (err error) {
 	db := global.GVA_DB.Model(&crm.CrmOrderProduct{})
 	err = db.Delete(&[]crm.CrmOrderProduct{}, "order_id = ?", id).Error
 	if err != nil {
@@ -121,7 +123,7 @@ func (crmOrderService *CrmOrderService) SetOrderProducts(id uint, productIds []u
 	var orderProduct []crm.CrmOrderProduct
 	for _, v := range productIds {
 		orderProduct = append(orderProduct, crm.CrmOrderProduct{
-			OrderId: id, ProductId: v,
+			OrderId: &id, ProductId: &v,
 		})
 	}
 	err = db.Create(&orderProduct).Error

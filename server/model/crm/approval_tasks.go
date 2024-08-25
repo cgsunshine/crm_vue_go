@@ -146,5 +146,5 @@ type CrmProcurementContractInfoApprovalTasks struct {
 	Valid          *int   `json:"valid" form:"valid" gorm:"column:valid;comment:审批是否有效 1 有效 2 失效（多人审批中，有人拒绝）;size:19;"`           //审批是否有效 1 有效 2 失效（多人审批中，有人拒绝）
 	//联表查询
 	//crm_procurement_contract 表
-	ProcurementContractName string `json:"procurementContractName" form:"procurementContractName" gorm:"column:procurement_contract_name;comment:订购合同名称;size:191;"` //订购合同名称
+	ContractName string `json:"contractName" form:"contractName" gorm:"column:contract_name;comment:合同名称;size:191;" binding:"required"` //合同名称
 }
