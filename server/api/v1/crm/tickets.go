@@ -1,12 +1,14 @@
 package crm
 
 import (
+	"github.com/flipped-aurora/gin-vue-admin/server/api/v1/comm"
 	"github.com/flipped-aurora/gin-vue-admin/server/global"
 	"github.com/flipped-aurora/gin-vue-admin/server/model/common/response"
 	crmReq "github.com/flipped-aurora/gin-vue-admin/server/model/crm/request"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 	"strconv"
+	"time"
 )
 
 // GetCrmSubmitterTicketsList 分页获取工单列表-提交人
@@ -90,4 +92,32 @@ func (crmTicketsApi *CrmTicketsApi) FindCrmPageTickets(c *gin.Context) {
 	} else {
 		response.OkWithData(gin.H{"recrmTickets": recrmTickets}, c)
 	}
+}
+
+// UpdCrmTicketsCompleted 工单完结接口
+// @Tags CrmTickets
+// @Summary 用id，修改工单完结状态
+// @Security ApiKeyAuth
+// @accept application/json
+// @Produce application/json
+// @Param data query crm.CrmTickets true "用id查询工单"
+// @Success 200 {string} string "{"success":true,"data":{},"msg":"查询成功"}"
+// @Router /crmTickets/findCrmTickets [get]
+func (crmTicketsApi *CrmTicketsApi) UpdCrmTicketsCompleted(c *gin.Context) {
+	var pageInfo crmReq.CrmTicketsSearch
+	err := c.ShouldBindQuery(&pageInfo)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+
+	//完成工单以后，修改状态，和完成时间，由发起人调用
+	if err := crmTicketsService.UpdTicketsInfo(pageInfo.ID, map[string]interface{}{
+		"last_reply_time": time.Now(),
+		"ticket_status":   comm.Deposits_Processing_Status_Tickets_Processed,
+	}); err != nil {
+		global.GVA_LOG.Error("更新回复时间失败!", zap.Error(err))
+		response.FailWithMessage("修改失败", c)
+	}
+	response.OkWithMessage("修改成功", c)
 }

@@ -88,6 +88,12 @@ const (
 	Processed_Refund_Status    = "3" //已处理
 )
 
+const (
+	Deposits_Processing_Status_Tickets_Unprocessed = "1" //未处理
+	Deposits_Processing_Status_Tickets_Processing  = "2" //处理中
+	Deposits_Processing_Status_Tickets_Processed   = "3" //处理完成
+)
+
 // ascending descending
 func OrderHandle(o string) string {
 	if o == "ascending" {

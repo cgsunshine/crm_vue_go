@@ -37,5 +37,5 @@ type CrmPageOrder struct {
 	//crm_business_opportunity 表
 	BusinessOpportunityName string `json:"businessOpportunityName" form:"businessOpportunityName" gorm:"column:business_opportunity_name;comment:商机名称;size:191;" binding:"required"` //商机名称
 
-	Products []CrmProduct `gorm:"many2many:crm_order_product;foreignKey:id;joinForeignKey:OrderId;References:id;joinReferences:ProductId"`
+	Products []CrmRelationProduct `gorm:"many2many:crm_order_product;foreignKey:id;joinForeignKey:OrderId;References:id;joinReferences:ProductId"`
 }

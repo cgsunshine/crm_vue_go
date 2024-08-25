@@ -31,8 +31,10 @@ func (s *CrmPageApprovalTasksRouter) InitCrmPageApprovalTasksRouter(Router *gin.
 
 	}
 	{
-		crmApprovalTasksRouterPublic.GET("getCrmDepositsApprovalTasksList", crmApprovalTasksApi.GetCrmDepositsApprovalTasksList)                 // 获取押金审批任务列表
-		crmApprovalTasksRouterPublic.GET("getCrmStatementAccountApprovalTasksList", crmApprovalTasksApi.GetCrmStatementAccountApprovalTasksList) // 获取对账单审批任务列表
-		crmApprovalTasksRouterPublic.GET("getCrmPaymentApprovalTasksList", crmApprovalTasksApi.GetCrmPaymentApprovalTasksList)                   // 获取付款审批任务列表
+		crmApprovalTasksRouterPublic.GET("getCrmDepositsApprovalTasksList", crmApprovalTasksApi.GetCrmDepositsApprovalTasksList)                       // 获取押金审批任务列表
+		crmApprovalTasksRouterPublic.GET("getCrmStatementAccountApprovalTasksList", crmApprovalTasksApi.GetCrmStatementAccountApprovalTasksList)       // 获取对账单审批任务列表
+		crmApprovalTasksRouterPublic.GET("getCrmPaymentApprovalTasksList", crmApprovalTasksApi.GetCrmPaymentApprovalTasksList)                         // 获取付款审批任务列表
+		crmApprovalTasksRouterPublic.GET("getCrmPurchaseOrderApprovalTasksList", crmApprovalTasksApi.GetCrmPurchaseOrderApprovalTasksList)             // 获取订购单审批任务列表
+		crmApprovalTasksRouterPublic.GET("getCrmProcurementContractApprovalTasksList", crmApprovalTasksApi.GetCrmProcurementContractApprovalTasksList) // 获取订购合同审批任务列表
 	}
 }

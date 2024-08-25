@@ -22,5 +22,6 @@ func (s *CrmPageTicketsRouter) InitCrmPageTicketsRouter(Router *gin.RouterGroup,
 	{
 		crmTicketsRouterWithoutAuth.GET("getCrmSubmitterTicketsList", crmTicketsApi.GetCrmSubmitterTicketsList) // 获取发起人工单列表
 		crmTicketsRouterWithoutAuth.GET("getCrmAssigneeTicketsList", crmTicketsApi.GetCrmAssigneeTicketsList)   // 获取处理人工单列表
+		crmTicketsRouterWithoutAuth.POST("updCrmTicketsCompleted", crmTicketsApi.UpdCrmTicketsCompleted)        // 工单完结接口
 	}
 }
