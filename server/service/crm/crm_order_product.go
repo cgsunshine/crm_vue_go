@@ -51,8 +51,8 @@ func (crmOrderProductService *CrmOrderProductService) DeleteCrmOrderProductByIds
 
 // DeleteCrmOrderProductBy 通过oid和pid删除，订单id和产品id
 // Author [piexlmax](https://github.com/piexlmax)
-func (crmOrderProductService *CrmOrderProductService) DeleteCrmOrderProductBy(oid, pid *int) (err error) {
-	err = global.GVA_DB.Unscoped().Delete(&crm.CrmOrderProduct{}, "order_id = ? and  product_id = ?", oid, pid).Error
+func (crmOrderProductService *CrmOrderProductService) DeleteCrmOrderProductBy(oid *int) (err error) {
+	err = global.GVA_DB.Unscoped().Delete(&crm.CrmOrderProduct{}, "order_id = ?", oid).Error
 	return err
 }
 

@@ -62,7 +62,7 @@ func (crmBusinessOpportunityService *CrmBusinessOpportunityService) GetPageCrmBu
 		Joins("LEFT JOIN sys_users ON crm_customers.user_id = sys_users.id").
 		Joins("LEFT JOIN crm_product ON crm_business_opportunity.product_id = crm_product.id").
 		Order("crm_business_opportunity.created_at DESC").
-		Preload("Products").
+		Preload("BusinessOpportunityProduct.Product").
 		Find(&crmBusinessOpportunitys).Error
 	return crmBusinessOpportunitys, total, err
 }
@@ -75,7 +75,7 @@ func (crmBusinessOpportunityService *CrmBusinessOpportunityService) GetCrmPageBu
 		Joins("LEFT JOIN crm_customers ON crm_business_opportunity.customer_id = crm_customers.id").
 		Joins("LEFT JOIN sys_users ON crm_customers.user_id = sys_users.id").
 		Joins("LEFT JOIN crm_product ON crm_business_opportunity.product_id = crm_product.id").
-		Preload("Products").
+		Preload("BusinessOpportunityProduct.Product").
 		First(&crmBusinessOpportunity).Error
 	return
 }
@@ -99,7 +99,7 @@ func (crmBusinessOpportunityService *CrmBusinessOpportunityService) SplicingQuer
 //@param: id uint, authorityIds []string
 //@return: err error
 
-func (crmBusinessOpportunityService *CrmBusinessOpportunityService) SetBusinessOpportunityProducts(id uint, productIds []uint) (err error) {
+func (crmBusinessOpportunityService *CrmBusinessOpportunityService) SetBusinessOpportunityProducts(id *int, productIds []*int) (err error) {
 	db := global.GVA_DB.Model(&crm.CrmBusinessOpportunityProduct{})
 	err = db.Delete(&[]crm.CrmBusinessOpportunityProduct{}, "business_opportunity_id = ?", id).Error
 	if err != nil {

@@ -139,10 +139,11 @@ func (crmOrderApi *CrmOrderApi) CreateCrmPageOrder(c *gin.Context) {
 
 	orderId := int(crmOrder.ID)
 	orderProducts := make([]*crm.CrmOrderProduct, 0)
-	for productId, productInfo := range crmPageOrder.ProductsInfo {
+
+	for _, productInfo := range crmPageOrder.ProductsInfo {
 		orderProducts = append(orderProducts, &crm.CrmOrderProduct{
 			OrderId:        &orderId,
-			ProductId:      &productId,
+			ProductId:      productInfo.ProductId,
 			Quantity:       productInfo.Quantity,
 			Specifications: productInfo.Specifications,
 		})
@@ -230,18 +231,20 @@ func (crmOrderApi *CrmOrderApi) SetOrderProducts(c *gin.Context) {
 	}
 
 	orderId := int(crmPageOrder.ID)
+	err = crmOrderProductService.DeleteCrmOrderProductBy(&orderId)
+	if err != nil {
+		global.GVA_LOG.Error("删除异常!", zap.Error(err))
+		return
+	}
 	orderProducts := make([]*crm.CrmOrderProduct, 0)
-	for productId, productInfo := range crmPageOrder.ProductsInfo {
+	for _, productInfo := range crmPageOrder.ProductsInfo {
 		orderProducts = append(orderProducts, &crm.CrmOrderProduct{
 			OrderId:        &orderId,
-			ProductId:      &productId,
+			ProductId:      productInfo.ProductId,
 			Quantity:       productInfo.Quantity,
 			Specifications: productInfo.Specifications,
 		})
-		err = crmOrderProductService.DeleteCrmOrderProductBy(&orderId, &productId)
-		if err != nil {
-			global.GVA_LOG.Error("删除异常!", zap.Error(err))
-		}
+
 	}
 
 	if err := crmOrderProductService.CreateCrmOrderProductInc(orderProducts); err != nil {

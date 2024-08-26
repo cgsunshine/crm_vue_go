@@ -33,7 +33,7 @@ func (crmTicketsApi *CrmTicketsApi) CreateCrmTickets(c *gin.Context) {
 		return
 	}
 	crmTickets.SubmitterId = comm.GetHeaderUserId(c)
-
+	crmTickets.TicketStatus = comm.Deposits_Processing_Status_Tickets_Unprocessed
 	if err := crmTicketsService.CreateCrmTickets(&crmTickets); err != nil {
 		global.GVA_LOG.Error("创建失败!", zap.Error(err))
 		response.FailWithMessage("创建失败", c)

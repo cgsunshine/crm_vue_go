@@ -139,6 +139,28 @@ func (crmOrderApi *CrmOrderApi) UpdateCrmOrder(c *gin.Context) {
 		global.GVA_LOG.Error("更新失败!", zap.Error(err))
 		response.FailWithMessage("更新失败", c)
 	} else {
+		orderId := int(crmPageOrder.ID)
+		err = crmOrderProductService.DeleteCrmOrderProductBy(&orderId)
+		if err != nil {
+			global.GVA_LOG.Error("删除异常!", zap.Error(err))
+			return
+		}
+		orderProducts := make([]*crm.CrmOrderProduct, 0)
+		for _, productInfo := range crmPageOrder.ProductsInfo {
+			orderProducts = append(orderProducts, &crm.CrmOrderProduct{
+				OrderId:        &orderId,
+				ProductId:      productInfo.ProductId,
+				Quantity:       productInfo.Quantity,
+				Specifications: productInfo.Specifications,
+			})
+
+		}
+
+		if err := crmOrderProductService.CreateCrmOrderProductInc(orderProducts); err != nil {
+			global.GVA_LOG.Error("创建失败!", zap.Error(err))
+			response.FailWithMessage("创建失败", c)
+			return
+		}
 		response.OkWithMessage("更新成功", c)
 	}
 }

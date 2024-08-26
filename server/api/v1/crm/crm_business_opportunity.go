@@ -118,11 +118,35 @@ func (crmBusinessOpportunityApi *CrmBusinessOpportunityApi) UpdateCrmBusinessOpp
 		return
 	}
 
-	if req.Products != nil {
-		err = crmBusinessOpportunityService.SetBusinessOpportunityProducts(req.ID, req.ProductIds)
-		if err != nil {
-			global.GVA_LOG.Error("修改失败!", zap.Error(err))
+	if req.ProductsInfo != nil {
+		//err = crmBusinessOpportunityService.SetBusinessOpportunityProducts(req.ID, req.ProductIds)
+		//if err != nil {
+		//	global.GVA_LOG.Error("修改失败!", zap.Error(err))
+		//	response.FailWithMessage("修改失败", c)
+		//	return
+		//}
+
+		businessOpportunityId := int(req.ID)
+		if err := crmBusinessOpportunityProductService.DeleteCrmBusinessOpportunityIdProduct(&businessOpportunityId); err != nil {
+			global.GVA_LOG.Error("删除对应关系失败!", zap.Error(err))
 			response.FailWithMessage("修改失败", c)
+			return
+		}
+
+		businessOpportunityProduct := make([]*crm.CrmBusinessOpportunityProduct, 0)
+		for _, v := range req.ProductsInfo {
+			crmOrderProduct := &crm.CrmBusinessOpportunityProduct{
+				BusinessOpportunityId: &businessOpportunityId,
+				ProductId:             v.ProductId,
+				Quantity:              v.Quantity,
+				Specifications:        v.Specifications,
+			}
+			businessOpportunityProduct = append(businessOpportunityProduct, crmOrderProduct)
+		}
+
+		if err := crmBusinessOpportunityProductService.CreateCrmBusinessOpportunityProducts(businessOpportunityProduct); err != nil {
+			global.GVA_LOG.Error("插入对应关系失败!", zap.Error(err))
+			response.FailWithMessage("创建失败", c)
 			return
 		}
 	}

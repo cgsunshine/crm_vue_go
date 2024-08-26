@@ -115,20 +115,21 @@ func (crmBusinessOpportunityApi *CrmBusinessOpportunityApi) CreateCrmPageBusines
 
 	businessOpportunityId := int(crmBusinessOpportunity.ID)
 
-	crmOrderProducts := make([]*crm.CrmOrderProduct, 0)
-	for _, v := range req.OrderProduct {
-		crmOrderProduct := &crm.CrmOrderProduct{
-			OrderId:        &businessOpportunityId,
-			ProductId:      v.ProductId,
-			Quantity:       v.Quantity,
-			Specifications: v.Specifications,
+	businessOpportunityProduct := make([]*crm.CrmBusinessOpportunityProduct, 0)
+	for _, v := range req.ProductsInfo {
+		crmOrderProduct := &crm.CrmBusinessOpportunityProduct{
+			BusinessOpportunityId: &businessOpportunityId,
+			ProductId:             v.ProductId,
+			Quantity:              v.Quantity,
+			Specifications:        v.Specifications,
 		}
-		crmOrderProducts = append(crmOrderProducts, crmOrderProduct)
+		businessOpportunityProduct = append(businessOpportunityProduct, crmOrderProduct)
 	}
 
-	if err := crmOrderProductService.CreateCrmOrderProducts(crmOrderProducts); err != nil {
+	if err := crmBusinessOpportunityProductService.CreateCrmBusinessOpportunityProducts(businessOpportunityProduct); err != nil {
 		global.GVA_LOG.Error("插入对应关系失败!", zap.Error(err))
 		response.FailWithMessage("创建失败", c)
+		return
 	}
 
 	//在查出第一步对应的角色id
