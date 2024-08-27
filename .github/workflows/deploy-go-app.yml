@@ -40,7 +40,7 @@ jobs:
           # 清除旧的二进制文件
           rm -rf /www/goserve/*
           # 创建目录
-          mkdir -p /www/goserve
+          #mkdir -p /www/goserve
           # 上传新编译的二进制文件
           scp -P your-port ./server your-username@your-server-hostname-or-ip:/www/goserve/server
           # 启动新应用程序
