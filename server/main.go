@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+	"github.com/flipped-aurora/gin-vue-admin/server/common"
 	_ "go.uber.org/automaxprocs"
 	"go.uber.org/zap"
 
@@ -22,6 +24,7 @@ import (
 // @name                        x-token
 // @BasePath                    /
 func main() {
+
 	global.GVA_VP = core.Viper() // 初始化Viper
 	initialize.OtherInit()
 	global.GVA_LOG = core.Zap() // 初始化zap日志库
@@ -35,5 +38,6 @@ func main() {
 		db, _ := global.GVA_DB.DB()
 		defer db.Close()
 	}
+	fmt.Println("程序开始运行 版本v", common.ServiceCurrentVersion)
 	core.RunWindowsServer()
 }
