@@ -23,23 +23,26 @@ jobs:
       working-directory: ./server  # 指定工作目录
       run: |
         go mod download
-        go build -o server .  # 将这里从 "app" 改为 "server"
+        go build -o server .
 
     - name: Deploy
       uses: appleboy/ssh-action@master
       with:
-        host: 110.41.190.242
-        username: root
-        password: jyy88888888
-        port: 22
+        host: 110.41.190.242  # 替换为您的服务器主机名或 IP 地址
+        username: root           # 替换为您的服务器用户名
+        password: jyy88888888           # 替换为您的服务器密码
+        port: 22                 # 替换为您的 SSH 端口号，默认为 22
+        timeout: 15m                      # 增加超时时间为 15 分钟
         script: |
+          echo "Starting deployment script..."
           # 在服务器上停止旧的应用程序
-          pkill -f "/www/goserve/server"  # 将这里从 "app" 改为 "server"
+          pkill -f "/www/goserve/server"
           # 清除旧的二进制文件
           rm -rf /www/goserve/*
           # 创建目录
           mkdir -p /www/goserve
           # 上传新编译的二进制文件
-          scp -P ${{ secrets.SSH_PORT }} ./server /${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:/www/goserve/server  # 这里也做了相应的更改
+          scp -P your-port ./server your-username@your-server-hostname-or-ip:/www/goserve/server
           # 启动新应用程序
-          nohup /www/goserve/server &  # 将这里从 "app" 改为 "server"
+          nohup /www/goserve/server &
+          echo "Deployment script completed."
