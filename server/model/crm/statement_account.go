@@ -18,6 +18,7 @@ type CrmPageStatementAccount struct {
 	UserId               *int       `json:"userId" form:"userId" gorm:"column:user_id;comment:负责人;"`                                                       //负责人
 	StatementAccountName string     `json:"statementAccountName" form:"statementAccountName" gorm:"column:statement_account_name;comment:对账单名称;size:191;"` //对账单名称
 	ReviewStatus         string     `json:"reviewStatus" form:"reviewStatus" gorm:"column:review_status;comment:审核状态;size:191;"`                           //审核状态
+	Currency             string     `json:"currency" form:"currency" gorm:"column:currency;comment:币种;size:11;"`                                           //币种
 	//以下是联表查询字段
 	//sys_user 表
 	Username string `json:"userName" gorm:"index;comment:用户登录名"` // 用户登录名

@@ -45,7 +45,7 @@ func (crmStatementAccountApi *CrmStatementAccountApi) CreateCrmStatementAccount(
 		crmBillPayment := crm.CrmBillPayment{
 			Amount:             crmStatementAccount.Amount,
 			BillPaymentName:    "",
-			Currency:           "", //缺个币种
+			Currency:           crmStatementAccount.Currency, //缺个币种
 			PaymentStatus:      comm.PaymentStatusUnpaid,
 			StatementAccountId: &statementAccountId,
 			UserId:             crmStatementAccount.UserId,

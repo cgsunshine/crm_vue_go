@@ -17,7 +17,7 @@ type CrmPagePurchaseOrder struct {
 	CreationTime      *time.Time `json:"creationTime" form:"creationTime" gorm:"column:creation_time;comment:创建时间;"`                           //创建时间
 	ExpirationTime    *time.Time `json:"expirationTime" form:"expirationTime" gorm:"column:expiration_time;comment:到期时间;"`                     //到期时间
 	PurchaseOrderName string     `json:"purchaseOrderName" form:"purchaseOrderName" gorm:"column:purchase_order_name;comment:订购单名称;size:191;"` //订购单名称
-	CurrencyId        *int       `json:"currencyId" form:"currencyId" gorm:"column:currency_id;comment:币种id;size:11;"`                         //币种ID
+	Currency          string     `json:"currency" form:"currency" gorm:"column:currency;comment:币种;size:11;"`                                  //币种
 	ReviewStatus      string     `json:"reviewStatus" form:"reviewStatus" gorm:"column:review_status;comment:审核状态;size:191;"`                  //审核状态
 	//以下是联表查询字段
 	//sys_user 表
