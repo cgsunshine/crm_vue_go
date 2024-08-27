@@ -61,6 +61,9 @@ func (crmTicketResponseTemplatesService *CrmTicketResponseTemplatesService) GetC
 	if info.StartCreatedAt != nil && info.EndCreatedAt != nil {
 		db = db.Where(crmTicketResponseTemplatesService.SplicingQueryConditions("created_at BETWEEN ? AND ?"), info.StartCreatedAt, info.EndCreatedAt)
 	}
+	if info.TemplateName != "" {
+		db = db.Where(crmTicketResponseTemplatesService.SplicingQueryConditions("template_name LIKE ?"), "%"+info.TemplateName+"%")
+	}
 	err = db.Count(&total).Error
 	if err != nil {
 		return

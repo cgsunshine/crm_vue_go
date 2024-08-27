@@ -14,23 +14,23 @@ import (
 func (crmApprovalTasksService *CrmApprovalTasksService) SearchCriteria(info crmReq.CrmApprovalTasksSearch, db *gorm.DB) {
 
 	if info.StartCreatedAt != nil && info.EndCreatedAt != nil {
-		db = db.Where("created_at BETWEEN ? AND ?", info.StartCreatedAt, info.EndCreatedAt)
+		db = db.Where(crmApprovalTasksService.SplicingQueryConditions("created_at BETWEEN ? AND ?"), info.StartCreatedAt, info.EndCreatedAt)
 	}
 	if info.ApprovalStatus != "" {
-		db = db.Where("approval_status = ?", info.ApprovalStatus)
+		db = db.Where(crmApprovalTasksService.SplicingQueryConditions("approval_status = ?"), info.ApprovalStatus)
 	}
 	if info.ApprovalType != nil {
-		db = db.Where("approval_type = ?", info.ApprovalType)
+		db = db.Where(crmApprovalTasksService.SplicingQueryConditions("approval_type = ?"), info.ApprovalType)
 	}
 	if info.AssigneeId != nil {
-		db = db.Where("assignee_id = ?", info.AssigneeId)
+		db = db.Where(crmApprovalTasksService.SplicingQueryConditions("assignee_id = ?"), info.AssigneeId)
 	}
 	if info.AssociatedId != nil {
-		db = db.Where("associated_id = ?", info.AssociatedId)
+		db = db.Where(crmApprovalTasksService.SplicingQueryConditions("associated_id = ?"), info.AssociatedId)
 	}
 	if info.RequestId != nil {
-		db = db.Where("request_id = ?", info.RequestId)
-	}
+		db = db.Where(crmApprovalTasksService.SplicingQueryConditions("request_id = ?"), info.RequestId)
+	}s     
 }
 
 // GetCrmApprovalTasksInfoList 分页获取审批任务记录 合同
