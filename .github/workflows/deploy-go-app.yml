@@ -28,7 +28,7 @@ jobs:
     - name: Deploy
       uses: appleboy/ssh-action@master
       with:
-        host: 110.41.190.242  # 替换为您的服务器主机名或 IP 地址
+        host: 47.99.101.250  # 替换为您的服务器主机名或 IP 地址
         username: root           # 替换为您的服务器用户名
         password: jyy88888888           # 替换为您的服务器密码
         port: 22                 # 替换为您的 SSH 端口号，默认为 22
@@ -40,7 +40,7 @@ jobs:
           # 清除旧的二进制文件
           rm -rf /www/goserve/*
           # 创建目录
-          #mkdir -p /www/goserve
+          mkdir -p /www/goserve
           # 上传新编译的二进制文件
           scp -P your-port ./server your-username@your-server-hostname-or-ip:/www/goserve/server
           # 启动新应用程序
