@@ -30,6 +30,10 @@ func (crmBillService *CrmBillService) GetCrmPageBillInfoList(info crmReq.CrmBill
 	if info.StartCreatedAt != nil && info.EndCreatedAt != nil {
 		db = db.Where(crmBillService.SplicingQueryConditions("created_at BETWEEN ? AND ?"), info.StartCreatedAt, info.EndCreatedAt)
 	}
+
+	if info.StartExpirationTime != nil && info.EndExpirationTime != nil {
+		db = db.Where(crmBillService.SplicingQueryConditions("expiration_time BETWEEN ? AND ?"), info.StartExpirationTime, info.EndExpirationTime)
+	}
 	if info.OrderId != nil {
 		db = db.Where(crmBillService.SplicingQueryConditions("order_id = ?"), info.OrderId)
 	}
