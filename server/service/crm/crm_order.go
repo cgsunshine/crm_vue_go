@@ -105,3 +105,12 @@ func (crmOrderService *CrmOrderService) OrderCycleTimeAdd(userId *int, startDate
 	err = db.Count(&total).Error
 	return
 }
+
+// ApprovalTasksCount 统计有效的，并且状态是待审批的数量
+// Author [piexlmax](https://github.com/piexlmax)
+func (crmOrderService *CrmOrderService) ApprovalTasksCount(userId *int, approvalStatus string, startDate, endDate *time.Time) (total int64, err error) {
+	db := global.GVA_DB.Model(&crm.CrmOrder{})
+	SearchCondition(db, userId, startDate, endDate)
+	err = db.Where("review_status = ? ", approvalStatus).Debug().Count(&total).Error
+	return
+}

@@ -30,7 +30,7 @@ func (crmApprovalTasksService *CrmApprovalTasksService) SearchCriteria(info crmR
 	}
 	if info.RequestId != nil {
 		db = db.Where(crmApprovalTasksService.SplicingQueryConditions("request_id = ?"), info.RequestId)
-	}s     
+	}
 }
 
 // GetCrmApprovalTasksInfoList 分页获取审批任务记录 合同

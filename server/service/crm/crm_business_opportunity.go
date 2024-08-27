@@ -94,9 +94,19 @@ func (crmBusinessOpportunityService *CrmBusinessOpportunityService) GetCrmBusine
 	return crmBusinessOpportunitys, total, err
 }
 
-func (crmBusinessOpportunityService *CrmBusinessOpportunityService) BusinessOpportunityCycleTimeAdd(userId *int, startDate, endDate *time.Time) (total int64, err error) {
+func (crmBusinessOpportunityService *CrmBusinessOpportunityService) BusinessOpportunityCycleTimeAdd(userId *int, startDate, endDate *time.Time, relation int) (total int64, err error) {
 	db := global.GVA_DB.Model(&crm.CrmBusinessOpportunity{})
 	SearchCondition(db, userId, startDate, endDate)
-	err = db.Count(&total).Error
+	err = db.Where("status = ?", relation).Count(&total).Error
+	//err = db.Where("status = ?", comm.BusinessOpportunityRelationType).Count(&total).Error
+	return
+}
+
+// ApprovalTasksCount 统计有效的，并且状态是待审批的数量
+// Author [piexlmax](https://github.com/piexlmax)
+func (crmBusinessOpportunityService *CrmBusinessOpportunityService) ApprovalTasksCount(userId *int, approvalStatus string, startDate, endDate *time.Time) (total int64, err error) {
+	db := global.GVA_DB.Model(&crm.CrmBusinessOpportunity{})
+	SearchCondition(db, userId, startDate, endDate)
+	err = db.Where("review_status = ? ", approvalStatus).Debug().Count(&total).Error
 	return
 }

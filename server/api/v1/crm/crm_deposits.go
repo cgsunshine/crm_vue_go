@@ -37,7 +37,7 @@ func (crmDepositsApi *CrmDepositsApi) CreateCrmDeposits(c *gin.Context) {
 
 	//押金创建直接提交审核
 	crmDeposits.DepositsStatus = comm.Deposits_Status_Under
-	crmDeposits.ReviewStatus = comm.Approval_Status_Under
+	crmDeposits.ReviewStatus = comm.Approval_Status_Pending
 	crmDeposits.RefundStatus = comm.RUnsubmitted_Refund_Status
 	crmDeposits.RefundDate = nil
 	crmDeposits.UserId = comm.GetHeaderUserId(c)

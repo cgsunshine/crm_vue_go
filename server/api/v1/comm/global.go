@@ -94,6 +94,11 @@ const (
 	Deposits_Processing_Status_Tickets_Processed   = "3" //处理完成
 )
 
+const (
+	BusinessOpportunityRelationType  = 1 //未关单
+	BusinessOpportunityUnrelatedType = 2 //已关单
+)
+
 // ascending descending
 func OrderHandle(o string) string {
 	if o == "ascending" {

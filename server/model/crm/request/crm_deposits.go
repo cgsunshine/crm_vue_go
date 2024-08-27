@@ -1,8 +1,8 @@
 package request
 
 import (
-    "github.com/flipped-aurora/gin-vue-admin/server/model/common/request"
-    "time"
+	"github.com/flipped-aurora/gin-vue-admin/server/model/common/request"
+	"time"
 )
 
 type CrmDepositsSearch struct {
@@ -19,7 +19,7 @@ type CrmDepositsSearch struct {
 	EndRefundDate    *time.Time `json:"endRefundDate" form:"endRefundDate"`
 	Status           string     `json:"status" form:"status" `
 	UserId           *int       `json:"userId" form:"userId" `
-	ReviewStatus     string     `json:"reviewStatus" form:"reviewStatus" `
-	RefundStatus     string     `json:"refundStatus" form:"refundStatus" `
+	ReviewStatus     string     `json:"reviewStatus" form:"reviewStatus"`
+	RefundStatus     string     `json:"refundStatus" form:"refundStatus"`
 	request.PageInfo
 }

@@ -32,54 +32,62 @@ func (adminHome *AdminHome) HomeData(c *gin.Context) {
 
 	userId := GetSearchUserId(search.UserId, c)
 
-	businessOpportunityApproval, err := crmApprovalTasksService.ApprovalTasksCount(userId, comm.BusinessOpportunityApprovalType, comm.Approval_Status_Under, search.StartCreatedAt, search.EndCreatedAt)
+	businessOpportunityApproval, err := crmBusinessOpportunityService.ApprovalTasksCount(userId, comm.Approval_Status_Pending, search.StartCreatedAt, search.EndCreatedAt)
 	if err != nil {
 		global.GVA_LOG.Error("查询失败!", zap.Error(err))
 		response.FailWithMessage("查询失败", c)
 		return
 	}
 
-	OrderApproval, err := crmApprovalTasksService.ApprovalTasksCount(userId, comm.OrderApprovalType, comm.Approval_Status_Under, search.StartCreatedAt, search.EndCreatedAt)
+	OrderApproval, err := crmOrderService.ApprovalTasksCount(userId, comm.Approval_Status_Pending, search.StartCreatedAt, search.EndCreatedAt)
 	if err != nil {
 		global.GVA_LOG.Error("查询失败!", zap.Error(err))
 		response.FailWithMessage("查询失败", c)
 		return
 	}
 
-	salesContract, err := crmApprovalTasksService.ApprovalTasksCount(userId, comm.ContractApprovalType, comm.Approval_Status_Under, search.StartCreatedAt, search.EndCreatedAt)
+	salesContract, err := crmContractService.ApprovalTasksCount(userId, comm.Approval_Status_Pending, search.StartCreatedAt, search.EndCreatedAt)
 	if err != nil {
 		global.GVA_LOG.Error("查询失败!", zap.Error(err))
 		response.FailWithMessage("查询失败", c)
 		return
 	}
 
-	paymentCollentionApproval, err := crmApprovalTasksService.ApprovalTasksCount(userId, comm.PaymentCollentionApprovalType, comm.Approval_Status_Under, search.StartCreatedAt, search.EndCreatedAt)
+	paymentCollentionApproval, err := crmPaymentCollentionService.ApprovalTasksCount(userId, comm.Approval_Status_Pending, search.StartCreatedAt, search.EndCreatedAt)
 	if err != nil {
 		global.GVA_LOG.Error("查询失败!", zap.Error(err))
 		response.FailWithMessage("查询失败", c)
 		return
 	}
 
-	depositsApproval, err := crmApprovalTasksService.ApprovalTasksCount(userId, comm.DepositsApprovalType, comm.Approval_Status_Under, search.StartCreatedAt, search.EndCreatedAt)
+	depositsApproval, err := crmDepositsService.ApprovalTasksCount(userId, comm.Approval_Status_Pending, search.StartCreatedAt, search.EndCreatedAt)
 	if err != nil {
 		global.GVA_LOG.Error("查询失败!", zap.Error(err))
 		response.FailWithMessage("查询失败", c)
 		return
 	}
 
-	paymentApproval, err := crmApprovalTasksService.ApprovalTasksCount(userId, comm.PaymentApprovalType, comm.Approval_Status_Under, search.StartCreatedAt, search.EndCreatedAt)
+	paymentApproval, err := crmPaymentService.ApprovalTasksCount(userId, comm.Approval_Status_Pending, search.StartCreatedAt, search.EndCreatedAt)
 	if err != nil {
 		global.GVA_LOG.Error("查询失败!", zap.Error(err))
 		response.FailWithMessage("查询失败", c)
 		return
 	}
 
-	businessOpportunityCycleTimeAdd, err := crmBusinessOpportunityService.BusinessOpportunityCycleTimeAdd(userId, search.StartCreatedAt, search.EndCreatedAt)
+	businessOpportunityCycleTimeAddRelation, err := crmBusinessOpportunityService.BusinessOpportunityCycleTimeAdd(userId, search.StartCreatedAt, search.EndCreatedAt, comm.BusinessOpportunityRelationType)
 	if err != nil {
 		global.GVA_LOG.Error("查询失败!", zap.Error(err))
 		response.FailWithMessage("查询失败", c)
 		return
 	}
+
+	businessOpportunityCycleTimeAddUnrelated, err := crmBusinessOpportunityService.BusinessOpportunityCycleTimeAdd(userId, search.StartCreatedAt, search.EndCreatedAt, comm.BusinessOpportunityUnrelatedType)
+	if err != nil {
+		global.GVA_LOG.Error("查询失败!", zap.Error(err))
+		response.FailWithMessage("查询失败", c)
+		return
+	}
+
 	orderCycleTimeAdd, err := crmOrderService.OrderCycleTimeAdd(userId, search.StartCreatedAt, search.EndCreatedAt)
 	if err != nil {
 		global.GVA_LOG.Error("查询失败!", zap.Error(err))
@@ -122,8 +130,8 @@ func (adminHome *AdminHome) HomeData(c *gin.Context) {
 			Payment:             paymentApproval,
 		},
 		AddBusiness: &custom.AddBusiness{
-			BusinessOpportunity:         businessOpportunityCycleTimeAdd,
-			BusinessOpportunityRelation: 8,
+			BusinessOpportunity:         businessOpportunityCycleTimeAddRelation,
+			BusinessOpportunityRelation: businessOpportunityCycleTimeAddUnrelated,
 			Order:                       orderCycleTimeAdd,
 		},
 		CustomerInfo: &custom.CustomerInfo{

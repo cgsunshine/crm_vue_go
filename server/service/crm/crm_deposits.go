@@ -4,6 +4,7 @@ import (
 	"github.com/flipped-aurora/gin-vue-admin/server/global"
 	"github.com/flipped-aurora/gin-vue-admin/server/model/crm"
 	crmReq "github.com/flipped-aurora/gin-vue-admin/server/model/crm/request"
+	"time"
 )
 
 type CrmDepositsService struct {
@@ -115,4 +116,13 @@ func (crmDepositsService *CrmDepositsService) UpdDepositsInfo(ID *int, data map[
 // SplicingQueryConditions 拼接条件
 func (crmDepositsService *CrmDepositsService) SplicingQueryConditions(condition string) string {
 	return "crm_deposits." + condition
+}
+
+// ApprovalTasksCount 统计有效的，并且状态是待审批的数量
+// Author [piexlmax](https://github.com/piexlmax)
+func (crmDepositsService *CrmDepositsService) ApprovalTasksCount(userId *int, approvalStatus string, startDate, endDate *time.Time) (total int64, err error) {
+	db := global.GVA_DB.Model(&crm.CrmDeposits{})
+	SearchCondition(db, userId, startDate, endDate)
+	err = db.Where("review_status = ? ", approvalStatus).Debug().Count(&total).Error
+	return
 }

@@ -4,6 +4,7 @@ import (
 	"github.com/flipped-aurora/gin-vue-admin/server/global"
 	"github.com/flipped-aurora/gin-vue-admin/server/model/crm"
 	crmReq "github.com/flipped-aurora/gin-vue-admin/server/model/crm/request"
+	"time"
 )
 
 type CrmPaymentService struct {
@@ -89,4 +90,13 @@ func (crmPaymentService *CrmPaymentService) GetCrmPaymentInfoList(info crmReq.Cr
 
 	err = db.Find(&crmPayments).Error
 	return crmPayments, total, err
+}
+
+// ApprovalTasksCount 统计有效的，并且状态是待审批的数量
+// Author [piexlmax](https://github.com/piexlmax)
+func (crmPaymentService *CrmPaymentService) ApprovalTasksCount(userId *int, approvalStatus string, startDate, endDate *time.Time) (total int64, err error) {
+	db := global.GVA_DB.Model(&crm.CrmPayment{})
+	SearchCondition(db, userId, startDate, endDate)
+	err = db.Where("review_status = ? ", approvalStatus).Debug().Count(&total).Error
+	return
 }

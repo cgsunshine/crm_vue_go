@@ -101,9 +101,9 @@ func (crmPaymentCollentionService *CrmPaymentCollentionService) GetCrmPaymentIdC
 
 // 周期内回款金额总计
 func (crmPaymentCollentionService *CrmPaymentCollentionService) PaymentCollentionAmountCycleTime(userId *int, startDate, endDate *time.Time) (total int64, err error) {
-	db := global.GVA_DB.Model(&crm.CrmContract{})
+	db := global.GVA_DB.Model(&crm.CrmPaymentCollention{})
 	SearchCondition(db, userId, startDate, endDate)
-	db.Select("SUM(amount)")
+	//db.Select("SUM(amount)")
 	db.Where("review_status = ?", comm.Approval_Status_Pass)
 	err = db.Count(&total).Error
 	return
