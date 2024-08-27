@@ -1,0 +1,45 @@
+name: Deploy Go App
+
+on:
+  push:
+    branches: [ main ]  # 触发条件：当有代码被推送到 main 分支时
+    paths:             # 只有 server 文件夹下的文件发生变化时才触发
+      - 'server/**'
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Setup Go
+      uses: actions/setup-go@v3
+      with:
+        go-version: '1.20'  # 您的 Go 版本可能不同，请根据实际情况调整
+
+    - name: Build
+      working-directory: ./server  # 指定工作目录
+      run: |
+        go mod download
+        go build -o server .  # 将这里从 "app" 改为 "server"
+
+    - name: Deploy
+      uses: appleboy/ssh-action@master
+      with:
+        host: 110.41.190.242
+        username: root
+        password: jyy88888888
+        port: 22
+        script: |
+          # 在服务器上停止旧的应用程序
+          pkill -f "/www/goserve/server"  # 将这里从 "app" 改为 "server"
+          # 清除旧的二进制文件
+          rm -rf /www/goserve/*
+          # 创建目录
+          mkdir -p /www/goserve
+          # 上传新编译的二进制文件
+          scp -P ${{ secrets.SSH_PORT }} ./server /${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:/www/goserve/server  # 这里也做了相应的更改
+          # 启动新应用程序
+          nohup /www/goserve/server &  # 将这里从 "app" 改为 "server"
