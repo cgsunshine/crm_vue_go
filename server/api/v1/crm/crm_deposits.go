@@ -185,6 +185,12 @@ func (crmDepositsApi *CrmDepositsApi) FindCrmDeposits(c *gin.Context) {
 			global.GVA_LOG.Error("查询失败!", zap.Error(err))
 			response.FailWithMessage("查询失败", c)
 		}
+
+		recrmDeposits.RefundVoucher, _, err = fileUploadAndDownloadService.GetFileRecordInfoIdsString(recrmDeposits.RefundVoucher)
+		if err != nil {
+			global.GVA_LOG.Error("查询失败!", zap.Error(err))
+			response.FailWithMessage("查询失败", c)
+		}
 		response.OkWithData(gin.H{"recrmDeposits": recrmDeposits}, c)
 	}
 }
@@ -247,6 +253,7 @@ func (crmDepositsApi *CrmDepositsApi) GetCrmDepositsPublic(c *gin.Context) {
 // @Router /crmDeposits/createCrmDepositsRefund [post]
 func (crmDepositsApi *CrmDepositsApi) CreateCrmDepositsRefund(c *gin.Context) {
 	ID := c.Query("ID")
+	refundVoucher := c.Query("refundVoucher")
 	recrmDeposits, err := crmDepositsService.GetCrmDeposits(ID)
 	if err != nil {
 		global.GVA_LOG.Error("创建失败!", zap.Error(err))
@@ -279,7 +286,8 @@ func (crmDepositsApi *CrmDepositsApi) CreateCrmDepositsRefund(c *gin.Context) {
 
 	//提交完成以后，修改自己退款状态
 	err = crmDepositsService.UpdDepositsInfo(&depositsId, map[string]interface{}{
-		"refund_status": comm.Submitted_Refund_Status,
+		"refund_status":  comm.Submitted_Refund_Status,
+		"refund_voucher": refundVoucher,
 	})
 	if err != nil {
 		global.GVA_LOG.Error("更新失败!", zap.Error(err))

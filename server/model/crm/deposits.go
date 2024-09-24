@@ -22,6 +22,7 @@ type CrmPageDeposits struct {
 	DepositsName    string     `json:"depositsName" form:"depositsName" gorm:"column:deposits_name;comment:合同名称;size:191;"`                  //合同名称
 	RefundStatus    string     `json:"refundStatus" form:"refundStatus" gorm:"column:refund_status;comment:退款状态;size:191;"`                  //退款状态
 	DepositsVoucher string     `json:"depositsVoucher" form:"depositsVoucher" gorm:"column:deposits_voucher;comment:押金凭证;size:191;"`         //押金凭证
+	RefundVoucher   string     `json:"refundVoucher" form:"refundVoucher" gorm:"column:refund_voucher;comment:退款凭证;size:191;"`               //退款凭证
 	UserId          *int       `json:"userId" form:"userId" gorm:"column:user_id;comment:管理ID 销售代表;size:19;"`                                //管理ID 销售代表
 	//联表查询
 	//crm_contract 表
