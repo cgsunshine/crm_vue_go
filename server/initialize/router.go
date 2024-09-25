@@ -170,6 +170,7 @@ func Routers() *gin.Engine {
 		crmRouter.InitCrmRefundTasksRouter(PrivateGroup, PublicGroup)
 		crmRouter.InitCrmBillPaymentRouter(PrivateGroup, PublicGroup)
 		crmRouter.InitCrmAdminHomeRouter(PrivateGroup, PublicGroup)
+		crmRouter.InitCrmPurchaseOrderProductRouter(PrivateGroup, PublicGroup)
 
 	}
 

@@ -17,6 +17,7 @@ type CrmPageProcurementContract struct {
 	ExpirationTime *time.Time `json:"expirationTime" form:"expirationTime" gorm:"column:expiration_time;comment:到期时间;"`                       //到期时间
 	UserId         *int       `json:"userId" form:"userId" gorm:"column:user_id;comment:负责人;"`                                                //负责人
 	ReviewStatus   string     `json:"reviewStatus" form:"reviewStatus" gorm:"column:review_status;comment:审核状态;size:191;"`                    //审核状态
+	Description    string     `json:"description" form:"description" gorm:"column:description;comment:备注;size:191;"`                          //备注
 	//以下是联表查询字段
 	//sys_user 表
 	Username string `json:"userName" gorm:"index;comment:用户登录名"` // 用户登录名

@@ -99,6 +99,12 @@ const (
 	BusinessOpportunityUnrelatedType = 2 //已关单
 )
 
+// 合同状态
+const (
+	ProcurementContractStatusEffectiveType = "1" //有效
+	ProcurementContractStatusInvalidType   = "2" //无效
+)
+
 // ascending descending
 func OrderHandle(o string) string {
 	if o == "ascending" {

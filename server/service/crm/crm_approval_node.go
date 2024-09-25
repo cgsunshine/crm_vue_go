@@ -3,7 +3,7 @@ package crm
 import (
 	"github.com/flipped-aurora/gin-vue-admin/server/global"
 	"github.com/flipped-aurora/gin-vue-admin/server/model/crm"
-    crmReq "github.com/flipped-aurora/gin-vue-admin/server/model/crm/request"
+	crmReq "github.com/flipped-aurora/gin-vue-admin/server/model/crm/request"
 )
 
 type CrmApprovalNodeService struct {
@@ -18,56 +18,56 @@ func (crmApprovalNodeService *CrmApprovalNodeService) CreateCrmApprovalNode(crmA
 
 // DeleteCrmApprovalNode 删除审批节点记录
 // Author [piexlmax](https://github.com/piexlmax)
-func (crmApprovalNodeService *CrmApprovalNodeService)DeleteCrmApprovalNode(ID string) (err error) {
-	err = global.GVA_DB.Delete(&crm.CrmApprovalNode{},"id = ?",ID).Error
+func (crmApprovalNodeService *CrmApprovalNodeService) DeleteCrmApprovalNode(ID string) (err error) {
+	err = global.GVA_DB.Unscoped().Delete(&crm.CrmApprovalNode{}, "id = ?", ID).Error
 	return err
 }
 
 // DeleteCrmApprovalNodeByIds 批量删除审批节点记录
 // Author [piexlmax](https://github.com/piexlmax)
-func (crmApprovalNodeService *CrmApprovalNodeService)DeleteCrmApprovalNodeByIds(IDs []string) (err error) {
-	err = global.GVA_DB.Delete(&[]crm.CrmApprovalNode{},"id in ?",IDs).Error
+func (crmApprovalNodeService *CrmApprovalNodeService) DeleteCrmApprovalNodeByIds(IDs []string) (err error) {
+	err = global.GVA_DB.Delete(&[]crm.CrmApprovalNode{}, "id in ?", IDs).Error
 	return err
 }
 
 // UpdateCrmApprovalNode 更新审批节点记录
 // Author [piexlmax](https://github.com/piexlmax)
-func (crmApprovalNodeService *CrmApprovalNodeService)UpdateCrmApprovalNode(crmApprovalNode crm.CrmApprovalNode) (err error) {
+func (crmApprovalNodeService *CrmApprovalNodeService) UpdateCrmApprovalNode(crmApprovalNode crm.CrmApprovalNode) (err error) {
 	err = global.GVA_DB.Save(&crmApprovalNode).Error
 	return err
 }
 
 // GetCrmApprovalNode 根据ID获取审批节点记录
 // Author [piexlmax](https://github.com/piexlmax)
-func (crmApprovalNodeService *CrmApprovalNodeService)GetCrmApprovalNode(ID string) (crmApprovalNode crm.CrmApprovalNode, err error) {
+func (crmApprovalNodeService *CrmApprovalNodeService) GetCrmApprovalNode(ID string) (crmApprovalNode crm.CrmApprovalNode, err error) {
 	err = global.GVA_DB.Where("id = ?", ID).First(&crmApprovalNode).Error
 	return
 }
 
 // GetCrmApprovalNodeInfoList 分页获取审批节点记录
 // Author [piexlmax](https://github.com/piexlmax)
-func (crmApprovalNodeService *CrmApprovalNodeService)GetCrmApprovalNodeInfoList(info crmReq.CrmApprovalNodeSearch) (list []crm.CrmApprovalNode, total int64, err error) {
+func (crmApprovalNodeService *CrmApprovalNodeService) GetCrmApprovalNodeInfoList(info crmReq.CrmApprovalNodeSearch) (list []crm.CrmApprovalNode, total int64, err error) {
 	limit := info.PageSize
 	offset := info.PageSize * (info.Page - 1)
-    // 创建db
+	// 创建db
 	db := global.GVA_DB.Model(&crm.CrmApprovalNode{})
-    var crmApprovalNodes []crm.CrmApprovalNode
-    // 如果有条件搜索 下方会自动创建搜索语句
-    if info.StartCreatedAt !=nil && info.EndCreatedAt !=nil {
-     db = db.Where("created_at BETWEEN ? AND ?", info.StartCreatedAt, info.EndCreatedAt)
-    }
-    if info.ProcessId != nil {
-        db = db.Where("processId = ?",info.ProcessId)
-    }
+	var crmApprovalNodes []crm.CrmApprovalNode
+	// 如果有条件搜索 下方会自动创建搜索语句
+	if info.StartCreatedAt != nil && info.EndCreatedAt != nil {
+		db = db.Where("created_at BETWEEN ? AND ?", info.StartCreatedAt, info.EndCreatedAt)
+	}
+	if info.ProcessId != nil {
+		db = db.Where("processId = ?", info.ProcessId)
+	}
 	err = db.Count(&total).Error
-	if err!=nil {
-    	return
-    }
+	if err != nil {
+		return
+	}
 
 	if limit != 0 {
-       db = db.Limit(limit).Offset(offset)
-    }
-	
+		db = db.Limit(limit).Offset(offset)
+	}
+
 	err = db.Find(&crmApprovalNodes).Error
-	return  crmApprovalNodes, total, err
+	return crmApprovalNodes, total, err
 }

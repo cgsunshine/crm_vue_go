@@ -81,6 +81,7 @@ func (crmRefundTasksApi *CrmRefundTasksApi) ProcessingCrmRefundTasks(c *gin.Cont
 		"deposits_status": comm.Deposits_Status_Refund,
 		"refund_date":     time.Now(),
 		"refund_status":   comm.Deposits_Status_Refund,
+		"refund_voucher":  crmRefundTasks.RefundVoucher,
 	})
 	if err != nil {
 		global.GVA_LOG.Error("更新失败!", zap.Error(err))
@@ -91,7 +92,8 @@ func (crmRefundTasksApi *CrmRefundTasksApi) ProcessingCrmRefundTasks(c *gin.Cont
 	id := int(crmRefundTasksInfo.ID)
 	//退款更新关联表
 	err = crmRefundTasksService.UpdDepositsInfo(&id, map[string]interface{}{
-		"refund_status": comm.Deposits_Processing_Status_Processed,
+		"refund_status":  comm.Deposits_Processing_Status_Processed,
+		"refund_voucher": crmRefundTasks.RefundVoucher,
 	})
 	if err != nil {
 		global.GVA_LOG.Error("更新失败!", zap.Error(err))
@@ -180,6 +182,11 @@ func (crmRefundTasksApi *CrmRefundTasksApi) FindCrmRefundTasks(c *gin.Context) {
 		global.GVA_LOG.Error("查询失败!", zap.Error(err))
 		response.FailWithMessage("查询失败", c)
 	} else {
+		recrmRefundTasks.RefundVoucher, _, err = fileUploadAndDownloadService.GetFileRecordInfoIdsString(recrmRefundTasks.RefundVoucher)
+		if err != nil {
+			global.GVA_LOG.Error("查询失败!", zap.Error(err))
+			response.FailWithMessage("查询失败", c)
+		}
 		response.OkWithData(gin.H{"recrmRefundTasks": recrmRefundTasks}, c)
 	}
 }

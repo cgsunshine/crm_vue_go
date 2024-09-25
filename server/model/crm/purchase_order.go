@@ -26,4 +26,6 @@ type CrmPagePurchaseOrder struct {
 	ProductName string `json:"productName" form:"productName" gorm:"column:product_name;comment:产品名称;size:191;"` //产品名称
 	//crm_currency 表 后面替换去掉注释
 	CurrencyName string `json:"currencyName" form:"currencyName" gorm:"column:currency_name;comment:币种;size:10;"` //币种名称
+
+	PurchaseOrderProduct []CrmPurchaseOrderProduct `gorm:"foreignKey:PurchaseOrderId"`
 }

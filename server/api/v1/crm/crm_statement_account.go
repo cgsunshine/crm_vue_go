@@ -36,6 +36,7 @@ func (crmStatementAccountApi *CrmStatementAccountApi) CreateCrmStatementAccount(
 
 	crmStatementAccount.UserId = comm.GetHeaderUserId(c)
 	crmStatementAccount.ReviewStatus = comm.Approval_Status_Pending
+	crmStatementAccount.PaymentStatus = comm.PaymentStatusUnpaid
 
 	if err := crmStatementAccountService.CreateCrmStatementAccount(&crmStatementAccount); err != nil {
 		global.GVA_LOG.Error("创建失败!", zap.Error(err))

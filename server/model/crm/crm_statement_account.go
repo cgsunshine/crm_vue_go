@@ -19,6 +19,7 @@ type CrmStatementAccount struct {
 	ReviewStatus         string     `json:"reviewStatus" form:"reviewStatus" gorm:"column:review_status;comment:审核状态;size:191;"`         //审核状态
 	StatementAccountName string     `json:"statementAccountName" form:"  " gorm:"column:statement_account_name;comment:对账单名称;size:191;"` //对账单名称
 	Currency             string     `json:"currency" form:"currency" gorm:"column:currency;comment:币种;size:11;"`                         //币种
+	Invoice              string     `json:"invoice" form:"invoice" gorm:"column:invoice;comment:发票;size:11;"`                            //发票
 }
 
 // TableName crmStatementAccount表 CrmStatementAccount自定义表名 crm_statement_account

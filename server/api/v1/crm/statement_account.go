@@ -55,6 +55,11 @@ func (crmStatementAccountApi *CrmStatementAccountApi) FindCrmPageStatementAccoun
 		global.GVA_LOG.Error("查询失败!", zap.Error(err))
 		response.FailWithMessage("查询失败", c)
 	} else {
+		recrmStatementAccount.Invoice, _, err = fileUploadAndDownloadService.GetFileRecordInfoIdsString(recrmStatementAccount.Invoice)
+		if err != nil {
+			global.GVA_LOG.Error("查询失败!", zap.Error(err))
+			response.FailWithMessage("查询失败", c)
+		}
 		response.OkWithData(gin.H{"recrmStatementAccount": recrmStatementAccount}, c)
 	}
 }

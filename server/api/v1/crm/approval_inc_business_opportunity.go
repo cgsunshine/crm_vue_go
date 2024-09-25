@@ -1,6 +1,8 @@
 package crm
 
-import "github.com/flipped-aurora/gin-vue-admin/server/api/v1/comm"
+import (
+	"github.com/flipped-aurora/gin-vue-admin/server/api/v1/comm"
+)
 
 // 商机审批
 type ApprovalIncBusinessOpportunity struct{}

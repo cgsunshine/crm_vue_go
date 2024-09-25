@@ -47,4 +47,5 @@ type ServiceGroup struct {
 	CrmDepositsService
 	CrmRefundTasksService
 	CrmBillPaymentService
+	CrmPurchaseOrderProductService
 }

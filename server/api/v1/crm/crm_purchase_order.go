@@ -27,15 +27,29 @@ var crmPurchaseOrderService = service.ServiceGroupApp.CrmServiceGroup.CrmPurchas
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"创建成功"}"
 // @Router /crmPurchaseOrder/createCrmPurchaseOrder [post]
 func (crmPurchaseOrderApi *CrmPurchaseOrderApi) CreateCrmPurchaseOrder(c *gin.Context) {
-	var crmPurchaseOrder crm.CrmPurchaseOrder
-	err := c.ShouldBindJSON(&crmPurchaseOrder)
+	var crmReqPurchaseOrder crmReq.CrmReqPurchaseOrder
+	err := c.ShouldBindJSON(&crmReqPurchaseOrder)
 	if err != nil {
 		response.FailWithMessage(err.Error(), c)
 		return
 	}
 
-	crmPurchaseOrder.UserId = comm.GetHeaderUserId(c)
-	crmPurchaseOrder.ReviewStatus = comm.Approval_Status_Pending
+	crmReqPurchaseOrder.UserId = comm.GetHeaderUserId(c)
+	crmReqPurchaseOrder.ReviewStatus = comm.Approval_Status_Pending
+
+	crmPurchaseOrder := crm.CrmPurchaseOrder{
+		Amount:            crmReqPurchaseOrder.Amount,
+		ContractId:        crmReqPurchaseOrder.ContractId,
+		CreationTime:      crmReqPurchaseOrder.CreationTime,
+		Description:       crmReqPurchaseOrder.Description,
+		ExpirationTime:    crmReqPurchaseOrder.ExpirationTime,
+		ProductId:         crmReqPurchaseOrder.ProductId,
+		Quantity:          crmReqPurchaseOrder.Quantity,
+		UserId:            crmReqPurchaseOrder.UserId,
+		PurchaseOrderName: crmReqPurchaseOrder.PurchaseOrderName,
+		Currency:          crmReqPurchaseOrder.Currency,
+		ReviewStatus:      crmReqPurchaseOrder.ReviewStatus,
+	}
 
 	if err := crmPurchaseOrderService.CreateCrmPurchaseOrder(&crmPurchaseOrder); err != nil {
 		global.GVA_LOG.Error("创建失败!", zap.Error(err))
@@ -57,6 +71,23 @@ func (crmPurchaseOrderApi *CrmPurchaseOrderApi) CreateCrmPurchaseOrder(c *gin.Co
 	ids, err := userService.GetRoleUsers(roleInfo.RoleIds)
 	if err != nil {
 		global.GVA_LOG.Error("创建失败!", zap.Error(err))
+		response.FailWithMessage("创建失败", c)
+		return
+	}
+
+	crmPurchaseOrderProduct := make([]*crm.CrmPurchaseOrderProduct, 0)
+	for _, v := range crmReqPurchaseOrder.ProductsInfo {
+		crmOrderProduct := &crm.CrmPurchaseOrderProduct{
+			PurchaseOrderId: &purchaseOrderId,
+			ProductId:       v.ProductId,
+			Quantity:        v.Quantity,
+			Specifications:  v.Specifications,
+		}
+		crmPurchaseOrderProduct = append(crmPurchaseOrderProduct, crmOrderProduct)
+	}
+
+	if err := crmPurchaseOrderProductService.CreateCrmPurchaseOrderProducts(crmPurchaseOrderProduct); err != nil {
+		global.GVA_LOG.Error("插入对应关系失败!", zap.Error(err))
 		response.FailWithMessage("创建失败", c)
 		return
 	}

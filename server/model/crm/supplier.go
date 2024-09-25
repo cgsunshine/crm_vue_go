@@ -15,6 +15,7 @@ type CrmPageSupplier struct {
 	Telephone     string     `json:"telephone" form:"telephone" gorm:"column:telephone;comment:电话;size:191;"`               //电话
 	NoteAddTime   *time.Time `json:"noteAddTime" form:"noteAddTime" gorm:"column:note_add_time;comment:备注添加时间;"`            //备注添加时间
 	UserId        *int       `json:"userId" form:"userId" gorm:"column:user_id;comment:负责人id;"`                             //负责人id
+	Description   string     `json:"description" form:"description" gorm:"column:description;comment:备注;size:191;"`         //备注
 	//以下是联表查询字段
 	//sys_user 表
 	Username string `json:"userName" gorm:"index;comment:用户登录名"` // 用户登录名
