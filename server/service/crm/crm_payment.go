@@ -17,6 +17,16 @@ func (crmPaymentService *CrmPaymentService) CreateCrmPayment(crmPayment *crm.Crm
 	return err
 }
 
+// GetCrmStatementAccountBillPaymentCount 根据ID获取crmStatementAccount表记录
+// Author [piexlmax](https://github.com/piexlmax)
+func (crmPaymentService *CrmPaymentService) GetCrmStatementAccountBillPaymentCount(billPaymentID *int) (count int64, err error) {
+	err = global.GVA_DB.Model(&crm.CrmPayment{}).Where("bill_payment_id = ?", billPaymentID).Count(&count).Error
+	if err != nil {
+		return 0, err
+	}
+	return
+}
+
 // DeleteCrmPayment 删除crmPayment表记录
 // Author [piexlmax](https://github.com/piexlmax)
 func (crmPaymentService *CrmPaymentService) DeleteCrmPayment(ID string) (err error) {

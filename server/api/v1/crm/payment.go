@@ -4,9 +4,11 @@ import (
 	"github.com/flipped-aurora/gin-vue-admin/server/api/v1/comm"
 	"github.com/flipped-aurora/gin-vue-admin/server/global"
 	"github.com/flipped-aurora/gin-vue-admin/server/model/common/response"
+	"github.com/flipped-aurora/gin-vue-admin/server/model/crm"
 	crmReq "github.com/flipped-aurora/gin-vue-admin/server/model/crm/request"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
+	"time"
 )
 
 // GetCrmPaymentList 分页获取crmPayment表列表
@@ -76,17 +78,29 @@ func (crmPaymentApi *CrmPaymentApi) FindCrmPagePayment(c *gin.Context) {
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"查询成功"}"
 // @Router /crmPayment/paymentCompleted [get]
 func (crmPaymentApi *CrmPaymentApi) PaymentCompleted(c *gin.Context) {
-	ID := c.Query("ID")
-	paymentVoucher := c.Query("paymentVoucher")
-	if recrmPayment, err := crmPaymentService.GetCrmPagePayment(ID); err != nil {
+	//ID := c.Query("ID")
+	//paymentVoucher := c.Query("paymentVoucher")
+	var crmPayment crm.CrmPayment
+	err := c.ShouldBindJSON(&crmPayment)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	id := int(crmPayment.ID)
+	if recrmPayment, err := crmPaymentService.GetCrmPaymentIdInfo(&id); err != nil {
 		global.GVA_LOG.Error("查询失败!", zap.Error(err))
 		response.FailWithMessage("查询失败", c)
 	} else {
-		id := int(recrmPayment.ID)
+		if recrmPayment.ReviewStatus != comm.Approval_Status_Pass {
+			response.FailWithMessage("必须审批通过才能提付款", c)
+			return
+		}
+
 		//修改付款管理付款状态
 		err = crmPaymentService.UpdApprovalStatus(&id, map[string]interface{}{
 			"payment_status":  comm.PaymentStatusPaid,
-			"payment_voucher": paymentVoucher,
+			"payment_voucher": crmPayment.PaymentVoucher,
+			"payment_time":    time.Now(),
 		})
 		if err != nil {
 			global.GVA_LOG.Error("上传失败!", zap.Error(err))

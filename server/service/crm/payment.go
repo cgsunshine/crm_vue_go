@@ -42,9 +42,9 @@ func (crmPaymentService *CrmPaymentService) GetCrmPagePaymentInfoList(info crmRe
 		db = db.Limit(limit).Offset(offset)
 	}
 
-	err = db.Select("crm_payment.*,sys_users.username,crm_bill_payment.id as business_number").
+	err = db.Select("crm_payment.*,sys_users.username,crm_bill_payment.id as business_number").Debug().
 		Joins("LEFT JOIN sys_users ON crm_payment.user_id = sys_users.id").
-		Joins("LEFT JOIN crm_statement_account ON crm_bill_payment.id= crm_payment.statement_account_id").
+		Joins("LEFT JOIN crm_bill_payment ON crm_bill_payment.id = crm_payment.bill_payment_id").
 		Order("crm_payment.created_at DESC").
 		Find(&crmPayments).Error
 	return crmPayments, total, err
@@ -54,9 +54,9 @@ func (crmPaymentService *CrmPaymentService) GetCrmPagePaymentInfoList(info crmRe
 // Author [piexlmax](https://github.com/piexlmax)
 func (crmPaymentService *CrmPaymentService) GetCrmPagePayment(ID string) (crmPayment crm.CrmPagePayment, err error) {
 	err = global.GVA_DB.Model(&crm.CrmPayment{}).Where("crm_payment.id = ?", ID).
-		Select("crm_payment.*,sys_users.username,crm_statement_account.statement_account_name").
+		Select("crm_payment.*,sys_users.username,crm_bill_payment.id as business_number").
 		Joins("LEFT JOIN sys_users ON crm_payment.user_id = sys_users.id").
-		Joins("LEFT JOIN crm_statement_account ON crm_statement_account.id = crm_payment.statement_account_id").
+		Joins("LEFT JOIN crm_bill_payment ON crm_bill_payment.id= crm_payment.statement_account_id").
 		First(&crmPayment).Error
 	return
 }

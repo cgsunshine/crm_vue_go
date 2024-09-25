@@ -15,6 +15,7 @@ type CrmBillPayment struct {
 	PaymentStatus      string `json:"paymentStatus" form:"paymentStatus" gorm:"column:payment_status;comment:付款状态;size:191;"`                 //付款状态
 	StatementAccountId *int   `json:"statementAccountId" form:"statementAccountId" gorm:"column:statement_account_id;comment:对账单ID;size:19;"` //对账单ID
 	UserId             *int   `json:"userId" form:"userId" gorm:"column:user_id;comment:用户id;size:19;"`                                       //用户id
+	PaymentId          *int   `json:"paymentId" form:"paymentId" gorm:"column:payment_id;comment:对账单ID;size:19;"`                             //付款管理ID
 }
 
 // TableName 应付账单 CrmBillPayment自定义表名 crm_bill_payment

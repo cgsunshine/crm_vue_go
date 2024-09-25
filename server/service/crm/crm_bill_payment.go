@@ -118,7 +118,7 @@ func (crmBillPaymentService *CrmBillPaymentService) GetCrmBillPaymentInfoList(in
 // UpdApprovalStatus 修改审批状态
 // Author [piexlmax](https://github.com/piexlmax)
 func (crmBillPaymentService *CrmBillPaymentService) UpdApprovalStatus(ID *int, data map[string]interface{}) (err error) {
-	db := global.GVA_DB.Model(&crm.CrmContract{})
+	db := global.GVA_DB.Model(&crm.CrmBillPayment{})
 	err = db.Where("id = ?", ID).Updates(data).Error
 	return
 }

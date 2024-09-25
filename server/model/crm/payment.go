@@ -23,5 +23,5 @@ type CrmPagePayment struct {
 	//sys_user 表
 	Username string `json:"userName" gorm:"index;comment:用户登录名"` // 用户登录名
 	//crm_bill_payment 表
-	BusinessNumber string `json:"businessNumber" form:"businessNumber" gorm:"column:business_number;comment:对账单名称;size:191;"` //应付账单编号
+	BusinessNumber *int `json:"businessNumber" form:"businessNumber" gorm:"column:business_number;comment:对账单名称;size:191;"` //应付账单编号
 }

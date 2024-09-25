@@ -34,13 +34,36 @@ func (crmPaymentApi *CrmPaymentApi) CreateCrmPayment(c *gin.Context) {
 		return
 	}
 
+	count, err := crmPaymentService.GetCrmStatementAccountBillPaymentCount(crmPayment.BillPaymentId)
+	if err != nil {
+		global.GVA_LOG.Error("创建失败!", zap.Error(err))
+		response.FailWithMessage("创建失败", c)
+		return
+	}
+	if count >= 1 {
+		global.GVA_LOG.Error("重复添加!", zap.Error(err))
+		response.FailWithMessage("重复添加", c)
+		return
+	}
+
 	crmPayment.UserId = comm.GetHeaderUserId(c)
-	crmPayment.PaymentStatus = comm.PaymentStatusPaid
+	crmPayment.PaymentStatus = comm.PaymentStatusUnpaid
 	crmPayment.ReviewStatus = comm.Approval_Status_Pending
 	if err := crmPaymentService.CreateCrmPayment(&crmPayment); err != nil {
 		global.GVA_LOG.Error("创建失败!", zap.Error(err))
 		response.FailWithMessage("创建失败", c)
 	} else {
+
+		id := int(crmPayment.ID)
+		//应付账单回填付款id
+		err = crmBillPaymentService.UpdApprovalStatus(crmPayment.BillPaymentId, map[string]interface{}{
+			"payment_id": id,
+		})
+		if err != nil {
+			global.GVA_LOG.Error("上传失败!", zap.Error(err))
+			response.FailWithMessage("上传失败", c)
+			return
+		}
 		//err = crmBillService.UpdAssOrderID(crmPayment.OrderId, map[string]interface{}{
 		//	"payment_id": crmPayment.ID,
 		//})

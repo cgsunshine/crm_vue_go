@@ -9,9 +9,9 @@ import (
 // crmPayment表 结构体  CrmPaymentb
 type CrmPayment struct {
 	global.GVA_MODEL
-	BillPaymentId      *int       `json:"billPaymentId" form:"billPaymentId" gorm:"column:bill_paymentId;comment:对账单id;size:19;"`                 //应付账单id
+	BillPaymentId      *int       `json:"billPaymentId" form:"billPaymentId" gorm:"column:bill_payment_id;comment:对账单id;size:19;"`                //应付账单id
 	StatementAccountId *int       `json:"statementAccountId" form:"statementAccountId" gorm:"column:statement_account_id;comment:对账单id;size:19;"` //对账单id
-	PaymentAmount      *float64   `json:"paymentAmount" form:"paymentAmount" gorm:"column:payment_amount;comment:付款金额;" binding:"required"`       //付款金额
+	PaymentAmount      *float64   `json:"paymentAmount" form:"paymentAmount" gorm:"column:payment_amount;comment:付款金额;"`                          //付款金额
 	PaymentTime        *time.Time `json:"paymentTime" form:"paymentTime" gorm:"column:payment_time;comment:付款时间;"`                                //付款时间
 	PaymentVoucher     string     `json:"paymentVoucher" form:"paymentVoucher" gorm:"column:payment_voucher;comment:付款凭证;size:191;"`              //付款凭证
 	UserId             *int       `json:"userId" form:"userId" gorm:"column:user_id;comment:销售ID;"`                                               //销售ID
