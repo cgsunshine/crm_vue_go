@@ -47,6 +47,14 @@ func (crmBillPaymentService *CrmBillPaymentService) GetCrmBillPayment(ID string)
 	return
 }
 
+func (crmBillPaymentService *CrmBillPaymentService) GetCrmBillPaymentID(ID *int) (crmPageBillPayment crm.CrmPageBillPayment, err error) {
+	err = global.GVA_DB.Model(&crm.CrmBillPayment{}).Where("crm_bill_payment.id = ?", ID).
+		Select("crm_bill_payment.*,crm_statement_account.statement_account_name").
+		Joins("LEFT JOIN crm_statement_account ON crm_statement_account.id = crm_bill_payment.statement_account_id").
+		Order("crm_bill_payment.created_at DESC").First(&crmPageBillPayment).Error
+	return
+}
+
 // GetCrmBillPaymentInfoList 分页获取应付账单记录
 // Author [piexlmax](https://github.com/piexlmax)
 func (crmBillPaymentService *CrmBillPaymentService) GetCrmBillPaymentInfoList(info crmReq.CrmBillPaymentSearch) (list []crm.CrmPageBillPayment, total int64, err error) {

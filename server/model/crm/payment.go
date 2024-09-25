@@ -9,6 +9,7 @@ import (
 // crmPayment表 结构体  CrmPayment
 type CrmPagePayment struct {
 	global.GVA_MODEL
+	BillPaymentId      *int       `json:"billPaymentId" form:"billPaymentId" gorm:"column:bill_paymentId;comment:对账单id;size:19;"`                 //应付账单id
 	StatementAccountId *int       `json:"statementAccountId" form:"statementAccountId" gorm:"column:statement_account_id;comment:对账单id;size:19;"` //对账单id
 	PaymentAmount      *float64   `json:"paymentAmount" form:"paymentAmount" gorm:"column:payment_amount;comment:付款金额;" binding:"required"`       //付款金额
 	PaymentTime        *time.Time `json:"paymentTime" form:"paymentTime" gorm:"column:payment_time;comment:付款时间;"`                                //付款时间
@@ -21,6 +22,6 @@ type CrmPagePayment struct {
 	//以下是联表查询字段
 	//sys_user 表
 	Username string `json:"userName" gorm:"index;comment:用户登录名"` // 用户登录名
-	//crm_statement_account 表
-	StatementAccountName string `json:"statementAccountName" form:"statementAccountName" gorm:"column:statement_account_name;comment:对账单名称;size:191;"` //对账单名称
+	//crm_bill_payment 表
+	BusinessNumber string `json:"businessNumber" form:"businessNumber" gorm:"column:business_number;comment:对账单名称;size:191;"` //应付账单编号
 }

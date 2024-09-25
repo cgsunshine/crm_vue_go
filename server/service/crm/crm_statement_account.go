@@ -44,6 +44,13 @@ func (crmStatementAccountService *CrmStatementAccountService) GetCrmStatementAcc
 	return
 }
 
+// GetCrmStatementAccount 根据ID获取crmStatementAccount表记录
+// Author [piexlmax](https://github.com/piexlmax)
+func (crmStatementAccountService *CrmStatementAccountService) GetCrmStatementAccountId(ID *int) (crmStatementAccount crm.CrmStatementAccount, err error) {
+	err = global.GVA_DB.Where("id = ?", ID).First(&crmStatementAccount).Error
+	return
+}
+
 // GetCrmStatementAccountInfoList 分页获取crmStatementAccount表记录
 // Author [piexlmax](https://github.com/piexlmax)
 func (crmStatementAccountService *CrmStatementAccountService) GetCrmStatementAccountInfoList(info crmReq.CrmStatementAccountSearch) (list []crm.CrmStatementAccount, total int64, err error) {

@@ -1,6 +1,7 @@
 package crm
 
 import (
+	"github.com/flipped-aurora/gin-vue-admin/server/api/v1/comm"
 	"github.com/flipped-aurora/gin-vue-admin/server/global"
 	"github.com/flipped-aurora/gin-vue-admin/server/model/common/response"
 	crmReq "github.com/flipped-aurora/gin-vue-admin/server/model/crm/request"
@@ -60,6 +61,55 @@ func (crmPaymentApi *CrmPaymentApi) FindCrmPagePayment(c *gin.Context) {
 		if err != nil {
 			global.GVA_LOG.Error("查询失败!", zap.Error(err))
 			response.FailWithMessage("查询失败", c)
+		}
+		response.OkWithData(gin.H{"recrmPayment": recrmPayment}, c)
+	}
+}
+
+// PaymentCompleted 付款完成上传凭证修改状态
+// @Tags CrmPayment
+// @Summary 用id查询crmPayment表
+// @Security ApiKeyAuth
+// @accept application/json
+// @Produce application/json
+// @Param data query crm.CrmPayment true "用id查询crmPayment表"
+// @Success 200 {string} string "{"success":true,"data":{},"msg":"查询成功"}"
+// @Router /crmPayment/paymentCompleted [get]
+func (crmPaymentApi *CrmPaymentApi) PaymentCompleted(c *gin.Context) {
+	ID := c.Query("ID")
+	paymentVoucher := c.Query("paymentVoucher")
+	if recrmPayment, err := crmPaymentService.GetCrmPagePayment(ID); err != nil {
+		global.GVA_LOG.Error("查询失败!", zap.Error(err))
+		response.FailWithMessage("查询失败", c)
+	} else {
+		id := int(recrmPayment.ID)
+		//修改付款管理付款状态
+		err = crmPaymentService.UpdApprovalStatus(&id, map[string]interface{}{
+			"payment_status":  comm.PaymentStatusPaid,
+			"payment_voucher": paymentVoucher,
+		})
+		if err != nil {
+			global.GVA_LOG.Error("上传失败!", zap.Error(err))
+			response.FailWithMessage("上传失败", c)
+			return
+		}
+		//修改应付账单付款状态
+		err = crmBillPaymentService.UpdApprovalStatus(recrmPayment.BillPaymentId, map[string]interface{}{
+			"payment_status": comm.PaymentStatusPaid,
+		})
+		if err != nil {
+			global.GVA_LOG.Error("上传失败!", zap.Error(err))
+			response.FailWithMessage("上传失败", c)
+			return
+		}
+		//修改对账单付款状态
+		err = crmStatementAccountService.UpdApprovalStatus(recrmPayment.StatementAccountId, map[string]interface{}{
+			"payment_status": comm.PaymentStatusPaid,
+		})
+		if err != nil {
+			global.GVA_LOG.Error("上传失败!", zap.Error(err))
+			response.FailWithMessage("上传失败", c)
+			return
 		}
 		response.OkWithData(gin.H{"recrmPayment": recrmPayment}, c)
 	}

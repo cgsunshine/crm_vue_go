@@ -42,9 +42,9 @@ func (crmPaymentService *CrmPaymentService) GetCrmPagePaymentInfoList(info crmRe
 		db = db.Limit(limit).Offset(offset)
 	}
 
-	err = db.Select("crm_payment.*,sys_users.username,crm_statement_account.statement_account_name").
+	err = db.Select("crm_payment.*,sys_users.username,crm_bill_payment.id as business_number").
 		Joins("LEFT JOIN sys_users ON crm_payment.user_id = sys_users.id").
-		Joins("LEFT JOIN crm_statement_account ON crm_statement_account.id = crm_payment.statement_account_id").
+		Joins("LEFT JOIN crm_statement_account ON crm_bill_payment.id= crm_payment.statement_account_id").
 		Order("crm_payment.created_at DESC").
 		Find(&crmPayments).Error
 	return crmPayments, total, err

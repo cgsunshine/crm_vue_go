@@ -21,5 +21,6 @@ func (s *CrmPagePaymentRouter) InitCrmPagePaymentRouter(Router *gin.RouterGroup,
 
 	{
 		crmPaymentRouterWithoutAuth.GET("getCrmPagePaymentList", crmPaymentApi.GetCrmPagePaymentList) // 获取crmPayment表列表
+		crmPaymentRouterWithoutAuth.POST("paymentCompleted", crmPaymentApi.PaymentCompleted)          // 获取crmPayment表列表
 	}
 }
