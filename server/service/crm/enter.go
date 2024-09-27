@@ -48,4 +48,5 @@ type ServiceGroup struct {
 	CrmRefundTasksService
 	CrmBillPaymentService
 	CrmPurchaseOrderProductService
+	CrmApprovalTasksRoleService
 }

@@ -51,6 +51,7 @@ type ApiGroup struct {
 	CrmBillPaymentApi
 	AdminHome
 	CrmPurchaseOrderProductApi
+	CrmApprovalTasksRoleApi
 }
 
 var (

@@ -72,4 +72,5 @@ type RouterGroup struct {
 	CrmBillPaymentRouter
 	CrmAdminHomeRouter
 	CrmPurchaseOrderProductRouter
+	CrmApprovalTasksRoleRouter
 }

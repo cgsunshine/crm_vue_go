@@ -171,6 +171,7 @@ func Routers() *gin.Engine {
 		crmRouter.InitCrmBillPaymentRouter(PrivateGroup, PublicGroup)
 		crmRouter.InitCrmAdminHomeRouter(PrivateGroup, PublicGroup)
 		crmRouter.InitCrmPurchaseOrderProductRouter(PrivateGroup, PublicGroup)
+		crmRouter.InitCrmApprovalTasksRoleRouter(PrivateGroup, PublicGroup)
 
 	}
 
