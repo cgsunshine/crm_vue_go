@@ -25,3 +25,22 @@ func (userService *UserService) FindUserDataStatusById(id *int) *int {
 	}
 	return nil
 }
+
+func (userService *UserService) FindUserDataStatusByIdRole(id *int) *int {
+	var u system.SysUser
+	AuthorityId := 0
+	if err := global.GVA_DB.Where("id = ?", id).First(&u).Error; err != nil {
+		AuthorityId = int(u.AuthorityId)
+		return &AuthorityId
+	}
+	var a system.SysAuthority
+	if err := global.GVA_DB.Where("authority_id = ?", u.AuthorityId).First(&a).Error; err != nil {
+		AuthorityId = int(u.AuthorityId)
+		return &AuthorityId
+	}
+	if a.Status == "1" {
+		AuthorityId = int(u.AuthorityId)
+		return &AuthorityId
+	}
+	return nil
+}
