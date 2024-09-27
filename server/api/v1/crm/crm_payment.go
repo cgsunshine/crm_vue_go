@@ -49,6 +49,7 @@ func (crmPaymentApi *CrmPaymentApi) CreateCrmPayment(c *gin.Context) {
 	crmPayment.UserId = comm.GetHeaderUserId(c)
 	crmPayment.PaymentStatus = comm.PaymentStatusUnpaid
 	crmPayment.ReviewStatus = comm.Approval_Status_Pending
+	crmPayment.PaymentNumber = comm.GetBusinessNumber(comm.PaymentNumberPrefix, crmPaymentService.GetCrmPaymentTodayCount())
 	if err := crmPaymentService.CreateCrmPayment(&crmPayment); err != nil {
 		global.GVA_LOG.Error("创建失败!", zap.Error(err))
 		response.FailWithMessage("创建失败", c)

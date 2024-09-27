@@ -105,6 +105,14 @@ const (
 	ProcurementContractStatusInvalidType   = "2" //无效
 )
 
+// 编号前缀
+const (
+	PaymentNumberPrefix           = "ASF"
+	BillNumberPrefix              = "ASZ"
+	PaymentCollentionNumberPrefix = "ASH"
+	BillPaymentNumberPrefix       = "ASY"
+)
+
 // ascending descending
 func OrderHandle(o string) string {
 	if o == "ascending" {

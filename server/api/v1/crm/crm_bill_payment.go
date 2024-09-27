@@ -1,6 +1,7 @@
 package crm
 
 import (
+	"github.com/flipped-aurora/gin-vue-admin/server/api/v1/comm"
 	"github.com/flipped-aurora/gin-vue-admin/server/global"
 	"github.com/flipped-aurora/gin-vue-admin/server/model/common/response"
 	"github.com/flipped-aurora/gin-vue-admin/server/model/crm"
@@ -32,6 +33,7 @@ func (crmBillPaymentApi *CrmBillPaymentApi) CreateCrmBillPayment(c *gin.Context)
 		return
 	}
 
+	crmBillPayment.BillPaymentNumber = comm.GetBusinessNumber(comm.BillPaymentNumberPrefix, crmBillPaymentService.GetCrmBillPaymentTodayCount())
 	if err := crmBillPaymentService.CreateCrmBillPayment(&crmBillPayment); err != nil {
 		global.GVA_LOG.Error("创建失败!", zap.Error(err))
 		response.FailWithMessage("创建失败", c)

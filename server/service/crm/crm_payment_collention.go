@@ -45,6 +45,13 @@ func (crmPaymentCollentionService *CrmPaymentCollentionService) GetCrmPaymentCol
 	return
 }
 
+// GetCrmPaymentCollention 根据ID获取crmPaymentCollention表记录
+// Author [piexlmax](https://github.com/piexlmax)
+func (crmPaymentCollentionService *CrmPaymentCollentionService) GetCrmPaymentCollentionTodayCount() (count int64) {
+	global.GVA_DB.Model(&crm.CrmPaymentCollention{}).Where("created_at >= ? ", time.Now().Format("2006-01-02")).Count(&count)
+	return
+}
+
 // GetCrmPaymentCollentionInfoList 分页获取crmPaymentCollention表记录
 // Author [piexlmax](https://github.com/piexlmax)
 func (crmPaymentCollentionService *CrmPaymentCollentionService) GetCrmPaymentCollentionInfoList(info crmReq.CrmPaymentCollentionSearch) (list []crm.CrmPaymentCollention, total int64, err error) {
@@ -53,7 +60,6 @@ func (crmPaymentCollentionService *CrmPaymentCollentionService) GetCrmPaymentCol
 	// 创建db
 	db := global.GVA_DB.Model(&crm.CrmPaymentCollention{})
 	var crmPaymentCollentions []crm.CrmPaymentCollention
-	// 如果有条件搜索 下方会自动创建搜索语句
 	// 如果有条件搜索 下方会自动创建搜索语句
 	if info.StartCreatedAt != nil && info.EndCreatedAt != nil {
 		db = db.Where(crmPaymentCollentionService.SplicingQueryConditions("created_at BETWEEN ? AND ?"), info.StartCreatedAt, info.EndCreatedAt)

@@ -106,7 +106,7 @@ func (crmPaymentCollentionApi *CrmPaymentCollentionApi) CreateCrmPagePaymentColl
 		response.FailWithMessage("创建失败", c)
 		return
 	}
-
+	crmPaymentCollention.PaymentCollentionNumber = comm.GetBusinessNumber(comm.PaymentCollentionNumberPrefix, crmPaymentCollentionService.GetCrmPaymentCollentionTodayCount())
 	if err := crmPaymentCollentionService.CreateCrmPaymentCollention(&crmPaymentCollention); err != nil {
 		global.GVA_LOG.Error("创建失败!", zap.Error(err))
 		response.FailWithMessage("创建失败", c)

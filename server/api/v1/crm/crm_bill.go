@@ -52,6 +52,7 @@ func (crmBillApi *CrmBillApi) CreateCrmBill(c *gin.Context) {
 		return
 	}
 
+	crmBill.BillNumber = comm.GetBusinessNumber(comm.BillNumberPrefix, crmBillService.GetCrmBillTodayCount())
 	if err := crmBillService.CreateCrmBill(&crmBill); err != nil {
 		global.GVA_LOG.Error("创建失败!", zap.Error(err))
 		response.FailWithMessage("创建失败", c)

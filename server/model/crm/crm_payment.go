@@ -19,6 +19,7 @@ type CrmPayment struct {
 	PaymentStatus      string     `json:"paymentStatus" form:"paymentStatus" gorm:"column:payment_status;comment:付款状态;size:191;"`                 //付款状态
 	ReviewStatus       string     `json:"reviewStatus" form:"reviewStatus" gorm:"column:review_status;comment:审核状态;size:191;"`                    //审核状态
 	PaymentName        string     `json:"paymentName" form:"paymentName" gorm:"column:payment_name;comment:对账单名称;size:191;"`                      //付款名称
+	PaymentNumber      string     `json:"paymentNumber" form:"paymentNumber" gorm:"column:payment_number;comment:付款编号;size:191;"`                 //付款编号
 }
 
 // TableName crmPayment表 CrmPayment自定义表名 crm_payment

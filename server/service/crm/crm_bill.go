@@ -4,6 +4,7 @@ import (
 	"github.com/flipped-aurora/gin-vue-admin/server/global"
 	"github.com/flipped-aurora/gin-vue-admin/server/model/crm"
 	crmReq "github.com/flipped-aurora/gin-vue-admin/server/model/crm/request"
+	"time"
 )
 
 type CrmBillService struct {
@@ -35,6 +36,13 @@ func (crmBillService *CrmBillService) DeleteCrmBillByIds(IDs []string) (err erro
 func (crmBillService *CrmBillService) UpdateCrmBill(crmBill crm.CrmBill) (err error) {
 	err = global.GVA_DB.Save(&crmBill).Error
 	return err
+}
+
+// GetCrmBillTodayCount 根据ID获取crmPaymentCollention表记录
+// Author [piexlmax](https://github.com/piexlmax)
+func (crmBillService *CrmBillService) GetCrmBillTodayCount() (count int64) {
+	global.GVA_DB.Model(&crm.CrmBill{}).Where("created_at >= ? ", time.Now().Format("2006-01-02")).Count(&count)
+	return
 }
 
 // GetCrmBill 根据ID获取crmBill表记录

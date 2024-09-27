@@ -1,20 +1,20 @@
 package crm
 
 import (
+	"github.com/flipped-aurora/gin-vue-admin/server/api/v1/comm"
 	"github.com/flipped-aurora/gin-vue-admin/server/global"
-    "github.com/flipped-aurora/gin-vue-admin/server/model/crm"
-    crmReq "github.com/flipped-aurora/gin-vue-admin/server/model/crm/request"
-    "github.com/flipped-aurora/gin-vue-admin/server/model/common/response"
-    "github.com/flipped-aurora/gin-vue-admin/server/service"
-    "github.com/gin-gonic/gin"
-    "go.uber.org/zap"
+	"github.com/flipped-aurora/gin-vue-admin/server/model/common/response"
+	"github.com/flipped-aurora/gin-vue-admin/server/model/crm"
+	crmReq "github.com/flipped-aurora/gin-vue-admin/server/model/crm/request"
+	"github.com/flipped-aurora/gin-vue-admin/server/service"
+	"github.com/gin-gonic/gin"
+	"go.uber.org/zap"
 )
 
 type CrmPaymentApi struct {
 }
 
 var crmPaymentService = service.ServiceGroupApp.CrmServiceGroup.CrmPaymentService
-
 
 // CreateCrmPayment 创建付款管理
 // @Tags CrmPayment
@@ -32,9 +32,9 @@ func (crmPaymentApi *CrmPaymentApi) CreateCrmPayment(c *gin.Context) {
 		response.FailWithMessage(err.Error(), c)
 		return
 	}
-
+	crmPayment.PaymentNumber = comm.GetBusinessNumber(comm.PaymentNumberPrefix, crmPaymentService.GetCrmPaymentTodayCount())
 	if err := crmPaymentService.CreateCrmPayment(&crmPayment); err != nil {
-        global.GVA_LOG.Error("创建失败!", zap.Error(err))
+		global.GVA_LOG.Error("创建失败!", zap.Error(err))
 		response.FailWithMessage("创建失败", c)
 	} else {
 		response.OkWithMessage("创建成功", c)
@@ -53,7 +53,7 @@ func (crmPaymentApi *CrmPaymentApi) CreateCrmPayment(c *gin.Context) {
 func (crmPaymentApi *CrmPaymentApi) DeleteCrmPayment(c *gin.Context) {
 	ID := c.Query("ID")
 	if err := crmPaymentService.DeleteCrmPayment(ID); err != nil {
-        global.GVA_LOG.Error("删除失败!", zap.Error(err))
+		global.GVA_LOG.Error("删除失败!", zap.Error(err))
 		response.FailWithMessage("删除失败", c)
 	} else {
 		response.OkWithMessage("删除成功", c)
@@ -71,7 +71,7 @@ func (crmPaymentApi *CrmPaymentApi) DeleteCrmPayment(c *gin.Context) {
 func (crmPaymentApi *CrmPaymentApi) DeleteCrmPaymentByIds(c *gin.Context) {
 	IDs := c.QueryArray("IDs[]")
 	if err := crmPaymentService.DeleteCrmPaymentByIds(IDs); err != nil {
-        global.GVA_LOG.Error("批量删除失败!", zap.Error(err))
+		global.GVA_LOG.Error("批量删除失败!", zap.Error(err))
 		response.FailWithMessage("批量删除失败", c)
 	} else {
 		response.OkWithMessage("批量删除成功", c)
@@ -96,7 +96,7 @@ func (crmPaymentApi *CrmPaymentApi) UpdateCrmPayment(c *gin.Context) {
 	}
 
 	if err := crmPaymentService.UpdateCrmPayment(crmPayment); err != nil {
-        global.GVA_LOG.Error("更新失败!", zap.Error(err))
+		global.GVA_LOG.Error("更新失败!", zap.Error(err))
 		response.FailWithMessage("更新失败", c)
 	} else {
 		response.OkWithMessage("更新成功", c)
@@ -115,7 +115,7 @@ func (crmPaymentApi *CrmPaymentApi) UpdateCrmPayment(c *gin.Context) {
 func (crmPaymentApi *CrmPaymentApi) FindCrmPayment(c *gin.Context) {
 	ID := c.Query("ID")
 	if recrmPayment, err := crmPaymentService.GetCrmPayment(ID); err != nil {
-        global.GVA_LOG.Error("查询失败!", zap.Error(err))
+		global.GVA_LOG.Error("查询失败!", zap.Error(err))
 		response.FailWithMessage("查询失败", c)
 	} else {
 		response.OkWithData(gin.H{"recrmPayment": recrmPayment}, c)
@@ -139,16 +139,16 @@ func (crmPaymentApi *CrmPaymentApi) GetCrmPaymentList(c *gin.Context) {
 		return
 	}
 	if list, total, err := crmPaymentService.GetCrmPaymentInfoList(pageInfo); err != nil {
-	    global.GVA_LOG.Error("获取失败!", zap.Error(err))
-        response.FailWithMessage("获取失败", c)
-    } else {
-        response.OkWithDetailed(response.PageResult{
-            List:     list,
-            Total:    total,
-            Page:     pageInfo.Page,
-            PageSize: pageInfo.PageSize,
-        }, "获取成功", c)
-    }
+		global.GVA_LOG.Error("获取失败!", zap.Error(err))
+		response.FailWithMessage("获取失败", c)
+	} else {
+		response.OkWithDetailed(response.PageResult{
+			List:     list,
+			Total:    total,
+			Page:     pageInfo.Page,
+			PageSize: pageInfo.PageSize,
+		}, "获取成功", c)
+	}
 }
 
 // GetCrmPaymentPublic 不需要鉴权的付款管理接口
@@ -160,9 +160,9 @@ func (crmPaymentApi *CrmPaymentApi) GetCrmPaymentList(c *gin.Context) {
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"获取成功"}"
 // @Router /crmPayment/getCrmPaymentList [get]
 func (crmPaymentApi *CrmPaymentApi) GetCrmPaymentPublic(c *gin.Context) {
-    // 此接口不需要鉴权
-    // 示例为返回了一个固定的消息接口，一般本接口用于C端服务，需要自己实现业务逻辑
-    response.OkWithDetailed(gin.H{
-       "info": "不需要鉴权的付款管理接口信息",
-    }, "获取成功", c)
+	// 此接口不需要鉴权
+	// 示例为返回了一个固定的消息接口，一般本接口用于C端服务，需要自己实现业务逻辑
+	response.OkWithDetailed(gin.H{
+		"info": "不需要鉴权的付款管理接口信息",
+	}, "获取成功", c)
 }

@@ -22,6 +22,7 @@ type CrmPageBill struct {
 	ExpirationTime      *time.Time `json:"expirationTime" form:"expirationTime" gorm:"column:expiration_time;comment:到期时间;"`                  //到期时间
 	BillName            string     `json:"billName" form:"billName" gorm:"column:bill_name;comment:账单名称;size:191;"`                           //账单名称
 	CustomerId          *int       `json:"customerId" form:"customerId" gorm:"column:customer_id;comment:客户ID;size:19;"`                      //客户ID
+
 	//以下是联表查询字段
 	//sys_user 表
 	Username string `json:"userName" gorm:"index;comment:用户登录名"` // 用户登录名

@@ -28,6 +28,7 @@ func (a ApprovalIncStatementAccount) ApprovalProcessSuccess(id *int) error {
 		PaymentStatus:      comm.PaymentStatusUnpaid,
 		StatementAccountId: id,
 		UserId:             crmStatementAccount.UserId,
+		BillPaymentNumber:  comm.GetBusinessNumber(comm.BillPaymentNumberPrefix, crmBillPaymentService.GetCrmBillPaymentTodayCount()),
 	}
 
 	if err := crmBillPaymentService.CreateCrmBillPayment(&crmBillPayment); err != nil {

@@ -55,6 +55,13 @@ func (crmPaymentService *CrmPaymentService) GetCrmPayment(ID string) (crmPayment
 	return
 }
 
+// GetCrmPaymentTodayCount 根据ID获取crmPaymentCollention表记录
+// Author [piexlmax](https://github.com/piexlmax)
+func (crmPaymentService *CrmPaymentService) GetCrmPaymentTodayCount() (count int64) {
+	global.GVA_DB.Model(&crm.CrmPayment{}).Where("created_at >= ? ", time.Now().Format("2006-01-02")).Count(&count)
+	return
+}
+
 // GetCrmPayment 根据ID获取crmPayment表记录
 // Author [piexlmax](https://github.com/piexlmax)
 func (crmPaymentService *CrmPaymentService) GetCrmPaymentIdInfo(ID *int) (crmPayment crm.CrmPayment, err error) {
