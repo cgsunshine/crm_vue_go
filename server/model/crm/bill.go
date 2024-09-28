@@ -27,9 +27,15 @@ type CrmPageBill struct {
 	//sys_user 表
 	Username string `json:"userName" gorm:"index;comment:用户登录名"` // 用户登录名
 	//crm_customers 表
-	CustomerName string `json:"customerName" form:"customerName" gorm:"column:customer_name;comment:客户名;size:191;"` //客户名
+	CustomerName    string `json:"customerName" form:"customerName" gorm:"column:customer_name;comment:客户名;size:191;"`           //客户名
+	CustomerCompany string `json:"customerCompany" form:"customerCompany" gorm:"column:customer_company;comment:客户公司;size:191;"` //客户公司
+	CustomerAddress string `json:"customerAddress" form:"customerAddress" gorm:"column:customer_address;comment:客户地址;size:191;"` //客户地址
 	//crm_order 表
-	OrderName string `json:"orderName" form:"orderName" gorm:"column:order_name;comment:订单名称;size:10;"` //订单名称
+	OrderName        string     `json:"orderName" form:"orderName" gorm:"column:order_name;comment:订单名称;size:10;"`               //订单名称
+	BillingStartTime *time.Time `json:"billingStartTime" form:"billingStartTime" gorm:"column:billing_start_time;comment:到期时间;"` //计费开始时间
+	BillingEndTime   *time.Time `json:"billingEndTime" form:"billingEndTime" gorm:"column:billing_end_time;comment:到期时间;"`       //计费结束时间
+	ProductId        string     `json:"productId" form:"productId" gorm:"column:product_id;comment:产品id;size:191;"`              //产品id
+	DiscountRate     *float64   `json:"discountRate" form:"discountRate" gorm:"column:discount_rate;comment:折扣率;"`               //折扣率
 	//crm_payment_collention 表
 	PaymentCollentionName string     `json:"paymentCollentionName" form:"paymentCollentionName" gorm:"column:payment_collention_name;comment:回款名称;size:191;"` //回款名称
 	PaymentType           string     `json:"paymentType" form:"paymentType" gorm:"column:payment_type;comment:付款方式;size:10;"`                                 //回款方式

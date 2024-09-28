@@ -11,7 +11,7 @@ import (
 func (crmBillService *CrmBillService) GetCrmPageBill(ID string) (crmBill crm.CrmPageBill, err error) {
 	err = global.GVA_DB.Model(&crm.CrmBill{}).
 		Where("crm_bill.id = ?", ID).
-		Select("crm_bill.*,crm_customers.customer_name,sys_users.username").
+		Select("crm_bill.*,crm_customers.customer_name,crm_customers.customer_company,crm_customers.customer_address,sys_users.username").
 		Joins("LEFT JOIN sys_users ON sys_users.id = crm_bill.user_id").
 		Joins("LEFT JOIN crm_customers ON crm_customers.id = crm_bill.customer_id").
 		First(&crmBill).Error
@@ -63,8 +63,8 @@ func (crmBillService *CrmBillService) GetCrmPageBillInfoList(info crmReq.CrmBill
 	}
 
 	err = db.Select("crm_bill.*," +
-		"crm_order.order_name,crm_order.customer_id," +
-		"crm_customers.customer_name," +
+		"crm_order.order_name,crm_order.customer_id,crm_order.billing_start_time,crm_order.billing_end_time,crm_order.product_id,crm_order.discount_rate," +
+		"crm_customers.customer_name,crm_customers.customer_company,crm_customers.customer_address," +
 		"sys_users.username," +
 		"crm_payment_collention.payment_collention_name,crm_payment_collention.payment_time").
 		Joins("LEFT JOIN crm_order ON crm_order.id = crm_bill.order_id").
@@ -98,8 +98,8 @@ func (crmBillService *CrmBillService) GetCrmPageIdBill(ID string) (crmBill crm.C
 	db := global.GVA_DB.Model(&crm.CrmBill{})
 	err = db.Where("crm_bill.id = ?", ID).
 		Select("crm_bill.*," +
-			"crm_order.order_name,crm_order.customer_id," +
-			"crm_customers.customer_name," +
+			"crm_order.order_name,crm_order.customer_id,crm_order.billing_start_time,crm_order.billing_end_time,crm_order.product_id,crm_order.discount_rate," +
+			"crm_customers.customer_name,crm_customers.customer_company,crm_customers.customer_address," +
 			"sys_users.username," +
 			"crm_payment_collention.payment_collention_name,crm_payment_collention.payment_time").
 		Joins("LEFT JOIN crm_order ON crm_order.id = crm_bill.order_id").

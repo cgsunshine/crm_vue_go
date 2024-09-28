@@ -152,3 +152,28 @@ func (crmContractApi *CrmContractApi) FindCrmPageFileContract(c *gin.Context) {
 		response.OkWithData(gin.H{"recrmContract": list}, c)
 	}
 }
+
+// DownloadCrmPageFileContractExcel 用id查询crmContract表 下载合同Excel
+// @Tags CrmContract
+// @Summary 下载合同Excel
+// @Security ApiKeyAuth
+// @accept application/json
+// @Produce application/json
+// @Param data query crm.CrmContract true "用id查询crmContract表"
+// @Success 200 {string} string "{"success":true,"data":{},"msg":"查询成功"}"
+// @Router /crmContract/downloadCrmPageFileContractExcel [get]
+func (crmContractApi *CrmContractApi) DownloadCrmPageFileContractExcel(c *gin.Context) {
+	ID := c.Query("ID")
+	if recrmContract, err := crmContractService.GetCrmPageContract(ID); err != nil {
+		global.GVA_LOG.Error("查询失败!", zap.Error(err))
+		response.FailWithMessage("查询失败", c)
+	} else {
+		//查询关联文件
+		list, _, err := fileUploadAndDownloadService.GetFileRecordInfoIdsList(recrmContract.ContractFile)
+		if err != nil {
+			global.GVA_LOG.Error("查询失败!", zap.Error(err))
+			response.FailWithMessage("查询失败", c)
+		}
+		response.OkWithData(gin.H{"recrmContract": list}, c)
+	}
+}

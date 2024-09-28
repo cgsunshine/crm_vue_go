@@ -89,8 +89,17 @@ func (crmOrderService *CrmOrderService) GetCrmPageOrder(ID string) (crmOrder crm
 
 // GetCrmOrder 根据ID获取crmOrder表记录
 // Author [piexlmax](https://github.com/piexlmax)
-func (crmOrderService *CrmOrderService) GetCrmOrderId(ID *int) (crmOrder crm.CrmOrder, err error) {
-	err = global.GVA_DB.Where("id = ?", ID).First(&crmOrder).Error
+func (crmOrderService *CrmOrderService) GetCrmOrderId(ID *int) (crmOrder crm.CrmPageOrder, err error) {
+	err = global.GVA_DB.Model(&crm.CrmOrder{}).Where("crm_order.id = ?", ID).
+		Select("crm_order.*,crm_product.product_name,crm_customers.customer_name,sys_users.username,crm_business_opportunity.business_opportunity_name").
+		Joins("LEFT JOIN sys_users ON sys_users.id = crm_order.user_id").
+		Joins("LEFT JOIN crm_customers ON crm_customers.id = crm_order.customer_id").
+		Joins("LEFT JOIN crm_product ON crm_product.id = crm_order.product_id").
+		Joins("LEFT JOIN crm_business_opportunity ON crm_business_opportunity.id = crm_order.business_opportunity_id").
+		//Preload("Products").
+		Preload("OrderProducts.Product").
+		Order("crm_order.created_at DESC").
+		First(&crmOrder).Error
 	return
 }
 
