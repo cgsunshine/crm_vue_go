@@ -10,6 +10,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 	"strconv"
+	"strings"
 )
 
 // GetCrmContractApprovalTasksList 合同分页获取审批任务列表
@@ -435,19 +436,18 @@ func (crmApprovalTasksRoleApi *CrmApprovalTasksRoleApi) UpdateCrmMultipleApprova
 						return
 					}
 
-					ids, err := userService.GetRoleUsers(roleInfo.RoleIds)
-					if err != nil {
-						global.GVA_LOG.Error("创建失败!", zap.Error(err))
-						response.FailWithMessage("创建失败", c)
-						return
-					}
+					//ids, err := userService.GetRoleUsers(roleInfo.RoleIds)
+					//if err != nil {
+					//	global.GVA_LOG.Error("创建失败!", zap.Error(err))
+					//	response.FailWithMessage("创建失败", c)
+					//	return
+					//}
 
-					//插入角色id对应的用户的审批记录
-					for _, userAuth := range ids {
-						assigneeId := int(userAuth.SysUserId)
-
+					items := strings.Split(roleInfo.RoleIds, ",")
+					for _, item := range items {
+						roleId, _ := strconv.Atoi(item)
 						if err := crmApprovalTasksRoleService.CreateCrmApprovalTasksRole(&crm.CrmApprovalTasksRole{
-							AssigneeId:     &assigneeId,
+							RoleId:         &roleId,
 							ApprovalStatus: comm.Approval_Status_Under,
 							AssociatedId:   cats.AssociatedId,
 							Valid:          utils.Pointer(comm.Contact_Approval_Tasks_valid_Effective),
@@ -459,6 +459,24 @@ func (crmApprovalTasksRoleApi *CrmApprovalTasksRoleApi) UpdateCrmMultipleApprova
 							return
 						}
 					}
+
+					//插入角色id对应的用户的审批记录
+					//for _, userAuth := range ids {
+					//	assigneeId := int(userAuth.SysUserId)
+					//
+					//	if err := crmApprovalTasksRoleService.CreateCrmApprovalTasksRole(&crm.CrmApprovalTasksRole{
+					//		AssigneeId:     &assigneeId,
+					//		ApprovalStatus: comm.Approval_Status_Under,
+					//		AssociatedId:   cats.AssociatedId,
+					//		Valid:          utils.Pointer(comm.Contact_Approval_Tasks_valid_Effective),
+					//		StepId:         roleInfo.NodeId,
+					//		ApprovalType:   utils.Pointer(comm.ContractApprovalType),
+					//	}); err != nil {
+					//		global.GVA_LOG.Error("创建失败!", zap.Error(err))
+					//		response.FailWithMessage("创建失败", c)
+					//		return
+					//	}
+					//}
 				}
 
 			}
@@ -723,19 +741,18 @@ func (crmApprovalTasksRoleApi *CrmApprovalTasksRoleApi) UpdateCrmMultipleApprova
 						return
 					}
 
-					ids, err := userService.GetRoleUsers(roleInfo.RoleIds)
-					if err != nil {
-						global.GVA_LOG.Error("创建失败!", zap.Error(err))
-						response.FailWithMessage("创建失败", c)
-						return
-					}
+					//ids, err := userService.GetRoleUsers(roleInfo.RoleIds)
+					//if err != nil {
+					//	global.GVA_LOG.Error("创建失败!", zap.Error(err))
+					//	response.FailWithMessage("创建失败", c)
+					//	return
+					//}
 
-					//插入角色id对应的用户的审批记录
-					for _, userAuth := range ids {
-						assigneeId := int(userAuth.SysUserId)
-						//这里需要修改，只插入一条
+					items := strings.Split(roleInfo.RoleIds, ",")
+					for _, item := range items {
+						roleId, _ := strconv.Atoi(item)
 						if err := crmApprovalTasksRoleService.CreateCrmApprovalTasksRole(&crm.CrmApprovalTasksRole{
-							AssigneeId:     &assigneeId,
+							RoleId:         &roleId,
 							ApprovalStatus: comm.Approval_Status_Under,
 							AssociatedId:   cats.AssociatedId,
 							Valid:          utils.Pointer(comm.Contact_Approval_Tasks_valid_Effective),
@@ -747,6 +764,13 @@ func (crmApprovalTasksRoleApi *CrmApprovalTasksRoleApi) UpdateCrmMultipleApprova
 							return
 						}
 					}
+
+					//插入角色id对应的用户的审批记录
+					//for _, userAuth := range ids {
+					//	assigneeId := int(userAuth.SysUserId)
+					//	//这里需要修改，只插入一条
+					//
+					//}
 				}
 
 				//在将任务审批标记一下 通过审批也要终止流程

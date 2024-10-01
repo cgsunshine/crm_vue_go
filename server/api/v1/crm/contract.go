@@ -1,6 +1,7 @@
 package crm
 
 import (
+	"fmt"
 	"github.com/flipped-aurora/gin-vue-admin/server/api/v1/comm"
 	"github.com/flipped-aurora/gin-vue-admin/server/global"
 	"github.com/flipped-aurora/gin-vue-admin/server/model/common/response"
@@ -8,6 +9,7 @@ import (
 	crmReq "github.com/flipped-aurora/gin-vue-admin/server/model/crm/request"
 	"github.com/flipped-aurora/gin-vue-admin/server/utils"
 	"github.com/gin-gonic/gin"
+	"github.com/xuri/excelize/v2"
 	"go.uber.org/zap"
 )
 
@@ -176,4 +178,86 @@ func (crmContractApi *CrmContractApi) DownloadCrmPageFileContractExcel(c *gin.Co
 		}
 		response.OkWithData(gin.H{"recrmContract": list}, c)
 	}
+}
+
+// DownloadPageCrmContactExcel 下载账单Contact
+// @Tags CrmContract
+// @Summary 下载账单Contact
+// @Security ApiKeyAuth
+// @accept application/json
+// @Produce application/json
+// @Param data query crm.CrmBill true "用id查询crmBill表"
+// @Success 200 {string} string "{"success":true,"data":{},"msg":"查询成功"}"
+// @Router /crmBill/downloadPageCrmContact [get]
+func (crmBillApi *CrmBillApi) DownloadPageCrmContactExcel(c *gin.Context) {
+	ID := c.Query("ID")
+	if recrmContract, err := crmContractService.GetCrmPageContract(ID); err != nil {
+		global.GVA_LOG.Error("查询失败!", zap.Error(err))
+		response.FailWithMessage("查询失败", c)
+	} else {
+		// 打开一个Excel文件
+		f, err := excelize.OpenFile("ASLINE_ORDER_CONFIRMATION.xlsm")
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+		//客户信息 A7 A8 A9 根据具体情况勾选一个
+		//err = f.SetCellValue("Sheet1", "A7", "#"+recrmContract.BillNumber)
+		err = f.SetCellValue("Sheet1", "G10", recrmContract.CustomerCompany)
+
+		err = f.SetCellValue("Sheet1", "E11", "公司注册号？")
+		err = f.SetCellValue("Sheet1", "E12", recrmContract.CustomerAddress)
+		err = f.SetCellValue("Sheet1", "E13", "公司地址2")
+		err = f.SetCellValue("Sheet1", "E14", "公司地址3")
+		err = f.SetCellValue("Sheet1", "D16", "账单寄送地址")
+		err = f.SetCellValue("Sheet1", "E15", "通讯地址")
+		err = f.SetCellValue("Sheet1", "D17", "联系人")
+		err = f.SetCellValue("Sheet1", "I17", "职位")
+		err = f.SetCellValue("Sheet1", "K12", "通信电子邮件地址")
+		err = f.SetCellValue("Sheet1", "C18", "电话")
+		err = f.SetCellValue("Sheet1", "G18", "传真")
+		err = f.SetCellValue("Sheet1", "L18", "移动电话")
+		err = f.SetCellValue("Sheet1", "U18", "紧急联系电话")
+		err = f.SetCellValue("Sheet1", "F19", "技术人员邮箱")
+		err = f.SetCellValue("Sheet1", "G22", "账单邮件地址")
+		err = f.SetCellValue("Sheet1", "A24", "支付方式")
+
+		err = f.SetCellValue("Sheet1", "A30", "编号")
+		err = f.SetCellValue("Sheet1", "C30", "数量")
+		err = f.SetCellValue("Sheet1", "D30", "New")
+		err = f.SetCellValue("Sheet1", "F30", "服务内容")
+		err = f.SetCellValue("Sheet1", "R30", "一次收费")
+		err = f.SetCellValue("Sheet1", "U30", "月付金额")
+
+		err = f.SetCellValue("Sheet1", "J50", "服务激活日期")
+		order, err := crmOrderService.GetCrmOrderId(recrmContract.OrderId)
+		if err != nil {
+			global.GVA_LOG.Error("查询失败!", zap.Error(err))
+			response.FailWithMessage("查询失败", c)
+			return
+		}
+		startTable := 15    //需要插入起始单元格
+		startTableStep := 2 //插入单元格步长
+		for i, product := range order.OrderProducts {
+			if i != 0 {
+				// 在第startTable行之后插入两行，并复制第1行和第2行的数据
+				err = f.InsertRows("Sheet1", startTable+i*startTableStep, 2)
+			}
+			err = f.SetCellValue("Sheet1", fmt.Sprintf("B%d", startTable+i*startTableStep), i)
+			err = f.SetCellValue("Sheet1", fmt.Sprintf("C%d", startTable+i*startTableStep), product.Product.ProductName)
+			err = f.SetCellValue("Sheet1", fmt.Sprintf("F%d", startTable+i*startTableStep), product.Product.DataCenter)
+			err = f.SetCellValue("Sheet1", fmt.Sprintf("H%d", startTable+i*startTableStep), product.Quantity)
+			err = f.SetCellValue("Sheet1", fmt.Sprintf("J%d", startTable+i*startTableStep), product.Product.DiscountPrice)
+		}
+		//重新设置统计函数
+		err = f.SetCellFormula("Sheet1", "A5", fmt.Sprintf("SUM(K15:K%d)", startTable+len(order.OrderProducts)*startTableStep-1))
+		// 保存到文件
+		if err := f.SaveAs("example.xlsx"); err != nil {
+			fmt.Println(err)
+			return
+		}
+		fmt.Println("文件已保存")
+		response.OkWithData(gin.H{"recrmContract": recrmContract}, c)
+	}
+
 }

@@ -112,7 +112,7 @@ func (crmBillApi *CrmBillApi) DownloadPageCrmBillExcel(c *gin.Context) {
 			err = f.SetCellValue("Sheet1", fmt.Sprintf("H%d", startTable+i*startTableStep), product.Quantity)
 			err = f.SetCellValue("Sheet1", fmt.Sprintf("J%d", startTable+i*startTableStep), product.Product.DiscountPrice)
 		}
-
+		//重新设置统计函数
 		err = f.SetCellFormula("Sheet1", "A5", fmt.Sprintf("SUM(K15:K%d)", startTable+len(order.OrderProducts)*startTableStep-1))
 		// 保存到文件
 		if err := f.SaveAs("example.xlsx"); err != nil {
