@@ -31,6 +31,13 @@ func (crmDepositsService *CrmDepositsService) DeleteCrmDepositsByIds(IDs []strin
 	return err
 }
 
+// GetCrmBillTodayCount 根据ID获取crmPaymentCollention表记录
+// Author [piexlmax](https://github.com/piexlmax)
+func (crmDepositsService *CrmDepositsService) GetCrmBillTodayCount() (count int64) {
+	global.GVA_DB.Model(&crm.CrmDeposits{}).Where("created_at >= ? ", time.Now().Format("2006-01-02")).Count(&count)
+	return
+}
+
 // UpdateCrmDeposits 更新押金管理记录
 // Author [piexlmax](https://github.com/piexlmax)
 func (crmDepositsService *CrmDepositsService) UpdateCrmDeposits(crmDeposits crm.CrmDeposits) (err error) {

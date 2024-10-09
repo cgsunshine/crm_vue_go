@@ -110,6 +110,9 @@ func (crmOrderApi *CrmOrderApi) CreateCrmPageOrder(c *gin.Context) {
 		BusinessOpportunityId: crmPageOrder.BusinessOpportunityId,
 	}
 
+	//生成编号
+	crmOrder.OrderNumber = comm.GetBusinessNumber(comm.OrderNumberPrefix, crmOrderService.GetCrmBillTodayCount())
+
 	if err := crmOrderService.CreateCrmOrder(&crmOrder); err != nil {
 		global.GVA_LOG.Error("创建失败!", zap.Error(err))
 		response.FailWithMessage("创建失败", c)

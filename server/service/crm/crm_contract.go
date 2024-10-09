@@ -32,6 +32,13 @@ func (crmContractService *CrmContractService) DeleteCrmContractByIds(IDs []strin
 	return err
 }
 
+// GetCrmBillTodayCount 根据ID获取crmPaymentCollention表记录
+// Author [piexlmax](https://github.com/piexlmax)
+func (crmContractService *CrmContractService) GetCrmBillTodayCount() (count int64) {
+	global.GVA_DB.Model(&crm.CrmContract{}).Where("created_at >= ? ", time.Now().Format("2006-01-02")).Count(&count)
+	return
+}
+
 // UpdateCrmContract 更新crmContract表记录
 // Author [piexlmax](https://github.com/piexlmax)
 func (crmContractService *CrmContractService) UpdateCrmContract(crmContract crm.CrmContract) (err error) {

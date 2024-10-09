@@ -24,6 +24,13 @@ func (crmOrderService *CrmOrderService) DeleteCrmOrder(ID string) (err error) {
 	return err
 }
 
+// GetCrmBillTodayCount 根据ID获取crmPaymentCollention表记录
+// Author [piexlmax](https://github.com/piexlmax)
+func (crmOrderService *CrmOrderService) GetCrmBillTodayCount() (count int64) {
+	global.GVA_DB.Model(&crm.CrmOrder{}).Where("created_at >= ? ", time.Now().Format("2006-01-02")).Count(&count)
+	return
+}
+
 // DeleteCrmOrderByIds 批量删除crmOrder表记录
 // Author [piexlmax](https://github.com/piexlmax)
 func (crmOrderService *CrmOrderService) DeleteCrmOrderByIds(IDs []string) (err error) {

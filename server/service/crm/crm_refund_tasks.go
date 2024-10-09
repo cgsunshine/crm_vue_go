@@ -101,7 +101,7 @@ func (crmRefundTasksService *CrmRefundTasksService) GetCrmRefundTasksInfoList(in
 	//	Joins("LEFT JOIN crm_business_opportunity ON crm_business_opportunity.id = crm_order.business_opportunity_id").
 	//	Preload("Products").
 	//	Order("crm_order.created_at DESC").
-	err = db.Select("crm_refund_tasks.*,crm_deposits.deposits_name").
+	err = db.Select("crm_refund_tasks.*,crm_deposits.deposits_name,crm_deposits.deposits_number").
 		Joins("LEFT JOIN crm_deposits ON crm_deposits.id = crm_refund_tasks.associated_id").
 		Order("crm_refund_tasks.created_at DESC").
 		Find(&crmRefundTaskss).Error

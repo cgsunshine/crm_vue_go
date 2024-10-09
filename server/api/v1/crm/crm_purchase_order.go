@@ -51,6 +51,8 @@ func (crmPurchaseOrderApi *CrmPurchaseOrderApi) CreateCrmPurchaseOrder(c *gin.Co
 		ReviewStatus:      crmReqPurchaseOrder.ReviewStatus,
 	}
 
+	//生成编号
+	crmPurchaseOrder.PurchaseOrderNumber = comm.GetBusinessNumber(comm.PurchaseOrderNumberPrefix, crmPurchaseOrderService.GetCrmBillTodayCount())
 	if err := crmPurchaseOrderService.CreateCrmPurchaseOrder(&crmPurchaseOrder); err != nil {
 		global.GVA_LOG.Error("创建失败!", zap.Error(err))
 		response.FailWithMessage("创建失败", c)

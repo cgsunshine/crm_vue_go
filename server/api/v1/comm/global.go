@@ -107,10 +107,17 @@ const (
 
 // 编号前缀
 const (
-	PaymentNumberPrefix           = "ASF"
-	BillNumberPrefix              = "ASZ"
-	PaymentCollentionNumberPrefix = "ASH"
-	BillPaymentNumberPrefix       = "ASY"
+	PaymentNumberPrefix             = "ASF"
+	BillNumberPrefix                = "ASZ"
+	PaymentCollentionNumberPrefix   = "ASH"
+	BillPaymentNumberPrefix         = "ASY"
+	ContractNumberPrefix            = "ASC"
+	BusinessOpportunityNumberPrefix = "ASSJ"
+	DepositsNumberPrefix            = "ASYj"
+	StatementAccountNumberPrefix    = "ASDZD"
+	OrderNumberPrefix               = "ASDD"
+	PurchaseOrderNumberPrefix       = "ASDGD"
+	ProcurementContractNumberPrefix = "ASDGH"
 )
 
 // ascending descending

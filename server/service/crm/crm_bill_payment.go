@@ -116,7 +116,7 @@ func (crmBillPaymentService *CrmBillPaymentService) GetCrmBillPaymentInfoList(in
 		db = db.Limit(limit).Offset(offset)
 	}
 
-	err = db.Select("crm_bill_payment.*,crm_statement_account.statement_account_name").
+	err = db.Select("crm_bill_payment.*,crm_statement_account.statement_account_name,crm_statement_account.statement_account_number").
 		Joins("LEFT JOIN crm_statement_account ON crm_statement_account.id = crm_bill_payment.statement_account_id").
 		Order("crm_bill_payment.created_at DESC").
 		Find(&crmBillPayments).Error

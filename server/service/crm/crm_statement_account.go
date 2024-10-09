@@ -4,6 +4,7 @@ import (
 	"github.com/flipped-aurora/gin-vue-admin/server/global"
 	"github.com/flipped-aurora/gin-vue-admin/server/model/crm"
 	crmReq "github.com/flipped-aurora/gin-vue-admin/server/model/crm/request"
+	"time"
 )
 
 type CrmStatementAccountService struct {
@@ -28,6 +29,13 @@ func (crmStatementAccountService *CrmStatementAccountService) DeleteCrmStatement
 func (crmStatementAccountService *CrmStatementAccountService) DeleteCrmStatementAccountByIds(IDs []string) (err error) {
 	err = global.GVA_DB.Delete(&[]crm.CrmStatementAccount{}, "id in ?", IDs).Error
 	return err
+}
+
+// GetCrmBillTodayCount 根据ID获取crmPaymentCollention表记录
+// Author [piexlmax](https://github.com/piexlmax)
+func (crmStatementAccountService *CrmStatementAccountService) GetCrmBillTodayCount() (count int64) {
+	global.GVA_DB.Model(&crm.CrmStatementAccount{}).Where("created_at >= ? ", time.Now().Format("2006-01-02")).Count(&count)
+	return
 }
 
 // UpdateCrmStatementAccount 更新crmStatementAccount表记录

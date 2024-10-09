@@ -31,6 +31,13 @@ func (crmBusinessOpportunityService *CrmBusinessOpportunityService) DeleteCrmBus
 	return err
 }
 
+// GetCrmBillTodayCount 根据ID获取crmPaymentCollention表记录
+// Author [piexlmax](https://github.com/piexlmax)
+func (crmBusinessOpportunityService *CrmBusinessOpportunityService) GetCrmBillTodayCount() (count int64) {
+	global.GVA_DB.Model(&crm.CrmBusinessOpportunity{}).Where("created_at >= ? ", time.Now().Format("2006-01-02")).Count(&count)
+	return
+}
+
 // UpdateCrmBusinessOpportunity 更新商机管理记录
 // Author [piexlmax](https://github.com/piexlmax)
 func (crmBusinessOpportunityService *CrmBusinessOpportunityService) UpdateCrmBusinessOpportunity(crmBusinessOpportunity crm.CrmBusinessOpportunity) (err error) {

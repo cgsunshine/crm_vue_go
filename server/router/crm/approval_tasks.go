@@ -37,4 +37,5 @@ func (s *CrmPageApprovalTasksRouter) InitCrmPageApprovalTasksRouter(Router *gin.
 		crmApprovalTasksRouterPublic.GET("getCrmPurchaseOrderApprovalTasksList", crmApprovalTasksApi.GetCrmPurchaseOrderApprovalTasksList)             // 获取订购单审批任务列表
 		crmApprovalTasksRouterPublic.GET("getCrmProcurementContractApprovalTasksList", crmApprovalTasksApi.GetCrmProcurementContractApprovalTasksList) // 获取订购合同审批任务列表
 	}
+
 }

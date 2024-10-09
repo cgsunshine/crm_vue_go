@@ -37,6 +37,8 @@ func (crmProcurementContractApi *CrmProcurementContractApi) CreateCrmProcurement
 	crmProcurementContract.UserId = comm.GetHeaderUserId(c)
 	crmProcurementContract.ReviewStatus = comm.Approval_Status_Pending
 	crmProcurementContract.ContractStatus = comm.ProcurementContractStatusEffectiveType
+	//生成编号
+	crmProcurementContract.ProcurementContractNumber = comm.GetBusinessNumber(comm.ProcurementContractNumberPrefix, crmProcurementContractService.GetCrmBillTodayCount())
 
 	if err := crmProcurementContractService.CreateCrmProcurementContract(&crmProcurementContract); err != nil {
 		global.GVA_LOG.Error("创建失败!", zap.Error(err))

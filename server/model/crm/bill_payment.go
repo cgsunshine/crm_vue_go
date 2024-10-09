@@ -16,6 +16,7 @@ type CrmPageBillPayment struct {
 	UserId             *int     `json:"userId" form:"userId" gorm:"column:user_id;comment:用户id;size:19;"`                                       //用户id
 	PaymentId          *int     `json:"paymentId" form:"paymentId" gorm:"column:payment_id;comment:对账单ID;size:19;"`                             //付款管理ID
 	//联表查询字段 crm_statement_account
-	StatementAccountName string `json:"statementAccountName" form:"statementAccountName" gorm:"column:statement_account_name;comment:对账单名称;size:191;"` //对账单名称
+	StatementAccountName   string `json:"statementAccountName" form:"statementAccountName" gorm:"column:statement_account_name;comment:对账单名称;size:191;"`       //对账单名称
+	StatementAccountNumber string `json:"statementAccountNumber" form:"statementAccountNumber" gorm:"column:statement_account_number;comment:对账单编号;size:191;"` //对账单编号
 
 }

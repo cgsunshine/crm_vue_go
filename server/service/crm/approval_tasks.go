@@ -52,7 +52,7 @@ func (crmApprovalTasksService *CrmApprovalTasksService) GetCrmContractApprovalTa
 		db = db.Limit(limit).Offset(offset)
 	}
 
-	err = db.Select("crm_approval_tasks.*,crm_contract.contract_name").
+	err = db.Select("crm_approval_tasks.*,crm_contract.contract_name,crm_contract.contract_number").
 		Joins("LEFT JOIN crm_contract ON crm_contract.id = crm_approval_tasks.associated_id").
 		Order("crm_approval_tasks.created_at DESC").
 		Find(&crmApprovalTaskss).Error
@@ -78,7 +78,7 @@ func (crmApprovalTasksService *CrmApprovalTasksService) GetCrmBusinessOpportunit
 		db = db.Limit(limit).Offset(offset)
 	}
 
-	err = db.Select("crm_approval_tasks.*,crm_business_opportunity.business_opportunity_name").
+	err = db.Select("crm_approval_tasks.*,crm_business_opportunity.business_opportunity_name,crm_business_opportunity.business_opportunity_number").
 		Joins("LEFT JOIN crm_business_opportunity ON crm_business_opportunity.id = crm_approval_tasks.associated_id").
 		Order("crm_approval_tasks.created_at DESC").
 		Find(&crmApprovalTaskss).Error
@@ -104,7 +104,7 @@ func (crmApprovalTasksService *CrmApprovalTasksService) GetCrmDepositsApprovalTa
 		db = db.Limit(limit).Offset(offset)
 	}
 
-	err = db.Select("crm_approval_tasks.*,crm_deposits.deposits_name").
+	err = db.Select("crm_approval_tasks.*,crm_deposits.deposits_name,crm_deposits.deposits_number").
 		Joins("LEFT JOIN crm_deposits ON crm_deposits.id = crm_approval_tasks.associated_id").
 		Order("crm_approval_tasks.created_at DESC").
 		Find(&crmApprovalTaskss).Error
@@ -130,7 +130,7 @@ func (crmApprovalTasksService *CrmApprovalTasksService) GetCrmPaymentCollentionA
 		db = db.Limit(limit).Offset(offset)
 	}
 
-	err = db.Select("crm_approval_tasks.*,crm_payment_collention.payment_collention_name").
+	err = db.Select("crm_approval_tasks.*,crm_payment_collention.payment_collention_name,crm_payment_collention.payment_collention_number").
 		Joins("LEFT JOIN crm_payment_collention ON crm_payment_collention.id = crm_approval_tasks.associated_id").
 		Order("crm_approval_tasks.created_at DESC").
 		Find(&crmApprovalTaskss).Error
@@ -156,7 +156,7 @@ func (crmApprovalTasksService *CrmApprovalTasksService) GetCrmOrderApprovalTasks
 		db = db.Limit(limit).Offset(offset)
 	}
 
-	err = db.Select("crm_approval_tasks.*,crm_order.order_name").
+	err = db.Select("crm_approval_tasks.*,crm_order.order_name,crm_order.order_number").
 		Joins("LEFT JOIN crm_order ON crm_order.id = crm_approval_tasks.associated_id").
 		Order("crm_approval_tasks.created_at DESC").
 		Find(&crmApprovalTaskss).Error
@@ -182,7 +182,7 @@ func (crmApprovalTasksService *CrmApprovalTasksService) GetCrmStatementAccountAp
 		db = db.Limit(limit).Offset(offset)
 	}
 
-	err = db.Select("crm_approval_tasks.*,crm_statement_account.statement_account_name").
+	err = db.Select("crm_approval_tasks.*,crm_statement_account.statement_account_name,crm_statement_account.statement_account_name,crm_statement_account.statement_account_number").
 		Joins("LEFT JOIN crm_statement_account ON crm_statement_account.id = crm_approval_tasks.associated_id").
 		Order("crm_approval_tasks.created_at DESC").
 		Find(&crmApprovalTaskss).Error
@@ -208,7 +208,7 @@ func (crmApprovalTasksService *CrmApprovalTasksService) GetCrmPaymentApprovalTas
 		db = db.Limit(limit).Offset(offset)
 	}
 
-	err = db.Select("crm_approval_tasks.*,crm_payment.payment_name").
+	err = db.Select("crm_approval_tasks.*,crm_payment.payment_name,crm_payment.payment_number").
 		Joins("LEFT JOIN crm_payment ON crm_payment.id = crm_approval_tasks.associated_id").
 		Order("crm_approval_tasks.created_at DESC").
 		Find(&crmApprovalTaskss).Error
@@ -234,7 +234,7 @@ func (crmApprovalTasksService *CrmApprovalTasksService) GetCrmPurchaseOrderAppro
 		db = db.Limit(limit).Offset(offset)
 	}
 
-	err = db.Select("crm_approval_tasks.*,crm_purchase_order.purchase_order_name").
+	err = db.Select("crm_approval_tasks.*,crm_purchase_order.purchase_order_name,crm_purchase_order.purchase_order_number").
 		Joins("LEFT JOIN crm_purchase_order ON crm_purchase_order.id = crm_approval_tasks.associated_id").
 		Order("crm_approval_tasks.created_at DESC").
 		Find(&crmApprovalTaskss).Error
@@ -260,7 +260,7 @@ func (crmApprovalTasksService *CrmApprovalTasksService) GetCrmProcurementContrac
 		db = db.Limit(limit).Offset(offset)
 	}
 
-	err = db.Select("crm_approval_tasks.*,crm_procurement_contract.contract_name").
+	err = db.Select("crm_approval_tasks.*,crm_procurement_contract.contract_name,crm_procurement_contract.procurement_contract_number").
 		Joins("LEFT JOIN crm_procurement_contract ON crm_procurement_contract.id = crm_approval_tasks.associated_id").
 		Order("crm_approval_tasks.created_at DESC").
 		Find(&crmApprovalTaskss).Error

@@ -104,6 +104,9 @@ func (crmBusinessOpportunityApi *CrmBusinessOpportunityApi) CreateCrmPageBusines
 		//Products:                products,
 	}
 
+	//先查询合同审批对应的流程
+	crmBusinessOpportunity.BusinessOpportunityNumber = comm.GetBusinessNumber(comm.BusinessOpportunityNumberPrefix, crmBusinessOpportunityService.GetCrmBillTodayCount())
+
 	crmBusinessOpportunity.UserId = comm.GetHeaderUserId(c)
 
 	crmBusinessOpportunity.ReviewStatus = comm.Approval_Status_Pending

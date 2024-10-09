@@ -14,7 +14,9 @@ func TimeFormatYearMonth() string {
 
 	// 获取月份（1-12）
 	month := now.Month()
+	//获取日期
+	day := now.Day()
 
 	// 格式化输出
-	return fmt.Sprintf("%02d%02d", year, month)
+	return fmt.Sprintf("%02d%02d%02d", year, month, day)
 }

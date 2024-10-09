@@ -38,6 +38,9 @@ func (crmStatementAccountApi *CrmStatementAccountApi) CreateCrmStatementAccount(
 	crmStatementAccount.ReviewStatus = comm.Approval_Status_Pending
 	crmStatementAccount.PaymentStatus = comm.PaymentStatusUnpaid
 
+	//生成编号
+	crmStatementAccount.StatementAccountNumber = comm.GetBusinessNumber(comm.StatementAccountNumberPrefix, crmStatementAccountService.GetCrmBillTodayCount())
+
 	if err := crmStatementAccountService.CreateCrmStatementAccount(&crmStatementAccount); err != nil {
 		global.GVA_LOG.Error("创建失败!", zap.Error(err))
 		response.FailWithMessage("创建失败", c)

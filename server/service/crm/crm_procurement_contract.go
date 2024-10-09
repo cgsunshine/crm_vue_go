@@ -4,6 +4,7 @@ import (
 	"github.com/flipped-aurora/gin-vue-admin/server/global"
 	"github.com/flipped-aurora/gin-vue-admin/server/model/crm"
 	crmReq "github.com/flipped-aurora/gin-vue-admin/server/model/crm/request"
+	"time"
 )
 
 type CrmProcurementContractService struct {
@@ -21,6 +22,13 @@ func (crmProcurementContractService *CrmProcurementContractService) CreateCrmPro
 func (crmProcurementContractService *CrmProcurementContractService) DeleteCrmProcurementContract(ID string) (err error) {
 	err = global.GVA_DB.Delete(&crm.CrmProcurementContract{}, "id = ?", ID).Error
 	return err
+}
+
+// GetCrmBillTodayCount 根据ID获取crmPaymentCollention表记录
+// Author [piexlmax](https://github.com/piexlmax)
+func (crmProcurementContractService *CrmProcurementContractService) GetCrmBillTodayCount() (count int64) {
+	global.GVA_DB.Model(&crm.CrmProcurementContract{}).Where("created_at >= ? ", time.Now().Format("2006-01-02")).Count(&count)
+	return
 }
 
 // DeleteCrmProcurementContractByIds 批量删除订购合同记录

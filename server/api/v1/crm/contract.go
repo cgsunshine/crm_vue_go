@@ -67,7 +67,8 @@ func (crmContractApi *CrmContractApi) CreatePageCrmContract(c *gin.Context) {
 	crmContract.ContractStatus = "1"
 	crmContract.ReviewStatus = comm.Approval_Status_Pending
 	crmContract.ReviewResult = "1"
-
+	//生成编号
+	crmContract.ContractNumber = comm.GetBusinessNumber(comm.ContractNumberPrefix, crmContractService.GetCrmBillTodayCount())
 	//先查询合同审批对应的流程
 
 	//在查出第一步对应的角色id
@@ -222,6 +223,7 @@ func (crmBillApi *CrmBillApi) DownloadPageCrmContactExcel(c *gin.Context) {
 		err = f.SetCellValue("Sheet1", "G22", "账单邮件地址")
 		err = f.SetCellValue("Sheet1", "A24", "支付方式")
 
+		//这里可能会有多个，需要处理
 		err = f.SetCellValue("Sheet1", "A30", "编号")
 		err = f.SetCellValue("Sheet1", "C30", "数量")
 		err = f.SetCellValue("Sheet1", "D30", "New")
@@ -236,8 +238,8 @@ func (crmBillApi *CrmBillApi) DownloadPageCrmContactExcel(c *gin.Context) {
 			response.FailWithMessage("查询失败", c)
 			return
 		}
-		startTable := 15    //需要插入起始单元格
-		startTableStep := 2 //插入单元格步长
+		startTable := 30    //需要插入起始单元格
+		startTableStep := 1 //插入单元格步长
 		for i, product := range order.OrderProducts {
 			if i != 0 {
 				// 在第startTable行之后插入两行，并复制第1行和第2行的数据
@@ -256,8 +258,13 @@ func (crmBillApi *CrmBillApi) DownloadPageCrmContactExcel(c *gin.Context) {
 			fmt.Println(err)
 			return
 		}
+
 		fmt.Println("文件已保存")
-		response.OkWithData(gin.H{"recrmContract": recrmContract}, c)
+		//获取到文件地址然后下载
+		//response.OkWithData(gin.H{"recrmContract": recrmContract}, c)
+		//c.Header("Content-Disposition", fmt.Sprintf("attachment; filename=%s", "file_name")) // 对下载的文件重命名
+		//c.Header("success", "true")
+		//c.Data(http.StatusOK, "application/octet-stream", file)
 	}
 
 }

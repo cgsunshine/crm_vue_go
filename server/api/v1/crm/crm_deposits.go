@@ -41,6 +41,8 @@ func (crmDepositsApi *CrmDepositsApi) CreateCrmDeposits(c *gin.Context) {
 	crmDeposits.RefundStatus = comm.RUnsubmitted_Refund_Status
 	crmDeposits.RefundDate = nil
 	crmDeposits.UserId = comm.GetHeaderUserId(c)
+	//生成编号
+	crmDeposits.DepositsNumber = comm.GetBusinessNumber(comm.DepositsNumberPrefix, crmDepositsService.GetCrmBillTodayCount())
 	if err := crmDepositsService.CreateCrmDeposits(&crmDeposits); err != nil {
 		global.GVA_LOG.Error("创建失败!", zap.Error(err))
 		response.FailWithMessage("创建失败", c)
