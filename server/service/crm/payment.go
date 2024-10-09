@@ -56,7 +56,7 @@ func (crmPaymentService *CrmPaymentService) GetCrmPagePayment(ID string) (crmPay
 	err = global.GVA_DB.Model(&crm.CrmPayment{}).Where("crm_payment.id = ?", ID).
 		Select("crm_payment.*,sys_users.username,crm_bill_payment.bill_payment_number").
 		Joins("LEFT JOIN sys_users ON crm_payment.user_id = sys_users.id").
-		Joins("LEFT JOIN crm_bill_payment ON crm_bill_payment.id= crm_payment.statement_account_id").
+		Joins("LEFT JOIN crm_bill_payment ON crm_bill_payment.id = crm_payment.bill_payment_id").
 		First(&crmPayment).Error
 	return
 }

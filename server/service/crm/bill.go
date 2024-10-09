@@ -63,7 +63,7 @@ func (crmBillService *CrmBillService) GetCrmPageBillInfoList(info crmReq.CrmBill
 	}
 
 	err = db.Select("crm_bill.*," +
-		"crm_order.order_name,crm_order.customer_id,crm_order.billing_start_time,crm_order.billing_end_time,crm_order.product_id,crm_order.discount_rate," +
+		"crm_order.order_name,crm_order.customer_id,crm_order.billing_start_time,crm_order.billing_end_time,crm_order.product_id,crm_order.discount_rate,crm_order.order_number," +
 		"crm_customers.customer_name,crm_customers.customer_company,crm_customers.customer_address," +
 		"sys_users.username," +
 		"crm_payment_collention.payment_collention_name,crm_payment_collention.payment_time").
@@ -98,7 +98,7 @@ func (crmBillService *CrmBillService) GetCrmPageIdBill(ID string) (crmBill crm.C
 	db := global.GVA_DB.Model(&crm.CrmBill{})
 	err = db.Where("crm_bill.id = ?", ID).
 		Select("crm_bill.*," +
-			"crm_order.order_name,crm_order.customer_id,crm_order.billing_start_time,crm_order.billing_end_time,crm_order.product_id,crm_order.discount_rate," +
+			"crm_order.order_name,crm_order.customer_id,crm_order.billing_start_time,crm_order.billing_end_time,crm_order.product_id,crm_order.discount_rate,crm_order.order_number," +
 			"crm_customers.customer_name,crm_customers.customer_company,crm_customers.customer_address," +
 			"sys_users.username," +
 			"crm_payment_collention.payment_collention_name,crm_payment_collention.payment_time").

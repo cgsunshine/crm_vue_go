@@ -49,7 +49,7 @@ func (crmBillPaymentService *CrmBillPaymentService) UpdateCrmBillPayment(crmBill
 // Author [piexlmax](https://github.com/piexlmax)
 func (crmBillPaymentService *CrmBillPaymentService) GetCrmBillPayment(ID string) (crmPageBillPayment crm.CrmPageBillPayment, err error) {
 	err = global.GVA_DB.Model(&crm.CrmBillPayment{}).Where("crm_bill_payment.id = ?", ID).
-		Select("crm_bill_payment.*,crm_statement_account.statement_account_name").
+		Select("crm_bill_payment.*,crm_statement_account.statement_account_name,crm_statement_account.statement_account_number").
 		Joins("LEFT JOIN crm_statement_account ON crm_statement_account.id = crm_bill_payment.statement_account_id").
 		Order("crm_bill_payment.created_at DESC").First(&crmPageBillPayment).Error
 	return
@@ -57,7 +57,7 @@ func (crmBillPaymentService *CrmBillPaymentService) GetCrmBillPayment(ID string)
 
 func (crmBillPaymentService *CrmBillPaymentService) GetCrmBillPaymentID(ID *int) (crmPageBillPayment crm.CrmPageBillPayment, err error) {
 	err = global.GVA_DB.Model(&crm.CrmBillPayment{}).Where("crm_bill_payment.id = ?", ID).
-		Select("crm_bill_payment.*,crm_statement_account.statement_account_name").
+		Select("crm_bill_payment.*,crm_statement_account.statement_account_name,crm_statement_account.statement_account_number").
 		Joins("LEFT JOIN crm_statement_account ON crm_statement_account.id = crm_bill_payment.statement_account_id").
 		Order("crm_bill_payment.created_at DESC").First(&crmPageBillPayment).Error
 	return

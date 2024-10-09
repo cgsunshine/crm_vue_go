@@ -36,6 +36,7 @@ type CrmPageBill struct {
 	BillingEndTime   *time.Time `json:"billingEndTime" form:"billingEndTime" gorm:"column:billing_end_time;comment:到期时间;"`       //计费结束时间
 	ProductId        string     `json:"productId" form:"productId" gorm:"column:product_id;comment:产品id;size:191;"`              //产品id
 	DiscountRate     *float64   `json:"discountRate" form:"discountRate" gorm:"column:discount_rate;comment:折扣率;"`               //折扣率
+	OrderNumber      string     `json:"orderNumber" form:"orderNumber" gorm:"column:order_number;comment:订单编号;size:191;"`        //订单编号
 	//crm_payment_collention 表
 	PaymentCollentionName string     `json:"paymentCollentionName" form:"paymentCollentionName" gorm:"column:payment_collention_name;comment:回款名称;size:191;"` //回款名称
 	PaymentType           string     `json:"paymentType" form:"paymentType" gorm:"column:payment_type;comment:付款方式;size:10;"`                                 //回款方式
