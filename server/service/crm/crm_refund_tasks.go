@@ -40,7 +40,10 @@ func (crmRefundTasksService *CrmRefundTasksService) UpdateCrmRefundTasks(crmRefu
 // GetCrmRefundTasks 根据ID获取退款管理记录
 // Author [piexlmax](https://github.com/piexlmax)
 func (crmRefundTasksService *CrmRefundTasksService) GetCrmRefundTasks(ID string) (crmRefundTasks crm.CrmRefundTasks, err error) {
-	err = global.GVA_DB.Where("id = ?", ID).First(&crmRefundTasks).Error
+	err = global.GVA_DB.Where("id = ?", ID).
+		Select("crm_refund_tasks.*,crm_deposits.deposits_name,crm_deposits.deposits_number").
+		Joins("LEFT JOIN crm_deposits ON crm_deposits.id = crm_refund_tasks.associated_id").
+		Order("crm_refund_tasks.created_at DESC").First(&crmRefundTasks).Error
 	return
 }
 

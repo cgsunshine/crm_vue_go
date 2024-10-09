@@ -54,7 +54,7 @@ func (crmPaymentService *CrmPaymentService) GetCrmPagePaymentInfoList(info crmRe
 // Author [piexlmax](https://github.com/piexlmax)
 func (crmPaymentService *CrmPaymentService) GetCrmPagePayment(ID string) (crmPayment crm.CrmPagePayment, err error) {
 	err = global.GVA_DB.Model(&crm.CrmPayment{}).Where("crm_payment.id = ?", ID).
-		Select("crm_payment.*,sys_users.username,crm_bill_payment.id as business_number").
+		Select("crm_payment.*,sys_users.username,crm_bill_payment.bill_payment_number").
 		Joins("LEFT JOIN sys_users ON crm_payment.user_id = sys_users.id").
 		Joins("LEFT JOIN crm_bill_payment ON crm_bill_payment.id= crm_payment.statement_account_id").
 		First(&crmPayment).Error

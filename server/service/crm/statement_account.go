@@ -57,7 +57,7 @@ func (crmStatementAccountService *CrmStatementAccountService) GetCrmPageStatemen
 // Author [piexlmax](https://github.com/piexlmax)
 func (crmStatementAccountService *CrmStatementAccountService) GetCrmPageStatementAccount(ID string) (crmStatementAccount crm.CrmPageStatementAccount, err error) {
 	err = global.GVA_DB.Model(&crm.CrmStatementAccount{}).Where("crm_statement_account.id = ?", ID).
-		Select("crm_statement_account.*,sys_users.username,crm_purchase_order.purchase_order_name").
+		Select("crm_statement_account.*,sys_users.username,crm_purchase_order.purchase_order_name,crm_purchase_order.purchase_order_number").
 		Joins("LEFT JOIN sys_users ON crm_statement_account.user_id = sys_users.id").
 		Joins("LEFT JOIN crm_purchase_order ON crm_statement_account.purchase_order_id = crm_purchase_order.id").
 		First(&crmStatementAccount).Error
