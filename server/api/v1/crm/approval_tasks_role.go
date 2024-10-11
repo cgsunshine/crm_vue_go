@@ -371,6 +371,7 @@ func (crmApprovalTasksRoleApi *CrmApprovalTasksRoleApi) UpdateCrmMultipleApprova
 	if err := crmApprovalTasksRoleService.UpdCrmApprovalTasks(CrmApprovalTasks.ID, map[string]interface{}{
 		"approval_status": CrmApprovalTasks.ApprovalStatus,
 		"comments":        CrmApprovalTasks.Comments,
+		"assignee_id":     AssigneeId,
 	}); err != nil {
 		global.GVA_LOG.Error("更新失败!", zap.Error(err))
 		response.FailWithMessage("更新失败", c)

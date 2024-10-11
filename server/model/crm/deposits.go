@@ -28,7 +28,8 @@ type CrmPageDeposits struct {
 	UserId                 *int       `json:"userId" form:"userId" gorm:"column:user_id;comment:管理ID 销售代表;size:19;"`                                       //管理ID 销售代表
 	//联表查询
 	//crm_contract 表
-	ContractName string `json:"contractName" form:"contractName" gorm:"column:contract_name;comment:合同名称;size:191;"` //合同名称
+	ContractName   string `json:"contractName" form:"contractName" gorm:"column:contract_name;comment:合同名称;size:191;"`       //合同名称
+	ContractNumber string `json:"contractNumber" form:"contractNumber" gorm:"column:contract_number;comment:合同编号;size:191;"` //合同编号
 	//crm_customers 表
 	CustomerName string `json:"customerName" form:"customerName" gorm:"column:customer_name;comment:客户名;size:191;"` //客户名
 }

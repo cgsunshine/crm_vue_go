@@ -49,7 +49,7 @@ func (crmDepositsService *CrmDepositsService) UpdateCrmDeposits(crmDeposits crm.
 // Author [piexlmax](https://github.com/piexlmax)
 func (crmDepositsService *CrmDepositsService) GetCrmDeposits(ID string) (crmDeposits crm.CrmPageDeposits, err error) {
 	err = global.GVA_DB.Model(&crm.CrmDeposits{}).Where("crm_deposits.id = ?", ID).
-		Select("crm_deposits.*,crm_customers.customer_name,crm_contract.contract_name").
+		Select("crm_deposits.*,crm_customers.customer_name,crm_contract.contract_name,crm_contract.contract_number").
 		Joins("LEFT JOIN crm_customers ON crm_customers.id = crm_deposits.customer_id").
 		Joins("LEFT JOIN crm_contract ON crm_contract.id = crm_deposits.contract_id").
 		First(&crmDeposits).Error
@@ -104,7 +104,7 @@ func (crmDepositsService *CrmDepositsService) GetCrmDepositsInfoList(info crmReq
 		db = db.Limit(limit).Offset(offset)
 	}
 
-	err = db.Select("crm_deposits.*,crm_customers.customer_name,crm_contract.contract_name").
+	err = db.Select("crm_deposits.*,crm_customers.customer_name,crm_contract.contract_name,crm_contract.contract_number").
 		Joins("LEFT JOIN crm_customers ON crm_customers.id = crm_deposits.customer_id").
 		Joins("LEFT JOIN crm_contract ON crm_contract.id = crm_deposits.contract_id").
 		Order("crm_deposits.created_at DESC").

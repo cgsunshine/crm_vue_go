@@ -10,6 +10,8 @@ import (
 	"github.com/flipped-aurora/gin-vue-admin/server/utils"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
+	"strconv"
+	"strings"
 )
 
 type CrmPurchaseOrderApi struct {
@@ -56,8 +58,6 @@ func (crmPurchaseOrderApi *CrmPurchaseOrderApi) CreateCrmPurchaseOrder(c *gin.Co
 	if err := crmPurchaseOrderService.CreateCrmPurchaseOrder(&crmPurchaseOrder); err != nil {
 		global.GVA_LOG.Error("创建失败!", zap.Error(err))
 		response.FailWithMessage("创建失败", c)
-	} else {
-		response.OkWithMessage("创建成功", c)
 	}
 
 	purchaseOrderId := int(crmPurchaseOrder.ID)
@@ -70,12 +70,12 @@ func (crmPurchaseOrderApi *CrmPurchaseOrderApi) CreateCrmPurchaseOrder(c *gin.Co
 		return
 	}
 
-	ids, err := userService.GetRoleUsers(roleInfo.RoleIds)
-	if err != nil {
-		global.GVA_LOG.Error("创建失败!", zap.Error(err))
-		response.FailWithMessage("创建失败", c)
-		return
-	}
+	//ids, err := userService.GetRoleUsers(roleInfo.RoleIds)
+	//if err != nil {
+	//	global.GVA_LOG.Error("创建失败!", zap.Error(err))
+	//	response.FailWithMessage("创建失败", c)
+	//	return
+	//}
 
 	crmPurchaseOrderProduct := make([]*crm.CrmPurchaseOrderProduct, 0)
 	for _, v := range crmReqPurchaseOrder.ProductsInfo {
@@ -95,10 +95,27 @@ func (crmPurchaseOrderApi *CrmPurchaseOrderApi) CreateCrmPurchaseOrder(c *gin.Co
 	}
 
 	//插入角色id对应的用户的审批记录
-	for _, userAuth := range ids {
-		assigneeId := int(userAuth.SysUserId)
-		if err := crmApprovalTasksService.CreateCrmApprovalTasks(&crm.CrmApprovalTasks{
-			AssigneeId:     &assigneeId,
+	//for _, userAuth := range ids {
+	//	assigneeId := int(userAuth.SysUserId)
+	//	if err := crmApprovalTasksService.CreateCrmApprovalTasks(&crm.CrmApprovalTasks{
+	//		AssigneeId:     &assigneeId,
+	//		ApprovalStatus: comm.Approval_Status_Under,
+	//		AssociatedId:   &purchaseOrderId,
+	//		Valid:          utils.Pointer(comm.Contact_Approval_Tasks_valid_Effective),
+	//		StepId:         roleInfo.NodeId,
+	//		ApprovalType:   utils.Pointer(comm.PurchaseOrderApprovalType),
+	//	}); err != nil {
+	//		global.GVA_LOG.Error("创建失败!", zap.Error(err))
+	//		response.FailWithMessage("创建失败", c)
+	//		return
+	//	}
+	//}
+
+	items := strings.Split(roleInfo.RoleIds, ",")
+	for _, item := range items {
+		roleId, _ := strconv.Atoi(item)
+		if err := crmApprovalTasksRoleService.CreateCrmApprovalTasksRole(&crm.CrmApprovalTasksRole{
+			RoleId:         &roleId,
 			ApprovalStatus: comm.Approval_Status_Under,
 			AssociatedId:   &purchaseOrderId,
 			Valid:          utils.Pointer(comm.Contact_Approval_Tasks_valid_Effective),
@@ -110,6 +127,8 @@ func (crmPurchaseOrderApi *CrmPurchaseOrderApi) CreateCrmPurchaseOrder(c *gin.Co
 			return
 		}
 	}
+
+	response.OkWithMessage("创建成功", c)
 
 }
 

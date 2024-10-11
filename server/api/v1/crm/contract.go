@@ -11,6 +11,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/xuri/excelize/v2"
 	"go.uber.org/zap"
+	"strconv"
+	"strings"
 )
 
 // GetCrmContractList 分页获取crmContract表列表
@@ -79,12 +81,12 @@ func (crmContractApi *CrmContractApi) CreatePageCrmContract(c *gin.Context) {
 		return
 	}
 
-	ids, err := userService.GetRoleUsers(roleInfo.RoleIds)
-	if err != nil {
-		global.GVA_LOG.Error("创建失败!", zap.Error(err))
-		response.FailWithMessage("创建失败", c)
-		return
-	}
+	//ids, err := userService.GetRoleUsers(roleInfo.RoleIds)
+	//if err != nil {
+	//	global.GVA_LOG.Error("创建失败!", zap.Error(err))
+	//	response.FailWithMessage("创建失败", c)
+	//	return
+	//}
 
 	if err := crmContractService.CreateCrmContract(&crmContract); err != nil {
 		global.GVA_LOG.Error("创建失败!", zap.Error(err))
@@ -92,11 +94,28 @@ func (crmContractApi *CrmContractApi) CreatePageCrmContract(c *gin.Context) {
 	} else {
 		contactId := int(crmContract.ID)
 		//插入角色id对应的用户的审批记录
-		for _, userAuth := range ids {
-			assigneeId := int(userAuth.SysUserId)
+		//for _, userAuth := range ids {
+		//	assigneeId := int(userAuth.SysUserId)
+		//
+		//	if err := crmApprovalTasksService.CreateCrmApprovalTasks(&crm.CrmApprovalTasks{
+		//		AssigneeId:     &assigneeId,
+		//		ApprovalStatus: comm.Approval_Status_Under,
+		//		AssociatedId:   &contactId,
+		//		Valid:          utils.Pointer(comm.Contact_Approval_Tasks_valid_Effective),
+		//		StepId:         roleInfo.NodeId,
+		//		ApprovalType:   utils.Pointer(comm.ContractApprovalType),
+		//	}); err != nil {
+		//		global.GVA_LOG.Error("创建失败!", zap.Error(err))
+		//		response.FailWithMessage("创建失败", c)
+		//		return
+		//	}
+		//}
 
-			if err := crmApprovalTasksService.CreateCrmApprovalTasks(&crm.CrmApprovalTasks{
-				AssigneeId:     &assigneeId,
+		items := strings.Split(roleInfo.RoleIds, ",")
+		for _, item := range items {
+			roleId, _ := strconv.Atoi(item)
+			if err := crmApprovalTasksRoleService.CreateCrmApprovalTasksRole(&crm.CrmApprovalTasksRole{
+				RoleId:         &roleId,
 				ApprovalStatus: comm.Approval_Status_Under,
 				AssociatedId:   &contactId,
 				Valid:          utils.Pointer(comm.Contact_Approval_Tasks_valid_Effective),

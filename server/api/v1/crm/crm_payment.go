@@ -10,6 +10,8 @@ import (
 	"github.com/flipped-aurora/gin-vue-admin/server/utils"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
+	"strconv"
+	"strings"
 )
 
 type CrmPaymentApi struct {
@@ -83,19 +85,36 @@ func (crmPaymentApi *CrmPaymentApi) CreateCrmPayment(c *gin.Context) {
 			return
 		}
 
-		ids, err := userService.GetRoleUsers(roleInfo.RoleIds)
-		if err != nil {
-			global.GVA_LOG.Error("创建失败!", zap.Error(err))
-			response.FailWithMessage("创建失败", c)
-			return
-		}
+		//ids, err := userService.GetRoleUsers(roleInfo.RoleIds)
+		//if err != nil {
+		//	global.GVA_LOG.Error("创建失败!", zap.Error(err))
+		//	response.FailWithMessage("创建失败", c)
+		//	return
+		//}
 		paymentId := int(crmPayment.ID)
 		//插入角色id对应的用户的审批记录
-		for _, userAuth := range ids {
-			assigneeId := int(userAuth.SysUserId)
+		//for _, userAuth := range ids {
+		//	assigneeId := int(userAuth.SysUserId)
+		//
+		//	if err := crmApprovalTasksService.CreateCrmApprovalTasks(&crm.CrmApprovalTasks{
+		//		AssigneeId:     &assigneeId,
+		//		ApprovalStatus: comm.Approval_Status_Under,
+		//		AssociatedId:   &paymentId,
+		//		Valid:          utils.Pointer(comm.Contact_Approval_Tasks_valid_Effective),
+		//		StepId:         roleInfo.NodeId,
+		//		ApprovalType:   utils.Pointer(comm.PaymentApprovalType),
+		//	}); err != nil {
+		//		global.GVA_LOG.Error("创建失败!", zap.Error(err))
+		//		response.FailWithMessage("创建失败", c)
+		//		return
+		//	}
+		//}
 
-			if err := crmApprovalTasksService.CreateCrmApprovalTasks(&crm.CrmApprovalTasks{
-				AssigneeId:     &assigneeId,
+		items := strings.Split(roleInfo.RoleIds, ",")
+		for _, item := range items {
+			roleId, _ := strconv.Atoi(item)
+			if err := crmApprovalTasksRoleService.CreateCrmApprovalTasksRole(&crm.CrmApprovalTasksRole{
+				RoleId:         &roleId,
 				ApprovalStatus: comm.Approval_Status_Under,
 				AssociatedId:   &paymentId,
 				Valid:          utils.Pointer(comm.Contact_Approval_Tasks_valid_Effective),

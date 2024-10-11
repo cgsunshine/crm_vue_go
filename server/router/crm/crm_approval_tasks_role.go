@@ -28,13 +28,15 @@ func (s *CrmApprovalTasksRoleRouter) InitCrmApprovalTasksRoleRouter(Router *gin.
 	}
 	{
 		crmApprovalTasksRoleRouterWithoutAuth.GET("getCrmApprovalTasksRolePublic", crmApprovalTasksRoleApi.GetCrmApprovalTasksRolePublic)                                           // 获取角色审批表列表
-		crmApprovalTasksRoleRouterWithoutAuth.GET("getCrmBusinessOpportunityContractApprovalTasksList", crmApprovalTasksRoleApi.GetCrmBusinessOpportunityContractApprovalTasksList) // 获取角色审批表列表
+		crmApprovalTasksRoleRouterWithoutAuth.GET("getCrmBusinessOpportunityContractApprovalTasksList", crmApprovalTasksRoleApi.GetCrmBusinessOpportunityContractApprovalTasksList) // 获取商机审批表列表
 		crmApprovalTasksRoleRouterWithoutAuth.GET("getCrmPaymentCollentionApprovalTasksList", crmApprovalTasksRoleApi.GetCrmPaymentCollentionApprovalTasksList)                     // 获取角色审批表列表
 		crmApprovalTasksRoleRouterWithoutAuth.GET("getCrmOrderApprovalTasksList", crmApprovalTasksRoleApi.GetCrmOrderApprovalTasksList)                                             // 获取角色审批表列表
 		crmApprovalTasksRoleRouterWithoutAuth.GET("getCrmStatementAccountApprovalTasksList", crmApprovalTasksRoleApi.GetCrmStatementAccountApprovalTasksList)                       // 获取角色审批表列表
 		crmApprovalTasksRoleRouterWithoutAuth.GET("getCrmPaymentApprovalTasksList", crmApprovalTasksRoleApi.GetCrmPaymentApprovalTasksList)                                         // 获取角色审批表列表
 		crmApprovalTasksRoleRouterWithoutAuth.GET("getCrmPurchaseOrderApprovalTasksList", crmApprovalTasksRoleApi.GetCrmPurchaseOrderApprovalTasksList)                             // 获取角色审批表列表
 		crmApprovalTasksRoleRouterWithoutAuth.GET("getCrmProcurementContractApprovalTasksList", crmApprovalTasksRoleApi.GetCrmProcurementContractApprovalTasksList)                 // 获取角色审批表列表
-		crmApprovalTasksRoleRouterWithoutAuth.POST("updateCrmMultipleApprovalTasks", crmApprovalTasksRoleApi.UpdateCrmMultipleApprovalTasks)                                        // 获取角色审批表列表                                     // 获取角色审批表列表
+		crmApprovalTasksRoleRouterWithoutAuth.PUT("updateCrmMultipleApprovalTasks", crmApprovalTasksRoleApi.UpdateCrmMultipleApprovalTasks)                                         // 获取角色审批表列表                                     // 获取角色审批表列表
+		crmApprovalTasksRoleRouterWithoutAuth.GET("getCrmContractApprovalTasksList", crmApprovalTasksRoleApi.GetCrmContractApprovalTasksList)                                       // 获取合同审批表列表                                     // 获取角色审批表列表
+		crmApprovalTasksRoleRouterWithoutAuth.GET("getCrmDepositsApprovalTasksList", crmApprovalTasksRoleApi.GetCrmDepositsApprovalTasksList)                                       // 获取押金审批表列表                                     // 获取角色审批表列表
 	}
 }

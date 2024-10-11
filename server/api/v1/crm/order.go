@@ -9,6 +9,8 @@ import (
 	"github.com/flipped-aurora/gin-vue-admin/server/utils"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
+	"strconv"
+	"strings"
 )
 
 // GetCrmOrderList 分页获取crmOrder表列表
@@ -189,18 +191,35 @@ func (crmOrderApi *CrmOrderApi) CreateCrmPageOrder(c *gin.Context) {
 		return
 	}
 
-	ids, err := userService.GetRoleUsers(roleInfo.RoleIds)
-	if err != nil {
-		global.GVA_LOG.Error("创建失败!", zap.Error(err))
-		response.FailWithMessage("创建失败", c)
-		return
-	}
+	//ids, err := userService.GetRoleUsers(roleInfo.RoleIds)
+	//if err != nil {
+	//	global.GVA_LOG.Error("创建失败!", zap.Error(err))
+	//	response.FailWithMessage("创建失败", c)
+	//	return
+	//}
 
 	//插入角色id对应的用户的审批记录
-	for _, userAuth := range ids {
-		assigneeId := int(userAuth.SysUserId)
-		if err := crmApprovalTasksService.CreateCrmApprovalTasks(&crm.CrmApprovalTasks{
-			AssigneeId:     &assigneeId,
+	//for _, userAuth := range ids {
+	//	assigneeId := int(userAuth.SysUserId)
+	//	if err := crmApprovalTasksService.CreateCrmApprovalTasks(&crm.CrmApprovalTasks{
+	//		AssigneeId:     &assigneeId,
+	//		ApprovalStatus: comm.Approval_Status_Under,
+	//		AssociatedId:   &orderId,
+	//		Valid:          utils.Pointer(comm.Contact_Approval_Tasks_valid_Effective),
+	//		StepId:         roleInfo.NodeId,
+	//		ApprovalType:   utils.Pointer(comm.OrderApprovalType),
+	//	}); err != nil {
+	//		global.GVA_LOG.Error("创建失败!", zap.Error(err))
+	//		response.FailWithMessage("创建失败", c)
+	//		return
+	//	}
+	//}
+
+	items := strings.Split(roleInfo.RoleIds, ",")
+	for _, item := range items {
+		roleId, _ := strconv.Atoi(item)
+		if err := crmApprovalTasksRoleService.CreateCrmApprovalTasksRole(&crm.CrmApprovalTasksRole{
+			RoleId:         &roleId,
 			ApprovalStatus: comm.Approval_Status_Under,
 			AssociatedId:   &orderId,
 			Valid:          utils.Pointer(comm.Contact_Approval_Tasks_valid_Effective),

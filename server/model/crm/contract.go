@@ -35,6 +35,7 @@ type CrmPageContract struct {
 	BillingEndTime   *time.Time `json:"billingEndTime" form:"billingEndTime" gorm:"column:billing_end_time;comment:到期时间;"`            //计费结束时间
 	ProductId        string     `json:"productId" form:"productId" gorm:"column:product_id;comment:产品id;size:191;"`                   //产品id
 	DiscountRate     *float64   `json:"discountRate" form:"discountRate" gorm:"column:discount_rate;comment:折扣率;"`                    //折扣率
+	OrderNumber      string     `json:"orderNumber" form:"orderNumber" gorm:"column:order_number;comment:订单编号;size:191;"`             //订单编号
 	//crm_contract_type 表
 	ContractTypeName string `json:"contractTypeName" form:"contractTypeName" gorm:"column:contract_type_name;comment:合同类型名称;size:191;"` //合同类型名称
 	//crm_order 表

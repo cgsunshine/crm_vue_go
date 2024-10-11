@@ -55,9 +55,10 @@ func (crmApprovalTasksRoleService *CrmApprovalTasksRoleService) GetCrmContractAp
 		db = db.Limit(limit).Offset(offset)
 	}
 
-	err = db.Select("crm_approval_tasks_role.*,crm_contract.contract_name,sys_authorities.authority_name").
+	err = db.Select("crm_approval_tasks_role.*,crm_contract.contract_name,sys_authorities.authority_name,crm_contract.contract_number,sys_users.username").
 		Joins("LEFT JOIN crm_contract ON crm_contract.id = crm_approval_tasks_role.associated_id").
 		Joins("LEFT JOIN sys_authorities ON sys_authorities.authority_id = crm_approval_tasks_role.role_id").
+		Joins("LEFT JOIN sys_users ON sys_users.id = crm_approval_tasks_role.assignee_id").
 		Order("crm_approval_tasks_role.created_at DESC").
 		Find(&crmApprovalTaskss).Error
 	return crmApprovalTaskss, total, err
@@ -82,8 +83,10 @@ func (crmApprovalTasksRoleService *CrmApprovalTasksRoleService) GetCrmBusinessOp
 		db = db.Limit(limit).Offset(offset)
 	}
 
-	err = db.Select("crm_approval_tasks_role.*,crm_business_opportunity.business_opportunity_name").
+	err = db.Select("crm_approval_tasks_role.*,crm_business_opportunity.business_opportunity_name,crm_business_opportunity.business_opportunity_number,sys_authorities.authority_name,sys_users.username").
 		Joins("LEFT JOIN crm_business_opportunity ON crm_business_opportunity.id = crm_approval_tasks_role.associated_id").
+		Joins("LEFT JOIN sys_authorities ON sys_authorities.authority_id = crm_approval_tasks_role.role_id").
+		Joins("LEFT JOIN sys_users ON sys_users.id = crm_approval_tasks_role.assignee_id").
 		Order("crm_approval_tasks_role.created_at DESC").
 		Find(&crmApprovalTaskss).Error
 	return crmApprovalTaskss, total, err
@@ -108,8 +111,10 @@ func (crmApprovalTasksRoleService *CrmApprovalTasksRoleService) GetCrmDepositsAp
 		db = db.Limit(limit).Offset(offset)
 	}
 
-	err = db.Select("crm_approval_tasks_role.*,crm_deposits.deposits_name").
+	err = db.Select("crm_approval_tasks_role.*,crm_deposits.deposits_name,crm_deposits.deposits_number,sys_authorities.authority_name,sys_users.username").
 		Joins("LEFT JOIN crm_deposits ON crm_deposits.id = crm_approval_tasks_role.associated_id").
+		Joins("LEFT JOIN sys_authorities ON sys_authorities.authority_id = crm_approval_tasks_role.role_id").
+		Joins("LEFT JOIN sys_users ON sys_users.id = crm_approval_tasks_role.assignee_id").
 		Order("crm_approval_tasks_role.created_at DESC").
 		Find(&crmApprovalTaskss).Error
 	return crmApprovalTaskss, total, err
@@ -134,8 +139,10 @@ func (crmApprovalTasksRoleService *CrmApprovalTasksRoleService) GetCrmPaymentCol
 		db = db.Limit(limit).Offset(offset)
 	}
 
-	err = db.Select("crm_approval_tasks_role.*,crm_payment_collention.payment_collention_name").
+	err = db.Select("crm_approval_tasks_role.*,crm_payment_collention.payment_collention_name,crm_payment_collention.payment_collention_number,sys_authorities.authority_name,sys_users.username").
 		Joins("LEFT JOIN crm_payment_collention ON crm_payment_collention.id = crm_approval_tasks_role.associated_id").
+		Joins("LEFT JOIN sys_authorities ON sys_authorities.authority_id = crm_approval_tasks_role.role_id").
+		Joins("LEFT JOIN sys_users ON sys_users.id = crm_approval_tasks_role.assignee_id").
 		Order("crm_approval_tasks_role.created_at DESC").
 		Find(&crmApprovalTaskss).Error
 	return crmApprovalTaskss, total, err
@@ -160,8 +167,10 @@ func (crmApprovalTasksRoleService *CrmApprovalTasksRoleService) GetCrmOrderAppro
 		db = db.Limit(limit).Offset(offset)
 	}
 
-	err = db.Select("crm_approval_tasks_role.*,crm_order.order_name").
+	err = db.Select("crm_approval_tasks_role.*,crm_order.order_name,crm_order.order_number,sys_authorities.authority_name,sys_users.username").
 		Joins("LEFT JOIN crm_order ON crm_order.id = crm_approval_tasks_role.associated_id").
+		Joins("LEFT JOIN sys_authorities ON sys_authorities.authority_id = crm_approval_tasks_role.role_id").
+		Joins("LEFT JOIN sys_users ON sys_users.id = crm_approval_tasks_role.assignee_id").
 		Order("crm_approval_tasks_role.created_at DESC").
 		Find(&crmApprovalTaskss).Error
 	return crmApprovalTaskss, total, err
@@ -186,8 +195,10 @@ func (crmApprovalTasksRoleService *CrmApprovalTasksRoleService) GetCrmStatementA
 		db = db.Limit(limit).Offset(offset)
 	}
 
-	err = db.Select("crm_approval_tasks_role.*,crm_statement_account.statement_account_name").
+	err = db.Select("crm_approval_tasks_role.*,crm_statement_account.statement_account_name,crm_statement_account.statement_account_number,sys_authorities.authority_name,sys_users.username").
 		Joins("LEFT JOIN crm_statement_account ON crm_statement_account.id = crm_approval_tasks_role.associated_id").
+		Joins("LEFT JOIN sys_authorities ON sys_authorities.authority_id = crm_approval_tasks_role.role_id").
+		Joins("LEFT JOIN sys_users ON sys_users.id = crm_approval_tasks_role.assignee_id").
 		Order("crm_approval_tasks_role.created_at DESC").
 		Find(&crmApprovalTaskss).Error
 	return crmApprovalTaskss, total, err
@@ -212,8 +223,10 @@ func (crmApprovalTasksRoleService *CrmApprovalTasksRoleService) GetCrmPaymentApp
 		db = db.Limit(limit).Offset(offset)
 	}
 
-	err = db.Select("crm_approval_tasks_role.*,crm_payment.payment_name").
+	err = db.Select("crm_approval_tasks_role.*,crm_payment.payment_name,crm_payment.payment_number,sys_authorities.authority_name,sys_users.username").
 		Joins("LEFT JOIN crm_payment ON crm_payment.id = crm_approval_tasks_role.associated_id").
+		Joins("LEFT JOIN sys_authorities ON sys_authorities.authority_id = crm_approval_tasks_role.role_id").
+		Joins("LEFT JOIN sys_users ON sys_users.id = crm_approval_tasks_role.assignee_id").
 		Order("crm_approval_tasks_role.created_at DESC").
 		Find(&crmApprovalTaskss).Error
 	return crmApprovalTaskss, total, err
@@ -238,8 +251,10 @@ func (crmApprovalTasksRoleService *CrmApprovalTasksRoleService) GetCrmPurchaseOr
 		db = db.Limit(limit).Offset(offset)
 	}
 
-	err = db.Select("crm_approval_tasks_role.*,crm_purchase_order.purchase_order_name").
+	err = db.Select("crm_approval_tasks_role.*,crm_purchase_order.purchase_order_name,crm_purchase_order.purchase_order_number,sys_authorities.authority_name,sys_users.username").
 		Joins("LEFT JOIN crm_purchase_order ON crm_purchase_order.id = crm_approval_tasks_role.associated_id").
+		Joins("LEFT JOIN sys_authorities ON sys_authorities.authority_id = crm_approval_tasks_role.role_id").
+		Joins("LEFT JOIN sys_users ON sys_users.id = crm_approval_tasks_role.assignee_id").
 		Order("crm_approval_tasks_role.created_at DESC").
 		Find(&crmApprovalTaskss).Error
 	return crmApprovalTaskss, total, err
@@ -264,8 +279,10 @@ func (crmApprovalTasksRoleService *CrmApprovalTasksRoleService) GetCrmProcuremen
 		db = db.Limit(limit).Offset(offset)
 	}
 
-	err = db.Select("crm_approval_tasks_role.*,crm_procurement_contract.contract_name").
+	err = db.Select("crm_approval_tasks_role.*,crm_procurement_contract.contract_name,crm_procurement_contract.procurement_contract_number,sys_authorities.authority_name,sys_users.username").
 		Joins("LEFT JOIN crm_procurement_contract ON crm_procurement_contract.id = crm_approval_tasks_role.associated_id").
+		Joins("LEFT JOIN sys_authorities ON sys_authorities.authority_id = crm_approval_tasks_role.role_id").
+		Joins("LEFT JOIN sys_users ON sys_users.id = crm_approval_tasks_role.assignee_id").
 		Order("crm_approval_tasks_role.created_at DESC").
 		Find(&crmApprovalTaskss).Error
 	return crmApprovalTaskss, total, err
