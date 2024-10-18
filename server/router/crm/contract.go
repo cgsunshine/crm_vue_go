@@ -27,8 +27,9 @@ func (s *CrmPageContractRouter) InitCrmPageContractRouter(Router *gin.RouterGrou
 	}
 
 	{
-		crmContractRouterWithoutAuth.GET("getCrmPageContractList", crmContractApi.GetCrmPageContractList)   // 获取crmContract表列表
-		crmContractRouterWithoutAuth.GET("findCrmPageFileContract", crmContractApi.FindCrmPageFileContract) // 根据ID获取crmContract表
+		crmContractRouterWithoutAuth.GET("getCrmPageContractList", crmContractApi.GetCrmPageContractList)           // 获取crmContract表列表
+		crmContractRouterWithoutAuth.GET("findCrmPageFileContract", crmContractApi.FindCrmPageFileContract)         // 根据ID获取crmContract表
+		crmContractRouterWithoutAuth.GET("downloadPageCrmContactExcel", crmContractApi.DownloadPageCrmContactExcel) // 下载合同excel
 	}
 
 }

@@ -18,5 +18,6 @@ type CrmOrderSearch struct {
 	UserId       *int     `json:"userId" form:"userId" `
 	OrderName    string   `json:"orderName" form:"orderName"`
 	ReviewStatus string   `json:"reviewStatus" form:"reviewStatus"`
+	OrderNumber  string   `json:"orderNumber" form:"orderNumber"` //订单编号
 	request.PageInfo
 }

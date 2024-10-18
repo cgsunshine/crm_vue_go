@@ -53,6 +53,9 @@ func (crmBillService *CrmBillService) GetCrmPageBillInfoList(info crmReq.CrmBill
 	if info.CustomerId != nil {
 		db = db.Where(crmBillService.SplicingQueryConditions("customer_id = ?"), info.CustomerId)
 	}
+	if info.BillNumber != "" {
+		db = db.Where(crmBillService.SplicingQueryConditions("bill_number = ?"), info.BillNumber)
+	}
 	err = db.Count(&total).Error
 	if err != nil {
 		return

@@ -20,5 +20,6 @@ type CrmContractSearch struct {
 	ReviewResult         string     `json:"reviewResult" form:"reviewResult" `
 	ReviewStatus         string     `json:"reviewStatus" form:"reviewStatus" `
 	UserId               *int       `json:"userId" form:"userId" `
+	ContractNumber       string     `json:"contractNumber" form:"contractNumber" ` //合同编号
 	request.PageInfo
 }

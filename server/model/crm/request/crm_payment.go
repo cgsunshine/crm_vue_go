@@ -15,5 +15,6 @@ type CrmPaymentSearch struct {
 	EndPaymentTime     *time.Time `json:"endPaymentTime" form:"endPaymentTime"`
 	PaymentVoucher     string     `json:"paymentVoucher" form:"paymentVoucher" `
 	UserId             *int       `json:"userId" form:"userId" `
+	PaymentNumber      string     `json:"paymentNumber" form:"paymentNumber"` //付款编号
 	request.PageInfo
 }

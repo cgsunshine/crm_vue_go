@@ -89,6 +89,9 @@ func (crmRefundTasksService *CrmRefundTasksService) GetCrmRefundTasksInfoList(in
 	if info.RefundType != nil {
 		db = db.Where(crmRefundTasksService.SplicingQueryConditions("refund_type = ?"), info.RefundType)
 	}
+	if info.DepositsNumber != "" {
+		db = db.Where(crmRefundTasksService.SplicingQueryConditions("deposits_number = ?"), info.DepositsNumber)
+	}
 	err = db.Count(&total).Error
 	if err != nil {
 		return

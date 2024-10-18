@@ -41,4 +41,33 @@ type CrmPageContract struct {
 	//crm_order 表
 	Amount   *float64 `json:"amount" form:"amount" gorm:"column:amount;comment:金额;"`               //金额
 	Currency string   `json:"currency" form:"currency" gorm:"column:currency;comment:币种;size:11;"` //币种
+	ContractExpansion
+}
+
+// 合同补充字段
+type ContractExpansion struct {
+	//勾选项目开始
+	//NewCustomer                       string `json:"newCustomer" form:"newCustomer" gorm:"column:new_customer;comment:新客户勾选项目;size:191;"`                                                                      //新客户
+	//ExistingCustomerNewAccountNo      string `json:"existingCustomerNewAccountNo" form:"existingCustomerNewAccountNo" gorm:"column:existing_customer_new_account_no;comment:现有客户新账号;size:191;"`                //现有客户新账号
+	//ExistingCustomerExistingAccountNo string `json:"existingCustomerExistingAccountNo" form:"existingCustomerExistingAccountNo" gorm:"column:existing_customer_existing_account_no;comment:现有客户老账号;size:191;"` //现有客户老账号
+	//勾选项目结束
+	BusinessRegistrationNo           string `json:"businessRegistrationNo" form:"businessRegistrationNo" gorm:"column:business_registration_no;comment:公司注册号;size:191;"`                                   //公司注册号
+	InstallationAddress              string `json:"installationAddress" form:"installationAddress" gorm:"column:installation_address;comment:客户公司地址1;size:191;"`                                           //客户公司地址1
+	InstallationAddress2             string `json:"installationAddress2" form:"installationAddress2" gorm:"column:installation_address2;comment:客户公司地址2;size:191;"`                                        //客户公司地址2
+	InstallationAddress3             string `json:"installationAddress3" form:"installationAddress3" gorm:"column:installation_address3;comment:客户公司地址3;size:191;"`                                        //客户公司地址3
+	CorrespondenceAddress            string `json:"correspondenceAddress" form:"correspondenceAddress" gorm:"column:correspondence_address;comment:通讯地址;size:191;"`                                        //通讯地址
+	BillingAddress                   string `json:"billingAddress" form:"billingAddress" gorm:"column:billing_address;comment:账单寄送地址;size:191;"`                                                           //账单寄送地址
+	ContactPerson                    string `json:"contactPerson" form:"contactPerson" gorm:"column:contact_person;comment:联系人;size:191;"`                                                                 //联系人
+	Position                         string `json:"position" form:"position" gorm:"column:position;comment:职务;size:191;"`                                                                                  //职务
+	CorrespondenceEmailAddress       string `json:"correspondenceEmailAddress" form:"correspondenceEmailAddress" gorm:"column:correspondence_email_address;comment:邮箱;size:191;"`                          //联系人邮箱
+	PositionTelNo                    string `json:"positionTelNo" form:"positionTelNo" gorm:"column:position_tel_no;comment:电话;size:191;"`                                                                 //联系人电话
+	PositionFaxNo                    string `json:"positionFaxNo" form:"positionFaxNo" gorm:"column:position_fax_no;comment:传真号;size:191;"`                                                                //联系人传真号
+	MobileNo                         string `json:"mobileNo" form:"mobileNo" gorm:"column:mobile_no;comment:移动电话号码;size:191;"`                                                                             //移动电话号码
+	EmergencyContactNo               string `json:"emergencyContactNo" form:"emergencyContactNo" gorm:"column:emergency_contactNo;comment:紧急联系电话;size:191;"`                                               //紧急联系电话
+	TechnicalContactEmailAddress     string `json:"technicalContactEmailAddress" form:"technicalContactEmailAddress" gorm:"column:technical_contact_email_address;comment:技术联系人邮箱;size:191;"`              //技术联系人邮箱
+	TechnicalContactTelNo            string `json:"technicalContactTelNo" form:"technicalContactTelNo" gorm:"column:technical_contact_tel_no;comment:电话;size:191;"`                                        //技术电话
+	TechnicalContactFaxNo            string `json:"technicalContactFaxNo" form:"technicalContactFaxNo" gorm:"column:technical_contact_fax_no;comment:传真号;size:191;"`                                       //技术传真号
+	DirectoryListing                 string `json:"directoryListing" form:"directoryListing" gorm:"column:directory_listing;comment:目录列表;size:191;"`                                                       //目录列表YN 限制只能填写Y或者N
+	EBillEmailAddressReceivingEBills string `json:"eBillEmailAddressReceivingEBills" form:"eBillEmailAddressReceivingEBills" gorm:"column:eBill_email_address_receiving_e_bills;comment:账单邮件地址;size:191;"` //账单邮件地址
+	PaymentMethod                    string `json:"paymentMethod" form:"paymentMethod" gorm:"column:payment_method;comment:支付方式;size:191;"`                                                                //支付方式
 }

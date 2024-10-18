@@ -19,6 +19,7 @@ func (s *CrmBillRouter) InitCrmPageBillRouter(Router *gin.RouterGroup, PublicRou
 		crmBillRouterWithoutRecord.GET("findPageCrmBill", crmBillApi.FindPageCrmBill) // 根据ID获取crmBill表
 	}
 	{
-		crmBillRouterWithoutAuth.GET("getCrmPageBillList", crmBillApi.GetCrmPageBillList) // 获取crmBill表列表
+		crmBillRouterWithoutAuth.GET("getCrmPageBillList", crmBillApi.GetCrmPageBillList)
+		crmBillRouterWithoutAuth.GET("downloadPageCrmBillExcel", crmBillApi.DownloadPageCrmBillExcel) // 下载账单excel
 	}
 }

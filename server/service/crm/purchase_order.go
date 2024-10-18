@@ -39,6 +39,10 @@ func (crmPurchaseOrderService *CrmPurchaseOrderService) GetCrmPagePurchaseOrderI
 	if info.UserId != nil {
 		db = db.Where(crmPurchaseOrderService.SplicingQueryConditions("user_id = ?"), info.UserId)
 	}
+	if info.PurchaseOrderNumber != "" {
+		db = db.Where(crmPurchaseOrderService.SplicingQueryConditions("purchase_order_number = ?"), info.PurchaseOrderNumber)
+	}
+
 	err = db.Count(&total).Error
 	if err != nil {
 		return

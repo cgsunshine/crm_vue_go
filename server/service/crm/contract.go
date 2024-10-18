@@ -47,6 +47,9 @@ func (crmContractService *CrmContractService) GetCrmPageContractInfoList(info cr
 		db = db.Where(crmContractService.SplicingQueryConditions("user_id = ?"), info.UserId)
 	}
 
+	if info.ContractNumber != "" {
+		db = db.Where(crmContractService.SplicingQueryConditions("contract_number = ?"), info.ContractNumber)
+	}
 	err = db.Count(&total).Error
 	if err != nil {
 		return

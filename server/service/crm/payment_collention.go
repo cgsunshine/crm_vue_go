@@ -44,6 +44,9 @@ func (crmPaymentCollentionService *CrmPaymentCollentionService) GetCrmPagePaymen
 	if info.ReviewStatus != "" {
 		db = db.Where(crmPaymentCollentionService.SplicingQueryConditions("review_status = ?"), info.ReviewStatus)
 	}
+	if info.PaymentCollentionNumber != "" {
+		db = db.Where(crmPaymentCollentionService.SplicingQueryConditions("payment_collention_number = ?"), info.PaymentCollentionNumber)
+	}
 	err = db.Count(&total).Error
 	if err != nil {
 		return

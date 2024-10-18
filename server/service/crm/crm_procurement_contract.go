@@ -83,6 +83,9 @@ func (crmProcurementContractService *CrmProcurementContractService) GetCrmProcur
 	if info.UserId != nil {
 		db = db.Where("user_id = ?", info.UserId)
 	}
+	if info.ProcurementContractNumber != "" {
+		db = db.Where("procurement_contract_number = ?", info.ProcurementContractNumber)
+	}
 	err = db.Count(&total).Error
 	if err != nil {
 		return

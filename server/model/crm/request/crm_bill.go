@@ -17,5 +17,6 @@ type CrmBillSearch struct {
 	CustomerId          *int       `json:"customerId" form:"customerId" `                   //客户ID
 	StartExpirationTime *time.Time `json:"startExpirationTime" form:"startExpirationTime""` //最迟付款时间
 	EndExpirationTime   *time.Time `json:"endExpirationTime" form:"endExpirationTime""`     //最迟付款时间
+	BillNumber          string     `json:"billNumber" form:"billNumber" `                   //账单编号
 	request.PageInfo
 }

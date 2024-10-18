@@ -19,7 +19,8 @@ type CrmPurchaseOrderSearch struct {
 	ProductId           *int       `json:"productId" form:"productId" `
 	Quantity            *int       `json:"quantity" form:"quantity" `
 	UserId              *int       `json:"userId" form:"userId" `
-	PurchaseOrderName   string     `json:"purchaseOrderName" form:"purchaseOrderName"` //订购单名称
+	PurchaseOrderName   string     `json:"purchaseOrderName" form:"purchaseOrderName"`      //订购单名称
+	PurchaseOrderNumber string     `json:"purchaseOrderNumber" form:"purchaseOrderNumbere"` //订购单编号
 	request.PageInfo
 }
 

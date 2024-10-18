@@ -95,6 +95,9 @@ func (crmDepositsService *CrmDepositsService) GetCrmDepositsInfoList(info crmReq
 	if info.RefundStatus != "" {
 		db = db.Where(crmDepositsService.SplicingQueryConditions("refund_status = ?"), info.RefundStatus)
 	}
+	if info.DepositsNumber != "" {
+		db = db.Where(crmDepositsService.SplicingQueryConditions("deposits_number = ?"), info.DepositsNumber)
+	}
 	err = db.Count(&total).Error
 	if err != nil {
 		return

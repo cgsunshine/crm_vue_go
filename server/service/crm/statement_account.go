@@ -36,6 +36,10 @@ func (crmStatementAccountService *CrmStatementAccountService) GetCrmPageStatemen
 	if info.UserId != nil {
 		db = db.Where(crmStatementAccountService.SplicingQueryConditions("user_id = ?"), info.UserId)
 	}
+	if info.StatementAccountNumber != "" {
+		db = db.Where(crmStatementAccountService.SplicingQueryConditions("statement_account_number = ?"), info.StatementAccountNumber)
+	}
+
 	err = db.Count(&total).Error
 	if err != nil {
 		return

@@ -21,5 +21,6 @@ type CrmDepositsSearch struct {
 	UserId           *int       `json:"userId" form:"userId" `
 	ReviewStatus     string     `json:"reviewStatus" form:"reviewStatus"`
 	RefundStatus     string     `json:"refundStatus" form:"refundStatus"`
+	DepositsNumber   string     `json:"depositsNumber" form:"depositsNumber" ` //押金编号
 	request.PageInfo
 }

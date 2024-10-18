@@ -50,6 +50,10 @@ func (crmOrderService *CrmOrderService) GetCrmPageOrderInfoList(info crmReq.CrmO
 		db = db.Where(crmOrderService.SplicingQueryConditions("review_status = ?"), info.ReviewStatus)
 	}
 
+	if info.OrderNumber != "" {
+		db = db.Where(crmOrderService.SplicingQueryConditions("order_number = ?"), info.OrderNumber)
+	}
+
 	err = db.Count(&total).Error
 	if err != nil {
 		return

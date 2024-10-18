@@ -47,6 +47,9 @@ func (crmBusinessOpportunityService *CrmBusinessOpportunityService) GetPageCrmBu
 	if info.ReviewStatus != "" {
 		db = db.Where(crmBusinessOpportunityService.SplicingQueryConditions("review_status = ?"), info.ReviewStatus)
 	}
+	if info.BusinessOpportunityNumber != "" {
+		db = db.Where(crmBusinessOpportunityService.SplicingQueryConditions("business_opportunity_number = ?"), info.BusinessOpportunityNumber)
+	}
 
 	err = db.Count(&total).Error
 	if err != nil {

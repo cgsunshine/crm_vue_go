@@ -33,6 +33,10 @@ func (crmPaymentService *CrmPaymentService) GetCrmPagePaymentInfoList(info crmRe
 	if info.UserId != nil {
 		db = db.Where(crmPaymentService.SplicingQueryConditions("user_id = ?"), info.UserId)
 	}
+
+	if info.PaymentNumber != "" {
+		db = db.Where(crmPaymentService.SplicingQueryConditions("payment_number = ?"), info.PaymentNumber)
+	}
 	err = db.Count(&total).Error
 	if err != nil {
 		return
