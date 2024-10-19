@@ -54,6 +54,17 @@ func (crmOrderService *CrmOrderService) GetCrmPageOrderInfoList(info crmReq.CrmO
 		db = db.Where(crmOrderService.SplicingQueryConditions("order_number = ?"), info.OrderNumber)
 	}
 
+	UniversalSearchCustomerName(db, info.CustomerName)
+
+	db.Select("crm_order.*,crm_product.product_name,crm_customers.customer_name,sys_users.username,crm_business_opportunity.business_opportunity_name").
+		Joins("LEFT JOIN sys_users ON sys_users.id = crm_order.user_id").
+		Joins("LEFT JOIN crm_customers ON crm_customers.id = crm_order.customer_id").
+		Joins("LEFT JOIN crm_product ON crm_product.id = crm_order.product_id").
+		Joins("LEFT JOIN crm_business_opportunity ON crm_business_opportunity.id = crm_order.business_opportunity_id").
+		//Preload("Products.OrderProducts").
+		Preload("OrderProducts.Product").
+		Order("crm_order.created_at DESC")
+
 	err = db.Count(&total).Error
 	if err != nil {
 		return
@@ -63,15 +74,7 @@ func (crmOrderService *CrmOrderService) GetCrmPageOrderInfoList(info crmReq.CrmO
 		db = db.Limit(limit).Offset(offset)
 	}
 
-	err = db.Select("crm_order.*,crm_product.product_name,crm_customers.customer_name,sys_users.username,crm_business_opportunity.business_opportunity_name").
-		Joins("LEFT JOIN sys_users ON sys_users.id = crm_order.user_id").
-		Joins("LEFT JOIN crm_customers ON crm_customers.id = crm_order.customer_id").
-		Joins("LEFT JOIN crm_product ON crm_product.id = crm_order.product_id").
-		Joins("LEFT JOIN crm_business_opportunity ON crm_business_opportunity.id = crm_order.business_opportunity_id").
-		//Preload("Products.OrderProducts").
-		Preload("OrderProducts.Product").
-		Order("crm_order.created_at DESC").
-		Find(&crmOrders).Error
+	err = db.Find(&crmOrders).Error
 	return crmOrders, total, err
 }
 

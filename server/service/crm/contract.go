@@ -50,6 +50,16 @@ func (crmContractService *CrmContractService) GetCrmPageContractInfoList(info cr
 	if info.ContractNumber != "" {
 		db = db.Where(crmContractService.SplicingQueryConditions("contract_number = ?"), info.ContractNumber)
 	}
+
+	UniversalSearchCustomerName(db, info.CustomerName)
+	UniversalSearchOrderNumber(db, info.OrderNumber)
+
+	db.Select("crm_contract.*,crm_customers.customer_name,sys_users.username,crm_order.order_name,crm_contract_type.contract_type_name,crm_order.amount,crm_order.currency,crm_order.order_number").
+		Joins("LEFT JOIN sys_users ON sys_users.id = crm_contract.user_id").
+		Joins("LEFT JOIN crm_customers ON crm_customers.id = crm_contract.customer_id").
+		Joins("LEFT JOIN crm_order ON crm_order.id = crm_contract.order_id").
+		Joins("LEFT JOIN crm_contract_type ON crm_contract_type.id = crm_contract.contract_type_id").
+		Order("crm_contract.created_at DESC")
 	err = db.Count(&total).Error
 	if err != nil {
 		return
@@ -59,13 +69,7 @@ func (crmContractService *CrmContractService) GetCrmPageContractInfoList(info cr
 		db = db.Limit(limit).Offset(offset)
 	}
 
-	err = db.Select("crm_contract.*,crm_customers.customer_name,sys_users.username,crm_order.order_name,crm_contract_type.contract_type_name,crm_order.amount,crm_order.currency,crm_order.order_number").
-		Joins("LEFT JOIN sys_users ON sys_users.id = crm_contract.user_id").
-		Joins("LEFT JOIN crm_customers ON crm_customers.id = crm_contract.customer_id").
-		Joins("LEFT JOIN crm_order ON crm_order.id = crm_contract.order_id").
-		Joins("LEFT JOIN crm_contract_type ON crm_contract_type.id = crm_contract.contract_type_id").
-		Order("crm_contract.created_at DESC").
-		Find(&crmContracts).Error
+	err = db.Find(&crmContracts).Error
 	return crmContracts, total, err
 }
 

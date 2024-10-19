@@ -137,8 +137,8 @@ type CrmPurchaseOrderInfoApprovalTasks struct {
 	Valid          *int   `json:"valid" form:"valid" gorm:"column:valid;comment:审批是否有效 1 有效 2 失效（多人审批中，有人拒绝）;size:19;"`           //审批是否有效 1 有效 2 失效（多人审批中，有人拒绝）
 	//联表查询
 	//crm_purchase_order 表
-	PurchaseOrderName   string `json:"purchaseOrderName" form:"purchaseOrderName" gorm:"column:purchase_order_name;comment:订购单名称;size:191;"`        //订购单名称
-	PurchaseOrderNumber string `json:"purchaseOrderNumber" form:"purchaseOrderNumbere" gorm:"column:purchase_order_number;comment:订购单编号;size:191;"` //订购单编号
+	PurchaseOrderName   string `json:"purchaseOrderName" form:"purchaseOrderName" gorm:"column:purchase_order_name;comment:订购单名称;size:191;"`       //订购单名称
+	PurchaseOrderNumber string `json:"purchaseOrderNumber" form:"purchaseOrderNumber" gorm:"column:purchase_order_number;comment:订购单编号;size:191;"` //订购单编号
 }
 
 // 订购合同 结构体  CrmProcurementContract

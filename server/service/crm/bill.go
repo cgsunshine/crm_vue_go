@@ -56,6 +56,24 @@ func (crmBillService *CrmBillService) GetCrmPageBillInfoList(info crmReq.CrmBill
 	if info.BillNumber != "" {
 		db = db.Where(crmBillService.SplicingQueryConditions("bill_number = ?"), info.BillNumber)
 	}
+
+	if info.OrderNumber != "" {
+		db = db.Where("crm_order.order_number = ?", info.OrderNumber)
+	}
+
+	UniversalSearchCustomerName(db, info.CustomerName)
+
+	db.Select("crm_bill.*," +
+		"crm_order.order_name,crm_order.customer_id,crm_order.billing_start_time,crm_order.billing_end_time,crm_order.product_id,crm_order.discount_rate,crm_order.order_number," +
+		"crm_customers.customer_name,crm_customers.customer_company,crm_customers.customer_address," +
+		"sys_users.username," +
+		"crm_payment_collention.payment_collention_name,crm_payment_collention.payment_time").
+		Joins("LEFT JOIN crm_order ON crm_order.id = crm_bill.order_id").
+		Joins("LEFT JOIN sys_users ON sys_users.id = crm_order.user_id").
+		Joins("LEFT JOIN crm_customers ON crm_customers.id = crm_bill.customer_id").
+		Joins("LEFT JOIN crm_payment_collention ON crm_payment_collention.bill_id = crm_bill.id").
+		Order("crm_bill.created_at DESC")
+
 	err = db.Count(&total).Error
 	if err != nil {
 		return
@@ -65,17 +83,7 @@ func (crmBillService *CrmBillService) GetCrmPageBillInfoList(info crmReq.CrmBill
 		db = db.Limit(limit).Offset(offset)
 	}
 
-	err = db.Select("crm_bill.*," +
-		"crm_order.order_name,crm_order.customer_id,crm_order.billing_start_time,crm_order.billing_end_time,crm_order.product_id,crm_order.discount_rate,crm_order.order_number," +
-		"crm_customers.customer_name,crm_customers.customer_company,crm_customers.customer_address," +
-		"sys_users.username," +
-		"crm_payment_collention.payment_collention_name,crm_payment_collention.payment_time").
-		Joins("LEFT JOIN crm_order ON crm_order.id = crm_bill.order_id").
-		Joins("LEFT JOIN sys_users ON sys_users.id = crm_order.user_id").
-		Joins("LEFT JOIN crm_customers ON crm_customers.id = crm_bill.customer_id").
-		Joins("LEFT JOIN crm_payment_collention ON crm_payment_collention.bill_id = crm_bill.id").
-		Order("crm_bill.created_at DESC").
-		Find(&crmBills).Error
+	err = db.Find(&crmBills).Error
 	return crmBills, total, err
 }
 

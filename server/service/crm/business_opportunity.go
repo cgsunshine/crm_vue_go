@@ -51,6 +51,15 @@ func (crmBusinessOpportunityService *CrmBusinessOpportunityService) GetPageCrmBu
 		db = db.Where(crmBusinessOpportunityService.SplicingQueryConditions("business_opportunity_number = ?"), info.BusinessOpportunityNumber)
 	}
 
+	UniversalSearchCustomerName(db, info.CustomerName)
+
+	db.Select("crm_business_opportunity.*,sys_users.username,crm_product.product_name,crm_customers.customer_name").
+		Joins("LEFT JOIN crm_customers ON crm_business_opportunity.customer_id = crm_customers.id").
+		Joins("LEFT JOIN sys_users ON crm_customers.user_id = sys_users.id").
+		Joins("LEFT JOIN crm_product ON crm_business_opportunity.product_id = crm_product.id").
+		Order("crm_business_opportunity.created_at DESC").
+		Preload("BusinessOpportunityProduct.Product")
+
 	err = db.Count(&total).Error
 	if err != nil {
 		return
@@ -60,13 +69,8 @@ func (crmBusinessOpportunityService *CrmBusinessOpportunityService) GetPageCrmBu
 		db = db.Limit(limit).Offset(offset)
 	}
 
-	err = db.Select("crm_business_opportunity.*,sys_users.username,crm_product.product_name,crm_customers.customer_name").
-		Joins("LEFT JOIN crm_customers ON crm_business_opportunity.customer_id = crm_customers.id").
-		Joins("LEFT JOIN sys_users ON crm_customers.user_id = sys_users.id").
-		Joins("LEFT JOIN crm_product ON crm_business_opportunity.product_id = crm_product.id").
-		Order("crm_business_opportunity.created_at DESC").
-		Preload("BusinessOpportunityProduct.Product").
-		Find(&crmBusinessOpportunitys).Error
+	err = db.Find(&crmBusinessOpportunitys).Error
+
 	return crmBusinessOpportunitys, total, err
 }
 

@@ -6,6 +6,7 @@ import (
 )
 
 type CrmContractSearch struct {
+	baseSearchReq
 	StartCreatedAt *time.Time `json:"startCreatedAt" form:"startCreatedAt"`
 	EndCreatedAt   *time.Time `json:"endCreatedAt" form:"endCreatedAt"`
 
@@ -21,5 +22,6 @@ type CrmContractSearch struct {
 	ReviewStatus         string     `json:"reviewStatus" form:"reviewStatus" `
 	UserId               *int       `json:"userId" form:"userId" `
 	ContractNumber       string     `json:"contractNumber" form:"contractNumber" ` //合同编号
+	OrderNumber          string     `json:"orderNumber" form:"orderNumber"`        //订单编号
 	request.PageInfo
 }

@@ -43,6 +43,8 @@ func (crmProcurementContractService *CrmProcurementContractService) GetCrmPagePr
 	if info.UserId != nil {
 		db = db.Where(crmProcurementContractService.SplicingQueryConditions("user_id = ?"), info.UserId)
 	}
+
+	UniversalSearchProcurementContractNumber(db, info.ProcurementContractNumber)
 	err = db.Count(&total).Error
 	if err != nil {
 		return
@@ -52,7 +54,7 @@ func (crmProcurementContractService *CrmProcurementContractService) GetCrmPagePr
 		db = db.Limit(limit).Order("created_at DESC").Offset(offset)
 	}
 
-	err = db.Select("crm_procurement_contract.*,sys_users.username").
+	err = db.Select("crm_procurement_contract.*,sys_users.username").Debug().
 		Joins("LEFT JOIN sys_users ON sys_users.id = crm_procurement_contract.user_id").
 		Find(&crmProcurementContracts).Error
 	return crmProcurementContracts, total, err

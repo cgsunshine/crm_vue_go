@@ -37,6 +37,24 @@ func (crmPaymentService *CrmPaymentService) GetCrmPagePaymentInfoList(info crmRe
 	if info.PaymentNumber != "" {
 		db = db.Where(crmPaymentService.SplicingQueryConditions("payment_number = ?"), info.PaymentNumber)
 	}
+
+	//func UniversalSearchBillPaymentNumber(db *gorm.DB, value string) {
+	//	if value != "" {
+	//		db = db.Where("crm_bill_payment.bill_payment_number = ?", value)
+	//	}
+	//}
+
+	//if info.BillPaymentNumber != "" {
+	//	db = db.Where("crm_bill_payment.bill_payment_number = ?", info.BillPaymentNumber)
+	//}
+
+	UniversalSearchBillPaymentNumber(db, info.BillPaymentNumber)
+
+	db.Select("crm_payment.*,sys_users.username,crm_bill_payment.bill_payment_number").
+		Joins("LEFT JOIN sys_users ON crm_payment.user_id = sys_users.id").
+		Joins("LEFT JOIN crm_bill_payment ON crm_bill_payment.id = crm_payment.bill_payment_id").
+		Order("crm_payment.created_at DESC")
+
 	err = db.Count(&total).Error
 	if err != nil {
 		return
@@ -46,11 +64,7 @@ func (crmPaymentService *CrmPaymentService) GetCrmPagePaymentInfoList(info crmRe
 		db = db.Limit(limit).Offset(offset)
 	}
 
-	err = db.Select("crm_payment.*,sys_users.username,crm_bill_payment.bill_payment_number").Debug().
-		Joins("LEFT JOIN sys_users ON crm_payment.user_id = sys_users.id").
-		Joins("LEFT JOIN crm_bill_payment ON crm_bill_payment.id = crm_payment.bill_payment_id").
-		Order("crm_payment.created_at DESC").
-		Find(&crmPayments).Error
+	err = db.Find(&crmPayments).Error
 	return crmPayments, total, err
 }
 

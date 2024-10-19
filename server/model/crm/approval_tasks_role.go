@@ -92,9 +92,9 @@ type CrmPurchaseOrderInfoApprovalTasksRole struct {
 	CrmApprovalTasksRole
 	//联表查询
 	//crm_purchase_order 表
-	PurchaseOrderName   string `json:"purchaseOrderName" form:"purchaseOrderName" gorm:"column:purchase_order_name;comment:订购单名称;size:191;"`        //订购单名称
-	AuthorityName       string `json:"authorityName" gorm:"comment:角色名"`                                                                            // 角色名
-	PurchaseOrderNumber string `json:"purchaseOrderNumber" form:"purchaseOrderNumbere" gorm:"column:purchase_order_number;comment:订购单编号;size:191;"` //订购单编号
+	PurchaseOrderName   string `json:"purchaseOrderName" form:"purchaseOrderName" gorm:"column:purchase_order_name;comment:订购单名称;size:191;"`       //订购单名称
+	AuthorityName       string `json:"authorityName" gorm:"comment:角色名"`                                                                           // 角色名
+	PurchaseOrderNumber string `json:"purchaseOrderNumber" form:"purchaseOrderNumber" gorm:"column:purchase_order_number;comment:订购单编号;size:191;"` //订购单编号
 	//sys_user 表
 	Username string `json:"userName" gorm:"index;comment:用户登录名"` // 用户登录名
 }

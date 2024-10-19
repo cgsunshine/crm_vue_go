@@ -6,6 +6,7 @@ import (
 )
 
 type CrmProcurementContractSearch struct {
+	baseSearchReq
 	StartCreatedAt *time.Time `json:"startCreatedAt" form:"startCreatedAt"`
 	EndCreatedAt   *time.Time `json:"endCreatedAt" form:"endCreatedAt"`
 
@@ -17,6 +18,6 @@ type CrmProcurementContractSearch struct {
 	StartExpirationTime       *time.Time `json:"startExpirationTime" form:"startExpirationTime"`
 	EndExpirationTime         *time.Time `json:"endExpirationTime" form:"endExpirationTime"`
 	UserId                    *int       `json:"userId" form:"userId" `
-	ProcurementContractNumber string     `json:"procurementContractNumber" form:"procurementContractNumber` //订购合同编号
+	ProcurementContractNumber string     `json:"procurementContractNumber" form:"procurementContractNumber"` //订购合同编号
 	request.PageInfo
 }

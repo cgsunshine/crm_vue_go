@@ -98,6 +98,14 @@ func (crmDepositsService *CrmDepositsService) GetCrmDepositsInfoList(info crmReq
 	if info.DepositsNumber != "" {
 		db = db.Where(crmDepositsService.SplicingQueryConditions("deposits_number = ?"), info.DepositsNumber)
 	}
+
+	UniversalSearchCustomerName(db, info.CustomerName)
+
+	db.Select("crm_deposits.*,crm_customers.customer_name,crm_contract.contract_name,crm_contract.contract_number").
+		Joins("LEFT JOIN crm_customers ON crm_customers.id = crm_deposits.customer_id").
+		Joins("LEFT JOIN crm_contract ON crm_contract.id = crm_deposits.contract_id").
+		Order("crm_deposits.created_at DESC")
+
 	err = db.Count(&total).Error
 	if err != nil {
 		return
@@ -107,11 +115,7 @@ func (crmDepositsService *CrmDepositsService) GetCrmDepositsInfoList(info crmReq
 		db = db.Limit(limit).Offset(offset)
 	}
 
-	err = db.Select("crm_deposits.*,crm_customers.customer_name,crm_contract.contract_name,crm_contract.contract_number").
-		Joins("LEFT JOIN crm_customers ON crm_customers.id = crm_deposits.customer_id").
-		Joins("LEFT JOIN crm_contract ON crm_contract.id = crm_deposits.contract_id").
-		Order("crm_deposits.created_at DESC").
-		Find(&crmDepositss).Error
+	err = db.Find(&crmDepositss).Error
 	return crmDepositss, total, err
 }
 

@@ -34,12 +34,14 @@ type CrmPagePaymentCollention struct {
 	//crm_customers 表
 	CustomerName string `json:"customerName" form:"customerName" gorm:"column:customer_name;comment:客户名;size:191;"` //客户名
 	//crm_order
-	Price     *float64 `json:"price" form:"price" gorm:"column:price;comment:产品原价;"`                                         //产品原价
-	OrderName string   `json:"orderName" form:"orderName" gorm:"column:order_name;comment:订单名称;size:10;" binding:"required"` //订单名称
+	Price       *float64 `json:"price" form:"price" gorm:"column:price;comment:产品原价;"`                                         //产品原价
+	OrderName   string   `json:"orderName" form:"orderName" gorm:"column:order_name;comment:订单名称;size:10;" binding:"required"` //订单名称
+	OrderNumber string   `json:"orderNumber" form:"orderNumber" gorm:"column:order_number;comment:订单编号;size:191;"`             //订单编号
 	//crm_business_opportunity 表
 	BusinessOpportunityName string `json:"businessOpportunityName" form:"businessOpportunityName" gorm:"column:business_opportunity_name;comment:商机名称;size:191;" binding:"required"` //商机名称
 	//crm_currency 表 后面替换去掉注释
 	CurrencyName string `json:"currencyName" form:"currencyName" gorm:"column:currency_name;comment:币种;size:10;"` //币种名称
 	//crm_bill
-	BillName string `json:"billName" form:"billName" gorm:"column:bill_name;comment:账单名称;size:191;"` //账单名称
+	BillName   string `json:"billName" form:"billName" gorm:"column:bill_name;comment:账单名称;size:191;"`       //账单名称
+	BillNumber string `json:"billNumber" form:"billNumber" gorm:"column:bill_number;comment:账单编号;size:191;"` //账单编号
 }
