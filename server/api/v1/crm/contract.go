@@ -270,11 +270,13 @@ func (crmContractApi *CrmContractApi) DownloadPageCrmContactExcel(c *gin.Context
 			//	err = f.InsertRows("OC", startTable+i*startTableStep, 2)
 			//}
 			err = f.SetCellValue("OC", fmt.Sprintf("A%d", startTable+i*startTableStep), i+1)
-			err = f.SetCellValue("OC", fmt.Sprintf("C%d", startTable+i*startTableStep), *product.Quantity)
-			err = f.SetCellValue("OC", fmt.Sprintf("D%d", startTable+i*startTableStep), "New") //三个选项要做成固定的 New / IR /ER
+			if product.Quantity != nil {
+				err = f.SetCellValue("OC", fmt.Sprintf("C%d", startTable+i*startTableStep), *product.Quantity)
+			}
 			err = f.SetCellValue("OC", fmt.Sprintf("F%d", startTable+i*startTableStep), product.Product.ProductName)
-			err = f.SetCellValue("OC", fmt.Sprintf("R%d", startTable+i*startTableStep), 10)  //一次收费
-			err = f.SetCellValue("OC", fmt.Sprintf("U%d", startTable+i*startTableStep), 260) //月收费
+			err = f.SetCellValue("OC", fmt.Sprintf("D%d", startTable+i*startTableStep), "New") //三个选项要做成固定的 New / IR /ER
+			err = f.SetCellValue("OC", fmt.Sprintf("R%d", startTable+i*startTableStep), 10)    //一次收费
+			err = f.SetCellValue("OC", fmt.Sprintf("U%d", startTable+i*startTableStep), 260)   //月收费
 		}
 
 		err = f.SetCellValue("OC", "J50", recrmContract.CreatedAt.Format("02/01/2006")) //"服务激活日期

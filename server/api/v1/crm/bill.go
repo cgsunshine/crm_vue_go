@@ -119,9 +119,15 @@ func (crmBillApi *CrmBillApi) DownloadPageCrmBillExcel(c *gin.Context) {
 			err = f.SetCellValue("Sheet1", fmt.Sprintf("B%d", startTable+i*startTableStep), i+1)
 			err = f.SetCellValue("Sheet1", fmt.Sprintf("C%d", startTable+i*startTableStep), product.Product.ProductName)
 			err = f.SetCellValue("Sheet1", fmt.Sprintf("F%d", startTable+i*startTableStep), product.Product.DataCenter)
-			err = f.SetCellValue("Sheet1", fmt.Sprintf("H%d", startTable+i*startTableStep), *product.Quantity)
-			err = f.SetCellValue("Sheet1", fmt.Sprintf("J%d", startTable+i*startTableStep), *product.Product.DiscountPrice)
-			err = f.SetCellValue("Sheet1", fmt.Sprintf("K%d", startTable+i*startTableStep), *product.Product.SalesPrice)
+			if product.Quantity != nil {
+				err = f.SetCellValue("Sheet1", fmt.Sprintf("H%d", startTable+i*startTableStep), *product.Quantity)
+			}
+			if product.Product.DiscountPrice != nil {
+				err = f.SetCellValue("Sheet1", fmt.Sprintf("J%d", startTable+i*startTableStep), *product.Product.DiscountPrice)
+			}
+			if product.Product.SalesPrice != nil {
+				err = f.SetCellValue("Sheet1", fmt.Sprintf("K%d", startTable+i*startTableStep), *product.Product.SalesPrice)
+			}
 		}
 		//重新设置统计函数
 		//err = f.SetCellFormula("Sheet1", "A5", fmt.Sprintf("SUM(K15:K%d)", startTable+len(order.OrderProducts)*startTableStep-1))
