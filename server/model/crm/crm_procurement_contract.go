@@ -18,6 +18,8 @@ type CrmProcurementContract struct {
 	UserId         *int       `json:"userId" form:"userId" gorm:"column:user_id;comment:负责人;"`                                             //负责人
 	ReviewStatus   string     `json:"reviewStatus" form:"reviewStatus" gorm:"column:review_status;comment:审核状态;size:191;"`                 //审核状态
 	Description    string     `json:"description" form:"description" gorm:"column:description;comment:备注;size:191;"`                       //备注
+	Currency       string     `json:"currency" form:"currency" gorm:"column:currency;comment:币种;size:11;"`                                 //币种
+	EffectiveTime  *time.Time `json:"effectiveTime" form:"effectiveTime" gorm:"column:effective_time;comment:生效时间;"`                       //生效时间
 	//ProcurementContractName string     `json:"procurementContractName" form:"procurementContractName" gorm:"column:procurement_contract_name;comment:订购合同名称;size:191;"` //订购合同名称
 	ProcurementContractNumber string `json:"procurementContractNumber" form:"procurementContractNumber" gorm:"column:procurement_contract_number;comment:订购合同编号;size:191;"` //订购合同编号
 }

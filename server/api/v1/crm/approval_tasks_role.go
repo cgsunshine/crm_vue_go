@@ -30,8 +30,9 @@ func (crmApprovalTasksRoleApi *CrmApprovalTasksRoleApi) GetCrmContractApprovalTa
 		return
 	}
 
-	pageInfo.AssigneeId = GetSearchUserId(nil, c)
-
+	//pageInfo.AssigneeId = GetSearchUserId(nil, c)
+	AssigneeId, _ := strconv.Atoi(c.GetHeader("X-User-Id"))
+	pageInfo.RoleId = userService.FindUserDataStatusByIdRole(&AssigneeId)
 	pageInfo.ApprovalType = utils.Pointer(comm.ContractApprovalType)
 
 	if list, total, err := crmApprovalTasksRoleService.GetCrmContractApprovalTasksInfoList(pageInfo); err != nil {
@@ -101,7 +102,8 @@ func (crmApprovalTasksRoleApi *CrmApprovalTasksRoleApi) GetCrmDepositsApprovalTa
 	}
 
 	AssigneeId, _ := strconv.Atoi(c.GetHeader("X-User-Id"))
-	pageInfo.AssigneeId = userService.FindUserDataStatusById(&AssigneeId)
+	//pageInfo.AssigneeId = userService.FindUserDataStatusById(&AssigneeId)
+	pageInfo.RoleId = userService.FindUserDataStatusByIdRole(&AssigneeId)
 
 	pageInfo.ApprovalType = utils.Pointer(comm.DepositsApprovalType)
 
@@ -136,7 +138,8 @@ func (crmApprovalTasksRoleApi *CrmApprovalTasksRoleApi) GetCrmPaymentCollentionA
 	}
 
 	AssigneeId, _ := strconv.Atoi(c.GetHeader("X-User-Id"))
-	pageInfo.AssigneeId = userService.FindUserDataStatusById(&AssigneeId)
+	//pageInfo.AssigneeId = userService.FindUserDataStatusById(&AssigneeId)
+	pageInfo.RoleId = userService.FindUserDataStatusByIdRole(&AssigneeId)
 
 	pageInfo.ApprovalType = utils.Pointer(comm.PaymentCollentionApprovalType)
 
@@ -171,7 +174,8 @@ func (crmApprovalTasksRoleApi *CrmApprovalTasksRoleApi) GetCrmOrderApprovalTasks
 	}
 
 	AssigneeId, _ := strconv.Atoi(c.GetHeader("X-User-Id"))
-	pageInfo.AssigneeId = userService.FindUserDataStatusById(&AssigneeId)
+	//pageInfo.AssigneeId = userService.FindUserDataStatusById(&AssigneeId)
+	pageInfo.RoleId = userService.FindUserDataStatusByIdRole(&AssigneeId)
 
 	pageInfo.ApprovalType = utils.Pointer(comm.OrderApprovalType)
 
@@ -206,7 +210,8 @@ func (crmApprovalTasksRoleApi *CrmApprovalTasksRoleApi) GetCrmStatementAccountAp
 	}
 
 	AssigneeId, _ := strconv.Atoi(c.GetHeader("X-User-Id"))
-	pageInfo.AssigneeId = userService.FindUserDataStatusById(&AssigneeId)
+	//pageInfo.AssigneeId = userService.FindUserDataStatusById(&AssigneeId)
+	pageInfo.RoleId = userService.FindUserDataStatusByIdRole(&AssigneeId)
 
 	pageInfo.ApprovalType = utils.Pointer(comm.StatementAccountApprovalType)
 
@@ -241,7 +246,8 @@ func (crmApprovalTasksRoleApi *CrmApprovalTasksRoleApi) GetCrmPaymentApprovalTas
 	}
 
 	AssigneeId, _ := strconv.Atoi(c.GetHeader("X-User-Id"))
-	pageInfo.AssigneeId = userService.FindUserDataStatusById(&AssigneeId)
+	//pageInfo.AssigneeId = userService.FindUserDataStatusById(&AssigneeId)
+	pageInfo.RoleId = userService.FindUserDataStatusByIdRole(&AssigneeId)
 
 	pageInfo.ApprovalType = utils.Pointer(comm.PaymentApprovalType)
 
@@ -276,7 +282,8 @@ func (crmApprovalTasksRoleApi *CrmApprovalTasksRoleApi) GetCrmPurchaseOrderAppro
 	}
 
 	AssigneeId, _ := strconv.Atoi(c.GetHeader("X-User-Id"))
-	pageInfo.AssigneeId = userService.FindUserDataStatusById(&AssigneeId)
+	//pageInfo.AssigneeId = userService.FindUserDataStatusById(&AssigneeId)
+	pageInfo.RoleId = userService.FindUserDataStatusByIdRole(&AssigneeId)
 
 	pageInfo.ApprovalType = utils.Pointer(comm.PurchaseOrderApprovalType)
 
@@ -311,7 +318,8 @@ func (crmApprovalTasksRoleApi *CrmApprovalTasksRoleApi) GetCrmProcurementContrac
 	}
 
 	AssigneeId, _ := strconv.Atoi(c.GetHeader("X-User-Id"))
-	pageInfo.AssigneeId = userService.FindUserDataStatusById(&AssigneeId)
+	//pageInfo.AssigneeId = userService.FindUserDataStatusById(&AssigneeId)
+	pageInfo.RoleId = userService.FindUserDataStatusByIdRole(&AssigneeId)
 
 	pageInfo.ApprovalType = utils.Pointer(comm.ProcurementContractApprovalType)
 

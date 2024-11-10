@@ -15,7 +15,6 @@ type CrmPagePurchaseOrder struct {
 	Amount              *float64   `json:"amount" form:"amount" gorm:"column:amount;comment:金额;"`                                                      //金额
 	UserId              *int       `json:"userId" form:"userId" gorm:"column:user_id;comment:负责人ID;"`                                                  //负责人ID
 	CreationTime        *time.Time `json:"creationTime" form:"creationTime" gorm:"column:creation_time;comment:创建时间;"`                                 //创建时间
-	ExpirationTime      *time.Time `json:"expirationTime" form:"expirationTime" gorm:"column:expiration_time;comment:到期时间;"`                           //到期时间
 	PurchaseOrderName   string     `json:"purchaseOrderName" form:"purchaseOrderName" gorm:"column:purchase_order_name;comment:订购单名称;size:191;"`       //订购单名称
 	PurchaseOrderNumber string     `json:"purchaseOrderNumber" form:"purchaseOrderNumber" gorm:"column:purchase_order_number;comment:订购单名称;size:191;"` //订购单编号
 	Currency            string     `json:"currency" form:"currency" gorm:"column:currency;comment:币种;size:11;"`                                        //币种
@@ -27,6 +26,8 @@ type CrmPagePurchaseOrder struct {
 	ProductName string `json:"productName" form:"productName" gorm:"column:product_name;comment:产品名称;size:191;"` //产品名称
 	//crm_currency 表 后面替换去掉注释
 	CurrencyName string `json:"currencyName" form:"currencyName" gorm:"column:currency_name;comment:币种;size:10;"` //币种名称
+	//crm_procurement_contract
+	ExpirationTime *time.Time `json:"expirationTime" form:"expirationTime" gorm:"column:expiration_time;comment:到期时间;"` //到期时间
 
 	PurchaseOrderProduct []CrmPurchaseOrderProduct `gorm:"foreignKey:PurchaseOrderId"`
 }

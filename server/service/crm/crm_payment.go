@@ -117,3 +117,12 @@ func (crmPaymentService *CrmPaymentService) ApprovalTasksCount(userId *int, appr
 	err = db.Where("review_status = ? ", approvalStatus).Debug().Count(&total).Error
 	return
 }
+
+// ApprovalTasksCountRole 统计有效的，并且状态是待审批的数量角色
+// Author [piexlmax](https://github.com/piexlmax)
+func (crmPaymentService *CrmPaymentService) ApprovalTasksCountRole(roleId *int, approvalStatus string, startDate, endDate *time.Time) (total int64, err error) {
+	db := global.GVA_DB.Model(&crm.CrmPayment{})
+	SearchConditionRole(db, roleId, startDate, endDate)
+	err = db.Where("review_status = ? ", approvalStatus).Debug().Count(&total).Error
+	return
+}

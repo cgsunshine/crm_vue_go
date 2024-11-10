@@ -16,6 +16,7 @@ type CrmPageContract struct {
 	ContractTypeId  *int       `json:"contractTypeId" form:"contractTypeId" gorm:"column:contract_type_id;comment:合同类型;"`         //合同类型
 	CustomerId      *int       `json:"customerId" form:"customerId" gorm:"column:customer_id;comment:客户ID;"`                      //客户ID
 	Description     string     `json:"description" form:"description" gorm:"column:description;comment:备注;size:191;"`             //备注
+	EffectiveTime   *time.Time `json:"effectiveTime" form:"effectiveTime" gorm:"column:effective_time;comment:生效时间;"`             //生效时间
 	ExpirationTime  *time.Time `json:"expirationTime" form:"expirationTime" gorm:"column:expiration_time;comment:到期时间;"`          //到期时间
 	OrderId         *int       `json:"orderId" form:"orderId" gorm:"column:order_id;comment:订单ID;"`                               //订单ID
 	ReviewResult    string     `json:"reviewResult" form:"reviewResult" gorm:"column:review_result;comment:审核结果;size:191;"`       //审核结果

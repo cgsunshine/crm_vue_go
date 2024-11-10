@@ -29,45 +29,51 @@ func (adminHome *AdminHome) HomeData(c *gin.Context) {
 		response.FailWithMessage(err.Error(), c)
 		return
 	}
+	var roleId *int
 
 	userId := GetSearchUserId(search.UserId, c)
 
-	businessOpportunityApproval, err := crmBusinessOpportunityService.ApprovalTasksCount(userId, comm.Approval_Status_Pending, search.StartCreatedAt, search.EndCreatedAt)
+	//AssigneeId, _ := strconv.Atoi(c.GetHeader("X-User-Id"))
+	if userId != nil {
+		roleId = userService.FindUserDataStatusByIdRole(userId)
+	}
+
+	businessOpportunityApproval, err := crmApprovalTasksRoleService.ApprovalTasksCountRole(roleId, comm.Approval_Status_Under, comm.BusinessOpportunityApprovalType, search.StartCreatedAt, search.EndCreatedAt)
 	if err != nil {
 		global.GVA_LOG.Error("查询失败!", zap.Error(err))
 		response.FailWithMessage("查询失败", c)
 		return
 	}
 
-	OrderApproval, err := crmOrderService.ApprovalTasksCount(userId, comm.Approval_Status_Pending, search.StartCreatedAt, search.EndCreatedAt)
+	OrderApproval, err := crmApprovalTasksRoleService.ApprovalTasksCountRole(roleId, comm.Approval_Status_Under, comm.OrderApprovalType, search.StartCreatedAt, search.EndCreatedAt)
 	if err != nil {
 		global.GVA_LOG.Error("查询失败!", zap.Error(err))
 		response.FailWithMessage("查询失败", c)
 		return
 	}
 
-	salesContract, err := crmContractService.ApprovalTasksCount(userId, comm.Approval_Status_Pending, search.StartCreatedAt, search.EndCreatedAt)
+	salesContract, err := crmApprovalTasksRoleService.ApprovalTasksCountRole(roleId, comm.Approval_Status_Under, comm.ContractApprovalType, search.StartCreatedAt, search.EndCreatedAt)
 	if err != nil {
 		global.GVA_LOG.Error("查询失败!", zap.Error(err))
 		response.FailWithMessage("查询失败", c)
 		return
 	}
 
-	paymentCollentionApproval, err := crmPaymentCollentionService.ApprovalTasksCount(userId, comm.Approval_Status_Pending, search.StartCreatedAt, search.EndCreatedAt)
+	paymentCollentionApproval, err := crmApprovalTasksRoleService.ApprovalTasksCountRole(roleId, comm.Approval_Status_Under, comm.PaymentCollentionApprovalType, search.StartCreatedAt, search.EndCreatedAt)
 	if err != nil {
 		global.GVA_LOG.Error("查询失败!", zap.Error(err))
 		response.FailWithMessage("查询失败", c)
 		return
 	}
 
-	depositsApproval, err := crmDepositsService.ApprovalTasksCount(userId, comm.Approval_Status_Pending, search.StartCreatedAt, search.EndCreatedAt)
+	depositsApproval, err := crmApprovalTasksRoleService.ApprovalTasksCountRole(roleId, comm.Approval_Status_Under, comm.DepositsApprovalType, search.StartCreatedAt, search.EndCreatedAt)
 	if err != nil {
 		global.GVA_LOG.Error("查询失败!", zap.Error(err))
 		response.FailWithMessage("查询失败", c)
 		return
 	}
 
-	paymentApproval, err := crmPaymentService.ApprovalTasksCount(userId, comm.Approval_Status_Pending, search.StartCreatedAt, search.EndCreatedAt)
+	paymentApproval, err := crmApprovalTasksRoleService.ApprovalTasksCountRole(roleId, comm.Approval_Status_Under, comm.PaymentApprovalType, search.StartCreatedAt, search.EndCreatedAt)
 	if err != nil {
 		global.GVA_LOG.Error("查询失败!", zap.Error(err))
 		response.FailWithMessage("查询失败", c)

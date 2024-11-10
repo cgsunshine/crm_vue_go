@@ -3,14 +3,12 @@ package request
 import (
 	"github.com/flipped-aurora/gin-vue-admin/server/model/common/request"
 	"time"
-	
 )
 
-type CrmStatementAccountFileSearch struct{
-    
-        StartCreatedAt *time.Time `json:"startCreatedAt" form:"startCreatedAt"`
-        EndCreatedAt   *time.Time `json:"endCreatedAt" form:"endCreatedAt"`
-    
-                      StatementAccountId  *int `json:"statementAccountId" form:"statementAccountId" `
-    request.PageInfo
+type CrmStatementAccountFileSearch struct {
+	StartCreatedAt *time.Time `json:"startCreatedAt" form:"startCreatedAt"`
+	EndCreatedAt   *time.Time `json:"endCreatedAt" form:"endCreatedAt"`
+
+	StatementAccountId *int `json:"statementAccountId" form:"statementAccountId" binding:"required"`
+	request.PageInfo
 }

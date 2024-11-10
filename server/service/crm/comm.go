@@ -15,3 +15,13 @@ func SearchCondition(db *gorm.DB, userId *int, startDate, endDate *time.Time) *g
 	}
 	return db
 }
+
+func SearchConditionRole(db *gorm.DB, roleId *int, startDate, endDate *time.Time) *gorm.DB {
+	if startDate != nil && endDate != nil {
+		db = db.Where("created_at BETWEEN ? AND ?", startDate, endDate)
+	}
+	if roleId != nil {
+		db = db.Where("role_id = ?", roleId)
+	}
+	return db
+}
