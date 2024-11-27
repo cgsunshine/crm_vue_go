@@ -84,6 +84,7 @@ func (crmPurchaseOrderApi *CrmPurchaseOrderApi) CreateCrmPurchaseOrder(c *gin.Co
 			ProductId:       v.ProductId,
 			Quantity:        v.Quantity,
 			Specifications:  v.Specifications,
+			Price:           v.Price,
 		}
 		crmPurchaseOrderProduct = append(crmPurchaseOrderProduct, crmOrderProduct)
 	}
