@@ -12,6 +12,7 @@ import (
 	"go.uber.org/zap"
 	"strconv"
 	"strings"
+	"time"
 )
 
 type CrmPurchaseOrderApi struct {
@@ -188,10 +189,51 @@ func (crmPurchaseOrderApi *CrmPurchaseOrderApi) DeleteCrmPurchaseOrderByIds(c *g
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"更新成功"}"
 // @Router /crmPurchaseOrder/updateCrmPurchaseOrder [put]
 func (crmPurchaseOrderApi *CrmPurchaseOrderApi) UpdateCrmPurchaseOrder(c *gin.Context) {
-	var crmPurchaseOrder crm.CrmPurchaseOrder
-	err := c.ShouldBindJSON(&crmPurchaseOrder)
+	var crmReqPurchaseOrder crmReq.CrmReqPurchaseOrder
+	err := c.ShouldBindJSON(&crmReqPurchaseOrder)
 	if err != nil {
 		response.FailWithMessage(err.Error(), c)
+		return
+	}
+
+	crmPurchaseOrder := crm.CrmPurchaseOrder{
+		GVA_MODEL:           crmReqPurchaseOrder.GVA_MODEL,
+		Amount:              crmReqPurchaseOrder.Amount,
+		ContractId:          crmReqPurchaseOrder.ContractId,
+		CreationTime:        crmReqPurchaseOrder.CreationTime,
+		Description:         crmReqPurchaseOrder.Description,
+		ExpirationTime:      crmReqPurchaseOrder.ExpirationTime,
+		ProductId:           crmReqPurchaseOrder.ProductId,
+		Quantity:            crmReqPurchaseOrder.Quantity,
+		UserId:              crmReqPurchaseOrder.UserId,
+		PurchaseOrderName:   crmReqPurchaseOrder.PurchaseOrderName,
+		PurchaseOrderNumber: crmReqPurchaseOrder.PurchaseOrderNumber,
+		Currency:            crmReqPurchaseOrder.Currency,
+		ReviewStatus:        crmReqPurchaseOrder.ReviewStatus,
+	}
+	crmPurchaseOrder.UpdatedAt = time.Now()
+	id := int(crmPurchaseOrder.ID)
+	//删除依赖关系，在插入
+	if err := crmPurchaseOrderProductService.DeleteCrmPurchaseOrderProductId(id); err != nil {
+		global.GVA_LOG.Error("插入对应关系失败!", zap.Error(err))
+		response.FailWithMessage("创建失败", c)
+		return
+	}
+	crmPurchaseOrderProduct := make([]*crm.CrmPurchaseOrderProduct, 0)
+	for _, v := range crmReqPurchaseOrder.ProductsInfo {
+		crmOrderProduct := &crm.CrmPurchaseOrderProduct{
+			PurchaseOrderId: &id,
+			ProductId:       v.ProductId,
+			Quantity:        v.Quantity,
+			Specifications:  v.Specifications,
+			Price:           v.Price,
+		}
+		crmPurchaseOrderProduct = append(crmPurchaseOrderProduct, crmOrderProduct)
+	}
+
+	if err := crmPurchaseOrderProductService.CreateCrmPurchaseOrderProducts(crmPurchaseOrderProduct); err != nil {
+		global.GVA_LOG.Error("插入对应关系失败!", zap.Error(err))
+		response.FailWithMessage("创建失败", c)
 		return
 	}
 

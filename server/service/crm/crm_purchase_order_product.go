@@ -30,6 +30,13 @@ func (crmPurchaseOrderProductService *CrmPurchaseOrderProductService) DeleteCrmP
 	return err
 }
 
+// DeleteCrmPurchaseOrderProduct 删除crmPurchaseOrderProduct表记录
+// Author [piexlmax](https://github.com/piexlmax)
+func (crmPurchaseOrderProductService *CrmPurchaseOrderProductService) DeleteCrmPurchaseOrderProductId(ID int) (err error) {
+	err = global.GVA_DB.Unscoped().Debug().Delete(&crm.CrmPurchaseOrderProduct{}, "purchase_order_id = ?", ID).Error
+	return err
+}
+
 // DeleteCrmPurchaseOrderProductByIds 批量删除crmPurchaseOrderProduct表记录
 // Author [piexlmax](https://github.com/piexlmax)
 func (crmPurchaseOrderProductService *CrmPurchaseOrderProductService) DeleteCrmPurchaseOrderProductByIds(IDs []string) (err error) {
